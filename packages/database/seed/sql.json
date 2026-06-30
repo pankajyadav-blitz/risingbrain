@@ -1,0 +1,46 @@
+[
+  {
+    "slug": "second-highest-salary",
+    "title": "Second Highest Salary",
+    "difficulty": "MEDIUM",
+    "tags": ["Subquery", "Aggregation"],
+    "topic": "Aggregation",
+    "description": "Given an Employee table, report the second highest distinct salary. If there is no second highest salary, return null.",
+    "bestApproach": "Find the MAX salary, then take the MAX of all salaries strictly less than it. Wrapping in a subquery guarantees a NULL row when only one distinct salary exists.",
+    "solutionQuery": "SELECT MAX(salary) AS SecondHighestSalary\nFROM Employee\nWHERE salary < (SELECT MAX(salary) FROM Employee);",
+    "order": 0
+  },
+  {
+    "slug": "department-top-three-salaries",
+    "title": "Department Top Three Salaries",
+    "difficulty": "HARD",
+    "tags": ["Window Function", "DENSE_RANK"],
+    "topic": "Window Functions",
+    "description": "A company wants the employees who earn one of the top three unique salaries in each department.",
+    "bestApproach": "Use DENSE_RANK() partitioned by department, ordered by salary descending. Keep rows where the rank is <= 3 — DENSE_RANK handles ties so equal salaries share a rank.",
+    "solutionQuery": "SELECT d.name AS Department, e.name AS Employee, e.salary AS Salary\nFROM (\n  SELECT *,\n    DENSE_RANK() OVER (\n      PARTITION BY departmentId ORDER BY salary DESC\n    ) AS rnk\n  FROM Employee\n) e\nJOIN Department d ON d.id = e.departmentId\nWHERE e.rnk <= 3;",
+    "order": 1
+  },
+  {
+    "slug": "consecutive-numbers",
+    "title": "Consecutive Numbers",
+    "difficulty": "MEDIUM",
+    "tags": ["Window Function", "LAG/LEAD"],
+    "topic": "Window Functions",
+    "description": "Find all numbers that appear at least three times consecutively in the Logs table.",
+    "bestApproach": "Use LEAD() to peek at the next two rows by id. When the current value equals both look-aheads, you have a run of three.",
+    "solutionQuery": "SELECT DISTINCT num AS ConsecutiveNums\nFROM (\n  SELECT num,\n    LEAD(num, 1) OVER (ORDER BY id) AS n1,\n    LEAD(num, 2) OVER (ORDER BY id) AS n2\n  FROM Logs\n) t\nWHERE num = n1 AND num = n2;",
+    "order": 2
+  },
+  {
+    "slug": "duplicate-emails",
+    "title": "Duplicate Emails",
+    "difficulty": "EASY",
+    "tags": ["GROUP BY", "HAVING"],
+    "topic": "Grouping",
+    "description": "Report all email addresses that occur more than once.",
+    "bestApproach": "Group by the email column and keep only groups whose COUNT is greater than one using HAVING.",
+    "solutionQuery": "SELECT email\nFROM Person\nGROUP BY email\nHAVING COUNT(*) > 1;",
+    "order": 3
+  }
+]

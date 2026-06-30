@@ -1,0 +1,34 @@
+{
+  "name": "@risingbrain/database",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./client": "./generated/prisma/client.ts",
+    "./enums": "./generated/prisma/enums.ts"
+  },
+  "scripts": {
+    "db:generate": "prisma generate",
+    "db:push": "prisma db push",
+    "db:migrate": "prisma migrate dev",
+    "db:studio": "prisma studio",
+    "db:seed": "bun run prisma/seed.ts",
+    "lint": "eslint . --max-warnings 0",
+    "check-types": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@prisma/adapter-pg": "^7.8.0",
+    "@prisma/client": "^7.8.0",
+    "pg": "^8.22.0"
+  },
+  "devDependencies": {
+    "@risingbrain/config-eslint": "*",
+    "@risingbrain/config-typescript": "*",
+    "@types/node": "^26.0.1",
+    "@types/pg": "^8.20.0",
+    "eslint": "^9.39.1",
+    "prisma": "^7.8.0",
+    "typescript": "5.9.2"
+  }
+}

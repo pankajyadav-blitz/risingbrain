@@ -1,0 +1,201 @@
+/*
+ * Shared Tailwind v4 design tokens for the RisingBrain monorepo.
+ *
+ * Palette ported from the RisingBrain web app (../risingbrain): a neutral
+ * charcoal base with a single restrained green accent. Provided in two
+ * variants that share the SAME green accent family:
+ *   - dark  (default markup ships <html class="dark">)
+ *   - light (remove the `dark` class)
+ *
+ * Import this AFTER `@import "tailwindcss";` in any app or package entry CSS:
+ *
+ *   @import "tailwindcss";
+ *   @import "@risingbrain/config-tailwind/theme.css";
+ *
+ * Toggle themes by adding/removing the `dark` class on <html>.
+ */
+
+/* Make `dark:` utilities follow the `.dark` class instead of the OS setting. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ---------- Brand greens (shared across both themes) ---------- */
+:root {
+  --rb-green-900: #11201a;
+  --rb-green-800: #16432e;
+  --rb-green-700: #1b6240;
+  --rb-green-500: #35a45c;
+  --rb-green-400: #4cb56a;
+  --rb-green-300: #7fcf9c;
+}
+
+/* ---------- Light theme (default when no `dark` class) ---------- */
+/* Soft "paper" light mode — a gentle sage off-white instead of glaring pure
+   white, so it still reads as a light theme but is easy on the eyes. */
+:root {
+  --background: #e8ebe6;
+  --foreground: #14181b;
+  --surface: #f1f3ee;
+  --surface-2: #dfe3dc;
+  --muted: #57606a;
+  --border: rgba(15, 18, 22, 0.1);
+  --highlight: rgba(15, 18, 22, 0.03);
+  --ring: var(--rb-green-500);
+
+  /* On light surfaces a deeper green keeps text/buttons legible. */
+  --brand: var(--rb-green-700);
+  --brand-foreground: #ffffff;
+  --brand-muted: var(--rb-green-800); /* hover = darker */
+  --accent: var(--rb-green-700);
+
+  --ambient: radial-gradient(55% 38% at 20% -10%, rgba(53, 164, 92, 0.07) 0%, transparent 60%);
+  --shadow-card: 0 6px 20px rgba(15, 18, 22, 0.07);
+  --shadow-card-hover: 0 12px 28px rgba(15, 18, 22, 0.11);
+
+  /* Frosted-glass surfaces — translucent fill + blur. */
+  --glass-bg: rgba(241, 243, 238, 0.66);
+  --glass-bg-2: rgba(241, 243, 238, 0.82);
+  --glass-border: rgba(15, 18, 22, 0.09);
+  --glass-blur: 14px;
+}
+
+/* ---------- Dark theme ---------- */
+.dark {
+  --background: #0f1216;
+  --foreground: #e8ecef;
+  --surface: #181b1f;
+  --surface-2: #1d2126;
+  --muted: #9aa1a8;
+  --border: rgba(255, 255, 255, 0.08);
+  --highlight: rgba(255, 255, 255, 0.04);
+  --ring: var(--rb-green-500);
+
+  /* On dark surfaces the mid/bright greens pop without glare. */
+  --brand: var(--rb-green-500);
+  --brand-foreground: #0b130f;
+  --brand-muted: var(--rb-green-400); /* hover = lighter */
+  --accent: var(--rb-green-500); /* mid green — legible on dark surfaces */
+
+  --ambient: radial-gradient(55% 38% at 20% -10%, rgba(53, 164, 92, 0.05) 0%, transparent 60%);
+  --shadow-card: 0 6px 20px rgba(0, 0, 0, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.03);
+  --shadow-card-hover: 0 12px 28px rgba(0, 0, 0, 0.38), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+
+  /* Frosted-glass surfaces — translucent fill + blur. */
+  --glass-bg: rgba(24, 27, 31, 0.55);
+  --glass-bg-2: rgba(29, 33, 38, 0.72);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-blur: 14px;
+}
+
+/* ---------- Expose tokens as Tailwind utilities ---------- */
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-muted: var(--muted);
+  --color-border: var(--border);
+  --color-highlight: var(--highlight);
+  --color-ring: var(--ring);
+
+  --color-brand: var(--brand);
+  --color-brand-foreground: var(--brand-foreground);
+  --color-brand-muted: var(--brand-muted);
+  --color-accent: var(--accent);
+
+  --color-rb-green-900: var(--rb-green-900);
+  --color-rb-green-800: var(--rb-green-800);
+  --color-rb-green-700: var(--rb-green-700);
+  --color-rb-green-500: var(--rb-green-500);
+  --color-rb-green-400: var(--rb-green-400);
+  --color-rb-green-300: var(--rb-green-300);
+
+  --color-glass: var(--glass-bg);
+  --color-glass-2: var(--glass-bg-2);
+  --color-glass-border: var(--glass-border);
+
+  /* Site typography — wired to the next/font variables set on <html>. */
+  --font-sans: var(--font-app-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-app-mono), ui-monospace, SFMono-Regular, monospace;
+}
+
+/* ---------- Surface / accent utility layer (theme-aware) ---------- */
+@layer components {
+  /* Frosted-glass surface — translucent fill + backdrop blur, theme-aware. */
+  .glass {
+    background: var(--glass-bg);
+    backdrop-filter: blur(var(--glass-blur)) saturate(120%);
+    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(120%);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--shadow-card);
+  }
+  /* A lighter, pill-sized frosted chip (nav items, badges). */
+  .glass-pill {
+    background: var(--glass-bg);
+    backdrop-filter: blur(8px) saturate(120%);
+    -webkit-backdrop-filter: blur(8px) saturate(120%);
+    border: 1px solid var(--glass-border);
+  }
+  .glass-hover {
+    transition:
+      transform 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+      box-shadow 0.25s ease,
+      border-color 0.25s ease,
+      background-color 0.25s ease;
+  }
+  .glass-hover:hover {
+    transform: translateY(-2px);
+    background: var(--glass-bg-2);
+    border-color: color-mix(in srgb, var(--rb-green-500) 35%, transparent);
+    box-shadow: var(--shadow-card-hover);
+  }
+
+  /* Emphasis text: a single, restrained brand green — no gradient. */
+  .text-gradient {
+    color: var(--accent);
+  }
+
+  /* Primary accent button: solid green, no glow. */
+  .btn-glow {
+    background: var(--brand);
+    color: var(--brand-foreground);
+    transition:
+      background-color 0.2s ease,
+      transform 0.2s ease;
+  }
+  .btn-glow:hover {
+    background: var(--brand-muted);
+  }
+}
+
+/* ---------- Global chrome (theme-aware) ---------- */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--rb-green-500) 28%, transparent);
+  border-radius: 99px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: color-mix(in srgb, var(--rb-green-500) 45%, transparent);
+  background-clip: padding-box;
+}
+
+@keyframes float-in {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animate-in {
+  animation: float-in 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+}

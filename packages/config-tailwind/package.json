@@ -1,0 +1,13 @@
+{
+  "name": "@risingbrain/config-tailwind",
+  "version": "0.0.0",
+  "private": true,
+  "exports": {
+    "./theme.css": "./theme.css",
+    "./postcss": "./postcss.config.mjs"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.3.1",
+    "tailwindcss": "^4.3.1"
+  }
+}

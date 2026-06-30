@@ -1,0 +1,9 @@
+/*
+ * Standalone Tailwind v4 entry for the UI package (e.g. Storybook / previews).
+ * Apps consuming this package compile Tailwind themselves and only need to
+ * register this package's source via `@source` — see apps/web globals.css.
+ */
+@import "tailwindcss";
+@import "@risingbrain/config-tailwind/theme.css";
+
+@source "./**/*.{ts,tsx}";

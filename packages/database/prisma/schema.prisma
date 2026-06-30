@@ -1,0 +1,678 @@
+// RisingBrain — Prisma schema.
+// See docs/ARCHITECTURE.md for the design rationale behind every model.
+//
+// Conventions:
+//   - cuid() ids, snake_case table names via @@map, camelCase fields.
+//   - Content is published server-side and cached in Redis; user state (progress,
+//     notes, activity) is per-user and merged on the server.
+//   - Auth session state lives primarily in Redis; the Session model is the
+//     durable audit record (see ARCHITECTURE.md §1).
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ============================================================================
+// ENUMS
+// ============================================================================
+
+enum Role {
+  NORMAL
+  STUDENT
+  SUBSCRIBER
+  ADMIN
+}
+
+enum AuthProvider {
+  CREDENTIALS
+  GOOGLE
+  GITHUB
+}
+
+enum Difficulty {
+  EASY
+  MEDIUM
+  HARD
+}
+
+enum ProblemStatus {
+  NOT_STARTED
+  IN_PROGRESS
+  SOLVED
+}
+
+enum QuizKind {
+  APTITUDE
+  LOGICAL_REASONING
+  PUZZLE
+}
+
+enum CourseLevel {
+  BEGINNER
+  INTERMEDIATE
+  ADVANCED
+}
+
+enum CourseTag {
+  DSA
+  SQL
+  SYSTEM_DESIGN
+  LLD
+  APTITUDE
+  INTERVIEW
+  CHALLENGE
+}
+
+enum LessonType {
+  VIDEO
+  ARTICLE
+  QUIZ
+}
+
+enum EnrollmentStatus {
+  ACTIVE
+  COMPLETED
+  REFUNDED
+}
+
+enum SubscriptionPlan {
+  FREE
+  PRO
+  PREMIUM
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  CANCELED
+  EXPIRED
+  PAST_DUE
+}
+
+enum InterviewVerdict {
+  SELECTED
+  REJECTED
+  PENDING
+}
+
+enum PublishStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+enum SubmissionType {
+  DSA_PROBLEM
+  SQL_PROBLEM
+  MCQ
+  COURSE_LESSON
+}
+
+// ============================================================================
+// AUTH & USERS
+// ============================================================================
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  emailVerified DateTime?
+  name          String?
+  username      String?   @unique
+  image         String?
+  // Null for OAuth-only accounts. argon2id hash when set.
+  passwordHash  String?
+  role          Role      @default(NORMAL)
+
+  // Denormalized streak/heatmap summary (IST day boundaries; see streak logic).
+  currentStreak Int       @default(0)
+  longestStreak Int       @default(0)
+  lastActiveOn  DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  oauthAccounts     OAuthAccount[]
+  sessions          Session[]
+  subscription      Subscription?
+  progress          UserProblemProgress[]
+  quizProgress      UserQuizProgress[]
+  quizScores        UserQuizTopicScore[]
+  notes             UserProblemNote[]
+  submissions       Submission[]
+  activityDays      ActivityDay[]
+  enrollments       Enrollment[]
+  interviews        InterviewExperience[]
+  interviewLikes    InterviewLike[]
+  interviewComments InterviewComment[]
+
+  @@index([role])
+  @@map("users")
+}
+
+// Linked OAuth identities (Google, GitHub). Credentials use User.passwordHash.
+model OAuthAccount {
+  id                String       @id @default(cuid())
+  userId            String
+  provider          AuthProvider
+  providerAccountId String
+  createdAt         DateTime     @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@index([userId])
+  @@map("oauth_accounts")
+}
+
+// Durable audit record of a login session. Live validation happens in Redis
+// (session:{id}); this row survives a Redis flush and powers "your devices".
+// Single-active-session is enforced in app logic by revoking prior sessions.
+model Session {
+  id          String    @id @default(cuid())
+  userId      String
+  // sha256 of the current (rotating) refresh token. Never store the raw token.
+  refreshHash String    @unique
+  userAgent   String?
+  ip          String?
+  createdAt   DateTime  @default(now())
+  lastUsedAt  DateTime  @default(now())
+  expiresAt   DateTime
+  revokedAt   DateTime?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([expiresAt])
+  @@map("sessions")
+}
+
+// Subscription state. SUBSCRIBER role is granted while status = ACTIVE.
+model Subscription {
+  id                 String             @id @default(cuid())
+  userId             String             @unique
+  plan               SubscriptionPlan   @default(FREE)
+  status             SubscriptionStatus @default(ACTIVE)
+  provider           String? // e.g. "razorpay", "stripe"
+  externalId         String? // provider subscription id
+  currentPeriodStart DateTime?
+  currentPeriodEnd   DateTime?
+  createdAt          DateTime           @default(now())
+  updatedAt          DateTime           @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([status])
+  @@index([currentPeriodEnd])
+  @@map("subscriptions")
+}
+
+// ============================================================================
+// SHARED CONTENT
+// ============================================================================
+
+model Company {
+  id       String           @id @default(cuid())
+  name     String           @unique
+  slug     String           @unique
+  logoUrl  String?
+  problems ProblemCompany[]
+
+  @@map("companies")
+}
+
+// ============================================================================
+// DSA SHEETS  (DsaSheet -> DsaTopic -> DsaPattern -> DsaProblem)
+// ============================================================================
+
+model DsaSheet {
+  id          String     @id @default(cuid())
+  slug        String     @unique
+  name        String
+  description String?
+  order       Int        @default(0)
+  isPublished Boolean    @default(true)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  topics      DsaTopic[]
+
+  @@map("dsa_sheets")
+}
+
+model DsaTopic {
+  id          String       @id @default(cuid())
+  sheetId     String
+  name        String
+  slug        String
+  description String?
+  order       Int          @default(0)
+  sheet       DsaSheet     @relation(fields: [sheetId], references: [id], onDelete: Cascade)
+  patterns    DsaPattern[]
+
+  @@unique([sheetId, slug])
+  @@index([sheetId])
+  @@map("dsa_topics")
+}
+
+// A "pattern" is the demo's subtopic: carries the teaching strategy + the cue
+// for when to identify/apply it.
+model DsaPattern {
+  id             String       @id @default(cuid())
+  topicId        String
+  name           String
+  slug           String
+  strategy       String?
+  identification String?
+  order          Int          @default(0)
+  topic          DsaTopic     @relation(fields: [topicId], references: [id], onDelete: Cascade)
+  problems       DsaProblem[]
+
+  @@unique([topicId, slug])
+  @@index([topicId])
+  @@map("dsa_patterns")
+}
+
+model DsaProblem {
+  id          String     @id @default(cuid())
+  patternId   String
+  // Stable human slug used by progress/notes/heatmap references.
+  slug        String     @unique
+  title       String
+  reference   String? // e.g. "LC 167"
+  // Normalized key (e.g. "lc-167") so the same LeetCode problem across sheets
+  // can be aggregated later without a migration.
+  canonicalKey String?
+  difficulty  Difficulty @default(MEDIUM)
+  leetcodeUrl String?
+  gfgUrl      String?
+  youtubeUrl  String?
+  order       Int        @default(0)
+
+  pattern   DsaPattern            @relation(fields: [patternId], references: [id], onDelete: Cascade)
+  companies ProblemCompany[]
+  progress  UserProblemProgress[]
+  notes     UserProblemNote[]
+
+  @@index([patternId])
+  @@index([difficulty])
+  @@index([canonicalKey])
+  @@map("dsa_problems")
+}
+
+model ProblemCompany {
+  problemId String
+  companyId String
+  problem   DsaProblem @relation(fields: [problemId], references: [id], onDelete: Cascade)
+  company   Company    @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  @@id([problemId, companyId])
+  @@index([companyId])
+  @@map("problem_companies")
+}
+
+// ============================================================================
+// SQL PRACTICE
+// ============================================================================
+
+model SqlProblem {
+  id            String     @id @default(cuid())
+  slug          String     @unique
+  title         String
+  difficulty    Difficulty @default(MEDIUM)
+  description   String // plain-English statement
+  bestApproach  String // explanation of the optimal approach
+  solutionQuery String // clean, copy-ready SQL
+  tags          String[]
+  topic         String? // optional grouping for the future
+  order         Int        @default(0)
+  isPublished   Boolean    @default(true)
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+
+  @@index([difficulty])
+  @@map("sql_problems")
+}
+
+// ============================================================================
+// QUIZ  (Aptitude / Logical Reasoning / Puzzles)  — unified MCQ model
+// ============================================================================
+
+model QuizCategory {
+  id     String      @id @default(cuid())
+  kind   QuizKind
+  slug   String      @unique
+  name   String
+  order  Int         @default(0)
+  topics QuizTopic[]
+
+  @@map("quiz_categories")
+}
+
+model QuizTopic {
+  id         String         @id @default(cuid())
+  categoryId String
+  name       String
+  slug       String
+  theory     String? // optional topic theory / notes
+  formula    String? // optional key formulae
+  order      Int            @default(0)
+  category   QuizCategory   @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  questions  QuizQuestion[]
+  scores     UserQuizTopicScore[]
+
+  @@unique([categoryId, slug])
+  @@index([categoryId])
+  @@map("quiz_topics")
+}
+
+model QuizQuestion {
+  id          String      @id @default(cuid())
+  topicId     String
+  prompt      String // markdown; holds syllogism statements/conclusions too
+  // options: Json array of { "key": "a", "label": "..." }
+  options     Json
+  answerKey   String // matches one option key, e.g. "a"
+  explanation String? // revealed only in post-submit review
+  hint        String? // method nudge, shippable to the client (never the answer)
+  difficulty  Difficulty?
+  order       Int         @default(0)
+  topic       QuizTopic   @relation(fields: [topicId], references: [id], onDelete: Cascade)
+  progress    UserQuizProgress[]
+
+  @@index([topicId])
+  @@map("quiz_questions")
+}
+
+// Per-user, per-question outcome — written ONLY when a topic's test is submitted
+// (not per answer). One row per (user, question); re-attempting the test replaces
+// the row. `isCorrect` is the latest outcome; `hintUsed` = the hint was opened
+// before answering; `awarded` = isCorrect && !hintUsed (the mark earned).
+model UserQuizProgress {
+  id          String   @id @default(cuid())
+  userId      String
+  questionId  String
+  selectedKey String
+  isCorrect   Boolean
+  hintUsed    Boolean  @default(false)
+  awarded     Boolean  @default(false)
+  answeredAt  DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user     User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  question QuizQuestion @relation(fields: [questionId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, questionId])
+  @@index([userId])
+  @@map("user_quiz_progress")
+}
+
+// The stored "mark" for a topic's test — one row per (user, topic), replaced on
+// re-attempt. `score` = number of awarded questions at last submit; `total` =
+// question count at that time. Powers the module progress shown in the nav/paper.
+model UserQuizTopicScore {
+  id          String   @id @default(cuid())
+  userId      String
+  topicId     String
+  score       Int
+  total       Int
+  submittedAt DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  topic QuizTopic @relation(fields: [topicId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, topicId])
+  @@index([userId])
+  @@map("user_quiz_topic_scores")
+}
+
+// ============================================================================
+// COURSES  (Instructor -> Course -> CourseModule -> CourseLesson + Enrollment)
+// ============================================================================
+
+model Instructor {
+  id      String   @id @default(cuid())
+  slug    String   @unique
+  name    String
+  bio     String?
+  image   String?
+  links   Json? // { linkedin, youtube, instagram, ... }
+  courses Course[]
+
+  @@map("instructors")
+}
+
+model Course {
+  id              String      @id @default(cuid())
+  slug            String      @unique
+  title           String
+  blurb           String?
+  descriptionLong String?
+  icon            String? // lucide icon name
+  level           CourseLevel @default(BEGINNER)
+  tag             CourseTag   @default(DSA)
+  priceInPaise    Int         @default(0) // 0 = free
+  currency        String      @default("INR")
+  isFree          Boolean     @default(true)
+  rating          Float?
+  learnersLabel   String? // e.g. "32k"
+  lessonCount     Int         @default(0)
+  durationHours   Float       @default(0)
+  isPublished     Boolean     @default(false)
+  order           Int         @default(0)
+  instructorId    String?
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+
+  instructor  Instructor?    @relation(fields: [instructorId], references: [id])
+  modules     CourseModule[]
+  enrollments Enrollment[]
+
+  @@index([tag])
+  @@index([isPublished])
+  @@map("courses")
+}
+
+model CourseModule {
+  id       String         @id @default(cuid())
+  courseId String
+  title    String
+  order    Int            @default(0)
+  course   Course         @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  lessons  CourseLesson[]
+
+  @@index([courseId])
+  @@map("course_modules")
+}
+
+model CourseLesson {
+  id            String           @id @default(cuid())
+  moduleId      String
+  title         String
+  type          LessonType       @default(VIDEO)
+  durationLabel String? // e.g. "08:24"
+  videoUrl      String?
+  contentUrl    String?
+  isPreview     Boolean          @default(false)
+  order         Int              @default(0)
+  module        CourseModule     @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  progress      LessonProgress[]
+
+  @@index([moduleId])
+  @@map("course_lessons")
+}
+
+model Enrollment {
+  id              String           @id @default(cuid())
+  userId          String
+  courseId        String
+  status          EnrollmentStatus @default(ACTIVE)
+  progressPercent Int              @default(0)
+  enrolledAt      DateTime         @default(now())
+  completedAt     DateTime?
+
+  user           User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  course         Course           @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  lessonProgress LessonProgress[]
+
+  @@unique([userId, courseId])
+  @@index([userId])
+  @@index([courseId])
+  @@map("enrollments")
+}
+
+model LessonProgress {
+  id           String       @id @default(cuid())
+  enrollmentId String
+  lessonId     String
+  completedAt  DateTime     @default(now())
+  enrollment   Enrollment   @relation(fields: [enrollmentId], references: [id], onDelete: Cascade)
+  lesson       CourseLesson @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+
+  @@unique([enrollmentId, lessonId])
+  @@index([enrollmentId])
+  @@map("lesson_progress")
+}
+
+// ============================================================================
+// INTERVIEW EXPERIENCES
+// ============================================================================
+
+model InterviewExperience {
+  id          String           @id @default(cuid())
+  authorId    String
+  company     String
+  role        String
+  verdict     InterviewVerdict @default(PENDING)
+  difficulty  Difficulty       @default(MEDIUM)
+  roundsCount Int              @default(1)
+  title       String
+  excerpt     String?
+  body        String // markdown
+  tags        String[]
+  status      PublishStatus    @default(PUBLISHED)
+  likeCount   Int              @default(0) // denormalized; InterviewLike is truth
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+
+  author   User               @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  likes    InterviewLike[]
+  comments InterviewComment[]
+
+  // Browse/feed access paths. The list is always filtered by `status` and then
+  // sorted, so each index is a (status, …filter, …sortkey) composite that lets
+  // Postgres satisfy the WHERE + ORDER BY + LIMIT from a single index range scan
+  // — no full-table scan or sort even as the table grows large.
+  @@index([status, createdAt(sort: Desc)]) // default "Newest" sort
+  @@index([status, likeCount(sort: Desc), createdAt(sort: Desc)]) // "Top" sort
+  @@index([status, verdict, createdAt(sort: Desc)]) // verdict tab + Newest
+  @@index([tags], type: Gin) // tag membership search (`tags has …`)
+  @@index([authorId])
+  @@index([company])
+  @@map("interview_experiences")
+}
+
+model InterviewLike {
+  id           String   @id @default(cuid())
+  userId       String
+  experienceId String
+  createdAt    DateTime @default(now())
+
+  user       User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  experience InterviewExperience @relation(fields: [experienceId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, experienceId])
+  @@index([experienceId])
+  @@map("interview_likes")
+}
+
+model InterviewComment {
+  id           String   @id @default(cuid())
+  experienceId String
+  authorId     String
+  body         String
+  createdAt    DateTime @default(now())
+
+  experience InterviewExperience @relation(fields: [experienceId], references: [id], onDelete: Cascade)
+  author     User                @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
+  @@index([experienceId])
+  @@index([authorId])
+  @@map("interview_comments")
+}
+
+// ============================================================================
+// PER-USER STATE: progress, notes, heatmap
+// ============================================================================
+
+model UserProblemProgress {
+  id           String        @id @default(cuid())
+  userId       String
+  problemId    String
+  status       ProblemStatus @default(NOT_STARTED)
+  isBookmarked Boolean       @default(false)
+  solvedAt     DateTime?
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+
+  user    User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  problem DsaProblem @relation(fields: [problemId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, problemId])
+  @@index([userId])
+  @@index([userId, status])
+  @@index([userId, isBookmarked])
+  @@map("user_problem_progress")
+}
+
+model UserProblemNote {
+  id        String   @id @default(cuid())
+  userId    String
+  problemId String
+  content   String // markdown
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user    User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  problem DsaProblem @relation(fields: [problemId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, problemId])
+  @@index([userId])
+  @@map("user_problem_notes")
+}
+
+// Append-only log of every "task" the user submits/completes. Feeds ActivityDay.
+model Submission {
+  id          String         @id @default(cuid())
+  userId      String
+  type        SubmissionType
+  referenceId String // id/slug of the problem, question, or lesson
+  createdAt   DateTime       @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt])
+  @@map("submissions")
+}
+
+// Pre-aggregated per-day counts powering the LeetCode-style heatmap. One row per
+// (user, day); incremented atomically on each submission. The profile heatmap is
+// a single indexed range scan over this table.
+model ActivityDay {
+  id        String   @id @default(cuid())
+  userId    String
+  day       DateTime @db.Date // IST calendar day
+  count     Int      @default(0)
+  breakdown Json? // { dsa: 3, sql: 1, mcq: 2, course: 0 }
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, day])
+  @@index([userId])
+  @@map("activity_days")
+}

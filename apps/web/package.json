@@ -11,18 +11,35 @@
     "check-types": "next typegen && tsc --noEmit"
   },
   "dependencies": {
-    "@repo/ui": "*",
+    "@node-rs/argon2": "^2.0.2",
+    "@prisma/adapter-pg": "^7.8.0",
+    "@prisma/client": "^7.8.0",
+    "@risingbrain/core": "*",
+    "@risingbrain/database": "*",
+    "@risingbrain/ui": "*",
+    "arctic": "^3.7.0",
+    "ioredis": "^5.11.1",
+    "jose": "^6.2.3",
+    "lucide-react": "^1.21.0",
     "next": "16.2.0",
+    "nodemailer": "^9.0.1",
+    "pg": "^8.22.0",
+    "rate-limiter-flexible": "^11.2.0",
     "react": "^19.2.0",
-    "react-dom": "^19.2.0"
+    "react-dom": "^19.2.0",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
-    "@repo/eslint-config": "*",
-    "@repo/typescript-config": "*",
-    "@types/node": "^22.15.3",
+    "@risingbrain/config-eslint": "*",
+    "@risingbrain/config-tailwind": "*",
+    "@risingbrain/config-typescript": "*",
+    "@tailwindcss/postcss": "^4.3.1",
+    "@types/node": "^26.0.1",
+    "@types/nodemailer": "^8.0.1",
     "@types/react": "19.2.2",
     "@types/react-dom": "19.2.2",
     "eslint": "^9.39.1",
+    "tailwindcss": "^4.3.1",
     "typescript": "5.9.2"
   }
 }

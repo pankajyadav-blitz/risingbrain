@@ -1,0 +1,433 @@
+"use client";
+
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { Bookmark, CircleCheckBig, Search, X } from "lucide-react";
+import { TopicSection } from "./topic-section";
+import { CelebrationProvider, useCelebrate } from "./celebration";
+import { SheetBookmarkContext, SheetGuestContext, SheetProgressContext, useSheetSignedIn } from "./sheet-progress";
+import { type DifficultyStat } from "./progress-panel";
+import { SheetStats } from "./sheet-stats";
+import type { SheetActivity } from "../_data";
+import type { DifficultyValue, SheetMeta } from "./types";
+
+/**
+ * Client shell for the practice sheets. Owns the live "solved per topic" map so
+ * toggling a problem instantly updates that topic's bar, the active sheet's
+ * progress bar AND the sheet tab's count — all scoped strictly per sheet.
+ *
+ * Wrapped in CelebrationProvider so the (single, portal-rendered) completion
+ * confetti for patterns/topics/sheets can be triggered from anywhere below.
+ */
+export function SheetSelector({
+  sheets,
+  difficulty,
+  activity,
+  greetingName,
+  signedIn = false,
+  header,
+}: {
+  sheets: SheetMeta[];
+  difficulty: DifficultyStat;
+  activity?: SheetActivity | null;
+  greetingName?: string | null;
+  signedIn?: boolean;
+  header?: React.ReactNode;
+}) {
+  return (
+    <CelebrationProvider>
+      <SheetGuestContext.Provider value={signedIn}>
+        <SheetSelectorInner
+          sheets={sheets}
+          difficulty={difficulty}
+          activity={activity}
+          greetingName={greetingName}
+          header={header}
+        />
+      </SheetGuestContext.Provider>
+    </CelebrationProvider>
+  );
+}
+
+function SheetSelectorInner({
+  sheets,
+  difficulty,
+  activity,
+  greetingName,
+  header,
+}: {
+  sheets: SheetMeta[];
+  difficulty: DifficultyStat;
+  activity?: SheetActivity | null;
+  greetingName?: string | null;
+  header?: React.ReactNode;
+}) {
+  const [activeId, setActiveId] = useState(sheets[0]?.id ?? "");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [bookmarkOnly, setBookmarkOnly] = useState(false);
+  const celebrate = useCelebrate();
+  const signedIn = useSheetSignedIn();
+
+  // Clear search whenever the user switches to a different sheet. The bookmark
+  // filter is a persistent mode, so it survives sheet switches on purpose.
+  useEffect(() => { setSearchQuery(""); }, [activeId]);
+
+  // Live set of bookmarked problem ids (across all sheets), seeded from the SSR
+  // snapshot and kept in sync as rows toggle, so the "bookmarked only" filter
+  // reacts instantly without a reload.
+  const [bookmarkedIds, setBookmarkedIds] = useState<Set<string>>(() => {
+    const init = new Set<string>();
+    for (const sheet of sheets) {
+      for (const topic of sheet.topics) {
+        for (const pattern of topic.patterns) {
+          for (const p of pattern.problems) if (p.isBookmarked) init.add(p.id);
+        }
+      }
+    }
+    return init;
+  });
+
+  const reportBookmark = useCallback((problemId: string, bookmarked: boolean) => {
+    setBookmarkedIds((prev) => {
+      if (bookmarked === prev.has(problemId)) return prev;
+      const next = new Set(prev);
+      if (bookmarked) next.add(problemId);
+      else next.delete(problemId);
+      return next;
+    });
+  }, []);
+
+  // Live combined difficulty stats (across all sheets) for the right-rail panel,
+  // seeded from the SSR snapshot and updated as problem rows toggle.
+  const [diffStat, setDiffStat] = useState<DifficultyStat>(difficulty);
+  // Net problems solved/unsolved this session — drives the calendar's "today"
+  // cell + live streak so it reacts the instant a problem is toggled.
+  const [todayDelta, setTodayDelta] = useState(0);
+  const reportToggle = useCallback((d: DifficultyValue, delta: number) => {
+    setDiffStat((prev) => ({
+      ...prev,
+      [d]: {
+        total: prev[d].total,
+        solved: Math.max(0, Math.min(prev[d].total, prev[d].solved + delta)),
+      },
+    }));
+    setTodayDelta((x) => x + delta);
+  }, []);
+
+  // Dispatch a custom event whenever todayDelta changes so the navbar's streak
+  // badge can update in-place without a full page reload.
+  const isMounted = useRef(false);
+  useEffect(() => {
+    if (!isMounted.current) { isMounted.current = true; return; }
+    if (!activity) return;
+    const lastMonth = activity.months[activity.months.length - 1];
+    const baseToday = lastMonth?.cells.find((c) => c.isToday)?.count ?? 0;
+    const liveToday = Math.max(0, baseToday + todayDelta);
+    let streak = activity.currentStreak;
+    if (baseToday === 0 && liveToday > 0) streak += 1;
+    else if (baseToday > 0 && liveToday === 0) streak = Math.max(0, streak - 1);
+    window.dispatchEvent(new CustomEvent("rb:streak-updated", { detail: { streak } }));
+  }, [todayDelta]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Live solved counts keyed by topicId, seeded from the SSR snapshot.
+  const [solvedByTopic, setSolvedByTopic] = useState<Record<string, number>>(() => {
+    const init: Record<string, number> = {};
+    for (const sheet of sheets) {
+      for (const topic of sheet.topics) init[topic.id] = topic.solvedCount;
+    }
+    return init;
+  });
+
+  const onTopicSolvedChange = useCallback((topicId: string, delta: number) => {
+    setSolvedByTopic((prev) => ({
+      ...prev,
+      [topicId]: Math.max(0, (prev[topicId] ?? 0) + delta),
+    }));
+  }, []);
+
+  // Per-sheet aggregates (totals are static; solved is live).
+  const stats = useMemo(() => {
+    const map = new Map<string, { total: number; solved: number }>();
+    for (const sheet of sheets) {
+      let total = 0;
+      let solved = 0;
+      for (const topic of sheet.topics) {
+        total += topic.problemCount;
+        solved += solvedByTopic[topic.id] ?? 0;
+      }
+      map.set(sheet.id, { total, solved });
+    }
+    return map;
+  }, [sheets, solvedByTopic]);
+
+  // Fire the grand "sheet complete" celebration when any sheet first reaches
+  // 100%. Seeded with sheets already complete on mount so they don't fire, and
+  // keyed per sheet so switching tabs never triggers a false celebration.
+  const completedSheets = useRef<Set<string> | null>(null);
+  if (completedSheets.current === null) {
+    const seed = new Set<string>();
+    for (const [id, s] of stats) if (s.total > 0 && s.solved >= s.total) seed.add(id);
+    completedSheets.current = seed;
+  }
+  useEffect(() => {
+    const done = completedSheets.current!;
+    for (const [id, s] of stats) {
+      const isComplete = s.total > 0 && s.solved >= s.total;
+      if (isComplete && !done.has(id)) {
+        done.add(id);
+        celebrate("sheet");
+      } else if (!isComplete) {
+        done.delete(id);
+      }
+    }
+  }, [stats, celebrate]);
+
+  const active = sheets.find((s) => s.id === activeId) ?? sheets[0];
+
+  const trimmedQuery = searchQuery.trim().toLowerCase();
+  const filterActive = !!trimmedQuery || bookmarkOnly;
+
+  // The set of problem ids in the active sheet matching the active filters
+  // (search title/reference AND bookmark compose with AND). `null` means no
+  // filter — render everything. We compute *visibility* rather than rebuilding
+  // the data tree so progress denominators always reflect the full set, never
+  // the filtered subset (a filtered tree would corrupt the pattern/topic bars
+  // and fire false completion celebrations).
+  const visibleProblemIds = useMemo<Set<string> | null>(() => {
+    if (!active || !filterActive) return null;
+    const ids = new Set<string>();
+    for (const topic of active.topics) {
+      for (const pattern of topic.patterns) {
+        for (const p of pattern.problems) {
+          const matchesQuery =
+            !trimmedQuery ||
+            p.title.toLowerCase().includes(trimmedQuery) ||
+            (p.reference?.toLowerCase().includes(trimmedQuery) ?? false);
+          const matchesBookmark = !bookmarkOnly || bookmarkedIds.has(p.id);
+          if (matchesQuery && matchesBookmark) ids.add(p.id);
+        }
+      }
+    }
+    return ids;
+  }, [active, filterActive, trimmedQuery, bookmarkOnly, bookmarkedIds]);
+
+  // Number of problems matching the active filters (used for the result count).
+  const matchCount = visibleProblemIds?.size ?? 0;
+
+  // How many problems in the active sheet are bookmarked (drives the toggle badge).
+  const activeBookmarkCount = useMemo(() => {
+    if (!active) return 0;
+    let n = 0;
+    for (const topic of active.topics) {
+      for (const pattern of topic.patterns) {
+        for (const p of pattern.problems) if (bookmarkedIds.has(p.id)) n++;
+      }
+    }
+    return n;
+  }, [active, bookmarkedIds]);
+
+  if (!active) {
+    return <p className="py-12 text-center text-sm text-muted">No sheets published yet.</p>;
+  }
+
+  const activeStat = stats.get(active.id) ?? { total: 0, solved: 0 };
+  const activePct =
+    activeStat.total > 0 ? Math.round((activeStat.solved / activeStat.total) * 100) : 0;
+
+  return (
+    <SheetProgressContext.Provider value={reportToggle}>
+    <SheetBookmarkContext.Provider value={reportBookmark}>
+      {/* Hero row: hero text sizes to content, progress panel fills the rest of
+          the row (no awkward gap between them). */}
+      <div className="lg:flex lg:items-start lg:justify-between lg:gap-8">
+        <div className="lg:max-w-md">{header}</div>
+        <aside className="hidden lg:block lg:w-[42rem] lg:shrink-0 xl:w-[46rem]">
+          <SheetStats
+            difficulty={diffStat}
+            activity={activity}
+            todayDelta={todayDelta}
+            greetingName={greetingName}
+          />
+        </aside>
+      </div>
+
+      {/* Merged stats panel on mobile (the right rail is desktop-only) */}
+      <div className="mb-2 mt-4 lg:hidden">
+        <SheetStats
+          difficulty={diffStat}
+          activity={activity}
+          todayDelta={todayDelta}
+          greetingName={greetingName}
+        />
+      </div>
+
+      {/* Sheet selector — segmented control (full width) */}
+      <div
+        role="tablist"
+        aria-label="Choose a sheet"
+        className="mt-8 flex flex-wrap gap-3"
+      >
+        {sheets.map((sheet, i) => {
+          const s = stats.get(sheet.id) ?? { total: 0, solved: 0 };
+          const isActive = sheet.id === active.id;
+          return (
+            <button
+              key={sheet.id}
+              type="button"
+              role="tab"
+              aria-selected={isActive}
+              onClick={() => setActiveId(sheet.id)}
+              className={`group flex items-center gap-3 rounded-2xl px-6 py-4 text-left transition-all ${
+                isActive
+                  ? "bg-rb-green-500/15 text-brand ring-1 ring-rb-green-500/40"
+                  : "glass-pill text-muted hover:text-foreground"
+              }`}
+            >
+              {/* Sheet position number (1-based), not a percentage. */}
+              <span
+                className={`grid h-10 w-10 shrink-0 place-items-center rounded-full text-sm font-bold tabular-nums ${
+                  isActive ? "bg-rb-green-500 text-black" : "bg-surface-2 text-muted"
+                }`}
+              >
+                {i + 1}
+              </span>
+              <span className="flex flex-col">
+                <span
+                  className={`text-base font-semibold ${isActive ? "text-brand" : "text-foreground"}`}
+                >
+                  {sheet.name}
+                </span>
+                <span className="text-xs font-medium text-muted">
+                  {s.solved} / {s.total} solved
+                </span>
+              </span>
+            </button>
+          );
+        })}
+      </div>
+
+      {/* Active sheet header + per-sheet progress */}
+      <div className="glass mt-6 rounded-3xl p-6 sm:p-7">
+        <div className="flex flex-wrap items-start justify-between gap-4">
+          <div className="max-w-2xl">
+            <h3 className="text-2xl font-bold tracking-tight">{active.name}</h3>
+            {active.description && (
+              <p className="mt-2 text-sm leading-relaxed text-muted">{active.description}</p>
+            )}
+          </div>
+          <span className="glass-pill inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-medium text-accent">
+            <CircleCheckBig className="h-4 w-4" />
+            {active.topics.length} topics
+          </span>
+        </div>
+
+        <div className="mt-5 flex items-center gap-4">
+          <div className="h-2 w-full overflow-hidden rounded-full bg-surface-2">
+            <div
+              className="h-full rounded-full bg-rb-green-500 transition-[width] duration-700 ease-out"
+              style={{ width: `${activePct}%` }}
+            />
+          </div>
+          <span className="shrink-0 text-sm font-semibold tabular-nums text-foreground">
+            {activeStat.solved} / {activeStat.total}
+          </span>
+          <span className="shrink-0 text-sm font-bold tabular-nums text-gradient">
+            {activePct}%
+          </span>
+        </div>
+      </div>
+
+      {/* Search bar + bookmark filter */}
+      <div className="mt-5 flex items-center gap-2">
+        <div className="relative flex-1">
+          <Search className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted" />
+          <input
+            type="search"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="Search problems…"
+            className="glass w-full rounded-2xl py-3 pl-10 pr-10 text-sm text-foreground placeholder:text-muted outline-none focus:ring-1 focus:ring-rb-green-500/40"
+          />
+          {searchQuery && (
+            <button
+              type="button"
+              onClick={() => setSearchQuery("")}
+              aria-label="Clear search"
+              className="absolute right-3 top-1/2 -translate-y-1/2 rounded-md p-0.5 text-muted transition-colors hover:text-foreground"
+            >
+              <X className="h-4 w-4" />
+            </button>
+          )}
+        </div>
+
+        {/* Bookmarked-only toggle (signed-in users only — guests have no bookmarks) */}
+        {signedIn && (
+          <button
+            type="button"
+            onClick={() => setBookmarkOnly((v) => !v)}
+            aria-pressed={bookmarkOnly}
+            title={bookmarkOnly ? "Show all problems" : "Show bookmarked only"}
+            className={`flex shrink-0 items-center gap-2 rounded-2xl px-4 py-3 text-sm font-medium transition-all ${
+              bookmarkOnly
+                ? "bg-rb-green-500/15 text-brand ring-1 ring-rb-green-500/40"
+                : "glass text-muted hover:text-foreground"
+            }`}
+          >
+            <Bookmark className={`h-4 w-4 ${bookmarkOnly ? "fill-current" : ""}`} />
+            <span className="hidden sm:inline">Bookmarked</span>
+            {activeBookmarkCount > 0 && (
+              <span
+                className={`grid h-5 min-w-[1.25rem] place-items-center rounded-full px-1 text-[10px] font-bold tabular-nums ${
+                  bookmarkOnly ? "bg-rb-green-500 text-black" : "bg-surface-2 text-muted"
+                }`}
+              >
+                {activeBookmarkCount}
+              </span>
+            )}
+          </button>
+        )}
+      </div>
+
+      {/* Filter result count — shown only when there are matches; the empty
+          case is handled by the single empty-state block below. */}
+      {filterActive && matchCount > 0 && (
+        <p className="mt-2.5 px-1 text-xs text-muted">
+          {`${matchCount} problem${matchCount === 1 ? "" : "s"}${bookmarkOnly ? " bookmarked" : " found"}`}
+        </p>
+      )}
+
+      {/* Topics for the active sheet */}
+      <div className="mt-4 divide-y divide-border/70 pb-24">
+        {active.topics.map((topic) => (
+          <TopicSection
+            key={topic.id}
+            topicId={topic.id}
+            name={topic.name}
+            description={topic.description}
+            problemCount={topic.problemCount}
+            solvedCount={solvedByTopic[topic.id] ?? 0}
+            patterns={topic.patterns}
+            visibleProblemIds={visibleProblemIds}
+            bookmarkedIds={bookmarkedIds}
+            forceExpanded={filterActive}
+            onSolvedChange={(delta) => onTopicSolvedChange(topic.id, delta)}
+          />
+        ))}
+        {filterActive && matchCount === 0 && (
+          <div className="py-16 text-center text-sm text-muted">
+            {bookmarkOnly && !trimmedQuery ? (
+              <>
+                No bookmarked problems in this sheet yet.
+                <br />
+                Tap the <Bookmark className="inline h-3.5 w-3.5 align-text-bottom" /> on any
+                problem to save it for later.
+              </>
+            ) : (
+              <>No problems match &ldquo;{searchQuery}&rdquo;</>
+            )}
+          </div>
+        )}
+      </div>
+    </SheetBookmarkContext.Provider>
+    </SheetProgressContext.Provider>
+  );
+}

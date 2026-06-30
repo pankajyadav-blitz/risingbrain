@@ -1,0 +1,11 @@
+# Keep the build context small. Source is bind-mounted at runtime, deps install
+# inside the container, so none of this needs to ship to the Docker daemon.
+node_modules
+**/node_modules
+.next
+**/.next
+.turbo
+**/.turbo
+.git
+*.log
+.env

@@ -1,0 +1,51 @@
+# Datastore-only stack for RisingBrain — Postgres + Redis in containers.
+# The app itself runs on the host (`bun run dev`) and connects to these over
+# localhost, so there's no Bun/Turbopack-in-container weirdness to deal with.
+#
+#   docker compose up -d      # start postgres + redis (or: bun run db:up)
+#   bun install               # on the host, once
+#   bun run db:setup          # generate client + push schema + seed
+#   bun run dev               # app on http://localhost:3000
+#
+# Values come from the root .env (see .env.example); its DATABASE_URL / REDIS_URL
+# already point at localhost. Data persists in named volumes across restarts;
+# `docker compose down -v` wipes it.
+
+services:
+  postgres:
+    image: postgres:17-alpine
+    container_name: risingbrain-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-risingbrain}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-risingbrain}
+      POSTGRES_DB: ${POSTGRES_DB:-risingbrain}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-risingbrain} -d ${POSTGRES_DB:-risingbrain}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    container_name: risingbrain-redis
+    restart: unless-stopped
+    # Password-protect Redis even locally; require auth and persist with AOF.
+    command: ["redis-server", "--requirepass", "${REDIS_PASSWORD:-risingbrain}", "--appendonly", "yes"]
+    ports:
+      - "${REDIS_PORT:-6379}:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli -a ${REDIS_PASSWORD:-risingbrain} ping | grep PONG"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  postgres_data:
+  redis_data:

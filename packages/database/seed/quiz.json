@@ -1,0 +1,3895 @@
+[
+  {
+    "kind": "APTITUDE",
+    "slug": "aptitude",
+    "name": "Quant Aptitude",
+    "order": 0,
+    "topics": [
+      {
+        "name": "Number System",
+        "slug": "number-system",
+        "order": 0,
+        "questions": [
+          {
+            "prompt": "The product of two numbers is 3240 and their Highest Common Factor (HCF) is 18. What is the Least Common Multiple (LCM) of these two numbers?",
+            "options": [
+              {
+                "key": "a",
+                "label": "180"
+              },
+              {
+                "key": "b",
+                "label": "360"
+              },
+              {
+                "key": "c",
+                "label": "90"
+              },
+              {
+                "key": "d",
+                "label": "540"
+              }
+            ],
+            "answerKey": "a",
+            "order": 0,
+            "hint": "Recall the identity linking two numbers to their HCF and LCM: their product equals HCF times LCM.",
+            "explanation": "Since product = HCF x LCM, LCM = 3240 / 18 = 180, which is option a."
+          },
+          {
+            "prompt": "If the 7-digit number 517x324 is exactly divisible by 3, what is the smallest whole number that can replace the digit x?",
+            "options": [
+              {
+                "key": "a",
+                "label": "0"
+              },
+              {
+                "key": "b",
+                "label": "1"
+              },
+              {
+                "key": "c",
+                "label": "2"
+              },
+              {
+                "key": "d",
+                "label": "3"
+              }
+            ],
+            "answerKey": "c",
+            "order": 1,
+            "hint": "Apply the divisibility rule for 3: the sum of all digits must be a multiple of 3.",
+            "explanation": "Digit sum = 5+1+7+x+3+2+4 = 22+x; the smallest x making this a multiple of 3 (i.e. 24) is x = 2, option c."
+          },
+          {
+            "prompt": "A number when successively divided by 3, 5, and 8 leaves remainders of 1, 4, and 7 respectively. Find the respective remainders if the order of the divisors is reversed (divided successively by 8, 5, and 3).",
+            "options": [
+              {
+                "key": "a",
+                "label": "4, 2, 6"
+              },
+              {
+                "key": "b",
+                "label": "6, 4, 2"
+              },
+              {
+                "key": "c",
+                "label": "2, 4, 6"
+              },
+              {
+                "key": "d",
+                "label": "7, 4, 1"
+              }
+            ],
+            "answerKey": "b",
+            "order": 2,
+            "hint": "Work backwards using successive division (take smallest final quotient 0), reconstruct the number, then re-divide in reversed order.",
+            "explanation": "Building up gives N = 118; dividing 118 successively by 8, 5, 3 yields remainders 6, 4, 2, option b."
+          },
+          {
+            "prompt": "What is the unit digit of the expression 7^105?",
+            "options": [
+              {
+                "key": "a",
+                "label": "1"
+              },
+              {
+                "key": "b",
+                "label": "3"
+              },
+              {
+                "key": "c",
+                "label": "7"
+              },
+              {
+                "key": "d",
+                "label": "9"
+              }
+            ],
+            "answerKey": "c",
+            "order": 3,
+            "hint": "Unit digits of powers of 7 repeat in a cycle of 4; reduce the exponent modulo 4.",
+            "explanation": "The cycle is 7,9,3,1; 105 mod 4 = 1, so the unit digit matches 7^1 = 7, option c."
+          },
+          {
+            "prompt": "Find the total number of trailing zeroes at the end of the product of 250! (250 factorial).",
+            "options": [
+              {
+                "key": "a",
+                "label": "50"
+              },
+              {
+                "key": "b",
+                "label": "60"
+              },
+              {
+                "key": "c",
+                "label": "62"
+              },
+              {
+                "key": "d",
+                "label": "65"
+              }
+            ],
+            "answerKey": "c",
+            "order": 4,
+            "hint": "Trailing zeros come from factors of 5; sum the floor divisions of 250 by 5, 25, 125.",
+            "explanation": "floor(250/5)+floor(250/25)+floor(250/125) = 50+10+2 = 62, option c."
+          },
+          {
+            "prompt": "How many positive divisors of the number 10800 are perfect squares?",
+            "options": [
+              {
+                "key": "a",
+                "label": "12"
+              },
+              {
+                "key": "b",
+                "label": "10"
+              },
+              {
+                "key": "c",
+                "label": "8"
+              },
+              {
+                "key": "d",
+                "label": "16"
+              }
+            ],
+            "answerKey": "a",
+            "order": 5,
+            "hint": "Prime-factorize, then count divisors whose every prime exponent is even (0,2,...).",
+            "explanation": "10800 = 2^4 x 3^3 x 5^2; even-exponent choices are 3 x 2 x 2 = 12 perfect-square divisors, option a."
+          },
+          {
+            "prompt": "What will be the remainder when 17^200 is divided by 18?",
+            "options": [
+              {
+                "key": "a",
+                "label": "17"
+              },
+              {
+                "key": "b",
+                "label": "16"
+              },
+              {
+                "key": "c",
+                "label": "1"
+              },
+              {
+                "key": "d",
+                "label": "0"
+              }
+            ],
+            "answerKey": "c",
+            "order": 6,
+            "hint": "Reduce the base modulo 18 first; 17 is congruent to -1.",
+            "explanation": "17 = -1 (mod 18), so 17^200 = (-1)^200 = 1, giving remainder 1, option c."
+          },
+          {
+            "prompt": "Find the least positive integer which when divided by 20, 25, 35, and 40 leaves remainders of 14, 19, 29, and 34 respectively.",
+            "options": [
+              {
+                "key": "a",
+                "label": "1406"
+              },
+              {
+                "key": "b",
+                "label": "1394"
+              },
+              {
+                "key": "c",
+                "label": "1414"
+              },
+              {
+                "key": "d",
+                "label": "1386"
+              }
+            ],
+            "answerKey": "b",
+            "order": 7,
+            "hint": "Notice each remainder is a constant short of its divisor, so the number is LCM minus that constant.",
+            "explanation": "Each divisor minus remainder = 6, so N = LCM(20,25,35,40) - 6 = 1400 - 6 = 1394, option b."
+          },
+          {
+            "prompt": "Find the remainder when 5^500 is divided by 500.",
+            "options": [
+              {
+                "key": "a",
+                "label": "125"
+              },
+              {
+                "key": "b",
+                "label": "250"
+              },
+              {
+                "key": "c",
+                "label": "1"
+              },
+              {
+                "key": "d",
+                "label": "375"
+              }
+            ],
+            "answerKey": "a",
+            "order": 8,
+            "hint": "Split 500 = 4 x 125 and use CRT, noting 5^500 is divisible by 125.",
+            "explanation": "5^500 = 0 (mod 125) and = 1 (mod 4); the value 125 satisfies both, so remainder is 125, option a."
+          },
+          {
+            "prompt": "Let N = 55^3 + 17^3 - 72^3. The number N is exactly divisible by",
+            "options": [
+              {
+                "key": "a",
+                "label": "both 7 and 13"
+              },
+              {
+                "key": "b",
+                "label": "both 3 and 13"
+              },
+              {
+                "key": "c",
+                "label": "both 17 and 7"
+              },
+              {
+                "key": "d",
+                "label": "both 3 and 17"
+              }
+            ],
+            "answerKey": "d",
+            "order": 9,
+            "hint": "Spot that 55 + 17 = 72 and use a^3 + b^3 - (a+b)^3 = -3ab(a+b).",
+            "explanation": "N = -3 x 55 x 17 x 72, which contains factors 3 and 17 (but not 7 or 13), so it is divisible by both 3 and 17, option d."
+          }
+        ]
+      },
+      {
+        "name": "Percentage, profit and loss",
+        "slug": "percentage-profit-and-loss",
+        "order": 1,
+        "questions": [
+          {
+            "prompt": "A software engineer has a target package of Rs. 30,00,000 per annum. Upon receiving it, he invests 20% of his salary in mutual funds, 15% of the remaining amount in fitness equipment, and 30% of the further remaining amount on rent and living expenses. If he saves the rest, what is his annual savings?",
+            "options": [
+              {
+                "key": "a",
+                "label": "Rs. 14,28,000"
+              },
+              {
+                "key": "b",
+                "label": "Rs. 15,30,000"
+              },
+              {
+                "key": "c",
+                "label": "Rs. 12,50,000"
+              },
+              {
+                "key": "d",
+                "label": "Rs. 16,00,000"
+              }
+            ],
+            "answerKey": "a",
+            "order": 0,
+            "hint": "Apply each percentage to the successively remaining amount, not the original salary.",
+            "explanation": "Remaining = 30,00,000 x 0.80 x 0.85 x 0.70 = 14,28,000, which is the savings, option a."
+          },
+          {
+            "prompt": "In an election for a college tech council, Candidate A received 45% of the total valid votes. 20% of the total votes polled were declared invalid. If the total number of votes polled was 15,000, find the number of valid votes secured by Candidate B (assuming there are only two candidates).",
+            "options": [
+              {
+                "key": "a",
+                "label": "5400"
+              },
+              {
+                "key": "b",
+                "label": "6600"
+              },
+              {
+                "key": "c",
+                "label": "7200"
+              },
+              {
+                "key": "d",
+                "label": "4800"
+              }
+            ],
+            "answerKey": "b",
+            "order": 1,
+            "hint": "First remove invalid votes to get valid votes, then B's share is the complement of A's percentage.",
+            "explanation": "Valid votes = 80% of 15000 = 12000; B gets 55% = 6600, option b."
+          },
+          {
+            "prompt": "The monthly subscription price of a MERN stack development course was decreased by 25%, which led to a 40% increase in the number of students enrolling. Find the net percentage increase or decrease in the total revenue.",
+            "options": [
+              {
+                "key": "a",
+                "label": "5% decrease"
+              },
+              {
+                "key": "b",
+                "label": "10% increase"
+              },
+              {
+                "key": "c",
+                "label": "5% increase"
+              },
+              {
+                "key": "d",
+                "label": "15% increase"
+              }
+            ],
+            "answerKey": "c",
+            "order": 2,
+            "hint": "Revenue = price x quantity; multiply the two change factors together.",
+            "explanation": "New revenue factor = 0.75 x 1.40 = 1.05, a 5% increase, option c."
+          },
+          {
+            "prompt": "A developer launches a new SaaS platform called Codify. He marks the subscription price 40% above the actual cost of hosting and maintenance. If he offers a discount of 15% to his early-bird users, what is his actual profit percentage?",
+            "options": [
+              {
+                "key": "a",
+                "label": "25%"
+              },
+              {
+                "key": "b",
+                "label": "15%"
+              },
+              {
+                "key": "c",
+                "label": "19%"
+              },
+              {
+                "key": "d",
+                "label": "21%"
+              }
+            ],
+            "answerKey": "c",
+            "order": 3,
+            "hint": "Take cost as 100, mark up, then apply discount on the marked price to find SP.",
+            "explanation": "SP = 100 x 1.40 x 0.85 = 119, so profit is 19%, option c."
+          },
+          {
+            "prompt": "A manufacturer sells a laptop to a wholesaler at a profit of 20%. The wholesaler sells it to a retailer at a profit of 25%, and the retailer sells it to a customer for Rs. 54,000, earning a profit of 20%. What was the original manufacturing cost of the laptop?",
+            "options": [
+              {
+                "key": "a",
+                "label": "Rs. 30,000"
+              },
+              {
+                "key": "b",
+                "label": "Rs. 36,000"
+              },
+              {
+                "key": "c",
+                "label": "Rs. 40,000"
+              },
+              {
+                "key": "d",
+                "label": "Rs. 32,000"
+              }
+            ],
+            "answerKey": "a",
+            "order": 4,
+            "hint": "Work backwards through each sale, dividing the selling price by (1 + profit) at each stage.",
+            "explanation": "Retailer cost = 54000/1.20 = 45000; wholesaler cost = 45000/1.25 = 36000; manufacturing cost = 36000/1.20 = 30000, option a."
+          },
+          {
+            "prompt": "A merchant mixes 20 kg of premium whey protein bought at Rs. 1200 per kg with 30 kg of standard whey protein bought at Rs. 1500 per kg. At what price per kg should he sell the final mixture to gain an overall profit of 20%?",
+            "options": [
+              {
+                "key": "a",
+                "label": "Rs. 1656"
+              },
+              {
+                "key": "b",
+                "label": "Rs. 1720"
+              },
+              {
+                "key": "c",
+                "label": "Rs. 1580"
+              },
+              {
+                "key": "d",
+                "label": "Rs. 1600"
+              }
+            ],
+            "answerKey": "a",
+            "order": 5,
+            "hint": "Find total cost of the blend, add 20% profit, then divide by total weight.",
+            "explanation": "Cost = 20x1200 + 30x1500 = 69000 for 50 kg; SP = 69000 x 1.20 / 50 = 1656 per kg, option a."
+          },
+          {
+            "prompt": "The difference between the compound interest (compounded annually) and the simple interest on a certain sum of money for 2 years at 8% per annum is Rs. 128. Find the principal sum.",
+            "options": [
+              {
+                "key": "a",
+                "label": "Rs. 15,000"
+              },
+              {
+                "key": "b",
+                "label": "Rs. 25,000"
+              },
+              {
+                "key": "c",
+                "label": "Rs. 20,000"
+              },
+              {
+                "key": "d",
+                "label": "Rs. 18,000"
+              }
+            ],
+            "answerKey": "c",
+            "order": 6,
+            "hint": "For 2 years the CI-SI difference equals P x (r/100)^2.",
+            "explanation": "128 = P x (0.08)^2 = 0.0064P, so P = 20000, option c."
+          },
+          {
+            "prompt": "What will be the compound interest on a sum of Rs. 16,000 for 1.5 years at 10% per annum, if the interest is compounded half-yearly?",
+            "options": [
+              {
+                "key": "a",
+                "label": "Rs. 2480"
+              },
+              {
+                "key": "b",
+                "label": "Rs. 2522"
+              },
+              {
+                "key": "c",
+                "label": "Rs. 2612"
+              },
+              {
+                "key": "d",
+                "label": "Rs. 2400"
+              }
+            ],
+            "answerKey": "b",
+            "order": 7,
+            "hint": "Half-yearly compounding means rate 5% per period for 3 periods; compute amount then subtract principal.",
+            "explanation": "Amount = 16000 x (1.05)^3 = 18522, so CI = 2522, option b."
+          },
+          {
+            "prompt": "A sum of money placed at simple interest triples itself in 8 years. In how many years will it become 5 times of itself at the exact same rate of interest?",
+            "options": [
+              {
+                "key": "a",
+                "label": "12 years"
+              },
+              {
+                "key": "b",
+                "label": "15 years"
+              },
+              {
+                "key": "c",
+                "label": "16 years"
+              },
+              {
+                "key": "d",
+                "label": "20 years"
+              }
+            ],
+            "answerKey": "c",
+            "order": 8,
+            "hint": "Under simple interest the interest is proportional to time; relate the interest needed to triple vs to quintuple.",
+            "explanation": "Tripling means interest = 2P in 8 years; 5x needs interest = 4P, which takes 16 years, option c."
+          },
+          {
+            "prompt": "A man borrowed Rs. 21,000 at 10% per annum compound interest. If the debt is to be completely discharged in two equal annual installments, what is the value of each installment?",
+            "options": [
+              {
+                "key": "a",
+                "label": "Rs. 11,000"
+              },
+              {
+                "key": "b",
+                "label": "Rs. 12,100"
+              },
+              {
+                "key": "c",
+                "label": "Rs. 10,500"
+              },
+              {
+                "key": "d",
+                "label": "Rs. 11,500"
+              }
+            ],
+            "answerKey": "b",
+            "order": 9,
+            "hint": "Set each installment x and equate the present value of both installments to the principal.",
+            "explanation": "x/1.1 + x/1.1^2 = 21000 gives x = 12100, option b."
+          }
+        ]
+      },
+      {
+        "name": "Ratio and proportion",
+        "slug": "ratio-and-proportion",
+        "order": 2,
+        "questions": [
+          {
+            "prompt": "Divide Rs. 6800 among A, B, and C in the ratio 1/2 : 1/4 : 5/16. What is the difference between the greatest and smallest parts?",
+            "options": [
+              {
+                "key": "a",
+                "label": "Rs. 1600"
+              },
+              {
+                "key": "b",
+                "label": "Rs. 1200"
+              },
+              {
+                "key": "c",
+                "label": "Rs. 800"
+              },
+              {
+                "key": "d",
+                "label": "Rs. 2000"
+              }
+            ],
+            "answerKey": "a",
+            "order": 0,
+            "hint": "Clear the fractions to a common denominator to get whole-number ratio terms, then divide the total.",
+            "explanation": "Ratio = 8:4:5 (sum 17); each unit = 400, so greatest minus smallest = (8-4) x 400 = 1600, option a."
+          },
+          {
+            "prompt": "In what ratio must a grocer mix two varieties of pulses costing Rs. 15 and Rs. 20 per kg respectively to get a mixture worth Rs. 16.50 per kg?",
+            "options": [
+              {
+                "key": "a",
+                "label": "3:7"
+              },
+              {
+                "key": "b",
+                "label": "5:7"
+              },
+              {
+                "key": "c",
+                "label": "7:3"
+              },
+              {
+                "key": "d",
+                "label": "7:5"
+              }
+            ],
+            "answerKey": "c",
+            "order": 1,
+            "hint": "Use alligation: the ratio equals the cross-differences of the two prices from the mean.",
+            "explanation": "Ratio = (20-16.5):(16.5-15) = 3.5:1.5 = 7:3, option c."
+          },
+          {
+            "prompt": "A bag contains 50 P, 25 P and 10 P coins in the ratio 5:9:4, amounting to Rs. 206. Find the number of 50 P coins in the bag.",
+            "options": [
+              {
+                "key": "a",
+                "label": "150"
+              },
+              {
+                "key": "b",
+                "label": "200"
+              },
+              {
+                "key": "c",
+                "label": "250"
+              },
+              {
+                "key": "d",
+                "label": "360"
+              }
+            ],
+            "answerKey": "b",
+            "order": 2,
+            "hint": "Express total value in paise using the coin ratio as multiples, then solve for the multiplier.",
+            "explanation": "5x(50)+9x(25)+4x(10) = 515x = 20600 paise, so x = 40 and 50P coins = 5x = 200, option b."
+          },
+          {
+            "prompt": "The ratio of the number of boys and girls in a college is 7:8. If the percentage increase in the number of boys and girls is 20% and 10% respectively, what will be the new ratio?",
+            "options": [
+              {
+                "key": "a",
+                "label": "8:9"
+              },
+              {
+                "key": "b",
+                "label": "17:18"
+              },
+              {
+                "key": "c",
+                "label": "21:22"
+              },
+              {
+                "key": "d",
+                "label": "23:24"
+              }
+            ],
+            "answerKey": "c",
+            "order": 3,
+            "hint": "Multiply each ratio term by its growth factor, then simplify the new ratio.",
+            "explanation": "7 x 1.2 : 8 x 1.1 = 8.4:8.8 = 21:22, option c."
+          },
+          {
+            "prompt": "The incomes of two persons A and B are in the ratio 3:2 and their expenditures are in the ratio 5:3. If each of them saves Rs. 1000, what is A's income?",
+            "options": [
+              {
+                "key": "a",
+                "label": "Rs. 4000"
+              },
+              {
+                "key": "b",
+                "label": "Rs. 6000"
+              },
+              {
+                "key": "c",
+                "label": "Rs. 8000"
+              },
+              {
+                "key": "d",
+                "label": "Rs. 9000"
+              }
+            ],
+            "answerKey": "b",
+            "order": 4,
+            "hint": "Write income and expenditure with separate variables and use savings = income - expenditure for each.",
+            "explanation": "3x-5y = 1000 and 2x-3y = 1000 give x = 2000, so A's income = 3x = 6000, option b."
+          },
+          {
+            "prompt": "A mixture contains alcohol and water in the ratio 4:3. If 5 liters of water is added to the mixture, the ratio becomes 4:5. Find the initial quantity of alcohol in the given mixture.",
+            "options": [
+              {
+                "key": "a",
+                "label": "10 liters"
+              },
+              {
+                "key": "b",
+                "label": "12 liters"
+              },
+              {
+                "key": "c",
+                "label": "15 liters"
+              },
+              {
+                "key": "d",
+                "label": "8 liters"
+              }
+            ],
+            "answerKey": "a",
+            "order": 5,
+            "hint": "Let quantities be 4k and 3k; only water changes, so set up the new ratio equation.",
+            "explanation": "4k/(3k+5) = 4/5 gives k = 2.5, so alcohol = 4k = 10 liters, option a."
+          },
+          {
+            "prompt": "Two vessels A and B contain milk and water mixed in the ratio 8:5 and 5:2 respectively. In what ratio should these two mixtures be mixed to get a new mixture containing exactly 9/13 (approx 69.23%) milk?",
+            "options": [
+              {
+                "key": "a",
+                "label": "2:7"
+              },
+              {
+                "key": "b",
+                "label": "3:5"
+              },
+              {
+                "key": "c",
+                "label": "5:2"
+              },
+              {
+                "key": "d",
+                "label": "7:2"
+              }
+            ],
+            "answerKey": "a",
+            "order": 6,
+            "hint": "Apply alligation on the milk fractions 8/13 and 5/7 around the target 9/13.",
+            "explanation": "Distances (5/7 - 9/13):(9/13 - 8/13) = (2/91):(7/91) = 2:7, option a."
+          },
+          {
+            "prompt": "A milkman mixes water with milk to make a 25% profit by selling the adulterated mixture strictly at the cost price of pure milk. What is the ratio of water to milk in the new mixture?",
+            "options": [
+              {
+                "key": "a",
+                "label": "1:5"
+              },
+              {
+                "key": "b",
+                "label": "1:4"
+              },
+              {
+                "key": "c",
+                "label": "4:1"
+              },
+              {
+                "key": "d",
+                "label": "5:1"
+              }
+            ],
+            "answerKey": "b",
+            "order": 7,
+            "hint": "Selling adulterated milk at pure-milk cost means profit fraction equals water-to-milk ratio.",
+            "explanation": "25% profit = 1/4, so water:milk = 1:4, option b."
+          },
+          {
+            "prompt": "A container holds 50 liters of pure lemonade. From this container, 5 liters of lemonade is taken out and replaced by water. This exact process is repeated two more times. How much pure lemonade is now left in the container?",
+            "options": [
+              {
+                "key": "a",
+                "label": "36.45 liters"
+              },
+              {
+                "key": "b",
+                "label": "34.50 liters"
+              },
+              {
+                "key": "c",
+                "label": "38.25 liters"
+              },
+              {
+                "key": "d",
+                "label": "35.65 liters"
+              }
+            ],
+            "answerKey": "a",
+            "order": 8,
+            "hint": "Repeated replacement leaves pure liquid = initial x (1 - removed/total)^n.",
+            "explanation": "50 x (1 - 5/50)^3 = 50 x 0.729 = 36.45 liters, option a."
+          },
+          {
+            "prompt": "In a competitive exam, the number of passed students was 4 times the number of failed students. If there had been 35 fewer appeared students and 9 more had failed, the ratio of passed and failed students would have been 2:1. What is the total number of students who initially appeared for the exam?",
+            "options": [
+              {
+                "key": "a",
+                "label": "145"
+              },
+              {
+                "key": "b",
+                "label": "150"
+              },
+              {
+                "key": "c",
+                "label": "155"
+              },
+              {
+                "key": "d",
+                "label": "165"
+              }
+            ],
+            "answerKey": "c",
+            "order": 9,
+            "hint": "Let failed = f, passed = 4f, then form the new ratio equation after the stated changes.",
+            "explanation": "(4f-44)/(f+9) = 2 gives f = 31, so total appeared = 5f = 155, option c."
+          }
+        ]
+      },
+      {
+        "name": "Probability and combinatorics",
+        "slug": "probability-and-combinatorics",
+        "order": 3,
+        "questions": [
+          {
+            "prompt": "How many 4-letter words can be formed using the letters of the word \"CODE\" if repetition of letters is not allowed?",
+            "options": [
+              {
+                "key": "a",
+                "label": "12"
+              },
+              {
+                "key": "b",
+                "label": "24"
+              },
+              {
+                "key": "c",
+                "label": "16"
+              },
+              {
+                "key": "d",
+                "label": "64"
+              }
+            ],
+            "answerKey": "b",
+            "order": 0,
+            "hint": "All four letters are distinct, so count the arrangements as a simple factorial.",
+            "explanation": "4 distinct letters arrange in 4! = 24 ways, option b."
+          },
+          {
+            "prompt": "Two fair dice are thrown simultaneously. What is the probability of getting a sum of exactly 9?",
+            "options": [
+              {
+                "key": "a",
+                "label": "1/6"
+              },
+              {
+                "key": "b",
+                "label": "1/12"
+              },
+              {
+                "key": "c",
+                "label": "1/9"
+              },
+              {
+                "key": "d",
+                "label": "5/36"
+              }
+            ],
+            "answerKey": "c",
+            "order": 1,
+            "hint": "List ordered outcomes summing to 9 over the 36 equally likely pairs.",
+            "explanation": "Favorable pairs (3,6),(4,5),(5,4),(6,3) = 4, so probability = 4/36 = 1/9, option c."
+          },
+          {
+            "prompt": "In how many ways can a committee of 5 members be formed from 6 men and 4 women, consisting of exactly 3 men and 2 women?",
+            "options": [
+              {
+                "key": "a",
+                "label": "60"
+              },
+              {
+                "key": "b",
+                "label": "120"
+              },
+              {
+                "key": "c",
+                "label": "240"
+              },
+              {
+                "key": "d",
+                "label": "90"
+              }
+            ],
+            "answerKey": "b",
+            "order": 2,
+            "hint": "Choose men and women separately with combinations, then multiply.",
+            "explanation": "C(6,3) x C(4,2) = 20 x 6 = 120, option b."
+          },
+          {
+            "prompt": "A bag contains 5 red, 4 blue, and 3 green balls. If three balls are drawn at random without replacement, what is the probability that all three are red?",
+            "options": [
+              {
+                "key": "a",
+                "label": "1/22"
+              },
+              {
+                "key": "b",
+                "label": "5/144"
+              },
+              {
+                "key": "c",
+                "label": "1/12"
+              },
+              {
+                "key": "d",
+                "label": "3/44"
+              }
+            ],
+            "answerKey": "a",
+            "order": 3,
+            "hint": "Use combinations: favorable red-triples over all triples from 12 balls.",
+            "explanation": "C(5,3)/C(12,3) = 10/220 = 1/22, option a."
+          },
+          {
+            "prompt": "How many different words can be formed by arranging the letters of the word \"SUCCESS\" such that all the 'S's are always placed together?",
+            "options": [
+              {
+                "key": "a",
+                "label": "120"
+              },
+              {
+                "key": "b",
+                "label": "24"
+              },
+              {
+                "key": "c",
+                "label": "60"
+              },
+              {
+                "key": "d",
+                "label": "420"
+              }
+            ],
+            "answerKey": "c",
+            "order": 4,
+            "hint": "Glue the three S's into one block, then arrange the remaining units accounting for the repeated C.",
+            "explanation": "Units [SSS],U,C,C,E arrange in 5!/2! = 60 ways, option c."
+          },
+          {
+            "prompt": "Person A speaks the truth in 60% of cases, and Person B speaks the truth in 80% of cases. In what percentage of cases are they likely to contradict each other in narrating the same incident?",
+            "options": [
+              {
+                "key": "a",
+                "label": "44%"
+              },
+              {
+                "key": "b",
+                "label": "56%"
+              },
+              {
+                "key": "c",
+                "label": "32%"
+              },
+              {
+                "key": "d",
+                "label": "48%"
+              }
+            ],
+            "answerKey": "a",
+            "order": 5,
+            "hint": "They contradict when exactly one tells the truth; add the two mutually exclusive cases.",
+            "explanation": "0.6x0.2 + 0.4x0.8 = 0.12 + 0.32 = 0.44 = 44%, option a."
+          },
+          {
+            "prompt": "In a corporate party, every person shakes hands exactly once with every other person. If there are a total of 105 handshakes, how many persons are there in the party?",
+            "options": [
+              {
+                "key": "a",
+                "label": "14"
+              },
+              {
+                "key": "b",
+                "label": "15"
+              },
+              {
+                "key": "c",
+                "label": "20"
+              },
+              {
+                "key": "d",
+                "label": "21"
+              }
+            ],
+            "answerKey": "b",
+            "order": 6,
+            "hint": "Total handshakes equal C(n,2); solve n(n-1)/2 for the given count.",
+            "explanation": "n(n-1)/2 = 105 gives n(n-1) = 210, so n = 15, option b."
+          },
+          {
+            "prompt": "Two cards are drawn simultaneously from a well-shuffled standard deck of 52 cards. What is the probability that both cards are either kings or diamonds?",
+            "options": [
+              {
+                "key": "a",
+                "label": "14/221"
+              },
+              {
+                "key": "b",
+                "label": "7/221"
+              },
+              {
+                "key": "c",
+                "label": "21/221"
+              },
+              {
+                "key": "d",
+                "label": "1/13"
+              }
+            ],
+            "answerKey": "a",
+            "order": 7,
+            "hint": "Treat 'both kings' and 'both diamonds' as separate cases; their overlap is impossible.",
+            "explanation": "C(4,2)+C(13,2) = 6+78 = 84 over C(52,2)=1326 = 84/1326 = 14/221, option a."
+          },
+          {
+            "prompt": "How many 5-digit even numbers can be formed using the digits 1, 2, 3, 4, 5, 6 without repetition, such that the resulting number is strictly greater than 40,000?",
+            "options": [
+              {
+                "key": "a",
+                "label": "120"
+              },
+              {
+                "key": "b",
+                "label": "168"
+              },
+              {
+                "key": "c",
+                "label": "144"
+              },
+              {
+                "key": "d",
+                "label": "240"
+              }
+            ],
+            "answerKey": "b",
+            "order": 8,
+            "hint": "Impose two conditions: leading digit from {4,5,6} for >40000 and an even last digit; count by cases.",
+            "explanation": "d1=5 gives 3x24=72; d1=4 and d1=6 give 2x24=48 each; total 72+48+48 = 168, option b."
+          },
+          {
+            "prompt": "Three persons A, B, and C take turns throwing a pair of dice, in that exact order, starting with A. The first person to throw a sum of 10 wins the game. What is the probability that C wins the game?",
+            "options": [
+              {
+                "key": "a",
+                "label": "121/397"
+              },
+              {
+                "key": "b",
+                "label": "144/397"
+              },
+              {
+                "key": "c",
+                "label": "132/397"
+              },
+              {
+                "key": "d",
+                "label": "11/36"
+              }
+            ],
+            "answerKey": "a",
+            "order": 9,
+            "hint": "C wins on the 3rd, 6th, ... turn; sum the geometric series with single-throw success p = 1/12.",
+            "explanation": "P(C) = q^2 p/(1-q^3) with q=11/12 = (121/1728)/(397/1728) = 121/397, option a."
+          }
+        ]
+      },
+      {
+        "name": "Time and work",
+        "slug": "time-and-work",
+        "order": 4,
+        "questions": [
+          {
+            "prompt": "A can do a piece of work in 10 days and B can do it in 15 days. How long will they take if both work together?",
+            "options": [
+              {
+                "key": "a",
+                "label": "5 days"
+              },
+              {
+                "key": "b",
+                "label": "6 days"
+              },
+              {
+                "key": "c",
+                "label": "8 days"
+              },
+              {
+                "key": "d",
+                "label": "9 days"
+              }
+            ],
+            "answerKey": "b",
+            "order": 0,
+            "hint": "Add their one-day work rates and invert to get the combined time.",
+            "explanation": "1/10 + 1/15 = 1/6, so together they take 6 days, option b."
+          },
+          {
+            "prompt": "A is thrice as good a workman as B and therefore is able to finish a job in 60 days less than B. Working together, they can do it in",
+            "options": [
+              {
+                "key": "a",
+                "label": "20 days"
+              },
+              {
+                "key": "b",
+                "label": "22.5 days"
+              },
+              {
+                "key": "c",
+                "label": "25 days"
+              },
+              {
+                "key": "d",
+                "label": "30 days"
+              }
+            ],
+            "answerKey": "b",
+            "order": 1,
+            "hint": "If A is thrice as fast, A's time is one-third of B's; use the 60-day gap to find each time.",
+            "explanation": "A=30, B=90 days (90-30=60); together 1/30+1/90 = 2/45, i.e. 22.5 days, option b."
+          },
+          {
+            "prompt": "A can finish a work in 18 days and B can do the same work in 15 days. B worked for 10 days and left the job. In how many days can A alone finish the remaining work?",
+            "options": [
+              {
+                "key": "a",
+                "label": "5 days"
+              },
+              {
+                "key": "b",
+                "label": "5.5 days"
+              },
+              {
+                "key": "c",
+                "label": "6 days"
+              },
+              {
+                "key": "d",
+                "label": "8 days"
+              }
+            ],
+            "answerKey": "c",
+            "order": 2,
+            "hint": "Compute the fraction B completes in 10 days, then divide the remaining work by A's rate.",
+            "explanation": "B does 10/15 = 2/3; remaining 1/3 takes A 1/3 x 18 = 6 days, option c."
+          },
+          {
+            "prompt": "A and B can complete a piece of work in 12 and 18 days respectively. A begins to do the work and they work alternately one at a time for one day each. The whole work will be completed in",
+            "options": [
+              {
+                "key": "a",
+                "label": "14 days"
+              },
+              {
+                "key": "b",
+                "label": "15 days"
+              },
+              {
+                "key": "c",
+                "label": "14 1/3 days"
+              },
+              {
+                "key": "d",
+                "label": "15 2/3 days"
+              }
+            ],
+            "answerKey": "c",
+            "order": 3,
+            "hint": "Find work done per 2-day A-then-B cycle, then track the final partial day.",
+            "explanation": "Each cycle does 5/36; after 14 days 35/36 is done, and A finishes the last 1/36 in 1/3 day, total 14 1/3 days, option c."
+          },
+          {
+            "prompt": "20 men can finish a piece of work in 30 days working 6 hours a day. In how many days can 15 men finish it working 8 hours a day?",
+            "options": [
+              {
+                "key": "a",
+                "label": "20 days"
+              },
+              {
+                "key": "b",
+                "label": "25 days"
+              },
+              {
+                "key": "c",
+                "label": "30 days"
+              },
+              {
+                "key": "d",
+                "label": "35 days"
+              }
+            ],
+            "answerKey": "c",
+            "order": 4,
+            "hint": "Keep total man-hours of work constant: men x days x hours stays equal.",
+            "explanation": "20x30x6 = 15x8xD gives D = 3600/120 = 30 days, option c."
+          },
+          {
+            "prompt": "A pipe can fill a tank in 15 hours. Due to a leak in the bottom, it is filled in 20 hours. If the tank is full, how much time will the leak take to empty it?",
+            "options": [
+              {
+                "key": "a",
+                "label": "30 hours"
+              },
+              {
+                "key": "b",
+                "label": "40 hours"
+              },
+              {
+                "key": "c",
+                "label": "50 hours"
+              },
+              {
+                "key": "d",
+                "label": "60 hours"
+              }
+            ],
+            "answerKey": "d",
+            "order": 5,
+            "hint": "The leak's emptying rate is the fill rate minus the observed net rate.",
+            "explanation": "1/15 - 1/L = 1/20 gives 1/L = 1/60, so the leak empties in 60 hours, option d."
+          },
+          {
+            "prompt": "A, B, and C can do a piece of work in 6, 8, and 12 days respectively. Doing the work together, they get an amount of Rs. 1350. What is the share of B in that amount?",
+            "options": [
+              {
+                "key": "a",
+                "label": "Rs. 300"
+              },
+              {
+                "key": "b",
+                "label": "Rs. 400"
+              },
+              {
+                "key": "c",
+                "label": "Rs. 450"
+              },
+              {
+                "key": "d",
+                "label": "Rs. 600"
+              }
+            ],
+            "answerKey": "c",
+            "order": 6,
+            "hint": "Payment splits in the ratio of work rates (1/days), not in the ratio of days.",
+            "explanation": "Rates 1/6:1/8:1/12 = 4:3:2; B's share = 3/9 x 1350 = 450, option c."
+          }
+        ]
+      },
+      {
+        "name": "Time, speed and distance",
+        "slug": "time-speed-and-distance",
+        "order": 5,
+        "questions": [
+          {
+            "prompt": "A person travels from Point A to Point B at a speed of 40 km/hr and returns from Point B to Point A at a speed of 60 km/hr. What is the average speed for the entire journey?",
+            "options": [
+              {
+                "key": "a",
+                "label": "45 km/hr"
+              },
+              {
+                "key": "b",
+                "label": "48 km/hr"
+              },
+              {
+                "key": "c",
+                "label": "50 km/hr"
+              },
+              {
+                "key": "d",
+                "label": "52 km/hr"
+              }
+            ],
+            "answerKey": "b",
+            "order": 0,
+            "hint": "For equal distances, average speed is the harmonic mean 2uv/(u+v), not the arithmetic mean.",
+            "explanation": "2 x 40 x 60 / (40+60) = 4800/100 = 48 km/hr, option b."
+          },
+          {
+            "prompt": "If a student walks from his house to school at 5 km/hr, he is late by 30 minutes. However, if he walks at 6 km/hr, he is late by 5 minutes only. The distance of his school from his house is",
+            "options": [
+              {
+                "key": "a",
+                "label": "2.5 km"
+              },
+              {
+                "key": "b",
+                "label": "3.6 km"
+              },
+              {
+                "key": "c",
+                "label": "5.5 km"
+              },
+              {
+                "key": "d",
+                "label": "12.5 km"
+              }
+            ],
+            "answerKey": "d",
+            "order": 1,
+            "hint": "The lateness difference equals the difference in travel times; set d/5 - d/6 to that gap.",
+            "explanation": "d/5 - d/6 = 25/60 hr gives d/30 = 25/60, so d = 12.5 km, option d."
+          },
+          {
+            "prompt": "A train 125 meters long passes a man, running at 5 km/hr in the same direction in which the train is going, in 10 seconds. The speed of the train is",
+            "options": [
+              {
+                "key": "a",
+                "label": "45 km/hr"
+              },
+              {
+                "key": "b",
+                "label": "50 km/hr"
+              },
+              {
+                "key": "c",
+                "label": "54 km/hr"
+              },
+              {
+                "key": "d",
+                "label": "55 km/hr"
+              }
+            ],
+            "answerKey": "b",
+            "order": 2,
+            "hint": "Use relative speed (length/time) for same-direction motion, then add the man's speed.",
+            "explanation": "Relative speed = 125/10 = 12.5 m/s = 45 km/hr; train = 45+5 = 50 km/hr, option b."
+          },
+          {
+            "prompt": "Two trains, 130 m and 110 m long, are running towards each other on parallel tracks at 40 km/hr and 50 km/hr respectively. In what time will they clear each other from the moment they meet?",
+            "options": [
+              {
+                "key": "a",
+                "label": "8 seconds"
+              },
+              {
+                "key": "b",
+                "label": "9.6 seconds"
+              },
+              {
+                "key": "c",
+                "label": "10 seconds"
+              },
+              {
+                "key": "d",
+                "label": "12 seconds"
+              }
+            ],
+            "answerKey": "b",
+            "order": 3,
+            "hint": "For opposite directions add speeds, and the distance to clear is the sum of both lengths.",
+            "explanation": "Relative speed 90 km/hr = 25 m/s; time = (130+110)/25 = 9.6 s, option b."
+          },
+          {
+            "prompt": "Excluding stoppages, the speed of a bus is 54 km/hr and including stoppages, it is 45 km/hr. For how many minutes does the bus stop per hour?",
+            "options": [
+              {
+                "key": "a",
+                "label": "9 minutes"
+              },
+              {
+                "key": "b",
+                "label": "10 minutes"
+              },
+              {
+                "key": "c",
+                "label": "12 minutes"
+              },
+              {
+                "key": "d",
+                "label": "20 minutes"
+              }
+            ],
+            "answerKey": "b",
+            "order": 4,
+            "hint": "Stoppage time per hour = (lost speed / actual speed) x 60 minutes.",
+            "explanation": "(54-45)/54 x 60 = 10 minutes, option b."
+          },
+          {
+            "prompt": "In a 1000 m race, A can beat B by 100 m. In a 400 m race, B can beat C by 40 m. In a 500 m race, A will beat C by",
+            "options": [
+              {
+                "key": "a",
+                "label": "85 m"
+              },
+              {
+                "key": "b",
+                "label": "95 m"
+              },
+              {
+                "key": "c",
+                "label": "100 m"
+              },
+              {
+                "key": "d",
+                "label": "105 m"
+              }
+            ],
+            "answerKey": "b",
+            "order": 5,
+            "hint": "Convert each 'beat' into a speed ratio, chain A:B and B:C, then scale to the 500 m race.",
+            "explanation": "A:B = 10:9 and B:C = 10:9, so A:C = 100:81; when A runs 500, C runs 405, a 95 m lead, option b."
+          }
+        ]
+      },
+      {
+        "name": "Progressions (AP, GP..)",
+        "slug": "progressions-ap-gp",
+        "order": 6,
+        "questions": [
+          {
+            "prompt": "How many three-digit numbers are completely divisible by 6?",
+            "options": [
+              {
+                "key": "a",
+                "label": "149"
+              },
+              {
+                "key": "b",
+                "label": "150"
+              },
+              {
+                "key": "c",
+                "label": "151"
+              },
+              {
+                "key": "d",
+                "label": "166"
+              }
+            ],
+            "answerKey": "b",
+            "order": 0,
+            "hint": "Count terms of an AP of multiples of 6 between the first and last three-digit multiples.",
+            "explanation": "From 102 to 996: (996-102)/6 + 1 = 150, option b."
+          },
+          {
+            "prompt": "The third term of a geometric progression is 4. Find the product of its first 5 terms.",
+            "options": [
+              {
+                "key": "a",
+                "label": "512"
+              },
+              {
+                "key": "b",
+                "label": "1024"
+              },
+              {
+                "key": "c",
+                "label": "256"
+              },
+              {
+                "key": "d",
+                "label": "2048"
+              }
+            ],
+            "answerKey": "b",
+            "order": 1,
+            "hint": "The product of an odd number of GP terms equals the middle term raised to that count.",
+            "explanation": "Product = (third term)^5 = 4^5 = 1024, option b."
+          },
+          {
+            "prompt": "If the sum of the first n terms of an Arithmetic Progression is given by S_n = 3n^2 + 5n, what is the 10th term of this progression?",
+            "options": [
+              {
+                "key": "a",
+                "label": "56"
+              },
+              {
+                "key": "b",
+                "label": "60"
+              },
+              {
+                "key": "c",
+                "label": "62"
+              },
+              {
+                "key": "d",
+                "label": "65"
+              }
+            ],
+            "answerKey": "c",
+            "order": 2,
+            "hint": "The nth term equals S_n - S_{n-1}.",
+            "explanation": "a10 = S10 - S9 = 350 - 288 = 62, option c."
+          },
+          {
+            "prompt": "A rubber ball is dropped from a height of 100 meters. Each time it hits the ground, it bounces back to a height equal to 4/5 of the previous height. Find the total distance traveled by the ball before it comes to rest.",
+            "options": [
+              {
+                "key": "a",
+                "label": "500 meters"
+              },
+              {
+                "key": "b",
+                "label": "800 meters"
+              },
+              {
+                "key": "c",
+                "label": "900 meters"
+              },
+              {
+                "key": "d",
+                "label": "1000 meters"
+              }
+            ],
+            "answerKey": "c",
+            "order": 3,
+            "hint": "Total distance = initial drop + 2 x (sum of the infinite bouncing GP of heights).",
+            "explanation": "100 + 2 x 100 x (4/5)/(1-4/5) = 100 + 800 = 900 meters, option c."
+          },
+          {
+            "prompt": "An employee starts a job with an annual salary of Rs. 5,00,000. If his salary increases by a fixed amount of Rs. 40,000 every year, what will be his total earnings over a period of 10 years?",
+            "options": [
+              {
+                "key": "a",
+                "label": "Rs. 64,00,000"
+              },
+              {
+                "key": "b",
+                "label": "Rs. 68,00,000"
+              },
+              {
+                "key": "c",
+                "label": "Rs. 72,00,000"
+              },
+              {
+                "key": "d",
+                "label": "Rs. 70,00,000"
+              }
+            ],
+            "answerKey": "b",
+            "order": 4,
+            "hint": "Total earnings is the sum of an AP; use S = n/2[2a + (n-1)d].",
+            "explanation": "5 x [2(500000) + 9(40000)] = 5 x 1360000 = 68,00,000, option b."
+          },
+          {
+            "prompt": "The sum of the first three terms of a Geometric Progression to the sum of the first six terms is in the ratio 125:152. Find the common ratio of the progression.",
+            "options": [
+              {
+                "key": "a",
+                "label": "2/5"
+              },
+              {
+                "key": "b",
+                "label": "3/5"
+              },
+              {
+                "key": "c",
+                "label": "4/5"
+              },
+              {
+                "key": "d",
+                "label": "1/5"
+              }
+            ],
+            "answerKey": "b",
+            "order": 5,
+            "hint": "Use S6/S3 = 1 + r^3 for a GP and set it equal to the given ratio.",
+            "explanation": "1 + r^3 = 152/125 gives r^3 = 27/125, so r = 3/5, option b."
+          },
+          {
+            "prompt": "Find the sum of the given arithmetico-geometric series to infinity:1 + ⅔ + 3/9 + 4/27 + …",
+            "options": [
+              {
+                "key": "a",
+                "label": "2"
+              },
+              {
+                "key": "b",
+                "label": "9/4"
+              },
+              {
+                "key": "c",
+                "label": "7/3"
+              },
+              {
+                "key": "d",
+                "label": "5/2"
+              }
+            ],
+            "answerKey": "b",
+            "order": 6,
+            "hint": "This is an arithmetico-geometric series; use S = a/(1-r) + dr/(1-r)^2 with r = 1/3.",
+            "explanation": "3/2 + (1/3)/(4/9) = 3/2 + 3/4 = 9/4, option b."
+          },
+          {
+            "prompt": "If a, b, c are in Arithmetic Progression (AP) and x, y, z are in Geometric Progression (GP), then what is the value of the expression x^(b-c) . y ^(c-a) . z^(a-b) ?",
+            "options": [
+              {
+                "key": "a",
+                "label": "0"
+              },
+              {
+                "key": "b",
+                "label": "1"
+              },
+              {
+                "key": "c",
+                "label": "2"
+              },
+              {
+                "key": "d",
+                "label": "xyz"
+              }
+            ],
+            "answerKey": "b",
+            "order": 7,
+            "hint": "Take logs and use the AP relation on the exponents plus the GP relation on x, y, z.",
+            "explanation": "The log coefficients of both ln(first term) and ln(ratio) vanish by the AP property, so the product = 1, option b."
+          }
+        ]
+      },
+      {
+        "name": "Ages",
+        "slug": "ages",
+        "order": 7,
+        "questions": [
+          {
+            "prompt": "The ratio of the present ages of a mother and her daughter is 7:3. When the mother was 26 years old, the daughter was 6 years old. Find the present age of the mother.",
+            "options": [
+              {
+                "key": "a",
+                "label": "30"
+              },
+              {
+                "key": "b",
+                "label": "35"
+              },
+              {
+                "key": "c",
+                "label": "40"
+              },
+              {
+                "key": "d",
+                "label": "42"
+              }
+            ],
+            "answerKey": "b",
+            "order": 0,
+            "hint": "The age difference stays constant; equate it to the difference of the ratio terms.",
+            "explanation": "Constant gap = 26-6 = 20 = 4x, so x = 5 and mother = 7x = 35, option b."
+          },
+          {
+            "prompt": "Ten years ago, the ratio of the ages of A and B was 3:2. The sum of their present ages is 80 years. What is the present age of A?",
+            "options": [
+              {
+                "key": "a",
+                "label": "34"
+              },
+              {
+                "key": "b",
+                "label": "46"
+              },
+              {
+                "key": "c",
+                "label": "52"
+              },
+              {
+                "key": "d",
+                "label": "36"
+              }
+            ],
+            "answerKey": "b",
+            "order": 1,
+            "hint": "Shift the present sum back 10 years, then split by the past ratio.",
+            "explanation": "Sum 10 years ago = 60; A then = 3/5 x 60 = 36, so A now = 46, option b."
+          },
+          {
+            "prompt": "A father said to his son, \"I was as old as you are at present at the time of your birth.\" If the father's age is 38 years now, what was the son's age five years back?",
+            "options": [
+              {
+                "key": "a",
+                "label": "14"
+              },
+              {
+                "key": "b",
+                "label": "19"
+              },
+              {
+                "key": "c",
+                "label": "33"
+              },
+              {
+                "key": "d",
+                "label": "38"
+              }
+            ],
+            "answerKey": "a",
+            "order": 2,
+            "hint": "The father-son age gap equals the son's present age; set up the equation from the father's current age.",
+            "explanation": "38 - S = S gives S = 19, so five years back the son was 14, option a."
+          },
+          {
+            "prompt": "The ratio of the ages of Priya and Riya is 3:2. Five years ago, the ratio of their ages was 5:3. What will be the ratio of their ages 5 years from now?",
+            "options": [
+              {
+                "key": "a",
+                "label": "5:4"
+              },
+              {
+                "key": "b",
+                "label": "7:5"
+              },
+              {
+                "key": "c",
+                "label": "8:5"
+              },
+              {
+                "key": "d",
+                "label": "4:3"
+              }
+            ],
+            "answerKey": "b",
+            "order": 3,
+            "hint": "Let present ages be 3x and 2x, use the past ratio to find x, then project 5 years forward.",
+            "explanation": "(3x-5)/(2x-5) = 5/3 gives x = 10 (ages 30, 20); five years hence 35:25 = 7:5, option b."
+          },
+          {
+            "prompt": "The present age of a man is 3 times the sum of the ages of his two sons. Five years hence, his age will be double the sum of the ages of his sons. What is the present age of the father?",
+            "options": [
+              {
+                "key": "a",
+                "label": "40"
+              },
+              {
+                "key": "b",
+                "label": "45"
+              },
+              {
+                "key": "c",
+                "label": "50"
+              },
+              {
+                "key": "d",
+                "label": "55"
+              }
+            ],
+            "answerKey": "b",
+            "order": 4,
+            "hint": "Let the sons' age-sum be s; write both the present and future relations and solve.",
+            "explanation": "3s + 5 = 2(s + 10) gives s = 15, so father = 3s = 45, option b."
+          },
+          {
+            "prompt": "A is two years older than B who is twice as old as C. If the total of the ages of A, B, and C is 27, then how old is B?",
+            "options": [
+              {
+                "key": "a",
+                "label": "7"
+              },
+              {
+                "key": "b",
+                "label": "8"
+              },
+              {
+                "key": "c",
+                "label": "9"
+              },
+              {
+                "key": "d",
+                "label": "10"
+              }
+            ],
+            "answerKey": "d",
+            "order": 5,
+            "hint": "Express A and C in terms of B, then use the total to solve.",
+            "explanation": "(B+2) + B + B/2 = 27 gives 2.5B = 25, so B = 10, option d."
+          },
+          {
+            "prompt": "Three years ago, the average age of A, B, and C was 27 years and that of B and C 5 years ago was 20 years. What is A's present age?",
+            "options": [
+              {
+                "key": "a",
+                "label": "30"
+              },
+              {
+                "key": "b",
+                "label": "35"
+              },
+              {
+                "key": "c",
+                "label": "40"
+              },
+              {
+                "key": "d",
+                "label": "48"
+              }
+            ],
+            "answerKey": "c",
+            "order": 6,
+            "hint": "Convert the averages to age-sums, shift all to the present, then subtract to isolate A.",
+            "explanation": "Present sum A+B+C = 90 and B+C = 50, so A = 40, option c."
+          },
+          {
+            "prompt": "The product of the present ages of Ankit and Rohan is 750. If the ratio of their present ages is 6:5, what is the difference between their ages?",
+            "options": [
+              {
+                "key": "a",
+                "label": "5"
+              },
+              {
+                "key": "b",
+                "label": "10"
+              },
+              {
+                "key": "c",
+                "label": "15"
+              },
+              {
+                "key": "d",
+                "label": "8"
+              }
+            ],
+            "answerKey": "a",
+            "order": 7,
+            "hint": "Write ages as 6x and 5x; the product fixes x, then take the difference.",
+            "explanation": "30x^2 = 750 gives x = 5, so ages 30 and 25 differ by 5, option a."
+          },
+          {
+            "prompt": "The ratio of the ages of a father and his son 10 years hence will be 5:3, while 10 years ago, it was 3:1. What is the ratio of the age of the son to that of the father today?",
+            "options": [
+              {
+                "key": "a",
+                "label": "1:2"
+              },
+              {
+                "key": "b",
+                "label": "2:1"
+              },
+              {
+                "key": "c",
+                "label": "2:3"
+              },
+              {
+                "key": "d",
+                "label": "1:3"
+              }
+            ],
+            "answerKey": "a",
+            "order": 8,
+            "hint": "Set present ages F, S and form two equations from the future and past ratios.",
+            "explanation": "3F-5S = 20 and F = 3S-20 give S = 20, F = 40, so son:father = 1:2, option a."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "LOGICAL_REASONING",
+    "slug": "logical-reasoning",
+    "name": "Logical Reasoning",
+    "order": 1,
+    "topics": [
+      {
+        "name": "Blood Relation",
+        "slug": "blood-relation",
+        "order": 0,
+        "questions": [
+          {
+            "prompt": "Pointing to a photograph of a boy, Suresh said, \"He is the son of the only son of my mother.\" How is Suresh related to that boy?",
+            "options": [
+              {
+                "key": "a",
+                "label": "Brother"
+              },
+              {
+                "key": "b",
+                "label": "Uncle"
+              },
+              {
+                "key": "c",
+                "label": "Cousin"
+              },
+              {
+                "key": "d",
+                "label": "Father"
+              }
+            ],
+            "answerKey": "d",
+            "order": 0,
+            "hint": "Unpack the phrase from the inside out, replacing each relation with the actual person.",
+            "explanation": "Suresh's mother's only son is Suresh himself, so the boy is Suresh's son. Therefore Suresh is the boy's Father."
+          },
+          {
+            "prompt": "If A is the brother of B\nB is the sister of C\nC is the father of D, how is D related to A?",
+            "options": [
+              {
+                "key": "a",
+                "label": "Nephew"
+              },
+              {
+                "key": "b",
+                "label": "Niece"
+              },
+              {
+                "key": "c",
+                "label": "Cannot be determined"
+              },
+              {
+                "key": "d",
+                "label": "Uncle"
+              }
+            ],
+            "answerKey": "c",
+            "order": 1,
+            "hint": "Sketch the family tree and watch for any gender that the clues never fix.",
+            "explanation": "C is D's parent and A is C's sibling, so D is A's nephew or niece; since D's gender is never given, the exact relation cannot be determined."
+          },
+          {
+            "prompt": "Read the information carefully: A + B means A is the brother of B\nA - B means A is the sister of B\nA * B means A is the father of B.\n\nWhich of the following means that C is the son of M?",
+            "options": [
+              {
+                "key": "a",
+                "label": "M - C * N"
+              },
+              {
+                "key": "b",
+                "label": "M * C + N"
+              },
+              {
+                "key": "c",
+                "label": "M + C - N"
+              },
+              {
+                "key": "d",
+                "label": "M * N - C"
+              }
+            ],
+            "answerKey": "b",
+            "order": 2,
+            "hint": "Decode each symbol option left to right and check the resulting parent-child and gender links.",
+            "explanation": "In 'M * C + N', M is the father of C and C is the brother of N, making C male and a child of M — so C is the son of M."
+          },
+          {
+            "prompt": "A family consists of six members A, B, C, D, E, and F.\nB is the son of C but C is not the mother of B.\nA and C are a married couple.\nE is the brother of C.\nD is the daughter of A.\nF is the brother of B.\nWho is the mother of B?",
+            "options": [
+              {
+                "key": "a",
+                "label": "D"
+              },
+              {
+                "key": "b",
+                "label": "E"
+              },
+              {
+                "key": "c",
+                "label": "A"
+              },
+              {
+                "key": "d",
+                "label": "F"
+              }
+            ],
+            "answerKey": "c",
+            "order": 3,
+            "hint": "List who is male/female first, then pair the married couple against the parents.",
+            "explanation": "C is B's parent but not the mother, so C is the father; since A and C are married, A must be the mother of B."
+          },
+          {
+            "prompt": "Introducing a girl, a man says, \"She is the daughter of the daughter of the wife of my father.\" How is the man related to the girl?",
+            "options": [
+              {
+                "key": "a",
+                "label": "Uncle"
+              },
+              {
+                "key": "b",
+                "label": "Father"
+              },
+              {
+                "key": "c",
+                "label": "Cousin"
+              },
+              {
+                "key": "d",
+                "label": "Nephew"
+              }
+            ],
+            "answerKey": "a",
+            "order": 4,
+            "hint": "Replace 'wife of my father' with a single nearer relation, then resolve outward.",
+            "explanation": "Wife of his father is his mother; her daughter is his sister; the sister's daughter is the girl, making her his niece, so the man is her Uncle."
+          },
+          {
+            "prompt": "A woman introduces a man as the son of the brother of her mother. How is the man related to the woman?",
+            "options": [
+              {
+                "key": "a",
+                "label": "Nephew"
+              },
+              {
+                "key": "b",
+                "label": "Son"
+              },
+              {
+                "key": "c",
+                "label": "Cousin"
+              },
+              {
+                "key": "d",
+                "label": "Uncle"
+              }
+            ],
+            "answerKey": "c",
+            "order": 5,
+            "hint": "Trace 'brother of her mother' to one relation, then take that person's son.",
+            "explanation": "The brother of her mother is her maternal uncle, and that uncle's son is her cousin, so the man is her Cousin."
+          },
+          {
+            "prompt": "P @ Q means P is the husband of Q\nP # Q means P is the sister of Q\nP $Q means P is the son of Q.\n\nIf A # B$ C @ D, how is A related to D?",
+            "options": [
+              {
+                "key": "a",
+                "label": "Mother"
+              },
+              {
+                "key": "b",
+                "label": "Sister"
+              },
+              {
+                "key": "c",
+                "label": "Daughter"
+              },
+              {
+                "key": "d",
+                "label": "Aunt"
+              }
+            ],
+            "answerKey": "c",
+            "order": 6,
+            "hint": "Substitute each symbol and build the chain from A through to D.",
+            "explanation": "C is the husband of D (so D is female/mother), B is C's son, and A is B's sister — thus A is a daughter of C and D, making A the Daughter of D."
+          },
+          {
+            "prompt": "In a family of eight persons, there are two married couples.\nP is the father of R and grandfather of Q.\nS is the mother-in-law of T, who is the wife of R.\nV is the brother of Q and son of T.\nW is the sister of V.\nHow is S related to V?",
+            "options": [
+              {
+                "key": "a",
+                "label": "Mother"
+              },
+              {
+                "key": "b",
+                "label": "Mother-in-law"
+              },
+              {
+                "key": "c",
+                "label": "Aunt"
+              },
+              {
+                "key": "d",
+                "label": "Grandmother"
+              }
+            ],
+            "answerKey": "d",
+            "order": 7,
+            "hint": "Fix the two married couples and the three generations before placing S and V.",
+            "explanation": "S is R's mother (mother-in-law of T, R's wife), and V is the son of R and T; so S is V's grandmother."
+          }
+        ]
+      },
+      {
+        "name": "Coding Decoding",
+        "slug": "coding-decoding",
+        "order": 1,
+        "questions": [
+          {
+            "prompt": "If in a certain language, MYSTIFY is coded as NZTUJGZ, how is NEMESIS coded in that language?",
+            "options": [
+              {
+                "key": "a",
+                "label": "MDLHRHR"
+              },
+              {
+                "key": "b",
+                "label": "OFNFTJT"
+              },
+              {
+                "key": "c",
+                "label": "ODNFSIS"
+              },
+              {
+                "key": "d",
+                "label": "PGOGUKU"
+              }
+            ],
+            "answerKey": "b",
+            "order": 0,
+            "hint": "Compare each letter of code and original to find the constant positional shift.",
+            "explanation": "Each letter shifts +1 (M→N, Y→Z, ...), so NEMESIS becomes O-F-N-F-T-J-T = OFNFTJT."
+          },
+          {
+            "prompt": "In a certain code, TEACHER is written as VGCEJGT. How is CHILDREN written in that code?",
+            "options": [
+              {
+                "key": "a",
+                "label": "EJKNFTGP"
+              },
+              {
+                "key": "b",
+                "label": "EJKNFGTP"
+              },
+              {
+                "key": "c",
+                "label": "EJKNFHTP"
+              },
+              {
+                "key": "d",
+                "label": "EJKNFTGO"
+              }
+            ],
+            "answerKey": "a",
+            "order": 1,
+            "hint": "Find how many places each letter moves in the alphabet from word to code.",
+            "explanation": "Each letter is shifted +2 (T→V, E→G, ...), so CHILDREN becomes E-J-K-N-F-T-G-P = EJKNFTGP."
+          },
+          {
+            "prompt": "If PAINT is coded as 74128 and EXCEL is coded as 93596, then how would you encode ACCEPT?",
+            "options": [
+              {
+                "key": "a",
+                "label": "455978"
+              },
+              {
+                "key": "b",
+                "label": "544978"
+              },
+              {
+                "key": "c",
+                "label": "455378"
+              },
+              {
+                "key": "d",
+                "label": "733961"
+              }
+            ],
+            "answerKey": "a",
+            "order": 2,
+            "hint": "Build a letter-to-digit table from both given words, then read off the target.",
+            "explanation": "From the mappings A=4, C=5, E=9, P=7, T=8, the word ACCEPT codes to 4-5-5-9-7-8 = 455978."
+          },
+          {
+            "prompt": "In a certain code, GO is written as 32, SHE is written as 49. Then how will SOME be written in that code?",
+            "options": [
+              {
+                "key": "a",
+                "label": "56"
+              },
+              {
+                "key": "b",
+                "label": "58"
+              },
+              {
+                "key": "c",
+                "label": "62"
+              },
+              {
+                "key": "d",
+                "label": "64"
+              }
+            ],
+            "answerKey": "a",
+            "order": 3,
+            "hint": "Try the reverse alphabetical position (Z=1...A=26) of each letter and sum them.",
+            "explanation": "Using reverse positions (G=20,O=12 sum 32; S=8,H=19,E=22 sum 49), SOME = 8+12+14+22 = 56."
+          },
+          {
+            "prompt": "In a certain code language, '134' means 'good and tasty'; '478' means 'see good pictures' and '729' means 'pictures are faint'. Which of the following digits stands for 'see'?",
+            "options": [
+              {
+                "key": "a",
+                "label": "9"
+              },
+              {
+                "key": "b",
+                "label": "2"
+              },
+              {
+                "key": "c",
+                "label": "1"
+              },
+              {
+                "key": "d",
+                "label": "8"
+              }
+            ],
+            "answerKey": "d",
+            "order": 4,
+            "hint": "Match shared words across the coded lines to pin down each digit.",
+            "explanation": "'good' is the common 4 (lines 1 and 2) and 'pictures' the common 7 (lines 2 and 3), leaving 8 in '478' for 'see'."
+          },
+          {
+            "prompt": "In a certain code language, SYSTEM is written as SYSMET and NEARER is written as AENRER. How is FRACTION written in that code?",
+            "options": [
+              {
+                "key": "a",
+                "label": "CRAFNOIT"
+              },
+              {
+                "key": "b",
+                "label": "CARFNOIT"
+              },
+              {
+                "key": "c",
+                "label": "CARFTION"
+              },
+              {
+                "key": "d",
+                "label": "FRACNOIT"
+              }
+            ],
+            "answerKey": "b",
+            "order": 5,
+            "hint": "Split the word into halves and see what happens to each block.",
+            "explanation": "Each half of the word is reversed (FRAC→CARF, TION→NOIT), so FRACTION becomes CARFNOIT."
+          },
+          {
+            "prompt": "If 'REASON' is coded as 5 and 'BELIEVED' as 7, what is the code for 'GOVERNMENT'?",
+            "options": [
+              {
+                "key": "a",
+                "label": "10"
+              },
+              {
+                "key": "b",
+                "label": "6"
+              },
+              {
+                "key": "c",
+                "label": "8"
+              },
+              {
+                "key": "d",
+                "label": "9"
+              }
+            ],
+            "answerKey": "d",
+            "order": 6,
+            "hint": "Count something about the word itself rather than shifting letters.",
+            "explanation": "The code equals the number of letters minus one (REASON 6→5, BELIEVED 8→7), so GOVERNMENT with 10 letters gives 9."
+          },
+          {
+            "prompt": "In a certain code language, 'OPERATION' is written as 'NODQBUJPO'. How is 'INVISIBLE' written in that code?",
+            "options": [
+              {
+                "key": "a",
+                "label": "HMUHTJCMF"
+              },
+              {
+                "key": "b",
+                "label": "JOWJTJCMF"
+              },
+              {
+                "key": "c",
+                "label": "HMUHSJCMF"
+              },
+              {
+                "key": "d",
+                "label": "HMUHTJBMF"
+              }
+            ],
+            "answerKey": "a",
+            "order": 7,
+            "hint": "Check the shift letter-by-letter; it may not be the same direction throughout.",
+            "explanation": "The first four letters shift -1 and the last five shift +1, so INVISIBLE becomes H-M-U-H-T-J-C-M-F = HMUHTJCMF."
+          }
+        ]
+      },
+      {
+        "name": "Number Series",
+        "slug": "number-series",
+        "order": 2,
+        "questions": [
+          {
+            "prompt": "Find the next number in the given series: 7, 10, 8, 11, 9, 12, ?",
+            "options": [
+              {
+                "key": "a",
+                "label": "7"
+              },
+              {
+                "key": "b",
+                "label": "10"
+              },
+              {
+                "key": "c",
+                "label": "12"
+              },
+              {
+                "key": "d",
+                "label": "13"
+              }
+            ],
+            "answerKey": "b",
+            "order": 0,
+            "hint": "Separate the alternate terms into two interleaved sub-series.",
+            "explanation": "Odd positions run 7,8,9 and even positions run 10,11,12; the next term is from the even series, giving 10."
+          },
+          {
+            "prompt": "Find the missing term in the series: 2, 9, 28, 65, 126, ?",
+            "options": [
+              {
+                "key": "a",
+                "label": "195"
+              },
+              {
+                "key": "b",
+                "label": "217"
+              },
+              {
+                "key": "c",
+                "label": "216"
+              },
+              {
+                "key": "d",
+                "label": "205"
+              }
+            ],
+            "answerKey": "b",
+            "order": 1,
+            "hint": "Test each term against a simple cube or power pattern.",
+            "explanation": "The terms are n³+1 (1+1, 8+1, 27+1, ...); the next is 6³+1 = 217."
+          },
+          {
+            "prompt": "What will come in place of the question mark (?) in the following number series? 5, 5.5, 12, 37.5, 152, ?",
+            "options": [
+              {
+                "key": "a",
+                "label": "762.5"
+              },
+              {
+                "key": "b",
+                "label": "760"
+              },
+              {
+                "key": "c",
+                "label": "750.5"
+              },
+              {
+                "key": "d",
+                "label": "765"
+              }
+            ],
+            "answerKey": "a",
+            "order": 2,
+            "hint": "Look for a multiply-and-add rule whose factor increases each step.",
+            "explanation": "Pattern is ×1+0.5, ×2+1, ×3+1.5, ×4+2, then ×5+2.5: 152×5+2.5 = 762.5."
+          },
+          {
+            "prompt": "Find the next term in the series: 4, 11, 30, 85, 248, ?",
+            "options": [
+              {
+                "key": "a",
+                "label": "735"
+              },
+              {
+                "key": "b",
+                "label": "740"
+              },
+              {
+                "key": "c",
+                "label": "725"
+              },
+              {
+                "key": "d",
+                "label": "754"
+              }
+            ],
+            "answerKey": "a",
+            "order": 3,
+            "hint": "Try multiplying by a constant and subtracting an increasing odd number.",
+            "explanation": "Each term is 3×previous minus 1,3,5,7,...: 248×3−9 = 735."
+          },
+          {
+            "prompt": "Find the next term in the given series: 10, 14, 24, 42, 70, ?",
+            "options": [
+              {
+                "key": "a",
+                "label": "100"
+              },
+              {
+                "key": "b",
+                "label": "105"
+              },
+              {
+                "key": "c",
+                "label": "110"
+              },
+              {
+                "key": "d",
+                "label": "120"
+              }
+            ],
+            "answerKey": "c",
+            "order": 4,
+            "hint": "Take first and second differences to expose the pattern.",
+            "explanation": "Differences are 4,10,18,28 (second differences rise by 2), so the next difference is 40 and 70+40 = 110."
+          },
+          {
+            "prompt": "What number should come next in the series? 2, 3, 7, 22, 89, ?",
+            "options": [
+              {
+                "key": "a",
+                "label": "446"
+              },
+              {
+                "key": "b",
+                "label": "445"
+              },
+              {
+                "key": "c",
+                "label": "436"
+              },
+              {
+                "key": "d",
+                "label": "456"
+              }
+            ],
+            "answerKey": "a",
+            "order": 5,
+            "hint": "Look for a multiply-by-growing-number-then-add-one rule.",
+            "explanation": "Pattern is ×1+1, ×2+1, ×3+1, ×4+1, then ×5+1: 89×5+1 = 446."
+          },
+          {
+            "prompt": "Find the missing number in the sequence: 7200, 3600, 1200, 300, 60, ?",
+            "options": [
+              {
+                "key": "a",
+                "label": "10"
+              },
+              {
+                "key": "b",
+                "label": "12"
+              },
+              {
+                "key": "c",
+                "label": "15"
+              },
+              {
+                "key": "d",
+                "label": "20"
+              }
+            ],
+            "answerKey": "a",
+            "order": 6,
+            "hint": "Check the ratio between consecutive terms — the divisor may change.",
+            "explanation": "Each term is divided by 2,3,4,5,6 in turn: 60÷6 = 10."
+          },
+          {
+            "prompt": "Look at this series: 8, 4, 4, 6, 12, 30, ... What number should come next?",
+            "options": [
+              {
+                "key": "a",
+                "label": "60"
+              },
+              {
+                "key": "b",
+                "label": "90"
+              },
+              {
+                "key": "c",
+                "label": "75"
+              },
+              {
+                "key": "d",
+                "label": "120"
+              }
+            ],
+            "answerKey": "b",
+            "order": 7,
+            "hint": "Find the multiplying factor between terms; it grows steadily.",
+            "explanation": "Multipliers are ×0.5, ×1, ×1.5, ×2, ×2.5, then ×3: 30×3 = 90."
+          },
+          {
+            "prompt": "Find the next term in the given series: 3, 4, 10, 33, 136, ?",
+            "options": [
+              {
+                "key": "a",
+                "label": "685"
+              },
+              {
+                "key": "b",
+                "label": "690"
+              },
+              {
+                "key": "c",
+                "label": "675"
+              },
+              {
+                "key": "d",
+                "label": "705"
+              }
+            ],
+            "answerKey": "a",
+            "order": 8,
+            "hint": "Try a multiply-by-increasing-number-plus-that-number rule.",
+            "explanation": "Pattern is ×1+1, ×2+2, ×3+3, ×4+4, then ×5+5: 136×5+5 = 685."
+          },
+          {
+            "prompt": "Find the missing term in the intertwined series: 11, 10, 13, 13, 16, 18, 20, 25, 25, ?",
+            "options": [
+              {
+                "key": "a",
+                "label": "34"
+              },
+              {
+                "key": "b",
+                "label": "32"
+              },
+              {
+                "key": "c",
+                "label": "36"
+              },
+              {
+                "key": "d",
+                "label": "30"
+              }
+            ],
+            "answerKey": "a",
+            "order": 9,
+            "hint": "It is intertwined — split into two alternating series and extend each.",
+            "explanation": "Even-position terms run 10,13,18,25 with differences 3,5,7; the next difference 9 gives 25+9 = 34."
+          }
+        ]
+      },
+      {
+        "name": "Direction Sense",
+        "slug": "direction-sense",
+        "order": 3,
+        "questions": [
+          {
+            "prompt": "A man walks 5 km towards the South and then turns to the right. After walking 3 km, he turns to the left and walks 5 km. In which direction is he from the starting place?",
+            "options": [
+              {
+                "key": "a",
+                "label": "West"
+              },
+              {
+                "key": "b",
+                "label": "South"
+              },
+              {
+                "key": "c",
+                "label": "North-East"
+              },
+              {
+                "key": "d",
+                "label": "South-West"
+              }
+            ],
+            "answerKey": "d",
+            "order": 0,
+            "hint": "Draw the path on graph paper, updating facing after each turn.",
+            "explanation": "He ends up 10 km south and 3 km west of the start, so his net direction is South-West."
+          },
+          {
+            "prompt": "Rohan walks 10 km towards North. From there, he walks 6 km towards South. Then, he walks 3 km towards East. How far and in which direction is he with reference to his starting point?",
+            "options": [
+              {
+                "key": "a",
+                "label": "5 km North-East"
+              },
+              {
+                "key": "b",
+                "label": "7 km East"
+              },
+              {
+                "key": "c",
+                "label": "5 km West"
+              },
+              {
+                "key": "d",
+                "label": "7 km West"
+              }
+            ],
+            "answerKey": "a",
+            "order": 1,
+            "hint": "Track net north-south and east-west displacement, then use Pythagoras.",
+            "explanation": "Net is 4 km north (10−6) and 3 km east; the distance is √(16+9)=5 km in the North-East direction."
+          },
+          {
+            "prompt": "A man is facing North-West. He turns 90 degrees in the clockwise direction, then 180 degrees in the anticlockwise direction, and another 90 degrees in the same direction. Which direction is he facing now?",
+            "options": [
+              {
+                "key": "a",
+                "label": "South"
+              },
+              {
+                "key": "b",
+                "label": "South-West"
+              },
+              {
+                "key": "c",
+                "label": "South-East"
+              },
+              {
+                "key": "d",
+                "label": "East"
+              }
+            ],
+            "answerKey": "c",
+            "order": 2,
+            "hint": "Convert each turn to degrees on a compass and add signs carefully.",
+            "explanation": "From NW: +90° CW to NE, −180° to SW, −90° more to SE — he faces South-East."
+          },
+          {
+            "prompt": "One morning after sunrise, Vimal started to walk. During this walking he met Stephen who was coming from the opposite direction. Vimal watched that the shadow of Stephen fell exactly to his right. To which direction was Vimal facing?",
+            "options": [
+              {
+                "key": "a",
+                "label": "East"
+              },
+              {
+                "key": "b",
+                "label": "West"
+              },
+              {
+                "key": "c",
+                "label": "South"
+              },
+              {
+                "key": "d",
+                "label": "North"
+              }
+            ],
+            "answerKey": "c",
+            "order": 3,
+            "hint": "After sunrise the sun is in the east, so shadows point west; use that to fix facing.",
+            "explanation": "Shadows fall west; if that west shadow is to Vimal's right, then his right is west, so he faces South."
+          },
+          {
+            "prompt": "Town D is 13 km towards the East of town A. Town C is 8 km towards the North of town D. Town B is 7 km towards the West of town C. Town E is 8 km towards the South of town B. How far and in which direction is town E from town A?",
+            "options": [
+              {
+                "key": "a",
+                "label": "6 km East"
+              },
+              {
+                "key": "b",
+                "label": "7 km West"
+              },
+              {
+                "key": "c",
+                "label": "13 km North"
+              },
+              {
+                "key": "d",
+                "label": "6 km West"
+              }
+            ],
+            "answerKey": "a",
+            "order": 4,
+            "hint": "Plot each town on a coordinate grid and read off E's position relative to A.",
+            "explanation": "Coordinates give A(0,0) and E(6,0), so town E is 6 km East of town A."
+          },
+          {
+            "prompt": "A clock is so placed that at 12 noon its minute hand points towards North-East. In which direction does its hour hand point at 1:30 PM?",
+            "options": [
+              {
+                "key": "a",
+                "label": "North"
+              },
+              {
+                "key": "b",
+                "label": "South"
+              },
+              {
+                "key": "c",
+                "label": "East"
+              },
+              {
+                "key": "d",
+                "label": "South-East"
+              }
+            ],
+            "answerKey": "c",
+            "order": 5,
+            "hint": "First fix which compass direction the 12-mark points, then rotate for the hour hand.",
+            "explanation": "The 12-mark points NE; at 1:30 the hour hand is 45° clockwise from 12, landing at NE+45° = East."
+          },
+          {
+            "prompt": "Rahul put his timepiece on the table in such a way that at 6 P.M. the hour hand points to North. In which direction will the minute hand point at 9:15 P.M.?",
+            "options": [
+              {
+                "key": "a",
+                "label": "South-East"
+              },
+              {
+                "key": "b",
+                "label": "South"
+              },
+              {
+                "key": "c",
+                "label": "North"
+              },
+              {
+                "key": "d",
+                "label": "West"
+              }
+            ],
+            "answerKey": "d",
+            "order": 6,
+            "hint": "Anchor the dial from the given hand, then find where the asked hand sits.",
+            "explanation": "If the 6-mark is North then the 12-mark is South; at 9:15 the minute hand is at the 3-mark, 90° clockwise from 12 = West."
+          },
+          {
+            "prompt": "A rat runs 20m towards East and turns to right, runs 10m and turns to right, runs 9m and again turns to left, runs 5m and then turns to left, runs 12m and finally turns to left and runs 6m. Now, which direction is the rat facing?",
+            "options": [
+              {
+                "key": "a",
+                "label": "East"
+              },
+              {
+                "key": "b",
+                "label": "North"
+              },
+              {
+                "key": "c",
+                "label": "West"
+              },
+              {
+                "key": "d",
+                "label": "South"
+              }
+            ],
+            "answerKey": "b",
+            "order": 7,
+            "hint": "Update the facing direction at every turn; only the final heading matters.",
+            "explanation": "Starting east, the turns lead to facings S, W, S, E, then a final left turn to North."
+          },
+          {
+            "prompt": "One morning, a boy was doing Yoga with his head down and legs up. If his face is towards the West, in which direction will his left hand be?",
+            "options": [
+              {
+                "key": "a",
+                "label": "North"
+              },
+              {
+                "key": "b",
+                "label": "South"
+              },
+              {
+                "key": "c",
+                "label": "East"
+              },
+              {
+                "key": "d",
+                "label": "West"
+              }
+            ],
+            "answerKey": "a",
+            "order": 8,
+            "hint": "Picture the inverted (headstand) body and note that left and right swap.",
+            "explanation": "Upright facing west, the left hand points south; inverted in a headstand the sides flip, so the left hand points North."
+          },
+          {
+            "prompt": "A child is looking for his father. He went 90 metres in the East before turning to his right. He went 20 metres before turning to his right again to look for his father at his uncle's place 30 metres from this point. His father was not there. From here he went 100 metres to the North before meeting his father in a street. How far did the son meet his father from the starting point?",
+            "options": [
+              {
+                "key": "a",
+                "label": "80 m"
+              },
+              {
+                "key": "b",
+                "label": "100 m"
+              },
+              {
+                "key": "c",
+                "label": "140 m"
+              },
+              {
+                "key": "d",
+                "label": "260 m"
+              }
+            ],
+            "answerKey": "b",
+            "order": 9,
+            "hint": "Plot every leg as coordinates and apply Pythagoras between start and end.",
+            "explanation": "He ends at (60,80) from start (0,0); distance = √(60²+80²) = 100 m."
+          }
+        ]
+      },
+      {
+        "name": "Seating arrangement",
+        "slug": "seating-arrangement",
+        "order": 4,
+        "questions": [
+          {
+            "prompt": "A, B, C, D, and E are friends sitting in a row facing north.\nA is sitting at one of the ends.\nB is sitting to the right of C.\nD is sitting between B and E.\nC is not sitting at any of the ends.\nWho is sitting exactly in the middle?",
+            "options": [
+              {
+                "key": "a",
+                "label": "C"
+              },
+              {
+                "key": "b",
+                "label": "B"
+              },
+              {
+                "key": "c",
+                "label": "D"
+              },
+              {
+                "key": "d",
+                "label": "E"
+              }
+            ],
+            "answerKey": "b",
+            "order": 0,
+            "hint": "Draw five seats, place the end and middle constraints first, then fit the block.",
+            "explanation": "The valid order is A, C, B, D, E (A at an end, C beside B, D between B and E), so B sits exactly in the middle."
+          },
+          {
+            "prompt": "Six people A, B, C, D, E, and F are sitting around a circular table facing the centre.\nA is to the immediate left of B.\nC is between D and E.\nF is to the immediate right of E.\nWho is to the immediate left of D?",
+            "options": [
+              {
+                "key": "a",
+                "label": "A"
+              },
+              {
+                "key": "b",
+                "label": "C"
+              },
+              {
+                "key": "c",
+                "label": "F"
+              },
+              {
+                "key": "d",
+                "label": "E"
+              }
+            ],
+            "answerKey": "a",
+            "order": 1,
+            "hint": "Draw the circle; remember for people facing the centre, left and right are mirrored.",
+            "explanation": "The clockwise order works out to D, C, E, F, B, A, placing A immediately to the left of D."
+          },
+          {
+            "prompt": "Ten people are sitting in two parallel rows containing five people each.\nRow 1 consists of Q, R, S, T, and P facing south.\nRow 2 consists of A, B, C, D, and E facing north.\nR sits exactly in the middle of the row.\nA sits second to the left of the person who faces R.\nOnly one person sits between A and B.\nQ sits second to the right of the person who faces B.\nP sits at an extreme end and faces D.\nC sits to the immediate left of D.\nS is not adjacent to P.\nWho faces S?",
+            "options": [
+              {
+                "key": "a",
+                "label": "E"
+              },
+              {
+                "key": "b",
+                "label": "A"
+              },
+              {
+                "key": "c",
+                "label": "C"
+              },
+              {
+                "key": "d",
+                "label": "B"
+              }
+            ],
+            "answerKey": "a",
+            "order": 2,
+            "hint": "Draw two facing rows; fix R's middle seat, then chain the 'faces' clues across rows.",
+            "explanation": "Working through the clues places S in row 1 opposite E in row 2, so E faces S."
+          },
+          {
+            "prompt": "Eight friends P, Q, R, S, T, U, V, and W are sitting around a square table.\nFour sit at the corners facing the center, and four sit in the middle of the sides facing outside.\nP, who faces the center, sits third to the right of V.\nT, who faces the center, is not an immediate neighbor of V.\nOnly one person sits between V and W.\nS sits second to the right of Q.\nQ faces the center.\nR is not an immediate neighbor of P.\nWho sits second to the left of R?",
+            "options": [
+              {
+                "key": "a",
+                "label": "P"
+              },
+              {
+                "key": "b",
+                "label": "V"
+              },
+              {
+                "key": "c",
+                "label": "W"
+              },
+              {
+                "key": "d",
+                "label": "U"
+              }
+            ],
+            "answerKey": "d",
+            "order": 3,
+            "hint": "Mark corners (face in) and mid-sides (face out) separately, since their left/right differ.",
+            "explanation": "Placing P, V, W, Q, S and R by the clues leaves U two seats to the left of R."
+          },
+          {
+            "prompt": "Seven people A, B, C, D, E, F, and G are sitting in a straight line facing north.\nEach of them has a different profession: Doctor, Engineer, Teacher, Pilot, Lawyer, Manager, and Architect.\nD sits third to the right of the Teacher.\nThe Lawyer sits second to the left of D.\nOnly one person sits between the Lawyer and the Architect.\nA sits immediate right of the Architect.\nC is a Manager and sits at one of the extreme ends.\nB sits third to the left of F, who is a Pilot.\nE does not sit adjacent to D.\nThe Doctor sits to the immediate left of the Engineer.\nWhat is the profession of A?",
+            "options": [
+              {
+                "key": "a",
+                "label": "Lawyer"
+              },
+              {
+                "key": "b",
+                "label": "Teacher"
+              },
+              {
+                "key": "c",
+                "label": "Doctor"
+              },
+              {
+                "key": "d",
+                "label": "Architect"
+              }
+            ],
+            "answerKey": "b",
+            "order": 4,
+            "hint": "Anchor D, the Teacher, Lawyer and Architect by position first, then slot the rest.",
+            "explanation": "The Architect sits one left of the Teacher and A is immediately right of the Architect, so A occupies the Teacher's seat — A is the Teacher."
+          },
+          {
+            "prompt": "Eight persons J, K, L, M, N, O, P, and Q are sitting around a circular table facing the center.\nL sits third to the right of K.\nN sits second to the left of L.\nP sits to the immediate right of N.\nQ sits second to the right of P.\nM sits to the immediate right of Q.\nO is not an immediate neighbor of K.\nWho sits opposite to M?",
+            "options": [
+              {
+                "key": "a",
+                "label": "J"
+              },
+              {
+                "key": "b",
+                "label": "N"
+              },
+              {
+                "key": "c",
+                "label": "K"
+              },
+              {
+                "key": "d",
+                "label": "P"
+              }
+            ],
+            "answerKey": "b",
+            "order": 5,
+            "hint": "Place K first, then follow the right/left chain around the circle and read the opposite seat.",
+            "explanation": "The order gives K,N,P,L,Q,M,O,J; M's diametrically opposite seat is held by N."
+          }
+        ]
+      },
+      {
+        "name": "Clock & Calendars",
+        "slug": "clock-calendars",
+        "order": 5,
+        "questions": [
+          {
+            "prompt": "What is the angle between the hour hand and the minute hand of a clock when the time is 3:40?",
+            "options": [
+              {
+                "key": "a",
+                "label": "120°"
+              },
+              {
+                "key": "b",
+                "label": "125°"
+              },
+              {
+                "key": "c",
+                "label": "130°"
+              },
+              {
+                "key": "d",
+                "label": "135°"
+              }
+            ],
+            "answerKey": "c",
+            "order": 0,
+            "hint": "Compute each hand's angle from 12 separately, then take the difference.",
+            "explanation": "Hour hand = 110° (90+20) and minute hand = 240°; the difference is 130°."
+          },
+          {
+            "prompt": "At what time between 4 and 5 o'clock will the hands of a watch point in opposite directions?",
+            "options": [
+              {
+                "key": "a",
+                "label": "45 min. past 4"
+              },
+              {
+                "key": "b",
+                "label": "40 min. past 4"
+              },
+              {
+                "key": "c",
+                "label": "50 4/11 min. past 4"
+              },
+              {
+                "key": "d",
+                "label": "54 6/11 min. past 4"
+              }
+            ],
+            "answerKey": "d",
+            "order": 1,
+            "hint": "Set the gap between hands to 180° and solve the relative-speed equation.",
+            "explanation": "Solving 6m − (120+0.5m) = 180 gives m = 54 6/11, i.e. 54 6/11 minutes past 4."
+          },
+          {
+            "prompt": "At what time between 5:30 and 6:00 will the hands of a clock be at right angles?",
+            "options": [
+              {
+                "key": "a",
+                "label": "43 5/11 min. past 5"
+              },
+              {
+                "key": "b",
+                "label": "43 7/11 min. past 5"
+              },
+              {
+                "key": "c",
+                "label": "40 min. past 5"
+              },
+              {
+                "key": "d",
+                "label": "45 min. past 5"
+              }
+            ],
+            "answerKey": "b",
+            "order": 2,
+            "hint": "Set the hands' separation to 90° (minute ahead of hour) and solve for minutes past 5.",
+            "explanation": "Solving 5.5m − 150 = 90 gives m = 43 7/11, which lies between 5:30 and 6:00."
+          },
+          {
+            "prompt": "A watch which gains uniformly is 2 minutes low at noon on Monday and is 4 min 48 sec fast at 2 p.m. on the following Monday. When was it correct?",
+            "options": [
+              {
+                "key": "a",
+                "label": "Tuesday 2 p.m."
+              },
+              {
+                "key": "b",
+                "label": "Wednesday 2 p.m."
+              },
+              {
+                "key": "c",
+                "label": "Thursday 2 p.m."
+              },
+              {
+                "key": "d",
+                "label": "Wednesday 1 p.m."
+              }
+            ],
+            "answerKey": "b",
+            "order": 3,
+            "hint": "Find total time and total gain, then prorate to the moment the error is zero.",
+            "explanation": "Over 170 hours the watch gains 6.8 min; to erase the initial 2-min lag it needs 170×(2/6.8)=50 h after Monday noon = Wednesday 2 p.m."
+          },
+          {
+            "prompt": "What was the day of the week on 15th August 1947?",
+            "options": [
+              {
+                "key": "a",
+                "label": "Saturday"
+              },
+              {
+                "key": "b",
+                "label": "Friday"
+              },
+              {
+                "key": "c",
+                "label": "Thursday"
+              },
+              {
+                "key": "d",
+                "label": "Wednesday"
+              }
+            ],
+            "answerKey": "b",
+            "order": 4,
+            "hint": "Use odd-days counting from a known reference year up to the given date.",
+            "explanation": "Counting odd days up to 15 August 1947 yields Friday."
+          },
+          {
+            "prompt": "If 1st January 2004 was a Thursday, what day of the week was 1st January 2005?",
+            "options": [
+              {
+                "key": "a",
+                "label": "Friday"
+              },
+              {
+                "key": "b",
+                "label": "Saturday"
+              },
+              {
+                "key": "c",
+                "label": "Sunday"
+              },
+              {
+                "key": "d",
+                "label": "Monday"
+              }
+            ],
+            "answerKey": "b",
+            "order": 5,
+            "hint": "Add the number of odd days in the intervening year, noting whether it is a leap year.",
+            "explanation": "2004 is a leap year (2 odd days), so Thursday + 2 = Saturday for 1 Jan 2005."
+          },
+          {
+            "prompt": "The calendar for the year 2007 will be exactly the same as for the year",
+            "options": [
+              {
+                "key": "a",
+                "label": "2014"
+              },
+              {
+                "key": "b",
+                "label": "2016"
+              },
+              {
+                "key": "c",
+                "label": "2017"
+              },
+              {
+                "key": "d",
+                "label": "2018"
+              }
+            ],
+            "answerKey": "d",
+            "order": 6,
+            "hint": "Accumulate odd days year by year until they total zero and the leap-type matches.",
+            "explanation": "The cumulative odd days reset so that 2007's calendar repeats in 2018."
+          },
+          {
+            "prompt": "On what dates of April 2001 did Wednesday fall?",
+            "options": [
+              {
+                "key": "a",
+                "label": "1st, 8th, 15th, 22nd, 29th"
+              },
+              {
+                "key": "b",
+                "label": "2nd, 9th, 16th, 23rd, 30th"
+              },
+              {
+                "key": "c",
+                "label": "3rd, 10th, 17th, 24th"
+              },
+              {
+                "key": "d",
+                "label": "4th, 11th, 18th, 25th"
+              }
+            ],
+            "answerKey": "d",
+            "order": 7,
+            "hint": "Find the weekday of 1 April 2001, then list that weekday's dates every 7 days.",
+            "explanation": "1 April 2001 was a Sunday, so Wednesday fell on the 4th, 11th, 18th and 25th."
+          }
+        ]
+      },
+      {
+        "name": "Inequalities",
+        "slug": "inequalities",
+        "order": 6,
+        "questions": [
+          {
+            "prompt": "Solve the inequality for x: 3x - 5 < 4x + 2.",
+            "options": [
+              {
+                "key": "a",
+                "label": "x < -7"
+              },
+              {
+                "key": "b",
+                "label": "x > -7"
+              },
+              {
+                "key": "c",
+                "label": "x < 7"
+              },
+              {
+                "key": "d",
+                "label": "x > 7"
+              }
+            ],
+            "answerKey": "b",
+            "order": 0,
+            "hint": "Collect x terms on one side; no sign flip is needed here.",
+            "explanation": "3x−5 < 4x+2 simplifies to −7 < x, i.e. x > −7."
+          },
+          {
+            "prompt": "Find the range of values of x that satisfies the absolute value inequality: |2x - 3| < 5.",
+            "options": [
+              {
+                "key": "a",
+                "label": "1 < x < 4"
+              },
+              {
+                "key": "b",
+                "label": "4 < x < 1"
+              },
+              {
+                "key": "c",
+                "label": "x < -1 or x > 4"
+              },
+              {
+                "key": "d",
+                "label": "1 <= x <= 4"
+              }
+            ],
+            "answerKey": "a",
+            "order": 1,
+            "hint": "Rewrite |expr| < k as the double inequality −k < expr < k and solve.",
+            "explanation": "−5 < 2x−3 < 5 gives −2 < 2x < 8, so the bounded solution is −1 < x < 4 (the single finite interval)."
+          },
+          {
+            "prompt": "Solve the quadratic inequality: x^2 - 5x + 6 <= 0.",
+            "options": [
+              {
+                "key": "a",
+                "label": "x <= 2 or x >= 3"
+              },
+              {
+                "key": "b",
+                "label": "2 <= x <= 3"
+              },
+              {
+                "key": "c",
+                "label": "3 <= x <= -2"
+              },
+              {
+                "key": "d",
+                "label": "2 < x < 3"
+              }
+            ],
+            "answerKey": "b",
+            "order": 2,
+            "hint": "Factor the quadratic and test the sign between and outside the roots.",
+            "explanation": "(x−2)(x−3) ≤ 0 holds between the roots, giving 2 ≤ x ≤ 3."
+          },
+          {
+            "prompt": "Find the solution set for the rational inequality: (x - 1) / (x + 2) > 0.",
+            "options": [
+              {
+                "key": "a",
+                "label": "2 < x < 1"
+              },
+              {
+                "key": "b",
+                "label": "x < -2 or x > 1"
+              },
+              {
+                "key": "c",
+                "label": "x > 1"
+              },
+              {
+                "key": "d",
+                "label": "x < 1"
+              }
+            ],
+            "answerKey": "b",
+            "order": 3,
+            "hint": "A fraction is positive when numerator and denominator share the same sign; check each interval.",
+            "explanation": "(x−1)/(x+2) > 0 when both factors are positive (x>1) or both negative (x<−2), so x < −2 or x > 1."
+          },
+          {
+            "prompt": "The cost of producing x units of a product is given by C = 20x + 500, and the revenue from selling x units is R = 40x. What is the minimum whole number of units that must be sold to make a strict profit?",
+            "options": [
+              {
+                "key": "a",
+                "label": "25"
+              },
+              {
+                "key": "b",
+                "label": "26"
+              },
+              {
+                "key": "c",
+                "label": "50"
+              },
+              {
+                "key": "d",
+                "label": "24"
+              }
+            ],
+            "answerKey": "b",
+            "order": 4,
+            "hint": "Set revenue strictly greater than cost and solve for the smallest whole x.",
+            "explanation": "40x > 20x+500 gives x > 25, so the minimum whole number of units is 26."
+          }
+        ]
+      },
+      {
+        "name": "Assertion and Reasoning",
+        "slug": "assertion-and-reasoning",
+        "order": 7,
+        "questions": [
+          {
+            "prompt": "Statements:\n1. All Cats are Dogs.\n2. Some Dogs are Rats.\n\nConclusions:\nI. Some Cats are Rats.\nII. Some Rats are Dogs.",
+            "options": [
+              {
+                "key": "a",
+                "label": "Only Conclusion I follows"
+              },
+              {
+                "key": "b",
+                "label": "Only Conclusion II follows"
+              },
+              {
+                "key": "c",
+                "label": "Both Conclusions I and II follow"
+              },
+              {
+                "key": "d",
+                "label": "Neither Conclusion I nor II follows"
+              }
+            ],
+            "answerKey": "b",
+            "order": 0,
+            "hint": "Draw a Venn diagram and test each conclusion for being necessarily true.",
+            "explanation": "'Some Dogs are Rats' converts to 'Some Rats are Dogs' (II valid), but cats need not overlap the rats, so only Conclusion II follows."
+          },
+          {
+            "prompt": "Statements:\n1. All Pens are Pencils.\n2. Some Pencils are Erasers.\n3. No Eraser is a Marker.\n\nConclusions:\nI. Some Pens being Erasers is a possibility.\nII. No Marker is a Pencil.",
+            "options": [
+              {
+                "key": "a",
+                "label": "Only Conclusion I follows"
+              },
+              {
+                "key": "b",
+                "label": "Only Conclusion II follows"
+              },
+              {
+                "key": "c",
+                "label": "Either Conclusion I or II follows"
+              },
+              {
+                "key": "d",
+                "label": "Neither Conclusion I nor II follows"
+              }
+            ],
+            "answerKey": "a",
+            "order": 1,
+            "hint": "Use a Venn diagram and distinguish definite conclusions from mere possibilities.",
+            "explanation": "Pens (within pencils) can possibly overlap erasers, so I follows; but pencils may still be markers, so II is not certain — only Conclusion I follows."
+          },
+          {
+            "prompt": "Statements:\n1. Only a few Laptops are Computers.\n2. All Computers are Mobiles.\n\nConclusions:\nI. All Laptops being Computers is a possibility.\nII. Some Laptops are Mobiles.",
+            "options": [
+              {
+                "key": "a",
+                "label": "Only Conclusion I follows"
+              },
+              {
+                "key": "b",
+                "label": "Only Conclusion II follows"
+              },
+              {
+                "key": "c",
+                "label": "Both Conclusions I and II follow"
+              },
+              {
+                "key": "d",
+                "label": "Neither Conclusion I nor II follows"
+              }
+            ],
+            "answerKey": "b",
+            "order": 2,
+            "hint": "Note that 'only a few' means some are and some are NOT; then test each claim.",
+            "explanation": "'Only a few Laptops are Computers' means some laptops are not computers, so 'all laptops being computers' is impossible (I fails); those laptops that are computers are mobiles, so II follows."
+          },
+          {
+            "prompt": "Statements:\n1. Some Trees are Branches.\n2. Some Branches are Leaves.\n\nConclusions:\nI. Some Trees are Leaves.\nII. No Tree is a Leaf.",
+            "options": [
+              {
+                "key": "a",
+                "label": "Only Conclusion I follows"
+              },
+              {
+                "key": "b",
+                "label": "Only Conclusion II follows"
+              },
+              {
+                "key": "c",
+                "label": "Either Conclusion I or II follows"
+              },
+              {
+                "key": "d",
+                "label": "Both Conclusions I and II follow"
+              }
+            ],
+            "answerKey": "c",
+            "order": 3,
+            "hint": "Two 'some' premises give no definite link; check if the conclusions are complementary.",
+            "explanation": "Neither 'Some Trees are Leaves' nor 'No Tree is a Leaf' is certain, but together they cover all cases, so Either I or II follows."
+          },
+          {
+            "prompt": "Statements:\n1. Some Alpha are Beta.\n2. All Beta are Gamma.\n3. No Gamma is Delta.\n\nConclusions:\nI. Some Alpha are not Delta.\nII. All Beta being Alpha is a possibility.",
+            "options": [
+              {
+                "key": "a",
+                "label": "Only Conclusion I follows"
+              },
+              {
+                "key": "b",
+                "label": "Only Conclusion II follows"
+              },
+              {
+                "key": "c",
+                "label": "Both Conclusions I and II follow"
+              },
+              {
+                "key": "d",
+                "label": "Neither Conclusion I nor II follows"
+              }
+            ],
+            "answerKey": "c",
+            "order": 4,
+            "hint": "Chain the definite premises for conclusion I and test the possibility for II.",
+            "explanation": "Some Alpha are Beta→Gamma→not Delta, so 'Some Alpha are not Delta' follows (I); and nothing forbids all Beta being Alpha, so that possibility holds (II) — both follow."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "kind": "PUZZLE",
+    "slug": "puzzles",
+    "name": "Puzzles",
+    "order": 2,
+    "topics": [
+      {
+        "name": "Puzzles",
+        "slug": "puzzles",
+        "order": 0,
+        "questions": [
+          {
+            "prompt": "4 people cross a bridge at night with a torch. Bridge holds max 2 people. Speeds are 1, 2, 5, 10 mins. Minimum time to cross?",
+            "options": [
+              {
+                "key": "a",
+                "label": "19 mins"
+              },
+              {
+                "key": "b",
+                "label": "21 mins"
+              },
+              {
+                "key": "c",
+                "label": "17 mins"
+              },
+              {
+                "key": "d",
+                "label": "18 mins"
+              }
+            ],
+            "answerKey": "c",
+            "order": 0,
+            "hint": "Send the two slowest together; let the fastest shuttle the torch and compare that strategy against ferrying everyone individually.",
+            "explanation": "1&2 cross (2), 1 returns (1), 5&10 cross (10), 2 returns (2), 1&2 cross (2): total 2+1+10+2+2 = 17 mins. Pairing the two slowest together beats letting the fastest escort each one."
+          },
+          {
+            "prompt": "You have 8 marbles. 7 are same weight, 1 is heavy. Minimum weighings using a balance scale to find the heavy one?",
+            "options": [
+              {
+                "key": "a",
+                "label": "3"
+              },
+              {
+                "key": "b",
+                "label": "2"
+              },
+              {
+                "key": "c",
+                "label": "4"
+              },
+              {
+                "key": "d",
+                "label": "1"
+              }
+            ],
+            "answerKey": "b",
+            "order": 1,
+            "hint": "A balance scale gives three outcomes per weighing, so split into three groups rather than just two halves.",
+            "explanation": "Weigh 3 vs 3: if balanced, the heavy one is in the remaining 2 (weigh those, 1 more). If unbalanced, take the heavier 3 and weigh 1 vs 1. Either path finds it in 2 weighings."
+          },
+          {
+            "prompt": "A lily pad doubles every day. If it completely covers the pond in 30 days, on which day was it half-covered?",
+            "options": [
+              {
+                "key": "a",
+                "label": "Day 15"
+              },
+              {
+                "key": "b",
+                "label": "Day 29"
+              },
+              {
+                "key": "c",
+                "label": "Day 28"
+              },
+              {
+                "key": "d",
+                "label": "Day 16"
+              }
+            ],
+            "answerKey": "b",
+            "order": 2,
+            "hint": "Doubling each day means working backward: the day before 'full' is one halving step.",
+            "explanation": "If the pad doubles daily and is full on day 30, then the day before it must have been half: day 29."
+          },
+          {
+            "prompt": "25 horses, 5 tracks. Find the top 3 fastest horses. Minimum races needed? (No stopwatch)",
+            "options": [
+              {
+                "key": "a",
+                "label": "5"
+              },
+              {
+                "key": "b",
+                "label": "6"
+              },
+              {
+                "key": "c",
+                "label": "7"
+              },
+              {
+                "key": "d",
+                "label": "8"
+              }
+            ],
+            "answerKey": "c",
+            "order": 3,
+            "hint": "Race in groups first, then realize many horses can be eliminated by their group's standings before the final race.",
+            "explanation": "5 races of 5 group everyone (5), then race the 5 group-winners to rank them (1). Only horses that could still be top-3 (based on those standings) run one final race (1): total 7 races."
+          },
+          {
+            "prompt": "100 doors initially closed. Pass 1 toggles all, Pass 2 toggles every 2nd, etc. How many remain open after 100 passes?",
+            "options": [
+              {
+                "key": "a",
+                "label": "10"
+              },
+              {
+                "key": "b",
+                "label": "50"
+              },
+              {
+                "key": "c",
+                "label": "100"
+              },
+              {
+                "key": "d",
+                "label": "1"
+              }
+            ],
+            "answerKey": "a",
+            "order": 4,
+            "hint": "A door's final state depends on how many divisors its number has; ask which numbers get toggled an odd number of times.",
+            "explanation": "Door n is toggled once per divisor, so it ends open only if it has an odd number of divisors, i.e. a perfect square. Squares 1,4,9,16,25,36,49,64,81,100 give 10 open doors."
+          },
+          {
+            "prompt": "2 identical eggs, 100-story building. Minimum drops in worst-case to find highest safe floor?",
+            "options": [
+              {
+                "key": "a",
+                "label": "10"
+              },
+              {
+                "key": "b",
+                "label": "14"
+              },
+              {
+                "key": "c",
+                "label": "16"
+              },
+              {
+                "key": "d",
+                "label": "20"
+              }
+            ],
+            "answerKey": "b",
+            "order": 5,
+            "hint": "First egg samples in decreasing step sizes; choose the step so the worst-case total drops stays constant.",
+            "explanation": "Drop the first egg at floors 14, 27, 39... (steps shrinking by 1). The worst case is constant at 14 drops, since 14+13+...+1 = 105 ≥ 100 covers every floor."
+          },
+          {
+            "prompt": "How many times do the hour and minute hands of a clock overlap in 24 hours?",
+            "options": [
+              {
+                "key": "a",
+                "label": "24 times"
+              },
+              {
+                "key": "b",
+                "label": "22 times"
+              },
+              {
+                "key": "c",
+                "label": "12 times"
+              },
+              {
+                "key": "d",
+                "label": "11 times"
+              }
+            ],
+            "answerKey": "b",
+            "order": 6,
+            "hint": "Count overlaps in 12 hours first, then double; watch for the case where two clock cycles share a boundary.",
+            "explanation": "The hands overlap 11 times in 12 hours (not 12, because around 11:00 the next overlap lands at 12:00). Over 24 hours that gives 22 overlaps."
+          },
+          {
+            "prompt": "3 switches outside, 3 bulbs inside. You can enter the room only once. What is the restriction on entries to check which switch maps to which bulb?",
+            "options": [
+              {
+                "key": "a",
+                "label": "2 entries"
+              },
+              {
+                "key": "b",
+                "label": "1 entry"
+              },
+              {
+                "key": "c",
+                "label": "3 entries"
+              },
+              {
+                "key": "d",
+                "label": "Not possible"
+              }
+            ],
+            "answerKey": "b",
+            "order": 7,
+            "hint": "You only need to enter once if you use a property of a bulb other than light, like a second observable state.",
+            "explanation": "Turn switch 1 on a while then off, turn switch 2 on, leave 3 off, then enter once. Lit bulb = switch 2, warm-but-off = switch 1, cold-and-off = switch 3, so just 1 entry is needed."
+          },
+          {
+            "prompt": "A snail is in a 30ft well. Climbs 3ft a day, slips 2ft at night. Days to reach the top?",
+            "options": [
+              {
+                "key": "a",
+                "label": "30 days"
+              },
+              {
+                "key": "b",
+                "label": "29 days"
+              },
+              {
+                "key": "c",
+                "label": "28 days"
+              },
+              {
+                "key": "d",
+                "label": "27 days"
+              }
+            ],
+            "answerKey": "c",
+            "order": 8,
+            "hint": "Track net daily gain, but handle the final day specially: once it reaches the top it can't slip back.",
+            "explanation": "Net gain is 1ft/day, but on the day it reaches the top it doesn't slip. After day 27 it's at 27ft; on day 28 it climbs 3ft to 30ft and exits. Answer: 28 days."
+          },
+          {
+            "prompt": "3 ants on 3 corners of an equilateral triangle move randomly along edges. Probability they do not collide?",
+            "options": [
+              {
+                "key": "a",
+                "label": "1/2"
+              },
+              {
+                "key": "b",
+                "label": "1/3"
+              },
+              {
+                "key": "c",
+                "label": "1/4"
+              },
+              {
+                "key": "d",
+                "label": "1/8"
+              }
+            ],
+            "answerKey": "c",
+            "order": 9,
+            "hint": "Each ant independently picks one of two directions; count only the arrangements where no two ants meet.",
+            "explanation": "With 2 choices each there are 8 outcomes; collisions are avoided only when all three go clockwise or all counterclockwise (2 cases). So probability = 2/8 = 1/4."
+          },
+          {
+            "prompt": "Monty Hall problem: 3 doors (1 car, 2 goats). You pick a door. Host opens a goat door. Probability of winning if you switch?",
+            "options": [
+              {
+                "key": "a",
+                "label": "1/2"
+              },
+              {
+                "key": "b",
+                "label": "1/3"
+              },
+              {
+                "key": "c",
+                "label": "2/3"
+              },
+              {
+                "key": "d",
+                "label": "1/4"
+              }
+            ],
+            "answerKey": "c",
+            "order": 10,
+            "hint": "Compare the chance your first pick was right versus wrong; switching wins exactly when the first pick was wrong.",
+            "explanation": "Your initial pick is correct 1/3 of the time, so it's wrong 2/3 of the time. The host reveals a goat, so switching wins whenever you were initially wrong: probability 2/3."
+          },
+          {
+            "prompt": "1000 wine bottles, 1 poisoned (kills in 24 hrs). Minimum rats needed to find poison in exactly 24 hours?",
+            "options": [
+              {
+                "key": "a",
+                "label": "100"
+              },
+              {
+                "key": "b",
+                "label": "50"
+              },
+              {
+                "key": "c",
+                "label": "10"
+              },
+              {
+                "key": "d",
+                "label": "9"
+              }
+            ],
+            "answerKey": "c",
+            "order": 11,
+            "hint": "Treat each rat as a binary digit; ask how many bits are needed to label every bottle uniquely.",
+            "explanation": "Each rat encodes one bit (alive/dead), and n rats distinguish 2^n bottles. Since 2^10 = 1024 ≥ 1000, 10 rats suffice to identify the poisoned bottle in one round."
+          },
+          {
+            "prompt": "Minimum straight cuts to cut a circular cake into exactly 8 equal pieces?",
+            "options": [
+              {
+                "key": "a",
+                "label": "4"
+              },
+              {
+                "key": "b",
+                "label": "3"
+              },
+              {
+                "key": "c",
+                "label": "2"
+              },
+              {
+                "key": "d",
+                "label": "5"
+              }
+            ],
+            "answerKey": "b",
+            "order": 12,
+            "hint": "Cuts don't all have to lie in the same plane; think about stacking or a horizontal slice.",
+            "explanation": "Two perpendicular vertical cuts make 4 equal pieces, then one horizontal cut through the middle halves each into 8. That's 3 cuts."
+          },
+          {
+            "prompt": "2 doors (Heaven/Hell), 2 guards (1 true, 1 false). Minimum questions to ask one guard to find Heaven?",
+            "options": [
+              {
+                "key": "a",
+                "label": "2"
+              },
+              {
+                "key": "b",
+                "label": "1"
+              },
+              {
+                "key": "c",
+                "label": "3"
+              },
+              {
+                "key": "d",
+                "label": "Depends"
+              }
+            ],
+            "answerKey": "b",
+            "order": 13,
+            "hint": "Craft a single self-referential question whose answer is the same regardless of which guard you happen to ask.",
+            "explanation": "Ask either guard, 'Which door would the other guard say leads to Heaven?' then pick the opposite. The double-negation through liar/truth-teller makes one question enough."
+          },
+          {
+            "prompt": "100 coins in darkness, 10 heads up, 90 tails up. How to make two piles with equal heads?",
+            "options": [
+              {
+                "key": "a",
+                "label": "Pick 50 and flip all"
+              },
+              {
+                "key": "b",
+                "label": "Pick 10 and flip none"
+              },
+              {
+                "key": "c",
+                "label": "Pick 10 and flip all 10"
+              },
+              {
+                "key": "d",
+                "label": "Pick 20 and flip half"
+              }
+            ],
+            "answerKey": "c",
+            "order": 14,
+            "hint": "Make a pile whose size equals the number of heads, then use flipping to force symmetry without needing to see the coins.",
+            "explanation": "Take any 10 coins into a new pile and flip all 10. If that pile had k heads originally, it now has 10-k heads, and the other pile keeps 10-k heads too, so both match."
+          },
+          {
+            "prompt": "A bat and ball cost $1.10. Bat costs $1.00 more than ball. Cost of ball?",
+            "options": [
+              {
+                "key": "a",
+                "label": "$0.10"
+              },
+              {
+                "key": "b",
+                "label": "$0.05"
+              },
+              {
+                "key": "c",
+                "label": "$0.15"
+              },
+              {
+                "key": "d",
+                "label": "$0.01"
+              }
+            ],
+            "answerKey": "b",
+            "order": 15,
+            "hint": "Resist the gut answer; set up an equation with the ball's price as the unknown and use the $1.00 difference.",
+            "explanation": "Let the ball be x; the bat is x+1.00, and x + (x+1.00) = 1.10 gives 2x = 0.10, so x = $0.05 (bat $1.05)."
+          },
+          {
+            "prompt": "10 bottles. 9 have 1.0g pills, 1 has 1.1g pills. How many times must you use a digital scale to find defective one?",
+            "options": [
+              {
+                "key": "a",
+                "label": "2"
+              },
+              {
+                "key": "b",
+                "label": "3"
+              },
+              {
+                "key": "c",
+                "label": "5"
+              },
+              {
+                "key": "d",
+                "label": "1"
+              }
+            ],
+            "answerKey": "d",
+            "order": 16,
+            "hint": "A digital scale reads exact weight, so take a different count of pills from each bottle and read the surplus once.",
+            "explanation": "Take 1 pill from bottle 1, 2 from bottle 2, ... 10 from bottle 10 and weigh all together once. The excess over the expected weight (in 0.1g units) names the defective bottle, so just 1 weighing."
+          },
+          {
+            "prompt": "You have two 60-min uneven burning ropes. How to measure 45 mins?",
+            "options": [
+              {
+                "key": "a",
+                "label": "Burn 1 fully, light half of 2nd"
+              },
+              {
+                "key": "b",
+                "label": "Burn both from one end"
+              },
+              {
+                "key": "c",
+                "label": "Burn rope 1 both ends, rope 2 one end"
+              },
+              {
+                "key": "d",
+                "label": "Fold one rope"
+              }
+            ],
+            "answerKey": "c",
+            "order": 17,
+            "hint": "Lighting a rope at both ends halves its time; combine that with a second rope lit simultaneously.",
+            "explanation": "Light rope 1 at both ends and rope 2 at one end at once. Rope 1 burns out in 30 min; at that instant light rope 2's other end so its remaining 30 min burns in 15. Total 30+15 = 45 mins."
+          },
+          {
+            "prompt": "3-liter and 5-liter jugs. Which step is NOT needed to measure 4 liters?",
+            "options": [
+              {
+                "key": "a",
+                "label": "Fill 5L jug first"
+              },
+              {
+                "key": "b",
+                "label": "Pour 5L into 3L jug"
+              },
+              {
+                "key": "c",
+                "label": "Throw away 3L jug water"
+              },
+              {
+                "key": "d",
+                "label": "Fill the 3L jug first"
+              }
+            ],
+            "answerKey": "d",
+            "order": 18,
+            "hint": "Trace the standard 5L-based fill/pour sequence and spot which listed step never appears in it.",
+            "explanation": "The 4L solution fills the 5L jug, pours into 3L (leaving 2L), empties the 3L, transfers the 2L, refills 5L and tops off the 3L to leave 4L. Filling the 3L jug first is never required."
+          },
+          {
+            "prompt": "7-day work, 7-unit gold bar, max 2 cuts. Which pieces will you cut it into to pay 1 unit daily?",
+            "options": [
+              {
+                "key": "a",
+                "label": "1/7, 2/7, 4/7"
+              },
+              {
+                "key": "b",
+                "label": "1/7, 3/7, 3/7"
+              },
+              {
+                "key": "c",
+                "label": "2/7, 2/7, 3/7"
+              },
+              {
+                "key": "d",
+                "label": "1/7, 1/7, 5/7"
+              }
+            ],
+            "answerKey": "a",
+            "order": 19,
+            "hint": "You can take change back, so choose piece sizes that form every total 1..7 in binary, not equal thirds.",
+            "explanation": "Cut pieces of 1, 2, and 4 units. Paying with returns: day1 give 1; day2 give 2 take 1 back; day3 give 1; day4 give 4 take 1+2; and so on—every amount 1-7 is reachable. So 1/7, 2/7, 4/7."
+          }
+        ]
+      }
+    ]
+  }
+]

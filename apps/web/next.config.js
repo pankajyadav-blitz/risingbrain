@@ -1,4 +1,33 @@
+import { fileURLToPath } from "node:url";
+import { dirname, join } from "node:path";
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+
 /** @type {import('next').NextConfig} */
-const nextConfig = {};
+const nextConfig = {
+  // Emit a self-contained server bundle (`.next/standalone`) so the production
+  // Docker image needs only Node + the traced deps — no full `node_modules`.
+  output: "standalone",
+  // Trace from the monorepo root so the standalone bundle pulls in the workspace
+  // packages and the hoisted (Bun-symlinked) node_modules correctly.
+  outputFileTracingRoot: join(__dirname, "../../"),
+  // Transpile workspace packages that ship raw TypeScript/TSX source. The
+  // database package now exports the Prisma 7 generated client (raw TS) via
+  // `@risingbrain/database/client`, so it must be transpiled too.
+  transpilePackages: ["@risingbrain/ui", "@risingbrain/core", "@risingbrain/database"],
+  // Keep the Prisma runtime and the node-postgres driver as runtime externals
+  // (native/Node modules) rather than letting Turbopack bundle them. Prisma 7 is
+  // Rust-free, so there's no engine to externalize anymore — just the client
+  // runtime, the pg driver and its adapter.
+  serverExternalPackages: ["@prisma/client", "@prisma/adapter-pg", "pg"],
+  // Allow remote avatar hosts used by OAuth sign-in (Google / GitHub) so
+  // `next/image` can optimize user profile pictures (e.g. in the interview feed).
+  images: {
+    remotePatterns: [
+      { protocol: "https", hostname: "lh3.googleusercontent.com" },
+      { protocol: "https", hostname: "avatars.githubusercontent.com" },
+    ],
+  },
+};
 
 export default nextConfig;

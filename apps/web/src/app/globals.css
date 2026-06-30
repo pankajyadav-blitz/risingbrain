@@ -1,0 +1,26 @@
+@import "tailwindcss";
+@import "@risingbrain/config-tailwind/theme.css";
+
+/* Tailwind v4 ignores node_modules by default, so register the shared UI
+   package source explicitly to generate its utility classes. */
+@source "../../../../packages/ui/src/**/*.{ts,tsx}";
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Ambient background — a faint green wash at the top, tuned per theme. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  background: var(--ambient);
+  pointer-events: none;
+}

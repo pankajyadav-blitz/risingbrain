@@ -1,159 +1,59 @@
-# Turborepo starter
+# RisingBrain
 
-This Turborepo starter is maintained by the Turborepo core team.
+A [Turborepo](https://turborepo.dev) monorepo powered entirely by **[Bun](https://bun.sh)** (package manager **and** runtime — no Node/npm/pnpm), with a Next.js app, a shared Tailwind v4 UI library, Prisma, and shared config packages.
 
-## Using this example
+## Stack
 
-Run the following command:
+- **Bun** 1.3+ — install, scripts, and runtime
+- **Turborepo** — task orchestration & caching
+- **Next.js 16** (App Router, Turbopack) in `apps/web`
+- **Tailwind CSS v4** (CSS-first `@import "tailwindcss"` + `@theme`)
+- **Prisma 6** (PostgreSQL) in `packages/database`
+- **Zod** schemas + shared types in `packages/core`
 
-```sh
-npx create-turbo@latest
+## Structure
+
+```
+risingbrain/
+├── apps/
+│   └── web/                  # Next.js app (src/app, src/components, src/lib)
+├── packages/
+│   ├── ui/                   # Shared React + Tailwind component library
+│   ├── database/             # Prisma schema (User) + client singleton
+│   ├── core/                 # Zod schemas, shared types, utils
+│   ├── config-tailwind/      # Shared Tailwind v4 theme (@theme tokens)
+│   ├── config-typescript/    # Shared tsconfig bases
+│   └── config-eslint/        # Shared ESLint flat configs
+├── turbo.json
+└── package.json              # Bun workspaces: apps/*, packages/*
 ```
 
-## What's inside?
+All internal packages are scoped `@risingbrain/*`.
 
-This Turborepo includes the following packages/apps:
+## Getting started
 
-### Apps and Packages
-
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
-
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
-
-### Utilities
-
-This Turborepo has some additional tools already setup for you:
-
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-
-### Build
-
-To build all apps and packages, run the following command:
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended):
-
-```sh
-cd my-turborepo
-turbo build
+```bash
+bun install            # install everything
+bun run db:generate    # generate the Prisma client
+bun run dev            # start the web app on http://localhost:3000
 ```
 
-Without global `turbo`, use your package manager:
+Copy `.env.example` to `.env` and set `DATABASE_URL` before using the database.
 
-```sh
-cd my-turborepo
-npx turbo build
-bun dlx turbo build
-bun exec turbo build
-```
+## Commands
 
-You can build a specific package by using a [filter](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters):
+| Command | Description |
+| --- | --- |
+| `bun run dev` | Run all apps in dev mode |
+| `bun run build` | Build all apps & packages |
+| `bun run lint` | Lint everything |
+| `bun run check-types` | Type-check everything |
+| `bun run format` | Prettier write |
+| `bun run db:generate` | `prisma generate` |
+| `bun run db:push` | Push schema to the database |
+| `bun run db:migrate` | Create & run a dev migration |
+| `bun run db:studio` | Open Prisma Studio |
 
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed:
+## Database
 
-```sh
-turbo build --filter=docs
-```
-
-Without global `turbo`:
-
-```sh
-npx turbo build --filter=docs
-bun exec turbo build --filter=docs
-bun exec turbo build --filter=docs
-```
-
-### Develop
-
-To develop all apps and packages, run the following command:
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended):
-
-```sh
-cd my-turborepo
-turbo dev
-```
-
-Without global `turbo`, use your package manager:
-
-```sh
-cd my-turborepo
-npx turbo dev
-bun exec turbo dev
-bun exec turbo dev
-```
-
-You can develop a specific package by using a [filter](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters):
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed:
-
-```sh
-turbo dev --filter=web
-```
-
-Without global `turbo`:
-
-```sh
-npx turbo dev --filter=web
-bun exec turbo dev --filter=web
-bun exec turbo dev --filter=web
-```
-
-### Remote Caching
-
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
-
-Turborepo can use a technique known as [Remote Caching](https://turborepo.dev/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
-
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended):
-
-```sh
-cd my-turborepo
-turbo login
-```
-
-Without global `turbo`, use your package manager:
-
-```sh
-cd my-turborepo
-npx turbo login
-bun exec turbo login
-bun exec turbo login
-```
-
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
-
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed:
-
-```sh
-turbo link
-```
-
-Without global `turbo`:
-
-```sh
-npx turbo link
-bun exec turbo link
-bun exec turbo link
-```
-
-## Useful Links
-
-Learn more about the power of Turborepo:
-
-- [Tasks](https://turborepo.dev/docs/crafting-your-repository/running-tasks)
-- [Caching](https://turborepo.dev/docs/crafting-your-repository/caching)
-- [Remote Caching](https://turborepo.dev/docs/core-concepts/remote-caching)
-- [Filtering](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters)
-- [Configuration Options](https://turborepo.dev/docs/reference/configuration)
-- [CLI Usage](https://turborepo.dev/docs/reference/command-line-reference)
+Only the `User` model is defined in `packages/database/prisma/schema.prisma` — extend it as needed, then run `bun run db:generate` (and `bun run db:push` / `bun run db:migrate`).

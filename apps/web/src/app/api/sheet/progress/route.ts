@@ -1,0 +1,66 @@
+import { NextResponse } from "next/server";
+import { prisma, ProblemStatus } from "@/lib/db";
+import { getCurrentUser } from "@/lib/auth/current-user";
+import { checkWriteLimit, isUnknownReference } from "../_guards";
+
+export const runtime = "nodejs";
+
+const VALID = new Set<string>(Object.values(ProblemStatus));
+
+/**
+ * POST /api/sheet/progress  { problemId, status }
+ *
+ * Toggles a problem's solve status for the current user. `solvedAt` is stamped
+ * when the status becomes SOLVED and cleared otherwise.
+ */
+export async function POST(req: Request) {
+  const user = await getCurrentUser();
+  if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+
+  const limited = await checkWriteLimit(req, user.id);
+  if (limited) return limited;
+
+  let body: { problemId?: unknown; status?: unknown };
+  try {
+    body = await req.json();
+  } catch {
+    return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
+  }
+
+  const problemId = typeof body.problemId === "string" ? body.problemId : "";
+  const status = typeof body.status === "string" ? body.status : "";
+
+  if (!problemId || !VALID.has(status)) {
+    return NextResponse.json({ error: "Invalid payload" }, { status: 400 });
+  }
+
+  const typedStatus = status as ProblemStatus;
+
+  try {
+    // `solvedAt` records the *first* time the problem was solved. Preserve any
+    // existing timestamp so toggling SOLVED off/on (or revisiting) never
+    // rewrites history — which would otherwise move the solve to "today" in the
+    // streak/heatmap. Only stamp a fresh time on the first solve.
+    const existing = await prisma.userProblemProgress.findUnique({
+      where: { userId_problemId: { userId: user.id, problemId } },
+      select: { solvedAt: true },
+    });
+    const solvedAt =
+      existing?.solvedAt ?? (typedStatus === ProblemStatus.SOLVED ? new Date() : null);
+
+    await prisma.userProblemProgress.upsert({
+      where: { userId_problemId: { userId: user.id, problemId } },
+      create: { userId: user.id, problemId, status: typedStatus, solvedAt },
+      update: { status: typedStatus, solvedAt },
+    });
+  } catch (e) {
+    // Unknown problemId → FK violation. Treat as a bad request, not a 500.
+    if (isUnknownReference(e)) {
+      return NextResponse.json({ error: "Unknown problem" }, { status: 400 });
+    }
+    console.error("sheet/progress upsert failed", e);
+    return NextResponse.json({ error: "Something went wrong" }, { status: 500 });
+  }
+
+  return NextResponse.json({ ok: true, status: typedStatus });
+}
