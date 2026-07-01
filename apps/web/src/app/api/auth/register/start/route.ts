@@ -6,8 +6,6 @@ import { issueOtp } from "@/lib/auth/otp";
 import { isMailConfigured } from "@/lib/mail/mailer";
 import { limitAuth, clientId } from "@/lib/auth/rate-limit";
 
-export const runtime = "nodejs";
-
 /**
  * Signup step 1: validate the details, ensure the email is free, hash the
  * password, then email a 6-digit code. NO User row is created here — the pending

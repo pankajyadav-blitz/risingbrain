@@ -1,10 +1,10 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import { ChevronDown, Lightbulb, Target } from "lucide-react";
 import { ProblemRow } from "./problem-row";
 import { useCelebrate, useCompletionEffect } from "./celebration";
-import type { ProblemStatusValue, SheetPattern } from "./types";
+import type { SheetPattern } from "./types";
 
 /**
  * A single category (topic) rendered flat: a heading + progress bar, then all
@@ -20,8 +20,8 @@ export function TopicSection({
   patterns,
   visibleProblemIds = null,
   bookmarkedIds,
+  solvedIds,
   forceExpanded = false,
-  onSolvedChange,
 }: {
   topicId: string;
   name: string;
@@ -35,21 +35,16 @@ export function TopicSection({
   // Live bookmarked-problem ids — the single source of truth for each row's
   // bookmark display.
   bookmarkedIds: Set<string>;
+  // Live solved-problem ids — the single source of truth for each row's
+  // checkmark and for every derived solved count.
+  solvedIds: Set<string>;
   forceExpanded?: boolean;
-  onSolvedChange: (delta: number) => void;
 }) {
   const pct = problemCount > 0 ? Math.round((solvedCount / problemCount) * 100) : 0;
   const complete = problemCount > 0 && solvedCount >= problemCount;
 
   const celebrate = useCelebrate();
   useCompletionEffect(complete, () => celebrate("topic"));
-
-  const handleProblemToggle = useCallback(
-    (_problemId: string, delta: number, _nextStatus: ProblemStatusValue) => {
-      onSolvedChange(delta);
-    },
-    [onSolvedChange]
-  );
 
   // Hide the whole topic when a filter is active and none of its problems match.
   // (Placed after all hooks so hook order stays stable across renders.)
@@ -99,8 +94,8 @@ export function TopicSection({
             pattern={pattern}
             visibleProblemIds={visibleProblemIds}
             bookmarkedIds={bookmarkedIds}
+            solvedIds={solvedIds}
             forceExpanded={forceExpanded}
-            onProblemToggle={handleProblemToggle}
           />
         ))}
       </div>
@@ -112,24 +107,23 @@ function PatternBlock({
   pattern,
   visibleProblemIds = null,
   bookmarkedIds,
+  solvedIds,
   forceExpanded = false,
-  onProblemToggle,
 }: {
   pattern: SheetPattern;
   visibleProblemIds?: Set<string> | null;
   bookmarkedIds: Set<string>;
+  solvedIds: Set<string>;
   forceExpanded?: boolean;
-  onProblemToggle: (problemId: string, delta: number, nextStatus: ProblemStatusValue) => void;
 }) {
   const [open, setOpen] = useState(false);
   // When a search is active, show content regardless of the local toggle state.
   const isOpen = open || forceExpanded;
-  // Progress is always measured against the FULL problem set so a filter never
-  // shrinks the denominator (which would fire a false "Done" / celebration).
-  const [solved, setSolved] = useState(
-    () => pattern.problems.filter((p) => p.status === "SOLVED").length
-  );
+  // Progress is DERIVED from the lifted solvedIds set — always against the FULL
+  // problem set so a filter never shrinks the denominator (which would fire a
+  // false "Done" / celebration), and a remount can't reset it to a stale value.
   const total = pattern.problems.length;
+  const solved = pattern.problems.reduce((n, p) => n + (solvedIds.has(p.id) ? 1 : 0), 0);
   const done = total > 0 && solved >= total;
 
   const celebrate = useCelebrate();
@@ -199,10 +193,7 @@ function PatternBlock({
                 problem={problem}
                 index={i + 1}
                 bookmarked={bookmarkedIds.has(problem.id)}
-                onToggle={(delta, nextStatus) => {
-                  setSolved((s) => Math.max(0, Math.min(total, s + delta)));
-                  onProblemToggle(problem.id, delta, nextStatus);
-                }}
+                solved={solvedIds.has(problem.id)}
               />
             ))}
           </div>

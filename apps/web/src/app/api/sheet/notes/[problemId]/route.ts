@@ -3,8 +3,6 @@ import { prisma } from "@/lib/db";
 import { getCurrentUser } from "@/lib/auth/current-user";
 import { checkWriteLimit, isUnknownReference } from "../../_guards";
 
-export const runtime = "nodejs";
-
 // A note is rich-text HTML. Cap it well above any realistic note while blocking
 // multi-MB payloads that would bloat Postgres. Bytes guard the request body
 // before it's buffered; chars guard the parsed content (header can be absent).

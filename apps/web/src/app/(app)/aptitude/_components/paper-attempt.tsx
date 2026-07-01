@@ -118,7 +118,7 @@ export function PaperAttemptProvider({
         }
       })();
     },
-    [submitted, patch]
+    [submitted, patch, progress?.signedIn]
   );
 
   const toggleHint = useCallback(
@@ -130,7 +130,7 @@ export function PaperAttemptProvider({
       const hintUsed = cur.hintUsed || (opening && !cur.locked && !submitted);
       patch(questionId, { hintOpen: opening, hintUsed });
     },
-    [submitted, patch]
+    [submitted, patch, progress?.signedIn]
   );
 
   const submit = useCallback(() => {

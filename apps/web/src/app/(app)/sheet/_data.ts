@@ -1,4 +1,64 @@
+import { cacheLife, cacheTag } from "next/cache";
 import { prisma, ProblemStatus } from "@/lib/db";
+import { CACHE_TAGS } from "@/lib/cache";
+
+/**
+ * The full published DSA sheet tree — sheets → topics → patterns → problems →
+ * companies. This is SHARED, seeded content: identical for every user and only
+ * changes on a re-seed, so it is cached cross-request and tagged for on-demand
+ * revalidation (see /api/admin/revalidate). It reads NO cookies and NO per-user
+ * data — progress, bookmarks and notes are layered on per request in the page.
+ */
+export async function getDsaCatalog() {
+  "use cache";
+  cacheLife("hours");
+  cacheTag(CACHE_TAGS.dsaCatalog);
+
+  return prisma.dsaSheet.findMany({
+    where: { isPublished: true },
+    orderBy: { order: "asc" },
+    select: {
+      id: true,
+      name: true,
+      description: true,
+      topics: {
+        orderBy: { order: "asc" },
+        select: {
+          id: true,
+          name: true,
+          description: true,
+          patterns: {
+            orderBy: { order: "asc" },
+            select: {
+              id: true,
+              name: true,
+              strategy: true,
+              identification: true,
+              problems: {
+                orderBy: { order: "asc" },
+                select: {
+                  id: true,
+                  slug: true,
+                  title: true,
+                  reference: true,
+                  difficulty: true,
+                  leetcodeUrl: true,
+                  gfgUrl: true,
+                  youtubeUrl: true,
+                  companies: {
+                    select: { company: { select: { name: true, logoUrl: true } } },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+  });
+}
+
+export type DsaCatalog = Awaited<ReturnType<typeof getDsaCatalog>>;
 
 /**
  * Server-side activity data for the DSA Sheet route's calendar widget.

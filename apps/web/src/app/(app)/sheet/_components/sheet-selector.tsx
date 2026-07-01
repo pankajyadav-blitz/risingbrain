@@ -4,7 +4,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Bookmark, CircleCheckBig, Search, X } from "lucide-react";
 import { TopicSection } from "./topic-section";
 import { CelebrationProvider, useCelebrate } from "./celebration";
-import { SheetBookmarkContext, SheetGuestContext, SheetProgressContext, useSheetSignedIn } from "./sheet-progress";
+import { SheetBookmarkContext, SheetGuestContext, SheetSolvedContext, useSheetSignedIn } from "./sheet-progress";
 import { type DifficultyStat } from "./progress-panel";
 import { SheetStats } from "./sheet-stats";
 import type { SheetActivity } from "../_data";
@@ -96,22 +96,79 @@ function SheetSelectorInner({
     });
   }, []);
 
-  // Live combined difficulty stats (across all sheets) for the right-rail panel,
-  // seeded from the SSR snapshot and updated as problem rows toggle.
-  const [diffStat, setDiffStat] = useState<DifficultyStat>(difficulty);
-  // Net problems solved/unsolved this session — drives the calendar's "today"
-  // cell + live streak so it reacts the instant a problem is toggled.
-  const [todayDelta, setTodayDelta] = useState(0);
-  const reportToggle = useCallback((d: DifficultyValue, delta: number) => {
-    setDiffStat((prev) => ({
-      ...prev,
-      [d]: {
-        total: prev[d].total,
-        solved: Math.max(0, Math.min(prev[d].total, prev[d].solved + delta)),
-      },
-    }));
-    setTodayDelta((x) => x + delta);
+  // Live set of solved problem ids (across all sheets), seeded from the SSR
+  // snapshot — THE single source of truth for solved state. Every solved count
+  // below is DERIVED from it, so the row checkmarks and the totals can never
+  // drift apart (the bug where a filter-driven remount reset a checkmark while
+  // the totals stayed updated).
+  const [solvedIds, setSolvedIds] = useState<Set<string>>(() => {
+    const init = new Set<string>();
+    for (const sheet of sheets)
+      for (const topic of sheet.topics)
+        for (const pattern of topic.patterns)
+          for (const p of pattern.problems) if (p.status === "SOLVED") init.add(p.id);
+    return init;
+  });
+
+  const reportSolved = useCallback((problemId: string, solved: boolean) => {
+    setSolvedIds((prev) => {
+      if (solved === prev.has(problemId)) return prev;
+      const next = new Set(prev);
+      if (solved) next.add(problemId);
+      else next.delete(problemId);
+      return next;
+    });
   }, []);
+
+  // problemId → { topicId, difficulty }, built once from the (static) tree so the
+  // solved set can be bucketed into per-topic and per-difficulty counts.
+  const problemMeta = useMemo(() => {
+    const map = new Map<string, { topicId: string; difficulty: DifficultyValue }>();
+    for (const sheet of sheets)
+      for (const topic of sheet.topics)
+        for (const pattern of topic.patterns)
+          for (const p of pattern.problems)
+            map.set(p.id, { topicId: topic.id, difficulty: p.difficulty });
+    return map;
+  }, [sheets]);
+
+  // Solved count per topic — derived from the source-of-truth set.
+  const solvedByTopic = useMemo(() => {
+    const counts: Record<string, number> = {};
+    for (const sheet of sheets) for (const topic of sheet.topics) counts[topic.id] = 0;
+    for (const id of solvedIds) {
+      const meta = problemMeta.get(id);
+      if (meta) counts[meta.topicId] = (counts[meta.topicId] ?? 0) + 1;
+    }
+    return counts;
+  }, [sheets, solvedIds, problemMeta]);
+
+  // Combined difficulty stats for the right-rail panel — totals are static (from
+  // the SSR snapshot), solved counts derived from the set.
+  const diffStat = useMemo<DifficultyStat>(() => {
+    const stat: DifficultyStat = {
+      EASY: { solved: 0, total: difficulty.EASY.total },
+      MEDIUM: { solved: 0, total: difficulty.MEDIUM.total },
+      HARD: { solved: 0, total: difficulty.HARD.total },
+    };
+    for (const id of solvedIds) {
+      const meta = problemMeta.get(id);
+      if (meta) stat[meta.difficulty].solved += 1;
+    }
+    return stat;
+  }, [difficulty, solvedIds, problemMeta]);
+
+  // Net problems solved/unsolved this session — drives the calendar's "today"
+  // cell + live streak. = current solved total − the SSR baseline.
+  const initialSolvedCount = useMemo(() => {
+    let n = 0;
+    for (const sheet of sheets)
+      for (const topic of sheet.topics)
+        for (const pattern of topic.patterns)
+          for (const p of pattern.problems) if (p.status === "SOLVED") n += 1;
+    return n;
+  }, [sheets]);
+  const todayDelta = solvedIds.size - initialSolvedCount;
 
   // Dispatch a custom event whenever todayDelta changes so the navbar's streak
   // badge can update in-place without a full page reload.
@@ -127,22 +184,6 @@ function SheetSelectorInner({
     else if (baseToday > 0 && liveToday === 0) streak = Math.max(0, streak - 1);
     window.dispatchEvent(new CustomEvent("rb:streak-updated", { detail: { streak } }));
   }, [todayDelta]); // eslint-disable-line react-hooks/exhaustive-deps
-
-  // Live solved counts keyed by topicId, seeded from the SSR snapshot.
-  const [solvedByTopic, setSolvedByTopic] = useState<Record<string, number>>(() => {
-    const init: Record<string, number> = {};
-    for (const sheet of sheets) {
-      for (const topic of sheet.topics) init[topic.id] = topic.solvedCount;
-    }
-    return init;
-  });
-
-  const onTopicSolvedChange = useCallback((topicId: string, delta: number) => {
-    setSolvedByTopic((prev) => ({
-      ...prev,
-      [topicId]: Math.max(0, (prev[topicId] ?? 0) + delta),
-    }));
-  }, []);
 
   // Per-sheet aggregates (totals are static; solved is live).
   const stats = useMemo(() => {
@@ -234,7 +275,7 @@ function SheetSelectorInner({
     activeStat.total > 0 ? Math.round((activeStat.solved / activeStat.total) * 100) : 0;
 
   return (
-    <SheetProgressContext.Provider value={reportToggle}>
+    <SheetSolvedContext.Provider value={reportSolved}>
     <SheetBookmarkContext.Provider value={reportBookmark}>
       {/* Hero row: hero text sizes to content, progress panel fills the rest of
           the row (no awkward gap between them). */}
@@ -408,8 +449,8 @@ function SheetSelectorInner({
             patterns={topic.patterns}
             visibleProblemIds={visibleProblemIds}
             bookmarkedIds={bookmarkedIds}
+            solvedIds={solvedIds}
             forceExpanded={filterActive}
-            onSolvedChange={(delta) => onTopicSolvedChange(topic.id, delta)}
           />
         ))}
         {filterActive && matchCount === 0 && (
@@ -428,6 +469,6 @@ function SheetSelectorInner({
         )}
       </div>
     </SheetBookmarkContext.Provider>
-    </SheetProgressContext.Provider>
+    </SheetSolvedContext.Provider>
   );
 }

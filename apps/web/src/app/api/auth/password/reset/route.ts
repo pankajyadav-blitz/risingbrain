@@ -6,8 +6,6 @@ import { consumeResetToken } from "@/lib/auth/otp";
 import { revokeAllUserSessions } from "@/lib/auth/session";
 import { limitAuth, clientId } from "@/lib/auth/rate-limit";
 
-export const runtime = "nodejs";
-
 /**
  * Forgot-password step 3: with a valid single-use reset token, set the new
  * (re-validated, freshly hashed) password. Existing sessions are revoked so a

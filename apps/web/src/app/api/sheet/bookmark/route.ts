@@ -3,8 +3,6 @@ import { prisma, ProblemStatus } from "@/lib/db";
 import { getCurrentUser } from "@/lib/auth/current-user";
 import { checkWriteLimit, isUnknownReference } from "../_guards";
 
-export const runtime = "nodejs";
-
 /**
  * POST /api/sheet/bookmark  { problemId, bookmarked }
  *

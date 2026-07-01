@@ -2,8 +2,6 @@ import { NextResponse } from "next/server";
 import { rotateSession } from "@/lib/auth/session";
 import { setAuthCookies, clearAuthCookies, readRefreshCookie } from "@/lib/auth/cookies";
 
-export const runtime = "nodejs";
-
 /**
  * Exchanges a valid refresh token for a fresh access token (and rotates the
  * refresh token). Called by the client when the access token expires.

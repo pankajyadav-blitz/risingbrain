@@ -51,7 +51,7 @@ function formatPrompt(raw: string): string {
   }
 
   // Pattern: semicolon-separated symbol/code definitions
-  if (/[A-Z]\s*[@#+$*\-]\s*[A-Z]\s+means/i.test(raw) && raw.includes(";")) {
+  if (/[A-Z]\s*[@#+$*-]\s*[A-Z]\s+means/i.test(raw) && raw.includes(";")) {
     return raw.replace(/;\s*/g, "\n").trim();
   }
 

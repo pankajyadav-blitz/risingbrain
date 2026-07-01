@@ -4,8 +4,6 @@ import { forgotPasswordSchema } from "@/lib/auth/validation";
 import { issueOtp } from "@/lib/auth/otp";
 import { limitAuth, clientId } from "@/lib/auth/rate-limit";
 
-export const runtime = "nodejs";
-
 /**
  * Forgot-password step 1: email a reset code. Per product requirement this tells
  * the user when no account exists (rather than masking it). Social-login-only

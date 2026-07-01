@@ -5,8 +5,6 @@ import { fetchProfile, type OAuthProvider } from "@/lib/auth/oauth";
 import { createSession } from "@/lib/auth/session";
 import { setAuthCookies } from "@/lib/auth/cookies";
 
-export const runtime = "nodejs";
-
 const PROVIDERS: OAuthProvider[] = ["google", "github"];
 
 function fail(reason: string) {

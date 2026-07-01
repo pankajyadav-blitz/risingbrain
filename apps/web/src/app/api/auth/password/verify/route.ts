@@ -3,8 +3,6 @@ import { verifyResetSchema } from "@/lib/auth/validation";
 import { verifyOtp, issueResetToken } from "@/lib/auth/otp";
 import { limitAuth, clientId } from "@/lib/auth/rate-limit";
 
-export const runtime = "nodejs";
-
 const OTP_ERRORS: Record<string, string> = {
   expired: "That code has expired. Please request a new one.",
   invalid: "That code isn't right. Please check and try again.",

@@ -70,7 +70,7 @@ export function ProblemCard({ problem, signedIn = false }: { problem: ProblemLis
       .finally(() => {
         loadingRef.current = false;
       });
-  }, [detail, problem.id]);
+  }, [detail, problem.id, signedIn]);
 
   const toggle = useCallback(() => {
     if (!signedIn) { redirectToLogin(); return; }

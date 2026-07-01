@@ -6,8 +6,6 @@ import {
   type OAuthProvider,
 } from "@/lib/auth/oauth";
 
-export const runtime = "nodejs";
-
 const PROVIDERS: OAuthProvider[] = ["google", "github"];
 const TEN_MINUTES = 60 * 10;
 

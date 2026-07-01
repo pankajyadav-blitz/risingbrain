@@ -4,8 +4,6 @@ import { getCurrentUser } from "@/lib/auth/current-user";
 import { timeAgo } from "@/app/(app)/interview/_lib/format";
 import type { CommentItem } from "@/app/(app)/interview/_lib/types";
 
-export const runtime = "nodejs";
-
 /**
  * GET /api/interview/[id]/comments  (public)
  *

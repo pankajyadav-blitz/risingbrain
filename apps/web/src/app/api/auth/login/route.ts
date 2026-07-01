@@ -6,8 +6,6 @@ import { createSession } from "@/lib/auth/session";
 import { setAuthCookies } from "@/lib/auth/cookies";
 import { limitAuth, clientId } from "@/lib/auth/rate-limit";
 
-export const runtime = "nodejs";
-
 export async function POST(req: Request) {
   const rl = await limitAuth(clientId(req));
   if (!rl.ok) {

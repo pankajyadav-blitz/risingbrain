@@ -2,8 +2,6 @@ import { NextResponse } from "next/server";
 import { prisma, InterviewVerdict, Difficulty } from "@/lib/db";
 import { getCurrentUser } from "@/lib/auth/current-user";
 
-export const runtime = "nodejs";
-
 const VERDICTS = new Set<string>(Object.values(InterviewVerdict));
 const DIFFICULTIES = new Set<string>(Object.values(Difficulty));
 

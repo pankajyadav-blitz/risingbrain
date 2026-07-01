@@ -2,8 +2,6 @@ import { NextResponse } from "next/server";
 import { getCurrentUser } from "@/lib/auth/current-user";
 import { getCurrentStreak } from "@/lib/streak";
 
-export const runtime = "nodejs";
-
 /**
  * GET /api/streak
  *

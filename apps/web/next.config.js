@@ -20,6 +20,13 @@ const nextConfig = {
   // Rust-free, so there's no engine to externalize anymore — just the client
   // runtime, the pg driver and its adapter.
   serverExternalPackages: ["@prisma/client", "@prisma/adapter-pg", "pg"],
+  // Enable the `"use cache"` directive (cacheTag / cacheLife) on its own —
+  // without opting into the full `cacheComponents` render model. This is what
+  // lets the shared, seeded content catalogs (DSA / SQL / quiz) be cached
+  // cross-request while per-user data stays dynamic. See src/lib/cache.ts.
+  experimental: {
+    useCache: true,
+  },
   // Allow remote avatar hosts used by OAuth sign-in (Google / GitHub) so
   // `next/image` can optimize user profile pictures (e.g. in the interview feed).
   images: {

@@ -1,19 +1,20 @@
 "use client";
 
 import { createContext, useContext } from "react";
-import type { DifficultyValue } from "./types";
 
 /**
- * Lets a ProblemRow report a solve/un-solve to the combined difficulty panel
- * (delta +1 when newly solved, -1 when un-solved) without threading callbacks
- * through Topic → Pattern → Row. The provider lives in SheetSelector.
+ * Lets a ProblemRow report a solve/un-solve up to SheetSelector, which owns the
+ * single `solvedIds` source of truth. Every solved count (pattern circle, topic
+ * bar, sheet tab, difficulty panel, streak) is DERIVED from that set, so the
+ * checkmark and the totals can never drift apart across filter-driven
+ * unmount/remount — without threading callbacks through Topic → Pattern → Row.
  */
-export const SheetProgressContext = createContext<(difficulty: DifficultyValue, delta: number) => void>(
+export const SheetSolvedContext = createContext<(problemId: string, solved: boolean) => void>(
   () => {}
 );
 
-export function useSheetProgress() {
-  return useContext(SheetProgressContext);
+export function useReportSolved() {
+  return useContext(SheetSolvedContext);
 }
 
 /**

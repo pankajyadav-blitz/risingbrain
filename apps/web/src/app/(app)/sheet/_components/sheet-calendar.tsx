@@ -10,9 +10,9 @@ import type { SheetActivity } from "../_data";
  * were solved that IST day; today is ringed; a flame badge tracks the live solve
  * streak. Pages back through the trailing months the server provided.
  *
- * Lives under the ProgressPanel in the hero's right rail, inside
- * SheetProgressContext, so `todayDelta` lets it update optimistically the moment
- * a problem is toggled (no refetch).
+ * Lives under the ProgressPanel in the hero's right rail; `todayDelta` (derived
+ * from SheetSelector's solvedIds source of truth) lets it update optimistically
+ * the moment a problem is toggled (no refetch).
  */
 
 const WEEKDAYS = ["S", "M", "T", "W", "T", "F", "S"];
@@ -199,8 +199,13 @@ export function SheetCalendar({
                 />
               </div>
             ) : c.key >= activity.joinedKey ? (
-              /* past day with no solves, but account existed — show regret face */
-              <RegretFace />
+              /* past day with no solves, but account existed — show regret face
+                 (sized to match the Brain icon so it doesn't overpower the cell) */
+              <div className="flex h-full w-full items-center justify-center">
+                <div className="h-[70%] w-[70%]">
+                  <RegretFace />
+                </div>
+              </div>
             ) : null /* day before account was created — show nothing */}
           </div>
         ))}

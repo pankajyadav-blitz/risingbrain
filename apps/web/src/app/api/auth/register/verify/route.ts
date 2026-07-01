@@ -6,8 +6,6 @@ import { createSession } from "@/lib/auth/session";
 import { setAuthCookies } from "@/lib/auth/cookies";
 import { limitAuth, clientId } from "@/lib/auth/rate-limit";
 
-export const runtime = "nodejs";
-
 const OTP_ERRORS: Record<string, string> = {
   expired: "That code has expired. Please request a new one.",
   invalid: "That code isn't right. Please check and try again.",

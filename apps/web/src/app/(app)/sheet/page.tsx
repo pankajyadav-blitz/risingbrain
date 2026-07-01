@@ -12,7 +12,7 @@ import type {
   ProblemStatusValue,
 } from "./_components/types";
 import type { DifficultyStat } from "./_components/progress-panel";
-import { getSheetActivity, type SheetActivity } from "./_data";
+import { getDsaCatalog, getSheetActivity, type SheetActivity } from "./_data";
 
 export const metadata: Metadata = {
   title: "DSA Sheets — RisingBrain",
@@ -41,51 +41,12 @@ function StatPill({
 export default async function SheetPage() {
   const user = await getCurrentUser();
 
-  // Single comprehensive query: all sheets → topics → patterns → problems → companies.
-  // No lazy per-topic fetches; everything arrives in the first SSR pass.
+  // The sheet tree (sheets → topics → patterns → problems → companies) is shared,
+  // seeded content — identical for everyone — so it comes from a cross-request
+  // cache. Per-user data (activity, profile, and progress/notes/bookmarks below)
+  // is always read fresh for the signed-in user and layered on top.
   const [sheetsRaw, activity, profile] = await Promise.all([
-    prisma.dsaSheet.findMany({
-      where: { isPublished: true },
-      orderBy: { order: "asc" },
-      select: {
-        id: true,
-        name: true,
-        description: true,
-        topics: {
-          orderBy: { order: "asc" },
-          select: {
-            id: true,
-            name: true,
-            description: true,
-            patterns: {
-              orderBy: { order: "asc" },
-              select: {
-                id: true,
-                name: true,
-                strategy: true,
-                identification: true,
-                problems: {
-                  orderBy: { order: "asc" },
-                  select: {
-                    id: true,
-                    slug: true,
-                    title: true,
-                    reference: true,
-                    difficulty: true,
-                    leetcodeUrl: true,
-                    gfgUrl: true,
-                    youtubeUrl: true,
-                    companies: {
-                      select: { company: { select: { name: true, logoUrl: true } } },
-                    },
-                  },
-                },
-              },
-            },
-          },
-        },
-      },
-    }),
+    getDsaCatalog(),
     user ? getSheetActivity(user.id) : (null as SheetActivity | null),
     user ? getCurrentUserProfile() : null,
   ]);

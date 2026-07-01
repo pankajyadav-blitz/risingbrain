@@ -1,8 +1,6 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 
-export const runtime = "nodejs";
-
 /**
  * Public, lazy-load endpoint for a single SQL problem's heavy content.
  * The /sql page SSR-renders only the light list (title/difficulty/topic/tags);

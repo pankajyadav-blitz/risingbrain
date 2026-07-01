@@ -4,8 +4,9 @@ import { useMemo, useState } from "react";
 import { Check, Loader2 } from "lucide-react";
 import { DifficultyBadge } from "./difficulty-badge";
 import { NoteModal } from "./note-modal";
-import { useSheetBookmarkReport, useSheetProgress, useSheetSignedIn } from "./sheet-progress";
+import { useReportSolved, useSheetBookmarkReport, useSheetSignedIn } from "./sheet-progress";
 import { redirectToLogin } from "@/lib/auth/redirect";
+import { persistJSON } from "@/lib/persist";
 import { logoSources } from "@/lib/company-logos";
 import type { ProblemStatusValue, SheetProblem } from "./types";
 
@@ -167,7 +168,7 @@ export function ProblemRow({
   problem,
   index,
   bookmarked,
-  onToggle,
+  solved,
 }: {
   problem: SheetProblem;
   index: number;
@@ -175,20 +176,19 @@ export function ProblemRow({
   // the single source of truth (no divergence from a local copy across
   // filter-driven unmount/remount).
   bookmarked: boolean;
-  // delta: +1 when newly solved, -1 when un-solved. Also reports nextStatus so
-  // the parent can keep its cache consistent across collapse/expand.
-  onToggle: (delta: number, nextStatus: ProblemStatusValue) => void;
+  // Live solved state, owned by SheetSelector's solvedIds set — the single
+  // source of truth for both the checkmark and every derived count. Kept as a
+  // prop (not local state) so a filter-driven remount can't reset it back to
+  // the stale SSR snapshot while the totals stay updated.
+  solved: boolean;
 }) {
-  const [status, setStatus] = useState<ProblemStatusValue>(problem.status);
   const [toggling, setToggling] = useState(false);
   const [hasNote, setHasNote] = useState(problem.hasNote);
   const [noteOpen, setNoteOpen] = useState(false);
   const [bookmarking, setBookmarking] = useState(false);
-  const reportProgress = useSheetProgress();
+  const reportSolved = useReportSolved();
   const reportBookmark = useSheetBookmarkReport();
   const signedIn = useSheetSignedIn();
-
-  const solved = status === "SOLVED";
 
   async function toggleBookmark() {
     if (!signedIn) { redirectToLogin(); return; }
@@ -200,50 +200,38 @@ export function ProblemRow({
     reportBookmark(problem.id, next);
     setBookmarking(true);
 
-    try {
-      const res = await fetch("/api/sheet/bookmark", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ problemId: problem.id, bookmarked: next }),
-      });
-      if (!res.ok) throw new Error("request failed");
-    } catch {
-      reportBookmark(problem.id, !next); // Revert on failure.
-    } finally {
-      setBookmarking(false);
-    }
+    // Resilient write (retries + keepalive) so a slow/flaky network doesn't
+    // silently drop it; revert only if the server never confirmed.
+    const ok = await persistJSON("/api/sheet/bookmark", {
+      problemId: problem.id,
+      bookmarked: next,
+    });
+    if (!ok) reportBookmark(problem.id, !next);
+    setBookmarking(false);
   }
 
   async function toggleStatus() {
     if (!signedIn) { redirectToLogin(); return; }
     if (toggling) return;
 
-    // Derive both directions from the CURRENT status — a true toggle.
-    const next: ProblemStatusValue = solved ? "NOT_STARTED" : "SOLVED";
-    const delta = next === "SOLVED" ? 1 : -1;
-    const prev = status;
+    // A true toggle derived from the CURRENT solved state.
+    const nextSolved = !solved;
+    const nextStatus: ProblemStatusValue = nextSolved ? "SOLVED" : "NOT_STARTED";
 
-    // Optimistic update.
-    setStatus(next);
-    onToggle(delta, next);
-    reportProgress(problem.difficulty, delta);
+    // Optimistic: flip the single source of truth so the checkmark AND every
+    // derived count (pattern/topic/sheet/difficulty/streak) move as one.
+    reportSolved(problem.id, nextSolved);
     setToggling(true);
 
-    try {
-      const res = await fetch("/api/sheet/progress", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ problemId: problem.id, status: next }),
-      });
-      if (!res.ok) throw new Error("request failed");
-    } catch {
-      // Revert on failure.
-      setStatus(prev);
-      onToggle(-delta, prev);
-      reportProgress(problem.difficulty, -delta);
-    } finally {
-      setToggling(false);
-    }
+    // One resilient request (retries + keepalive) — the write survives a slow
+    // connection or a mid-request page refresh, so the DB and the UI stay in
+    // agreement. Revert the optimistic flip only if it never confirmed.
+    const ok = await persistJSON("/api/sheet/progress", {
+      problemId: problem.id,
+      status: nextStatus,
+    });
+    if (!ok) reportSolved(problem.id, solved);
+    setToggling(false);
   }
 
   const companies = problem.companies;
