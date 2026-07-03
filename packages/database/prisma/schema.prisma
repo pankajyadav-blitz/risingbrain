@@ -122,6 +122,10 @@ model User {
   emailVerified DateTime?
   name          String?
   username      String?   @unique
+  // Optional for now (kept from the legacy DB); needed for the upcoming paid
+  // course launch. Not unique yet — make it @unique only if/when it becomes a
+  // login identifier (phone OTP), since that also needs a verified-phone flow.
+  phoneNumber   String?
   image         String?
   // Null for OAuth-only accounts. argon2id hash when set.
   passwordHash  String?
