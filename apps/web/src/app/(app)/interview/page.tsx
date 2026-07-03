@@ -6,7 +6,7 @@ import { InterviewFeed } from "./_components/interview-feed";
 import { getInterviewFeed, parseFeedParams } from "./_data";
 
 export const metadata: Metadata = {
-  title: "Interview Experiences — RisingBrain",
+  title: "Interview Experiences",
   description:
     "Real interview experiences from real candidates — what was asked, what worked, and what they'd do differently. Learn from wins and lessons across companies.",
 };

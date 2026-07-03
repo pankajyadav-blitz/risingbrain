@@ -1,40 +1,22 @@
 import { prisma, ProblemStatus } from "@/lib/db";
+import { DAY_MS, addDays, istToday, keyOf } from "@/lib/ist";
 
 /**
  * Server-side data for the profile dashboard:
  *  - a month-divided activity heatmap for a SELECTED calendar year (Jan–Dec),
- *    built from real practice signals (DSA `solvedAt` + aptitude `answeredAt`)
+ *    read from the pre-aggregated `ActivityDay` table (DSA + aptitude counts)
  *    bucketed by IST calendar day. A year switcher lets the user view past years.
  *  - per-section solved/total counts (DSA, SQL, Aptitude) split by difficulty.
  *  - current/longest streaks derived from recent activity (the denormalised User
  *    columns are not maintained yet).
  */
 
-const IST_OFFSET_MIN = 330; // UTC+05:30
-const DAY_MS = 86_400_000;
 // The year the platform went live. The year switcher always offers every year
 // from here up to the current year (it auto-extends as the app keeps running).
 const APP_LAUNCH_YEAR = 2025;
 const pad = (n: number) => String(n).padStart(2, "0");
 
 const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-
-/** YYYY-MM-DD for the IST calendar day a UTC instant falls on. */
-function istDayKey(d: Date): string {
-  const s = new Date(d.getTime() + IST_OFFSET_MIN * 60_000);
-  return `${s.getUTCFullYear()}-${pad(s.getUTCMonth() + 1)}-${pad(s.getUTCDate())}`;
-}
-/** IST "today" as a UTC-midnight Date we can iterate in getUTC* space. */
-function istToday(now: Date): Date {
-  const s = new Date(now.getTime() + IST_OFFSET_MIN * 60_000);
-  return new Date(Date.UTC(s.getUTCFullYear(), s.getUTCMonth(), s.getUTCDate()));
-}
-const keyOf = (d: Date) =>
-  `${d.getUTCFullYear()}-${pad(d.getUTCMonth() + 1)}-${pad(d.getUTCDate())}`;
-const addDays = (d: Date, n: number) => new Date(d.getTime() + n * DAY_MS);
-/** UTC instant of 00:00 IST on the given IST calendar date. */
-const istMidnightUTC = (y: number, m: number, day: number) =>
-  new Date(Date.UTC(y, m, day) - IST_OFFSET_MIN * 60_000);
 
 export type HeatCell = {
   key: string;
@@ -81,52 +63,45 @@ export async function getProfileData(userId: string, year?: number) {
   // Default view: a trailing 12-month window ending with the current month, so
   // today sits at the end and no future days show. Selecting a year switches to
   // that full calendar year (Jan–Dec).
+  // ActivityDay.day is stored at UTC-midnight of the IST calendar date, so the
+  // window bounds are plain UTC-midnight dates (no IST offset applied here).
   const monthList: { y: number; m: number }[] = [];
-  let windowStartUTC: Date;
-  let windowEndUTC: Date;
+  let windowStart: Date;
+  let windowEnd: Date;
   if (explicitYear) {
     for (let m = 0; m < 12; m++) monthList.push({ y: selectedYear, m });
-    windowStartUTC = istMidnightUTC(selectedYear, 0, 1);
-    windowEndUTC = istMidnightUTC(selectedYear + 1, 0, 1);
+    windowStart = new Date(Date.UTC(selectedYear, 0, 1));
+    windowEnd = new Date(Date.UTC(selectedYear + 1, 0, 1));
   } else {
     for (let i = 11; i >= 0; i--) {
       const d = new Date(Date.UTC(currentYear, currentMonth - i, 1));
       monthList.push({ y: d.getUTCFullYear(), m: d.getUTCMonth() });
     }
     const first = monthList[0]!;
-    windowStartUTC = istMidnightUTC(first.y, first.m, 1);
-    windowEndUTC = istMidnightUTC(currentYear, currentMonth + 1, 1);
+    windowStart = new Date(Date.UTC(first.y, first.m, 1));
+    windowEnd = new Date(Date.UTC(currentYear, currentMonth + 1, 1));
   }
-  const streakSince = new Date(now.getTime() - 400 * DAY_MS);
+  const streakSince = addDays(today, -400);
 
   const [
-    yearDsa,
-    yearApt,
-    streakDsa,
-    streakApt,
+    windowRows,
+    streakRows,
     dsaTotalsRows,
     sqlTotalsRows,
     dsaSolvedRows,
     quizTotal,
     quizSolved,
-    firstDsa,
-    firstApt,
+    firstActivity,
   ] = await Promise.all([
-    prisma.userProblemProgress.findMany({
-      where: { userId, status: ProblemStatus.SOLVED, solvedAt: { gte: windowStartUTC, lt: windowEndUTC } },
-      select: { solvedAt: true },
+    // Heatmap cells for the selected window (DSA + aptitude, pre-aggregated).
+    prisma.activityDay.findMany({
+      where: { userId, day: { gte: windowStart, lt: windowEnd } },
+      select: { day: true, count: true, dsaCount: true, mcqCount: true },
     }),
-    prisma.userQuizProgress.findMany({
-      where: { userId, answeredAt: { gte: windowStartUTC, lt: windowEndUTC } },
-      select: { answeredAt: true },
-    }),
-    prisma.userProblemProgress.findMany({
-      where: { userId, status: ProblemStatus.SOLVED, solvedAt: { gte: streakSince } },
-      select: { solvedAt: true },
-    }),
-    prisma.userQuizProgress.findMany({
-      where: { userId, answeredAt: { gte: streakSince } },
-      select: { answeredAt: true },
+    // A longer look-back for the streak (independent of the selected year).
+    prisma.activityDay.findMany({
+      where: { userId, day: { gte: streakSince }, count: { gt: 0 } },
+      select: { day: true },
     }),
     prisma.dsaProblem.groupBy({ by: ["difficulty"], _count: { _all: true } }),
     prisma.sqlProblem.groupBy({ by: ["difficulty"], _count: { _all: true } }),
@@ -136,32 +111,22 @@ export async function getProfileData(userId: string, year?: number) {
     }),
     prisma.quizQuestion.count(),
     // Aptitude "solved" = marks earned (correct without a hint), counted only for
-    // submitted tests. Mirrors the per-question `awarded` flag.
-    prisma.userQuizProgress.count({ where: { userId, awarded: true } }),
-    prisma.userProblemProgress.findFirst({
-      where: { userId, status: ProblemStatus.SOLVED, solvedAt: { not: null } },
-      orderBy: { solvedAt: "asc" },
-      select: { solvedAt: true },
-    }),
-    prisma.userQuizProgress.findFirst({
-      where: { userId },
-      orderBy: { answeredAt: "asc" },
-      select: { answeredAt: true },
+    // submitted tests. Mirrors the per-question `awarded` flag. Excludes rows
+    // deactivated by a later re-attempt.
+    prisma.userQuizProgress.count({ where: { userId, awarded: true, isActive: true } }),
+    // Earliest recorded activity day — drives the year switcher's lower bound.
+    prisma.activityDay.findFirst({
+      where: { userId, count: { gt: 0 } },
+      orderBy: { day: "asc" },
+      select: { day: true },
     }),
   ]);
 
   // ---- Heatmap counts for the selected year, keyed by IST day --------------
   const counts = new Map<string, { count: number; dsa: number; apt: number }>();
-  const bump = (d: Date | null, kind: "dsa" | "apt") => {
-    if (!d) return;
-    const k = istDayKey(d);
-    const cur = counts.get(k) ?? { count: 0, dsa: 0, apt: 0 };
-    cur.count += 1;
-    cur[kind] += 1;
-    counts.set(k, cur);
-  };
-  for (const r of yearDsa) bump(r.solvedAt, "dsa");
-  for (const r of yearApt) bump(r.answeredAt, "apt");
+  for (const r of windowRows) {
+    counts.set(keyOf(r.day), { count: r.count, dsa: r.dsaCount, apt: r.mcqCount });
+  }
 
   // ---- Month blocks for the window, each padded to 6 columns ---------------
   const months: MonthBlock[] = [];
@@ -199,9 +164,7 @@ export async function getProfileData(userId: string, year?: number) {
   const activeDays = counts.size;
 
   // ---- Streaks from the recent window --------------------------------------
-  const streakDays = new Set<string>();
-  for (const r of streakDsa) if (r.solvedAt) streakDays.add(istDayKey(r.solvedAt));
-  for (const r of streakApt) streakDays.add(istDayKey(r.answeredAt));
+  const streakDays = new Set<string>(streakRows.map((r) => keyOf(r.day)));
 
   let currentStreak = 0;
   let probe = streakDays.has(keyOf(today)) ? today : addDays(today, -1);
@@ -224,9 +187,10 @@ export async function getProfileData(userId: string, year?: number) {
   // From the app launch year (or the user's even-earlier first activity, just in
   // case) up to the current year, newest first. Auto-grows each calendar year.
   let earliest = Math.min(APP_LAUNCH_YEAR, currentYear);
-  for (const d of [firstDsa?.solvedAt, firstApt?.answeredAt]) {
-    if (!d) continue;
-    const yy = new Date(d.getTime() + IST_OFFSET_MIN * 60_000).getUTCFullYear();
+  if (firstActivity) {
+    // ActivityDay.day is UTC-midnight of the IST calendar date, so its UTC year
+    // is already the IST year.
+    const yy = firstActivity.day.getUTCFullYear();
     if (yy < earliest) earliest = yy;
   }
   const availableYears: number[] = [];

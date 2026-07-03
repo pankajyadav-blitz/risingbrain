@@ -3,7 +3,7 @@ import Link from "next/link";
 import { BadgeCheck, GraduationCap, Layers, Users, Video } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Courses — Coming soon · RisingBrain",
+  title: "Courses — Coming soon",
   description:
     "Founder-led, structured video courses are on the way. Curated curriculum, hands-on modules and mentorship — launching soon on RisingBrain.",
 };

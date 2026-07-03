@@ -1,7 +1,11 @@
 /**
  * Password hashing with argon2id (@node-rs/argon2 — prebuilt native binaries,
  * no node-gyp, works under Bun). OWASP-recommended memory-hard parameters.
+ *
+ * `server-only`: native bindings + a hashing routine that must never run in (or
+ * be bundled to) the browser.
  */
+import "server-only";
 import { hash, verify } from "@node-rs/argon2";
 
 // @node-rs/argon2 defaults to Argon2id; we set OWASP-recommended cost params.

@@ -105,7 +105,7 @@ export async function getInterviewFeed(
   let likedIds = new Set<string>();
   if (userId && rows.length) {
     const likes = await prisma.interviewLike.findMany({
-      where: { userId, experienceId: { in: rows.map((r) => r.id) } },
+      where: { userId, experienceId: { in: rows.map((r) => r.id) }, isActive: true },
       select: { experienceId: true },
     });
     likedIds = new Set(likes.map((l) => l.experienceId));

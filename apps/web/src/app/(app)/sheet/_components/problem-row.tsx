@@ -7,6 +7,7 @@ import { NoteModal } from "./note-modal";
 import { useReportSolved, useSheetBookmarkReport, useSheetSignedIn } from "./sheet-progress";
 import { redirectToLogin } from "@/lib/auth/redirect";
 import { persistJSON } from "@/lib/persist";
+import { refreshStreakBadge } from "@/lib/streak-client";
 import { logoSources } from "@/lib/company-logos";
 import type { ProblemStatusValue, SheetProblem } from "./types";
 
@@ -231,6 +232,7 @@ export function ProblemRow({
       status: nextStatus,
     });
     if (!ok) reportSolved(problem.id, solved);
+    else void refreshStreakBadge(); // reconcile the flame with the authoritative streak
     setToggling(false);
   }
 

@@ -1,5 +1,6 @@
-import { cache } from "react";
+import { cacheLife, cacheTag } from "next/cache";
 import { prisma } from "@/lib/db";
+import { CACHE_TAGS } from "@/lib/cache";
 import type { AptOption } from "./_components/question-card";
 
 /**
@@ -7,11 +8,16 @@ import type { AptOption } from "./_components/question-card";
  *
  * The route is split in two so we NEVER ship every question up front:
  *  - `getAptitudeIndex` — light: category/topic names + question counts only.
- *    Feeds the `@nav` slot and the mobile picker. Wrapped in React `cache()` so
- *    the layout and the slot share a single query per request.
+ *    Feeds the `@nav` slot and the mobile picker.
  *  - `getAptitudeTopic` — heavy: ONE topic's questions, fetched per-route when a
  *    topic is navigated to (lazy). Still WITHOUT `answerKey`/`explanation` — the
  *    correct answer only ever lives in `/api/aptitude/check`.
+ *
+ * Both are SHARED, seeded, cookie-free content (identical for everyone, changes
+ * only on a re-seed), so — like the DSA/SQL catalogs — they use `"use cache"`
+ * with the `quizCatalog` tag for cross-request caching + on-demand revalidation
+ * (see /api/admin/revalidate). Per-user graded state comes from `getProgressSeed`
+ * below, which is deliberately NOT cached.
  */
 
 export type AptKind = "APTITUDE" | "LOGICAL_REASONING" | "PUZZLE";
@@ -25,8 +31,12 @@ export type AptIndexCategory = {
   topics: AptIndexTopic[];
 };
 
-/** Light index — names & counts, no question bodies. Shared per request. */
-export const getAptitudeIndex = cache(async () => {
+/** Light index — names & counts, no question bodies. Cached cross-request. */
+export async function getAptitudeIndex() {
+  "use cache";
+  cacheLife("hours");
+  cacheTag(CACHE_TAGS.quizCatalog);
+
   const categoriesRaw = await prisma.quizCategory.findMany({
     orderBy: { order: "asc" },
     include: {
@@ -52,7 +62,7 @@ export const getAptitudeIndex = cache(async () => {
   );
 
   return { categories, totalTopics, totalQuestions };
-});
+}
 
 /** First topic id in display order — `/aptitude` redirects here so the paper is never empty. */
 export async function getFirstTopicId(): Promise<string | null> {
@@ -89,7 +99,7 @@ export type AptProgressSeed = {
 export async function getProgressSeed(userId: string): Promise<AptProgressSeed> {
   const [rows, scores] = await Promise.all([
     prisma.userQuizProgress.findMany({
-      where: { userId },
+      where: { userId, isActive: true },
       select: {
         questionId: true,
         selectedKey: true,
@@ -146,7 +156,11 @@ export type AptPaper = {
  * the `[topicId]` segment is statically prefetchable: hovering a nav item fully
  * generates and caches the paper, making the click feel instant.
  */
-export const getAptitudeTopic = cache(async (topicId: string): Promise<AptPaper | null> => {
+export async function getAptitudeTopic(topicId: string): Promise<AptPaper | null> {
+  "use cache";
+  cacheLife("hours");
+  cacheTag(CACHE_TAGS.quizCatalog);
+
   const topic = await prisma.quizTopic.findUnique({
     where: { id: topicId },
     select: {
@@ -177,4 +191,4 @@ export const getAptitudeTopic = cache(async (topicId: string): Promise<AptPaper 
       hint: q.hint,
     })),
   };
-});
+}

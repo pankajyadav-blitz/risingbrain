@@ -4,6 +4,7 @@ import { Plus_Jakarta_Sans, JetBrains_Mono } from "next/font/google";
 import { cookies } from "next/headers";
 import { COOKIES } from "@/lib/auth/constants";
 import { SessionKeepAlive } from "@/components/session-keep-alive";
+import { SITE_NAME, SITE_DESCRIPTION, SITE_KEYWORDS, siteUrl } from "@/lib/seo";
 import "./globals.css";
 
 // Site-wide typography. Plus Jakarta Sans for content, JetBrains Mono for code.
@@ -19,8 +20,50 @@ const mono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "RisingBrain",
-  description: "Turborepo + Next.js + Tailwind + Prisma, powered by Bun.",
+  // Resolves all relative URLs below (Open Graph, canonical, sitemap, images).
+  metadataBase: siteUrl,
+  title: {
+    default: `${SITE_NAME} — Crack your dream product company from any college`,
+    // Child pages set a bare title (e.g. "DSA Sheets") and this appends the brand.
+    template: `%s — ${SITE_NAME}`,
+  },
+  description: SITE_DESCRIPTION,
+  keywords: SITE_KEYWORDS,
+  applicationName: SITE_NAME,
+  authors: [{ name: SITE_NAME }],
+  creator: SITE_NAME,
+  publisher: SITE_NAME,
+  // Canonical for the home route; each page inherits metadataBase for its own.
+  alternates: { canonical: "/" },
+  category: "education",
+  formatDetection: { email: false, telephone: false, address: false },
+  openGraph: {
+    type: "website",
+    siteName: SITE_NAME,
+    locale: "en_US",
+    url: "/",
+    title: `${SITE_NAME} — Crack your dream product company from any college`,
+    description: SITE_DESCRIPTION,
+    // opengraph-image.tsx generates the image automatically.
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `${SITE_NAME} — Crack your dream product company from any college`,
+    description: SITE_DESCRIPTION,
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
+  },
+  // Icons are auto-detected from app/icon.svg + app/apple-icon.tsx — no manual
+  // `icons` map needed (and pointing at the removed favicon.ico would override them).
 };
 
 // Runs before paint to apply the saved/system theme and avoid a flash of the
@@ -44,7 +87,6 @@ export default async function RootLayout({
   // A session cookie present? Keep the access token fresh in the background.
   const jar = await cookies();
   const hasSession = jar.has(COOKIES.REFRESH) || jar.has(COOKIES.ACCESS);
-
   return (
     <html
       lang="en"

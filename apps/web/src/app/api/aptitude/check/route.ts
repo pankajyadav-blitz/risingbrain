@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
+import { checkWriteLimit } from "@/lib/auth/rate-limit";
 
 /**
  * POST /api/aptitude/check
@@ -12,6 +13,11 @@ import { prisma } from "@/lib/db";
  * `/api/aptitude/submit` when the learner submits the paper.
  */
 export async function POST(request: Request) {
+  // Public + DB-hitting: throttle by IP so it can't be used to hammer Postgres
+  // or rapidly brute-force an answer key one option at a time.
+  const limited = await checkWriteLimit(request);
+  if (limited) return limited;
+
   let body: unknown;
   try {
     body = await request.json();

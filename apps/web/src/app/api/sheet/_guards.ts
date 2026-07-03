@@ -1,23 +1,19 @@
-import { NextResponse } from "next/server";
-import { clientId, limitWrite } from "@/lib/auth/rate-limit";
-
 /**
  * Shared guards for the sheet write routes (bookmark / progress / notes). Keeps
  * the per-route handlers free of duplicated rate-limit and error-mapping
- * boilerplate.
+ * boilerplate. `checkWriteLimit` now lives in `@/lib/auth/rate-limit` so the
+ * interview and aptitude routes share the exact same throttle; re-exported here
+ * for the existing sheet-route imports.
  */
+export { checkWriteLimit } from "@/lib/auth/rate-limit";
 
-/**
- * Per-user write throttle for sheet mutations (30/min, see rate-limit.ts).
- * Returns a ready-to-send 429 response when the caller is over budget, or
- * `null` to proceed. Fails open if Redis is unavailable.
- */
-export async function checkWriteLimit(req: Request, userId: string): Promise<NextResponse | null> {
-  const rl = await limitWrite(clientId(req, userId));
-  if (rl.ok) return null;
-  return NextResponse.json(
-    { error: "Too many requests. Slow down." },
-    { status: 429, headers: { "Retry-After": String(rl.retryAfterSeconds ?? 60) } }
+/** True for a Prisma error with the given code. */
+function hasCode(e: unknown, code: string): boolean {
+  return (
+    typeof e === "object" &&
+    e !== null &&
+    "code" in e &&
+    (e as { code?: unknown }).code === code
   );
 }
 
@@ -27,10 +23,15 @@ export async function checkWriteLimit(req: Request, userId: string): Promise<Nex
  * the error surface as an unhandled 500.
  */
 export function isUnknownReference(e: unknown): boolean {
-  return (
-    typeof e === "object" &&
-    e !== null &&
-    "code" in e &&
-    (e as { code?: unknown }).code === "P2003"
-  );
+  return hasCode(e, "P2003");
+}
+
+/**
+ * True for a Prisma unique-constraint violation (P2002). Prisma's `upsert` is
+ * find-then-create under the hood, so two concurrent first-writes to the same
+ * `(userId, problemId)` row can both miss and race to insert — the loser throws
+ * P2002. Routes catch this and retry as a plain update (the row now exists).
+ */
+export function isConflict(e: unknown): boolean {
+  return hasCode(e, "P2002");
 }

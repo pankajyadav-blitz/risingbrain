@@ -11,6 +11,7 @@ import {
 import { useProgress } from "./progress-provider";
 import type { AptReviewEntry } from "../_data";
 import { redirectToLogin } from "@/lib/auth/redirect";
+import { refreshStreakBadge } from "@/lib/streak-client";
 
 /**
  * Owns ONE topic paper's attempt. Each QuestionCard reads/writes its slice here
@@ -176,6 +177,9 @@ export function PaperAttemptProvider({
         progress?.applySubmission(topicId, { score: data.score, total: data.total }, reviewMap);
         setResult({ score: data.score, total: data.total });
         setSubmitted(true);
+        // Submitting a test can extend the streak (today became active) — refresh
+        // the navbar flame in place from the authoritative value, no reload.
+        void refreshStreakBadge();
       } catch {
         setError("Couldn't submit the test. Please try again.");
       } finally {

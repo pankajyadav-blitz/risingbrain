@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { getCurrentUser } from "@/lib/auth/current-user";
+import { checkWriteLimit } from "@/lib/auth/rate-limit";
+import { recordActivity } from "@/lib/activity";
 
 /**
  * POST /api/aptitude/submit
@@ -10,8 +12,9 @@ import { getCurrentUser } from "@/lib/auth/current-user";
  * The server is authoritative: it recomputes correctness, applies the scoring
  * rule (a mark is earned only when correct AND no hint was used), and persists:
  *
- *  - one `UserQuizProgress` row per answered question (replaces any prior attempt
- *    for this topic — we wipe the topic's rows first, so re-attempts overwrite),
+ *  - one `UserQuizProgress` row per answered question. Re-attempts UPSERT each
+ *    answered row and mark any previously-answered-but-now-skipped rows
+ *    `isActive: false` (non-destructive — rows are never deleted),
  *  - a single `UserQuizTopicScore` (the stored "mark", upserted/replaced).
  *
  * It returns the full review payload (answer keys, explanations, hints, per-
@@ -24,6 +27,9 @@ export async function POST(request: Request) {
   if (!user) {
     return NextResponse.json({ error: "Sign in to submit." }, { status: 401 });
   }
+
+  const limited = await checkWriteLimit(request, user.id);
+  if (limited) return limited;
 
   let body: unknown;
   try {
@@ -94,14 +100,46 @@ export async function POST(request: Request) {
     }));
 
   const topicQuestionIds = questions.map((q) => q.id);
+  const answeredIds = answeredRows.map((r) => r.questionId);
+  const answeredSet = new Set(answeredIds);
+  const skippedIds = topicQuestionIds.filter((id) => !answeredSet.has(id));
 
-  // Replace this topic's prior attempt atomically.
+  // Which answers are brand-new (never recorded before)? Only these count as
+  // fresh activity for the heatmap — re-answering an existing question doesn't.
+  const priorRows = await prisma.userQuizProgress.findMany({
+    where: { userId: user.id, questionId: { in: topicQuestionIds } },
+    select: { questionId: true },
+  });
+  const priorIds = new Set(priorRows.map((r) => r.questionId));
+  const newlyAnsweredIds = answeredIds.filter((id) => !priorIds.has(id));
+
+  // Replace this topic's prior attempt atomically — non-destructively. Answered
+  // questions are upserted (isActive: true); previously-answered questions the
+  // learner skipped this time are flipped inactive rather than deleted, so
+  // "only the current attempt counts" holds without ever removing a row.
+  // `answeredAt` is intentionally left untouched on update so a question's first
+  // solve date (which the heatmap keys on) is preserved across re-attempts.
   await prisma.$transaction([
-    prisma.userQuizProgress.deleteMany({
-      where: { userId: user.id, questionId: { in: topicQuestionIds } },
-    }),
-    ...(answeredRows.length
-      ? [prisma.userQuizProgress.createMany({ data: answeredRows })]
+    ...answeredRows.map((row) =>
+      prisma.userQuizProgress.upsert({
+        where: { userId_questionId: { userId: user.id, questionId: row.questionId } },
+        create: { ...row, isActive: true },
+        update: {
+          selectedKey: row.selectedKey,
+          isCorrect: row.isCorrect,
+          hintUsed: row.hintUsed,
+          awarded: row.awarded,
+          isActive: true,
+        },
+      })
+    ),
+    ...(skippedIds.length
+      ? [
+          prisma.userQuizProgress.updateMany({
+            where: { userId: user.id, questionId: { in: skippedIds }, isActive: true },
+            data: { isActive: false },
+          }),
+        ]
       : []),
     prisma.userQuizTopicScore.upsert({
       where: { userId_topicId: { userId: user.id, topicId } },
@@ -109,6 +147,9 @@ export async function POST(request: Request) {
       update: { score, total, submittedAt: new Date() },
     }),
   ]);
+
+  // Log fresh answers to the heatmap/streak (best-effort, never blocks the response).
+  await recordActivity({ userId: user.id, kind: "mcq", referenceIds: newlyAnsweredIds });
 
   return NextResponse.json({ score, total, review });
 }

@@ -1,7 +1,14 @@
 /**
  * Centralized, validated environment access. Import from here instead of
  * touching process.env directly so a missing var fails loudly and early.
+ *
+ * `server-only`: this module reads secrets (DB URL, AUTH_SECRET, OAuth + SMTP
+ * credentials). The guard makes any accidental import from a Client Component a
+ * BUILD error, so credentials can never be bundled to the browser. Modules that
+ * broker secrets (redis, oauth, mailer, cookies) import env from here, so they
+ * inherit the same protection.
  */
+import "server-only";
 
 function required(name: string): string {
   const value = process.env[name];
@@ -16,13 +23,16 @@ function optional(name: string, fallback = ""): string {
   return process.env[name] ?? fallback;
 }
 
+const APP_URL = optional("APP_URL", "http://localhost:3000");
+const isProd = process.env.NODE_ENV === "production";
+
 export const env = {
   DATABASE_URL: required("DATABASE_URL"),
   REDIS_URL: optional("REDIS_URL", "redis://localhost:6379"),
   AUTH_SECRET: required("AUTH_SECRET"),
   ACCESS_TOKEN_TTL: optional("ACCESS_TOKEN_TTL", "15m"),
   REFRESH_TOKEN_TTL_DAYS: Number(optional("REFRESH_TOKEN_TTL_DAYS", "30")),
-  APP_URL: optional("APP_URL", "http://localhost:3000"),
+  APP_URL,
 
   GOOGLE_CLIENT_ID: optional("GOOGLE_CLIENT_ID"),
   GOOGLE_CLIENT_SECRET: optional("GOOGLE_CLIENT_SECRET"),
@@ -36,7 +46,16 @@ export const env = {
   // Optional friendly From header; falls back to GMAIL_USER.
   MAIL_FROM: optional("MAIL_FROM"),
 
-  isProd: process.env.NODE_ENV === "production",
+  isProd,
+
+  /**
+   * Whether auth cookies get the `Secure` flag (HTTPS-only). True when running
+   * as a production build OR when APP_URL is HTTPS — so cookies are Secure on any
+   * real deployment even if NODE_ENV is somehow unset, while local development
+   * over http://localhost stays non-secure (so login works there). A leftover
+   * http:// APP_URL in production would drop Secure, so keep APP_URL = https://.
+   */
+  secureCookies: isProd || APP_URL.startsWith("https://"),
 };
 
 export { COOKIES } from "./auth/constants";

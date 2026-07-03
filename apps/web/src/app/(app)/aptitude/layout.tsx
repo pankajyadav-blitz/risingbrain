@@ -6,7 +6,7 @@ import { AptitudeWorkspace } from "./_components/workspace";
 import { AptitudeWorkspaceSkeleton } from "./_components/workspace-skeleton";
 
 export const metadata: Metadata = {
-  title: "Aptitude & Reasoning — RisingBrain",
+  title: "Aptitude & Reasoning",
   description:
     "Topic-wise aptitude, logical reasoning and puzzle drills with crisp theory, key formulae and MCQ practice to sharpen your speed.",
 };

@@ -7,7 +7,10 @@ import { getProfileData } from "./_data";
 import { Heatmap } from "./_components/heatmap";
 import { SectionStats } from "./_components/section-stats";
 
-export const metadata: Metadata = { title: "Profile · RisingBrain" };
+export const metadata: Metadata = {
+  title: "Profile",
+  robots: { index: false, follow: false }, // per-user page — keep out of search
+};
 
 function StatPill({
   icon,

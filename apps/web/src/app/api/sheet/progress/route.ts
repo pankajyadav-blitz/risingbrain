@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
 import { prisma, ProblemStatus } from "@/lib/db";
 import { getCurrentUser } from "@/lib/auth/current-user";
-import { checkWriteLimit, isUnknownReference } from "../_guards";
+import { recordActivity } from "@/lib/activity";
+import { checkWriteLimit, isConflict, isUnknownReference } from "../_guards";
 
 const VALID = new Set<string>(Object.values(ProblemStatus));
 
@@ -33,6 +34,9 @@ export async function POST(req: Request) {
   }
 
   const typedStatus = status as ProblemStatus;
+  // First-ever solve? Used to log heatmap/streak activity exactly once per
+  // problem (toggling SOLVED off/on must not double-count).
+  let firstSolve = false;
 
   try {
     // `solvedAt` records the *first* time the problem was solved. Preserve any
@@ -43,14 +47,24 @@ export async function POST(req: Request) {
       where: { userId_problemId: { userId: user.id, problemId } },
       select: { solvedAt: true },
     });
+    firstSolve = !existing?.solvedAt && typedStatus === ProblemStatus.SOLVED;
     const solvedAt =
       existing?.solvedAt ?? (typedStatus === ProblemStatus.SOLVED ? new Date() : null);
 
-    await prisma.userProblemProgress.upsert({
-      where: { userId_problemId: { userId: user.id, problemId } },
-      create: { userId: user.id, problemId, status: typedStatus, solvedAt },
-      update: { status: typedStatus, solvedAt },
-    });
+    try {
+      await prisma.userProblemProgress.upsert({
+        where: { userId_problemId: { userId: user.id, problemId } },
+        create: { userId: user.id, problemId, status: typedStatus, solvedAt },
+        update: { status: typedStatus, solvedAt },
+      });
+    } catch (e) {
+      // Concurrent first-insert lost the race — the row exists now, so update it.
+      if (!isConflict(e)) throw e;
+      await prisma.userProblemProgress.update({
+        where: { userId_problemId: { userId: user.id, problemId } },
+        data: { status: typedStatus, solvedAt },
+      });
+    }
   } catch (e) {
     // Unknown problemId → FK violation. Treat as a bad request, not a 500.
     if (isUnknownReference(e)) {
@@ -58,6 +72,11 @@ export async function POST(req: Request) {
     }
     console.error("sheet/progress upsert failed", e);
     return NextResponse.json({ error: "Something went wrong" }, { status: 500 });
+  }
+
+  // Log the first solve to the heatmap/streak (best-effort, never blocks).
+  if (firstSolve) {
+    await recordActivity({ userId: user.id, kind: "dsa", referenceIds: [problemId] });
   }
 
   return NextResponse.json({ ok: true, status: typedStatus });

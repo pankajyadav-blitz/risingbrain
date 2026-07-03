@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { getCurrentUser } from "@/lib/auth/current-user";
+import { sanitizeRichText } from "@/lib/sanitize";
 import { checkWriteLimit, isUnknownReference } from "../../_guards";
 
 // A note is rich-text HTML. Cap it well above any realistic note while blocking
@@ -13,8 +14,10 @@ const MAX_NOTE_CHARS = 50_000;
  * GET  /api/sheet/notes/[problemId] -> { content }
  * PUT  /api/sheet/notes/[problemId]  { content } -> { ok, hasNote }
  *
- * A single private markdown note per user per problem. An empty PUT deletes the
- * note so the "has note" indicator stays accurate.
+ * A single private markdown note per user per problem. An empty PUT deactivates
+ * the note (isActive: false) — the row is retained and re-activated if the user
+ * writes a note again — so the "has note" indicator stays accurate without ever
+ * deleting data.
  */
 export async function GET(
   _req: Request,
@@ -27,10 +30,10 @@ export async function GET(
 
   const note = await prisma.userProblemNote.findUnique({
     where: { userId_problemId: { userId: user.id, problemId } },
-    select: { content: true },
+    select: { content: true, isActive: true },
   });
 
-  return NextResponse.json({ content: note?.content ?? "" });
+  return NextResponse.json({ content: note?.isActive ? note.content : "" });
 }
 
 export async function PUT(
@@ -58,26 +61,31 @@ export async function PUT(
     return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
   }
 
-  const content = typeof body.content === "string" ? body.content.trim() : "";
+  const rawContent = typeof body.content === "string" ? body.content.trim() : "";
 
-  if (content.length > MAX_NOTE_CHARS) {
+  if (rawContent.length > MAX_NOTE_CHARS) {
     return NextResponse.json({ error: "Note too large" }, { status: 413 });
   }
 
+  // The note is rich-text HTML from a contentEditable — sanitize before storing
+  // so a stored payload can't run when the editor re-hydrates it via innerHTML.
+  const content = rawContent ? sanitizeRichText(rawContent) : "";
+
   try {
     if (!content) {
-      await prisma.userProblemNote
-        .delete({ where: { userId_problemId: { userId: user.id, problemId } } })
-        .catch(() => {
-          /* no existing note — nothing to delete */
-        });
+      // Deactivate rather than delete. If no row exists there's nothing to
+      // clear, so skip the write entirely (avoids an FK error on unknown ids).
+      await prisma.userProblemNote.updateMany({
+        where: { userId: user.id, problemId, isActive: true },
+        data: { isActive: false },
+      });
       return NextResponse.json({ ok: true, hasNote: false });
     }
 
     await prisma.userProblemNote.upsert({
       where: { userId_problemId: { userId: user.id, problemId } },
-      create: { userId: user.id, problemId, content },
-      update: { content },
+      create: { userId: user.id, problemId, content, isActive: true },
+      update: { content, isActive: true },
     });
   } catch (e) {
     // Unknown problemId → FK violation. Treat as a bad request, not a 500.

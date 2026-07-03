@@ -4,6 +4,9 @@ import { notFound } from "next/navigation";
 import { ArrowLeft, Layers, MessageCircle } from "lucide-react";
 import { getCurrentUser } from "@/lib/auth/current-user";
 import { prisma } from "@/lib/db";
+import { sanitizeRichText } from "@/lib/sanitize";
+import { JsonLd } from "@/components/structured-data";
+import { SITE_NAME, absoluteUrl } from "@/lib/seo";
 import { Container } from "@/components/marketing/primitives";
 import { Avatar } from "@/components/marketing/primitives";
 import {
@@ -42,13 +45,26 @@ export async function generateMetadata({
   const { id } = await params;
   const exp = await prisma.interviewExperience.findFirst({
     where: { id, status: "PUBLISHED" },
-    select: { title: true, company: true, role: true, excerpt: true },
+    select: { title: true, company: true, role: true, excerpt: true, tags: true, createdAt: true, updatedAt: true },
   });
-  if (!exp) return { title: "Interview experience — RisingBrain" };
+  if (!exp) return { title: "Interview experience" };
+  const description = exp.excerpt ?? `${exp.company} · ${exp.role} interview experience.`;
+  const url = `/interview/${id}`;
   return {
-    title: `${exp.title} — RisingBrain`,
-    description:
-      exp.excerpt ?? `${exp.company} · ${exp.role} interview experience.`,
+    title: exp.title, // template appends "— RisingBrain"
+    description,
+    keywords: [exp.company, exp.role, "interview experience", ...exp.tags],
+    alternates: { canonical: url },
+    openGraph: {
+      type: "article",
+      url,
+      title: exp.title,
+      description,
+      publishedTime: exp.createdAt.toISOString(),
+      modifiedTime: exp.updatedAt.toISOString(),
+      tags: exp.tags,
+    },
+    twitter: { card: "summary_large_image", title: exp.title, description },
   };
 }
 
@@ -72,9 +88,9 @@ export default async function InterviewDetailPage({
       where: {
         userId_experienceId: { userId: current.id, experienceId: exp.id },
       },
-      select: { id: true },
+      select: { isActive: true },
     });
-    liked = Boolean(like);
+    liked = Boolean(like?.isActive);
   }
 
   const verdict = VERDICT_META[exp.verdict];
@@ -89,8 +105,22 @@ export default async function InterviewDetailPage({
     author: { name: c.author.name, image: c.author.image },
   }));
 
+  const articleLd = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: exp.title.slice(0, 110),
+    description: exp.excerpt ?? `${exp.company} · ${exp.role} interview experience.`,
+    datePublished: exp.createdAt.toISOString(),
+    dateModified: exp.updatedAt.toISOString(),
+    author: { "@type": "Person", name: authorName },
+    keywords: [exp.company, exp.role, ...exp.tags].join(", "),
+    publisher: { "@type": "Organization", name: SITE_NAME },
+    mainEntityOfPage: absoluteUrl(`/interview/${exp.id}`),
+  };
+
   return (
     <main className="flex-1">
+      <JsonLd data={articleLd} />
       <Container>
         <article className="mx-auto max-w-3xl py-10 sm:py-14">
           <Link
@@ -205,7 +235,11 @@ export default async function InterviewDetailPage({
  */
 function bodyHtml(body: string): string {
   const looksHtml = /<[a-z][\s\S]*>/i.test(body);
-  if (looksHtml) return body;
+  // Rich-text branch: sanitize before it reaches dangerouslySetInnerHTML so a
+  // malicious author's HTML (onerror handlers, javascript: links, <script>)
+  // can't run in a viewer's session — this also protects any rows stored before
+  // write-time sanitization existed.
+  if (looksHtml) return sanitizeRichText(body);
   const escaped = body
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")

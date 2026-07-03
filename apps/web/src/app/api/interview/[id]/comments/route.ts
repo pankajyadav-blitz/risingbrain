@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { getCurrentUser } from "@/lib/auth/current-user";
+import { checkWriteLimit } from "@/lib/auth/rate-limit";
 import { timeAgo } from "@/app/(app)/interview/_lib/format";
 import type { CommentItem } from "@/app/(app)/interview/_lib/types";
 
@@ -43,6 +44,9 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
 export async function POST(req: Request, { params }: { params: Promise<{ id: string }> }) {
   const user = await getCurrentUser();
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+
+  const limited = await checkWriteLimit(req, user.id);
+  if (limited) return limited;
 
   const { id: experienceId } = await params;
 

@@ -3,6 +3,7 @@
  * auth + write endpoints so a flood can't hammer Postgres. Fails OPEN on a Redis
  * error so a cache blip never locks users out.
  */
+import { NextResponse } from "next/server";
 import { RateLimiterRedis } from "rate-limiter-flexible";
 import { redis } from "./redis";
 
@@ -51,4 +52,20 @@ export function clientId(req: Request, userId?: string): string {
   const fwd = req.headers.get("x-forwarded-for");
   const ip = fwd ? fwd.split(",")[0]!.trim() : "127.0.0.1";
   return `ip:${ip}`;
+}
+
+/**
+ * Per-caller write throttle for any state-changing (or DB-hitting public) route.
+ * Returns a ready-to-send 429 when over budget, or `null` to proceed. Keyed by
+ * user id when signed in, else the forwarded IP. Fails open if Redis is down.
+ * Shared by the sheet, interview and aptitude routes so one flood can't hammer
+ * Postgres (see docs/ARCHITECTURE.md §1).
+ */
+export async function checkWriteLimit(req: Request, userId?: string): Promise<NextResponse | null> {
+  const rl = await limitWrite(clientId(req, userId));
+  if (rl.ok) return null;
+  return NextResponse.json(
+    { error: "Too many requests. Slow down." },
+    { status: 429, headers: { "Retry-After": String(rl.retryAfterSeconds ?? 60) } }
+  );
 }

@@ -15,7 +15,7 @@ import type { DifficultyStat } from "./_components/progress-panel";
 import { getDsaCatalog, getSheetActivity, type SheetActivity } from "./_data";
 
 export const metadata: Metadata = {
-  title: "DSA Sheets — RisingBrain",
+  title: "DSA Sheets",
   description:
     "Curated, pattern-first DSA practice sheets — every problem sequenced by topic and pattern so you learn the shapes interviews actually test.",
 };
@@ -66,7 +66,7 @@ export default async function SheetPage() {
           select: { problemId: true, status: true, isBookmarked: true },
         }),
         prisma.userProblemNote.findMany({
-          where: { userId: user.id, problemId: { in: allProblemIds } },
+          where: { userId: user.id, problemId: { in: allProblemIds }, isActive: true },
           select: { problemId: true },
         }),
       ])

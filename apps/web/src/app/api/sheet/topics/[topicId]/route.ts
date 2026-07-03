@@ -58,7 +58,7 @@ export async function GET(
       : Promise.resolve([]),
     problemIds.length
       ? prisma.userProblemNote.findMany({
-          where: { userId: user.id, problemId: { in: problemIds } },
+          where: { userId: user.id, problemId: { in: problemIds }, isActive: true },
           select: { problemId: true },
         })
       : Promise.resolve([]),

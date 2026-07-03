@@ -1,7 +1,8 @@
 import { Plus } from "lucide-react";
 import { Container, Eyebrow } from "./primitives";
 
-const faqs = [
+// Exported so the home page can emit matching FAQPage JSON-LD for rich results.
+export const faqs = [
   {
     q: "Is RisingBrain free to start?",
     a: "Yes. The curated SWE sheet, aptitude drills and a large chunk of the practice arena are free forever — no card, no catch. Premium adds the mentorship cohort, mock interviews and the campus training track.",

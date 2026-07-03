@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { prisma, InterviewVerdict, Difficulty } from "@/lib/db";
 import { getCurrentUser } from "@/lib/auth/current-user";
+import { checkWriteLimit } from "@/lib/auth/rate-limit";
+import { sanitizeRichText } from "@/lib/sanitize";
 
 const VERDICTS = new Set<string>(Object.values(InterviewVerdict));
 const DIFFICULTIES = new Set<string>(Object.values(Difficulty));
@@ -14,6 +16,9 @@ const DIFFICULTIES = new Set<string>(Object.values(Difficulty));
 export async function POST(req: Request) {
   const user = await getCurrentUser();
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+
+  const limited = await checkWriteLimit(req, user.id);
+  if (limited) return limited;
 
   let raw: Record<string, unknown>;
   try {
@@ -71,7 +76,8 @@ export async function POST(req: Request) {
       roundsCount,
       title: title.slice(0, 180),
       excerpt,
-      body,
+      // Store sanitized HTML (defense in depth; the render path sanitizes too).
+      body: sanitizeRichText(body),
       tags,
       status: "PUBLISHED",
     },

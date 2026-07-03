@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma, ProblemStatus } from "@/lib/db";
 import { getCurrentUser } from "@/lib/auth/current-user";
-import { checkWriteLimit, isUnknownReference } from "../_guards";
+import { checkWriteLimit, isConflict, isUnknownReference } from "../_guards";
 
 /**
  * POST /api/sheet/bookmark  { problemId, bookmarked }
@@ -32,16 +32,26 @@ export async function POST(req: Request) {
   const bookmarked = body.bookmarked;
 
   try {
-    await prisma.userProblemProgress.upsert({
-      where: { userId_problemId: { userId: user.id, problemId } },
-      create: {
-        userId: user.id,
-        problemId,
-        status: ProblemStatus.NOT_STARTED,
-        isBookmarked: bookmarked,
-      },
-      update: { isBookmarked: bookmarked },
-    });
+    try {
+      await prisma.userProblemProgress.upsert({
+        where: { userId_problemId: { userId: user.id, problemId } },
+        create: {
+          userId: user.id,
+          problemId,
+          status: ProblemStatus.NOT_STARTED,
+          isBookmarked: bookmarked,
+        },
+        update: { isBookmarked: bookmarked },
+      });
+    } catch (e) {
+      // Concurrent first-insert lost the race — the row exists now, so update
+      // only our field (never clobber a solve status set by the other writer).
+      if (!isConflict(e)) throw e;
+      await prisma.userProblemProgress.update({
+        where: { userId_problemId: { userId: user.id, problemId } },
+        data: { isBookmarked: bookmarked },
+      });
+    }
   } catch (e) {
     // Unknown problemId → FK violation. Treat as a bad request, not a 500.
     if (isUnknownReference(e)) {

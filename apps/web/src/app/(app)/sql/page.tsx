@@ -7,7 +7,7 @@ import { DifficultyBadge } from "./_components/difficulty-badge";
 import { ProblemCard, type ProblemListItem } from "./_components/problem-card";
 
 export const metadata: Metadata = {
-  title: "SQL Queries — RisingBrain",
+  title: "SQL Queries",
   description:
     "Practice real SQL interview problems — each with a plain-English statement, the optimal approach and a clean, copy-ready query.",
 };
