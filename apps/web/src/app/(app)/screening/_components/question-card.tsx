@@ -75,7 +75,7 @@ const DIFFICULTY_STYLE: Record<string, string> = {
 /**
  * A single MCQ in the graded test flow. While the test is open it ships the
  * prompt, options and hint only — never the answer. Selecting an option calls
- * `/api/aptitude/check`, which colors the chosen option green/red but does NOT
+ * `/api/screening/check`, which colors the chosen option green/red but does NOT
  * reveal the correct one. Opening the hint (top-right) before answering forfeits
  * the mark. Once the paper is submitted the card flips to review mode: the
  * correct answer, the explanation and the hint are all revealed.

@@ -82,27 +82,36 @@ export function PaperSkeleton() {
   );
 }
 
-/** Mirrors <NavList>: category heading (icon + name + %) → topic link rows. */
+/** Mirrors <NavList>: selected-category heading → its topic link rows. */
 export function NavIndexSkeleton() {
   return (
-    <div className="space-y-5">
-      {Array.from({ length: 3 }).map((_, c) => (
-        <div key={c}>
-          <div className="mb-2 flex items-center gap-2 px-2">
-            <Skeleton className="h-4 w-4 rounded" />
+    <div>
+      <Skeleton className="mb-2 ml-2 h-3 w-28" />
+      <ul className="space-y-0.5">
+        {Array.from({ length: 6 }).map((_, t) => (
+          <li key={t}>
+            <div className="flex items-center gap-2 rounded-xl px-3 py-2">
+              <Skeleton className="h-3.5 w-2/3" />
+              <Skeleton className="ml-auto h-3 w-8 shrink-0" />
+            </div>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+/** Mirrors <CategoryTabs>: the full-width row of category tabs on top. */
+export function CategoryTabsSkeleton() {
+  return (
+    <div className="flex flex-wrap gap-2.5 sm:gap-3">
+      {Array.from({ length: 3 }).map((_, i) => (
+        <div key={i} className="flex items-center gap-3 rounded-2xl px-4 py-3 sm:px-5">
+          <Skeleton className="h-9 w-9 shrink-0 rounded-full" />
+          <div>
             <Skeleton className="h-4 w-28" />
-            <Skeleton className="ml-auto h-3 w-8" />
+            <Skeleton className="mt-1.5 h-2.5 w-16" />
           </div>
-          <ul className="space-y-0.5">
-            {Array.from({ length: 4 }).map((_, t) => (
-              <li key={t}>
-                <div className="flex items-center gap-2 rounded-xl px-3 py-2">
-                  <Skeleton className="h-3.5 w-2/3" />
-                  <Skeleton className="ml-auto h-3 w-8 shrink-0" />
-                </div>
-              </li>
-            ))}
-          </ul>
         </div>
       ))}
     </div>
@@ -118,19 +127,15 @@ export function NavIndexSkeleton() {
 export function AptitudeWorkspaceSkeleton() {
   return (
     <>
-      {/* Header — title, subtitle, topic/question tally */}
-      <div className="mb-6 flex flex-wrap items-end justify-between gap-3 lg:shrink-0">
-        <div>
-          <Skeleton className="h-8 w-64 max-w-full rounded-lg sm:h-9" />
-          <Skeleton className="mt-2 h-4 w-80 max-w-full" />
-        </div>
-        <Skeleton className="h-4 w-36 shrink-0" />
+      {/* Category selector on top (full width) */}
+      <div className="mb-6 lg:shrink-0">
+        <CategoryTabsSkeleton />
       </div>
 
       <div className="pb-8 lg:flex lg:min-h-0 lg:flex-1 lg:flex-col lg:pb-0">
         {/* Mobile: picker placeholder (replaces the sidebar) */}
         <div className="mb-4 lg:hidden">
-          <Skeleton className="mb-1.5 h-3 w-20" />
+          <Skeleton className="mb-1.5 h-3 w-28" />
           <Skeleton className="h-11 w-full rounded-xl" />
         </div>
 

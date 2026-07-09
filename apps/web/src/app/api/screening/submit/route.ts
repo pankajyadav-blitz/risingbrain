@@ -5,7 +5,7 @@ import { checkWriteLimit } from "@/lib/auth/rate-limit";
 import { recordActivity } from "@/lib/activity";
 
 /**
- * POST /api/aptitude/submit
+ * POST /api/screening/submit
  *
  * Grades and stores a whole topic's test. The client sends every answered
  * question with its chosen key and whether a hint was opened BEFORE answering.

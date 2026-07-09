@@ -4,7 +4,7 @@ import { CACHE_TAGS } from "@/lib/cache";
 
 /**
  * The published SQL problem list — lightweight fields only (the heavy
- * description/approach/solution are lazy-loaded per card via /api/sql/[id]).
+ * description/approach/solution are lazy-loaded per card via /api/domain/[id]).
  * Shared, seeded content: cached cross-request and tagged for revalidation.
  * Reads no cookies.
  */

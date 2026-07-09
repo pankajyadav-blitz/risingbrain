@@ -16,7 +16,7 @@ import { refreshStreakBadge } from "@/lib/streak-client";
 /**
  * Owns ONE topic paper's attempt. Each QuestionCard reads/writes its slice here
  * instead of holding private state, so the end-of-paper Submit bar can grade the
- * whole paper at once. Answering a question calls `/api/aptitude/check` for the
+ * whole paper at once. Answering a question calls `/api/screening/check` for the
  * green/red color (boolean only — the correct option is never revealed mid-test);
  * opening a hint BEFORE answering forfeits that question's mark.
  *
@@ -104,7 +104,7 @@ export function PaperAttemptProvider({
       patch(questionId, { selectedKey: key, checking: true });
       void (async () => {
         try {
-          const res = await fetch("/api/aptitude/check", {
+          const res = await fetch("/api/screening/check", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ questionId, selectedKey: key }),
@@ -149,7 +149,7 @@ export function PaperAttemptProvider({
       }));
     void (async () => {
       try {
-        const res = await fetch("/api/aptitude/submit", {
+        const res = await fetch("/api/screening/submit", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ topicId, answers }),

@@ -220,7 +220,7 @@ export async function getProfileData(userId: string, year?: number) {
     },
     {
       key: "sql",
-      label: "SQL",
+      label: "Domain",
       solved: 0, // no per-user SQL solve tracking yet
       total: sqlTotal.EASY! + sqlTotal.MEDIUM! + sqlTotal.HARD!,
       byDifficulty: [
@@ -231,7 +231,7 @@ export async function getProfileData(userId: string, year?: number) {
     },
     {
       key: "aptitude",
-      label: "Aptitude",
+      label: "Screening",
       solved: quizSolved,
       total: quizTotal,
       byDifficulty: null,

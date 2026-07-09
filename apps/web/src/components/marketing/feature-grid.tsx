@@ -1,18 +1,11 @@
 import Link from "next/link";
-import {
-  ArrowRight,
-  Calculator,
-  Database,
-  Layers,
-  ListChecks,
-  MessageSquareQuote,
-  type LucideIcon,
-} from "lucide-react";
+import { ArrowRight, Layers } from "lucide-react";
 import { Container, Eyebrow, GlassCard } from "./primitives";
+import { FEATURE_ART, type FeatureArtKey } from "./feature-banners";
 
 type Feature = {
+  key: FeatureArtKey;
   href: string;
-  icon: LucideIcon;
   title: string;
   desc: string;
   tag: string;
@@ -20,29 +13,29 @@ type Feature = {
 
 const features: Feature[] = [
   {
+    key: "sheets",
     href: "/sheet",
-    icon: ListChecks,
     title: "DSA Sheets",
     desc: "The curated SWE Sheet and a focused Last-Minute 100 for revision day.",
     tag: "Pattern-first",
   },
   {
-    href: "/sql",
-    icon: Database,
-    title: "SQL Queries",
-    desc: "Problem, best approach and the clean query — side by side.",
-    tag: "Window funcs",
+    key: "domain",
+    href: "/domain",
+    title: "Domain",
+    desc: "SQL, DBMS, OS and more — problem, best approach and the clean answer, side by side.",
+    tag: "Core CS",
   },
   {
-    href: "/aptitude",
-    icon: Calculator,
-    title: "Aptitude",
+    key: "screening",
+    href: "/screening",
+    title: "Screening",
     desc: "Crisp topic theory plus MCQ practice to sharpen your speed.",
     tag: "MCQ drills",
   },
   {
+    key: "interview",
     href: "/interview",
-    icon: MessageSquareQuote,
     title: "Interview Stories",
     desc: "Real experiences from real candidates — wins, lessons and round-by-round breakdowns.",
     tag: "Community",
@@ -74,37 +67,46 @@ export function FeatureGrid() {
 
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {features.map((f) => {
-            const Icon = f.icon;
+            const Art = FEATURE_ART[f.key];
             return (
               <Link key={f.href} href={f.href} className="group block h-full">
-                <GlassCard hover className="relative h-full overflow-hidden p-6">
-                  {/* Accent line + corner glow, revealed on hover. */}
-                  <span
-                    aria-hidden
-                    className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-rb-green-400/70 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-                  />
-                  <span
-                    aria-hidden
-                    className="pointer-events-none absolute -right-12 -top-12 h-36 w-36 rounded-full bg-rb-green-500/20 opacity-0 blur-2xl transition-opacity duration-500 group-hover:opacity-100"
-                  />
+                <GlassCard hover className="flex h-full flex-col overflow-hidden">
+                  {/* Banner — themed SVG scene on a brand-tinted gradient. */}
+                  <div className="relative h-28 overflow-hidden bg-gradient-to-br from-rb-green-500/20 via-rb-green-500/[0.06] to-transparent">
+                    <Art className="absolute inset-0 h-full w-full text-accent transition-transform duration-500 ease-out group-hover:scale-105" />
 
-                  <div className="relative mb-5 flex items-start justify-between">
-                    <span className="grid h-12 w-12 place-items-center rounded-2xl bg-gradient-to-br from-rb-green-400/25 to-rb-green-600/10 text-accent ring-1 ring-rb-green-500/20 transition-transform duration-300 group-hover:-rotate-3 group-hover:scale-110">
-                      <Icon className="h-5 w-5" />
-                    </span>
-                    <span className="glass-pill rounded-full px-2.5 py-1 text-[11px] font-medium uppercase tracking-wide text-muted">
+                    {/* Hover corner glow */}
+                    <span
+                      aria-hidden
+                      className="pointer-events-none absolute -right-10 -top-10 h-28 w-28 rounded-full bg-rb-green-500/30 opacity-0 blur-2xl transition-opacity duration-500 group-hover:opacity-100"
+                    />
+                    {/* Fade into the card body + accent line on hover */}
+                    <span
+                      aria-hidden
+                      className="pointer-events-none absolute inset-x-0 bottom-0 h-10 bg-gradient-to-t from-surface/40 to-transparent"
+                    />
+                    <span
+                      aria-hidden
+                      className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-rb-green-400/70 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+                    />
+
+                    {/* Category tag */}
+                    <span className="glass-pill absolute right-3 top-3 rounded-full px-2.5 py-1 text-[11px] font-medium uppercase tracking-wide text-muted">
                       {f.tag}
                     </span>
                   </div>
 
-                  <h3 className="relative mb-1.5 text-lg font-semibold transition-colors group-hover:text-accent">
-                    {f.title}
-                  </h3>
-                  <p className="relative text-sm leading-relaxed text-muted">{f.desc}</p>
+                  {/* Content */}
+                  <div className="flex flex-1 flex-col p-6">
+                    <h3 className="mb-1.5 text-lg font-semibold transition-colors group-hover:text-accent">
+                      {f.title}
+                    </h3>
+                    <p className="text-sm leading-relaxed text-muted">{f.desc}</p>
 
-                  <div className="relative mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-accent">
-                    Explore
-                    <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+                    <div className="mt-auto inline-flex items-center gap-1.5 pt-5 text-sm font-semibold text-accent">
+                      Explore
+                      <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+                    </div>
                   </div>
                 </GlassCard>
               </Link>

@@ -20,16 +20,21 @@ export function Skeleton({ className = "" }: { className?: string }) {
  * The placeholders mirror the real right-side cluster slot-for-slot AND at the
  * same breakpoints (theme toggle + profile/login pill are `sm:` only; the
  * hamburger is `lg:hidden`), so the cluster keeps the exact same width as it
- * loads — no button shift. Pass `signedIn` on auth-gated routes (e.g. /aptitude)
+ * loads — no button shift. Pass `signedIn` on auth-gated routes (e.g. /screening)
  * so the streak badge's width is reserved too.
  */
 export function NavbarSkeleton({
   signedIn = false,
 }: { signedIn?: boolean } = {}) {
-  const links = ["Sheets", "SQL", "Aptitude", "Courses", "Interview"];
+  const links = ["Sheets", "Domain", "Screening", "Courses", "Interview"];
   return (
     <header className="sticky top-0 z-50 px-4 pt-4 sm:px-6 lg:px-10 xl:px-16 2xl:px-24">
-      <nav className="glass flex w-full items-center justify-between gap-4 rounded-2xl px-4 py-3 sm:px-6">
+      {/* Matches the real navbar's progressive blur/fade backdrop. */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-32 bg-gradient-to-b from-background via-background/80 to-transparent backdrop-blur-md [mask-image:linear-gradient(to_bottom,black_55%,transparent)] [-webkit-mask-image:linear-gradient(to_bottom,black_55%,transparent)]"
+      />
+      <nav className="glass relative flex w-full items-center justify-between gap-4 rounded-2xl px-4 py-3 sm:px-6">
         <span className="flex items-center gap-2.5">
           <span className="grid h-9 w-9 place-items-center rounded-xl bg-rb-green-500">
             <Brain className="h-5 w-5 text-black" strokeWidth={2.5} />

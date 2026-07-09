@@ -3,7 +3,7 @@ import { prisma } from "@/lib/db";
 
 /**
  * Public, lazy-load endpoint for a single SQL problem's heavy content.
- * The /sql page SSR-renders only the light list (title/difficulty/topic/tags);
+ * The /domain page SSR-renders only the light list (title/difficulty/topic/tags);
  * each card fetches this on hover to reveal the description, approach & query.
  */
 export async function GET(_req: Request, { params }: { params: Promise<{ id: string }> }) {

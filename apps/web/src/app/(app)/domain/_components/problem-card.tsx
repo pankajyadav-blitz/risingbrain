@@ -17,7 +17,7 @@ export interface ProblemListItem {
   tags: string[];
 }
 
-/** Heavy content fetched lazily from /api/sql/[id]. */
+/** Heavy content fetched lazily from /api/domain/[id]. */
 interface ProblemDetail {
   description: string;
   bestApproach: string;
@@ -35,7 +35,7 @@ function fetchDetail(id: string): Promise<ProblemDetail> {
   const cached = detailCache.get(id);
   if (cached) return cached;
 
-  const promise = fetch(`/api/sql/${id}`)
+  const promise = fetch(`/api/domain/${id}`)
     .then((res) => {
       if (!res.ok) throw new Error(`Failed to load problem (${res.status})`);
       return res.json() as Promise<ProblemDetail>;

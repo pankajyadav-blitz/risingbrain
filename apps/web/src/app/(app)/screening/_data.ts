@@ -11,7 +11,7 @@ import type { AptOption } from "./_components/question-card";
  *    Feeds the `@nav` slot and the mobile picker.
  *  - `getAptitudeTopic` — heavy: ONE topic's questions, fetched per-route when a
  *    topic is navigated to (lazy). Still WITHOUT `answerKey`/`explanation` — the
- *    correct answer only ever lives in `/api/aptitude/check`.
+ *    correct answer only ever lives in `/api/screening/check`.
  *
  * Both are SHARED, seeded, cookie-free content (identical for everyone, changes
  * only on a re-seed), so — like the DSA/SQL catalogs — they use `"use cache"`
@@ -64,7 +64,7 @@ export async function getAptitudeIndex() {
   return { categories, totalTopics, totalQuestions };
 }
 
-/** First topic id in display order — `/aptitude` redirects here so the paper is never empty. */
+/** First topic id in display order — `/screening` redirects here so the paper is never empty. */
 export async function getFirstTopicId(): Promise<string | null> {
   const { categories } = await getAptitudeIndex();
   for (const c of categories) {

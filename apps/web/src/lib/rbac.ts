@@ -79,8 +79,8 @@ export interface NavItem {
 export function getNavForRole(role: AppRole | null): NavItem[] {
   const nav: NavItem[] = [
     { label: "Sheets", href: "/sheet" },
-    { label: "SQL", href: "/sql" },
-    { label: "Aptitude", href: "/aptitude" },
+    { label: "Domain", href: "/domain" },
+    { label: "Screening", href: "/screening" },
     { label: "Courses", href: "/courses" },
     { label: "Interview", href: "/interview" },
   ];

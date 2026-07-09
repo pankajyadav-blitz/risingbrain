@@ -35,6 +35,16 @@ const nextConfig = {
       { protocol: "https", hostname: "avatars.githubusercontent.com" },
     ],
   },
+  // Permanent redirects from the old section slugs (renamed SQL→Domain,
+  // Aptitude→Screening) so existing bookmarks, shared links and indexed URLs
+  // keep working. `:path*` carries any topic id (e.g. /aptitude/<id>).
+  async redirects() {
+    return [
+      { source: "/sql", destination: "/domain", permanent: true },
+      { source: "/aptitude", destination: "/screening", permanent: true },
+      { source: "/aptitude/:path*", destination: "/screening/:path*", permanent: true },
+    ];
+  },
 };
 
 export default nextConfig;

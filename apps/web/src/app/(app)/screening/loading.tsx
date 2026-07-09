@@ -2,7 +2,7 @@ import { Container } from "@/components/marketing/primitives";
 import { AptitudeWorkspaceSkeleton } from "./_components/workspace-skeleton";
 
 /**
- * Fallback for `/aptitude` while its layout's session lookup resolves. The navbar
+ * Fallback for `/screening` while its layout's session lookup resolves. The navbar
  * + footer persist from the (app) layout, so this only renders the workspace
  * body — a pure skeleton (header + index + paper), the same one the layout
  * streams behind <Suspense>, so there's no half-real content during loading.

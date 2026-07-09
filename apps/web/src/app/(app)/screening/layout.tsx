@@ -6,13 +6,13 @@ import { AptitudeWorkspace } from "./_components/workspace";
 import { AptitudeWorkspaceSkeleton } from "./_components/workspace-skeleton";
 
 export const metadata: Metadata = {
-  title: "Aptitude & Reasoning",
+  title: "Screening",
   description:
     "Topic-wise aptitude, logical reasoning and puzzle drills with crisp theory, key formulae and MCQ practice to sharpen your speed.",
 };
 
 /**
- * `/aptitude` shell. Uses a parallel route: the `@nav` slot (left index) and the
+ * `/screening` shell. Uses a parallel route: the `@nav` slot (left index) and the
  * `children` slot (the `[topicId]` paper) render side by side and stream
  * independently. This layout persists across topic navigations, so the live
  * progress provider is seeded ONCE here and the per-topic paper loads lazily.

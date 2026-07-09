@@ -3,14 +3,14 @@ import { prisma } from "@/lib/db";
 import { checkWriteLimit } from "@/lib/auth/rate-limit";
 
 /**
- * POST /api/aptitude/check
+ * POST /api/screening/check
  *
  * Live per-answer validation for the test UI. The page ships questions WITHOUT
  * their answer key, so this is the only way the client learns whether a chosen
  * option is right — but it returns ONLY a boolean, never the correct key or the
  * explanation (those stay hidden until the whole test is submitted). It also
  * persists NOTHING: the score is computed and stored authoritatively by
- * `/api/aptitude/submit` when the learner submits the paper.
+ * `/api/screening/submit` when the learner submits the paper.
  */
 export async function POST(request: Request) {
   // Public + DB-hitting: throttle by IP so it can't be used to hammer Postgres

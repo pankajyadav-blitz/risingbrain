@@ -16,8 +16,8 @@ import { getCurrentStreak } from "@/lib/streak";
 
 const links = [
   { href: "/sheet", label: "Sheets" },
-  { href: "/sql", label: "SQL" },
-  { href: "/aptitude", label: "Aptitude" },
+  { href: "/domain", label: "Domain" },
+  { href: "/screening", label: "Screening" },
   { href: "/courses", label: "Courses" },
   { href: "/interview", label: "Interview" },
 ];
@@ -48,8 +48,17 @@ export async function Navbar({ user }: { user: NavUser | null }) {
 
   return (
     <header className="sticky top-0 z-50 px-4 pt-4 sm:px-6 lg:px-10 xl:px-16 2xl:px-24">
+      {/* Progressive blur + background fade behind the bar. Anything scrolling up
+          under the navbar gets blurred and dissolves into the page background
+          before the top edge, instead of showing through the gap around the
+          floating pill. The mask tapers the effect so it blends into the live
+          content just below the bar. */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-32 bg-gradient-to-b from-background via-background/80 to-transparent backdrop-blur-md [mask-image:linear-gradient(to_bottom,black_55%,transparent)] [-webkit-mask-image:linear-gradient(to_bottom,black_55%,transparent)]"
+      />
       <DetailsAutoClose />
-      <nav className="glass flex w-full items-center justify-between gap-4 rounded-2xl px-4 py-3 sm:px-6">
+      <nav className="glass relative flex w-full items-center justify-between gap-4 rounded-2xl px-4 py-3 sm:px-6">
         <Link
           href="/"
           className="flex items-center gap-2.5"
