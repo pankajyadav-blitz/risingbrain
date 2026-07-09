@@ -17,7 +17,12 @@ export function GlassCard({
   );
 }
 
-/** Centered max-width page container. */
+/**
+ * Full-bleed page container: spans the whole viewport width with responsive
+ * edge gutters that scale with the screen (tight on mobile, comfortable on
+ * desktop) — never a hard max-width, so large screens are actually used.
+ * Reading columns/forms cap their own width for legibility inside this frame.
+ */
 export function Container({
   children,
   className = "",
@@ -26,7 +31,7 @@ export function Container({
   className?: string;
 }) {
   return (
-    <div className={`w-full px-4 sm:px-6 lg:px-10 xl:px-16 2xl:px-24 ${className}`}>{children}</div>
+    <div className={`w-full px-4 sm:px-6 lg:px-8 xl:px-10 2xl:px-14 ${className}`}>{children}</div>
   );
 }
 
