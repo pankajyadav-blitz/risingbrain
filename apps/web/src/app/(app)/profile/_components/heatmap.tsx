@@ -1,3 +1,4 @@
+import type { CSSProperties } from "react";
 import Link from "next/link";
 import { ChevronDown } from "lucide-react";
 import type { MonthBlock } from "../_data";
@@ -42,6 +43,11 @@ export function Heatmap({
   totalContributions: number;
   activeDays: number;
 }) {
+  // Running index across every rendered cell so the bloom cascades left→right.
+  // The bloom itself is driven by CSS: cells stay hidden until an ancestor
+  // `.reveal` gains `.in` (see theme.css), so it plays on scroll-into-view.
+  let cellIdx = 0;
+
   const item = (active: boolean) =>
     `flex items-center justify-between rounded-lg px-3 py-2 text-xs font-semibold tabular-nums transition-colors ${
       active
@@ -111,7 +117,8 @@ export function Heatmap({
                       cell ? (
                         <div
                           key={cell.key}
-                          className={`aspect-square w-full rounded-[3px] ring-1 ring-inset ring-black/5 dark:ring-white/5 ${LEVEL_BG[cell.level]}`}
+                          style={{ "--cell-delay": `${(cellIdx++ % 90) * 7}ms` } as CSSProperties}
+                          className={`cell-bloom aspect-square w-full rounded-[3px] ring-1 ring-inset ring-black/5 transition-transform duration-150 hover:scale-[1.35] dark:ring-white/5 ${LEVEL_BG[cell.level]}`}
                           title={
                             cell.count === 0
                               ? `No activity on ${prettyDate(cell.key)}`

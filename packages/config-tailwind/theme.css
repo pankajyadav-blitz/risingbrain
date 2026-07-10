@@ -26,6 +26,15 @@
   --rb-green-500: #35a45c;
   --rb-green-400: #4cb56a;
   --rb-green-300: #7fcf9c;
+
+  /* ---------- Motion system (shared, theme-independent) ----------
+     One easing + a small duration scale so every animation across the app
+     shares the same feel. `--ease-soft` is the repo's existing signature curve. */
+  --ease-soft: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --dur-fast: 0.2s;
+  --dur-base: 0.45s;
+  --dur-slow: 0.7s;
 }
 
 /* ---------- Light theme (default when no `dark` class) ---------- */
@@ -154,16 +163,22 @@
     color: var(--accent);
   }
 
-  /* Primary accent button: solid green, no glow. */
+  /* Primary accent button: solid green with a soft brand glow on hover. */
   .btn-glow {
     background: var(--brand);
     color: var(--brand-foreground);
     transition:
-      background-color 0.2s ease,
-      transform 0.2s ease;
+      background-color var(--dur-fast) ease,
+      transform var(--dur-fast) var(--ease-soft),
+      box-shadow var(--dur-base) var(--ease-soft);
   }
   .btn-glow:hover {
     background: var(--brand-muted);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px -8px color-mix(in srgb, var(--rb-green-500) 55%, transparent);
+  }
+  .btn-glow:active {
+    transform: translateY(0) scale(0.98);
   }
 }
 
@@ -197,5 +212,162 @@
   }
 }
 .animate-in {
-  animation: float-in 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation: float-in 0.6s var(--ease-soft) both;
+}
+
+/* ==========================================================================
+   Motion system — a small, reusable vocabulary applied across the whole app.
+   All of it collapses to instant under `prefers-reduced-motion` (guard below).
+   ========================================================================== */
+
+/* --- ① Orchestrated entrance: staggered fade-in for a group of children ---
+   Add `.stagger` to a parent; direct children rise in sequence on mount. */
+.stagger > * {
+  animation: float-in 0.6s var(--ease-soft) both;
+}
+.stagger > *:nth-child(1) {
+  animation-delay: 0ms;
+}
+.stagger > *:nth-child(2) {
+  animation-delay: 80ms;
+}
+.stagger > *:nth-child(3) {
+  animation-delay: 160ms;
+}
+.stagger > *:nth-child(4) {
+  animation-delay: 240ms;
+}
+.stagger > *:nth-child(5) {
+  animation-delay: 320ms;
+}
+.stagger > *:nth-child(6) {
+  animation-delay: 400ms;
+}
+
+/* Headline line reveal: wrap each line in `.rise-line` (clips overflow) with an
+   inner element carrying `.rise-line-inner`. Lines rise from below the mask. */
+@keyframes rise-in {
+  from {
+    transform: translateY(110%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+.rise-line {
+  display: block;
+  overflow: hidden;
+}
+.rise-line-inner {
+  display: block;
+  animation: rise-in 0.9s var(--ease-soft) both;
+}
+
+/* --- ② Scroll reveal: JS (components/motion/reveal.tsx) toggles `.in` ---
+   Element starts lifted + transparent; `.in` settles it into place. */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity var(--dur-slow) var(--ease-soft),
+    transform var(--dur-slow) var(--ease-soft);
+  transition-delay: var(--reveal-delay, 0ms);
+  will-change: transform, opacity;
+}
+.reveal.in {
+  opacity: 1;
+  transform: none;
+}
+
+/* --- ④ Solve micro-interaction: springy pop for the check toggle --- */
+@keyframes solve-pop {
+  0% {
+    transform: scale(1);
+  }
+  45% {
+    transform: scale(1.28);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+.animate-solve {
+  animation: solve-pop 0.42s var(--ease-spring);
+}
+
+/* --- ⑤ Heatmap bloom: cells scale-in, cascaded by an inline `--cell-delay`.
+   Driven by scroll: cells stay hidden until an ancestor `.reveal` gains `.in`,
+   then each pops in. Without a `.reveal` ancestor they simply render normally. */
+@keyframes cell-pop {
+  from {
+    transform: scale(0);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+.reveal .cell-bloom {
+  opacity: 0;
+}
+.reveal.in .cell-bloom {
+  animation: cell-pop 0.4s var(--ease-soft) both;
+  animation-delay: var(--cell-delay, 0ms);
+}
+
+/* Route/page enter transition (used by (app)/template.tsx). Uses `backwards`
+   (not `both`) fill so the element reverts to `transform: none` once the enter
+   finishes — a lingering transform would turn the wrapper into a containing
+   block and break any `position: fixed` descendant. */
+@keyframes page-enter {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animate-page {
+  animation: page-enter 0.45s var(--ease-soft) backwards;
+}
+
+/* Navbar scroll-state: once scrolled (data-scrolled set by nav-scroll.tsx) the
+   floating pill tightens and gains a stronger surface + shadow. The id selector
+   outranks the Tailwind padding utilities, so no !important is needed. */
+#site-header {
+  padding-top: 1rem;
+}
+#site-header[data-scrolled] {
+  padding-top: 0.5rem;
+}
+#site-header[data-scrolled] .nav-pill {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  background: var(--glass-bg-2);
+  box-shadow: var(--shadow-card-hover);
+}
+
+/* ---------- Global reduced-motion guard (consolidated) ----------
+   Honors the OS "reduce motion" setting everywhere at once, so individual
+   components no longer need their own guards. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  .reveal {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  /* Keep bloom cells visible even though their reveal animation is disabled. */
+  .reveal .cell-bloom {
+    opacity: 1 !important;
+  }
 }

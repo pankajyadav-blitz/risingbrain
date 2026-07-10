@@ -7,6 +7,7 @@ import { Founder } from "@/components/marketing/founder";
 import { Community } from "@/components/marketing/community";
 import { CtaBanner } from "@/components/marketing/cta-banner";
 import { Faq, faqs } from "@/components/marketing/faq";
+import { Reveal } from "@/components/motion/reveal";
 import { JsonLd } from "@/components/structured-data";
 import { SITE_NAME, SITE_DESCRIPTION, absoluteUrl } from "@/lib/seo";
 
@@ -60,12 +61,24 @@ export default function HomePage() {
       <JsonLd data={faqLd} />
       <Hero />
       <Stats />
-      <FeatureGrid />
-      <Reviews />
-      <Founder />
-      <Community />
-      <CtaBanner />
-      <Faq />
+      <Reveal>
+        <FeatureGrid />
+      </Reveal>
+      <Reveal>
+        <Reviews />
+      </Reveal>
+      <Reveal>
+        <Founder />
+      </Reveal>
+      <Reveal>
+        <Community />
+      </Reveal>
+      <Reveal>
+        <CtaBanner />
+      </Reveal>
+      <Reveal>
+        <Faq />
+      </Reveal>
     </main>
   );
 }

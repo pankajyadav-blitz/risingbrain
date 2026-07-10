@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Building2, MessageSquareQuote, Sparkles, Trophy } from "lucide-react";
 import { getCurrentUser } from "@/lib/auth/current-user";
 import { Container, Eyebrow } from "@/components/marketing/primitives";
+import { CountUp } from "@/components/motion/count-up";
+import { Reveal } from "@/components/motion/reveal";
 import { InterviewFeed } from "./_components/interview-feed";
 import { getInterviewFeed, parseFeedParams } from "./_data";
 
@@ -38,7 +40,7 @@ export default async function InterviewPage({
             className="pointer-events-none absolute left-1/2 top-0 -z-10 h-72 w-[44rem] max-w-full -translate-x-1/2 rounded-full bg-rb-green-500/10 blur-3xl"
           />
 
-          <div className="mx-auto mb-10 max-w-2xl text-center">
+          <div className="stagger mx-auto mb-10 max-w-2xl text-center">
             <Eyebrow>
               <Sparkles className="h-3.5 w-3.5" /> Interview experiences
             </Eyebrow>
@@ -63,7 +65,7 @@ export default async function InterviewPage({
                     >
                       <Icon className="h-4 w-4 text-accent" />
                       <span className="font-semibold tabular-nums text-foreground">
-                        {s.value}
+                        <CountUp value={s.value} />
                       </span>
                       <span className="text-muted">{s.label}</span>
                     </div>
@@ -73,7 +75,8 @@ export default async function InterviewPage({
             )}
           </div>
 
-          <InterviewFeed
+          <Reveal>
+            <InterviewFeed
             experiences={feed.experiences}
             signedIn={signedIn}
             datasetEmpty={feed.globalTotal === 0}
@@ -82,7 +85,8 @@ export default async function InterviewPage({
             totalPages={feed.totalPages}
             filteredTotal={feed.filteredTotal}
             globalTotal={feed.globalTotal}
-          />
+            />
+          </Reveal>
         </section>
       </Container>
     </main>

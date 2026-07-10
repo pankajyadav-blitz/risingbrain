@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Container } from "@/components/marketing/primitives";
+import { Reveal } from "@/components/motion/reveal";
 import { getCurrentUser } from "@/lib/auth/current-user";
 import { getSqlCatalog } from "./_data";
 import { DomainWorkspace } from "./_components/domain-workspace";
@@ -25,7 +26,9 @@ export default async function DomainPage() {
   return (
     <main className="flex-1">
       <Container>
-        <DomainWorkspace sqlProblems={sqlProblems} signedIn={!!user} />
+        <Reveal>
+          <DomainWorkspace sqlProblems={sqlProblems} signedIn={!!user} />
+        </Reveal>
       </Container>
     </main>
   );

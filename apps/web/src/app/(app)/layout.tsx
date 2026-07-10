@@ -1,5 +1,6 @@
 import { Navbar } from "@/components/marketing/navbar";
 import { Footer } from "@/components/marketing/footer";
+import { Reveal } from "@/components/motion/reveal";
 import { getCurrentUserProfile } from "@/lib/auth/current-user";
 
 /**
@@ -26,7 +27,9 @@ export default async function AppLayout({
         user={profile ? { name: profile.name, role: profile.role } : null}
       />
       {children}
-      <Footer />
+      <Reveal>
+        <Footer />
+      </Reveal>
     </div>
   );
 }

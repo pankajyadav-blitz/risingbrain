@@ -1,9 +1,10 @@
 "use client";
 
+import { usePathname, useRouter } from "next/navigation";
 import { Brain, Calculator, Puzzle, type LucideIcon } from "lucide-react";
 import { useProgress } from "./progress-provider";
 import { useSelectedCategory } from "./selected-category";
-import type { AptKind } from "../_data";
+import type { AptIndexCategory, AptKind } from "../_data";
 
 const KIND_ICON: Record<AptKind, LucideIcon> = {
   APTITUDE: Calculator,
@@ -20,9 +21,24 @@ const KIND_ICON: Record<AptKind, LucideIcon> = {
 export function CategoryTabs() {
   const ctx = useSelectedCategory();
   const progress = useProgress();
+  const router = useRouter();
+  const pathname = usePathname();
+  const activeTopicId = pathname.split("/")[2] ?? "";
   const signedIn = progress?.signedIn ?? false;
   if (!ctx) return null;
   const { categories, selectedId, select } = ctx;
+
+  // Picking a category should also OPEN its first topic — otherwise the sidebar
+  // switches to the new category but the paper (URL-driven) stays on the old
+  // one and nothing in the new list is selected. If the currently-open topic
+  // already belongs to the clicked category, keep it (no needless navigation).
+  function handleSelect(c: AptIndexCategory) {
+    select(c.id);
+    const alreadyOpen = c.topics.some((t) => t.id === activeTopicId);
+    if (alreadyOpen) return;
+    const first = c.topics[0];
+    if (first) router.push(`/screening/${first.id}`);
+  }
 
   return (
     <div role="tablist" aria-label="Choose a category" className="flex flex-wrap gap-2.5 sm:gap-3">
@@ -41,7 +57,7 @@ export function CategoryTabs() {
             type="button"
             role="tab"
             aria-selected={isActive}
-            onClick={() => select(c.id)}
+            onClick={() => handleSelect(c)}
             className={`group flex items-center gap-3 rounded-2xl px-4 py-3 text-left transition-all sm:px-5 ${
               isActive
                 ? "bg-rb-green-500/15 text-brand ring-1 ring-rb-green-500/40"

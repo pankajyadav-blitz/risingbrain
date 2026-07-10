@@ -3,6 +3,8 @@ import type { Metadata } from "next";
 import { Flame, Trophy, CircleCheckBig } from "lucide-react";
 import { getCurrentUserProfile } from "@/lib/auth/current-user";
 import { Container } from "@/components/marketing/primitives";
+import { CountUp } from "@/components/motion/count-up";
+import { Reveal } from "@/components/motion/reveal";
 import { getProfileData } from "./_data";
 import { Heatmap } from "./_components/heatmap";
 import { SectionStats } from "./_components/section-stats";
@@ -26,7 +28,7 @@ function StatPill({
       <span className="text-accent">{icon}</span>
       <div>
         <div className="text-xl font-bold leading-none tabular-nums text-foreground">
-          {value}
+          {typeof value === "number" ? <CountUp value={value} /> : value}
         </div>
         <div className="mt-1 text-[11px] text-muted">{label}</div>
       </div>
@@ -62,7 +64,7 @@ export default async function ProfilePage({
     <main className="flex-1 py-8 sm:py-10">
       <Container className="space-y-6">
         {/* Identity header */}
-        <div className="glass rounded-3xl p-6 sm:p-8">
+        <Reveal className="glass rounded-3xl p-6 sm:p-8">
           <div className="flex flex-col items-center gap-5 text-center sm:flex-row sm:text-left">
             <div className="grid h-20 w-20 shrink-0 place-items-center rounded-full bg-gradient-to-br from-rb-green-400 to-rb-green-700 text-2xl font-bold text-rb-green-900 ring-2 ring-rb-green-500/30">
               {initials}
@@ -92,10 +94,10 @@ export default async function ProfilePage({
               label="Problems solved"
             />
           </div>
-        </div>
+        </Reveal>
 
         {/* Per-section dashboard */}
-        <section>
+        <Reveal as="section">
           <div className="mb-4">
             <h2 className="text-lg font-semibold tracking-tight">
               Your progress
@@ -105,17 +107,19 @@ export default async function ProfilePage({
             </p>
           </div>
           <SectionStats sections={data.sections} />
-        </section>
+        </Reveal>
 
         {/* Activity heatmap */}
-        <Heatmap
+        <Reveal>
+          <Heatmap
           months={data.heatmap.months}
           year={data.heatmap.year}
           rolling={data.heatmap.rolling}
           availableYears={data.heatmap.availableYears}
           totalContributions={data.heatmap.totalContributions}
           activeDays={data.heatmap.activeDays}
-        />
+          />
+        </Reveal>
       </Container>
     </main>
   );

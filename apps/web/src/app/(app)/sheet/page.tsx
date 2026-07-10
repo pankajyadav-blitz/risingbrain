@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { BookOpen, Layers, ListChecks } from "lucide-react";
 import { getCurrentUser, getCurrentUserProfile } from "@/lib/auth/current-user";
 import { Container } from "@/components/marketing/primitives";
+import { CountUp } from "@/components/motion/count-up";
 import { prisma } from "@/lib/db";
 import { SheetSelector } from "./_components/sheet-selector";
 import type {
@@ -32,7 +33,9 @@ function StatPill({
   return (
     <span className="glass-pill inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-sm">
       <span className="text-accent">{icon}</span>
-      <span className="font-semibold text-foreground">{value}</span>
+      <span className="font-semibold tabular-nums text-foreground">
+        {typeof value === "number" ? <CountUp value={value} /> : value}
+      </span>
       <span className="text-muted">{label}</span>
     </span>
   );

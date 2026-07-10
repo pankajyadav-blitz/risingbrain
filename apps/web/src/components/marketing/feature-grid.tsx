@@ -75,10 +75,10 @@ export function FeatureGrid() {
                   <div className="relative h-28 overflow-hidden bg-gradient-to-br from-rb-green-500/20 via-rb-green-500/[0.06] to-transparent">
                     <Art className="absolute inset-0 h-full w-full text-accent transition-transform duration-500 ease-out group-hover:scale-105" />
 
-                    {/* Hover corner glow */}
+                    {/* Hover corner glow — drifts inward as the card lifts. */}
                     <span
                       aria-hidden
-                      className="pointer-events-none absolute -right-10 -top-10 h-28 w-28 rounded-full bg-rb-green-500/30 opacity-0 blur-2xl transition-opacity duration-500 group-hover:opacity-100"
+                      className="pointer-events-none absolute -right-10 -top-10 h-28 w-28 rounded-full bg-rb-green-500/30 opacity-0 blur-2xl transition-all duration-500 ease-out group-hover:-translate-x-3 group-hover:translate-y-3 group-hover:scale-125 group-hover:opacity-100"
                     />
                     {/* Fade into the card body + accent line on hover */}
                     <span

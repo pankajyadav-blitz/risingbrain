@@ -58,12 +58,27 @@ export function ThemeToggle({ className = "" }: { className?: string }) {
         className
       }
     >
-      <span aria-hidden suppressHydrationWarning>
-        {mounted && !isDark ? (
-          <Sun className="h-[1.05rem] w-[1.05rem]" />
-        ) : (
-          <Moon className="h-[1.05rem] w-[1.05rem]" />
-        )}
+      {/* Both icons are stacked; the active one rotates + fades in while the
+          other rotates + fades out — a smooth crossfade instead of a hard swap. */}
+      <span
+        className="relative inline-grid h-[1.05rem] w-[1.05rem] place-items-center"
+        aria-hidden
+        suppressHydrationWarning
+      >
+        <Sun
+          className={`absolute h-full w-full transition-all duration-300 ${
+            mounted && !isDark
+              ? "rotate-0 scale-100 opacity-100"
+              : "-rotate-90 scale-50 opacity-0"
+          }`}
+        />
+        <Moon
+          className={`absolute h-full w-full transition-all duration-300 ${
+            mounted && !isDark
+              ? "rotate-90 scale-50 opacity-0"
+              : "rotate-0 scale-100 opacity-100"
+          }`}
+        />
       </span>
     </button>
   );

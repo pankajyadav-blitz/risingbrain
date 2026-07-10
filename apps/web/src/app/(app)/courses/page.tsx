@@ -56,7 +56,7 @@ export default function CoursesPage() {
         </p>
 
         {/* What's coming — fills the page with intent */}
-        <ul className="mt-9 flex flex-wrap items-center justify-center gap-2.5">
+        <ul className="stagger mt-9 flex flex-wrap items-center justify-center gap-2.5">
           {HIGHLIGHTS.map(({ icon: Icon, label }) => (
             <li
               key={label}

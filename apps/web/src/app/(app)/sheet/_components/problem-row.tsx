@@ -184,6 +184,7 @@ export function ProblemRow({
   solved: boolean;
 }) {
   const [toggling, setToggling] = useState(false);
+  const [pop, setPop] = useState(false);
   const [hasNote, setHasNote] = useState(problem.hasNote);
   const [noteOpen, setNoteOpen] = useState(false);
   const [bookmarking, setBookmarking] = useState(false);
@@ -222,6 +223,7 @@ export function ProblemRow({
     // Optimistic: flip the single source of truth so the checkmark AND every
     // derived count (pattern/topic/sheet/difficulty/streak) move as one.
     reportSolved(problem.id, nextSolved);
+    if (nextSolved) setPop(true); // springy pop only when completing
     setToggling(true);
 
     // One resilient request (retries + keepalive) — the write survives a slow
@@ -254,7 +256,10 @@ export function ProblemRow({
           aria-pressed={solved}
           title={solved ? "Completed — click to undo" : "Mark complete"}
           aria-label={solved ? "Completed, click to mark as not started" : "Mark complete"}
+          onAnimationEnd={() => setPop(false)}
           className={`grid h-6 w-6 shrink-0 place-items-center rounded-full border transition-all ${
+            pop ? "animate-solve" : ""
+          } ${
             solved
               ? "border-rb-green-500 bg-rb-green-500 text-black hover:bg-rb-green-600"
               : "border-border text-transparent hover:border-rb-green-500/60 hover:text-rb-green-500/40"
