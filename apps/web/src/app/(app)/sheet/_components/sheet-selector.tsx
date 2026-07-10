@@ -277,29 +277,21 @@ function SheetSelectorInner({
   return (
     <SheetSolvedContext.Provider value={reportSolved}>
     <SheetBookmarkContext.Provider value={reportBookmark}>
-      {/* Hero row: hero text sizes to content, progress panel fills the rest of
-          the row (no awkward gap between them). */}
-      <div className="lg:flex lg:items-start lg:justify-between lg:gap-8">
-        <div className="lg:max-w-md">{header}</div>
-        <aside className="hidden lg:block lg:w-[42rem] lg:shrink-0 xl:w-[46rem]">
-          <SheetStats
-            difficulty={diffStat}
-            activity={activity}
-            todayDelta={todayDelta}
-            greetingName={greetingName}
-          />
-        </aside>
-      </div>
+      {/* Three-column shell: center content + a sticky right progress rail. */}
+      <div className="xl:flex xl:items-start xl:gap-6">
+        <div className="min-w-0 xl:flex-1">
+          {header}
 
-      {/* Merged stats panel on mobile (the right rail is desktop-only) */}
-      <div className="mb-2 mt-4 lg:hidden">
-        <SheetStats
-          difficulty={diffStat}
-          activity={activity}
-          todayDelta={todayDelta}
-          greetingName={greetingName}
-        />
-      </div>
+          {/* Progress + calendar shown inline below xl; the sticky rail on the
+              right takes over at xl and up. */}
+          <div className="mt-4 xl:hidden">
+            <SheetStats
+              difficulty={diffStat}
+              activity={activity}
+              todayDelta={todayDelta}
+              greetingName={greetingName}
+            />
+          </div>
 
       {/* Sheet selector — segmented control (full width) */}
       <div
@@ -467,6 +459,22 @@ function SheetSelectorInner({
             )}
           </div>
         )}
+      </div>
+        </div>
+
+        {/* Sticky right progress rail (xl and up). The sticky offset matches the
+            Container's top padding (sm:py-12 = 3rem) so the rail is already at its
+            pinned position at scroll 0 — no initial drift. Scrolls internally only
+            if it ever exceeds the viewport height. */}
+        <aside className="sticky top-12 hidden h-fit max-h-[calc(100vh-4rem)] overflow-y-auto xl:block xl:w-[360px] xl:shrink-0">
+          <SheetStats
+            variant="rail"
+            difficulty={diffStat}
+            activity={activity}
+            todayDelta={todayDelta}
+            greetingName={greetingName}
+          />
+        </aside>
       </div>
     </SheetBookmarkContext.Provider>
     </SheetSolvedContext.Provider>

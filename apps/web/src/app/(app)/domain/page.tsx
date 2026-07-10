@@ -25,7 +25,7 @@ export default async function DomainPage() {
 
   return (
     <main className="flex-1">
-      <Container>
+      <Container tight className="py-6 sm:py-8">
         <Reveal>
           <DomainWorkspace sqlProblems={sqlProblems} signedIn={!!user} />
         </Reveal>

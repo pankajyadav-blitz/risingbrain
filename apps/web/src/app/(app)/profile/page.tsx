@@ -62,7 +62,7 @@ export default async function ProfilePage({
 
   return (
     <main className="flex-1 py-8 sm:py-10">
-      <Container className="space-y-6">
+      <Container tight className="space-y-6">
         {/* Identity header */}
         <Reveal className="glass rounded-3xl p-6 sm:p-8">
           <div className="flex flex-col items-center gap-5 text-center sm:flex-row sm:text-left">

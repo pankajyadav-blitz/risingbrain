@@ -1,18 +1,16 @@
-import { Navbar } from "@/components/marketing/navbar";
-import { Footer } from "@/components/marketing/footer";
-import { Reveal } from "@/components/motion/reveal";
+import { IconRail } from "@/components/shell/icon-rail";
 import { getCurrentUserProfile } from "@/lib/auth/current-user";
+import { getCurrentStreak } from "@/lib/streak";
+import { getNavForRole, type AppRole } from "@/lib/rbac";
 
 /**
- * Shared chrome for the whole marketing + signed-in app. The navbar and footer
- * live HERE — in a persistent layout, not in each page — so they stay mounted
- * across every navigation in this group; only the page body below swaps to a
- * `loading.tsx` skeleton while the next route streams. That's what keeps the nav
- * links clickable during loading, instead of being replaced by a dead skeleton.
+ * Signed-in app shell. A slim icon rail on the far left switches between
+ * top-level sections; the page renders in the center. Each section supplies its
+ * own contextual panel / progress rail inside its own content (see `AppShell`).
  *
- * Auth pages (`/login`, `/signup`) sit OUTSIDE this group, so they render with
- * no navbar. The user lookup is request-cached, so pages that also need the
- * profile don't pay for a second query.
+ * Nav items are decided server-side by role (`getNavForRole`), so the browser
+ * never receives links a user can't access. The public marketing landing lives
+ * in the sibling `(marketing)` group and keeps the top navbar instead.
  */
 export default async function AppLayout({
   children,
@@ -20,16 +18,32 @@ export default async function AppLayout({
   children: React.ReactNode;
 }) {
   const profile = await getCurrentUserProfile();
+  const role = (profile?.role ?? null) as AppRole | null;
+  const items = getNavForRole(role);
+
+  // Streak flame — fetched only for signed-in users (null hides the badge), so
+  // the rail matches the marketing navbar. Live-updates via the shared
+  // `rb:streak-updated` event after a solve.
+  const streak = profile ? await getCurrentStreak(profile.id) : null;
 
   return (
-    <div className="flex min-h-screen flex-col">
-      <Navbar
+    // Dashboard scroll model: on desktop the shell fills the viewport and does
+    // NOT scroll — only the center column does (`lg:overflow-y-auto`). That keeps
+    // the icon rail physically outside the scroll area (so it can't drift) and
+    // lets a section's right rail stick cleanly against the center's own
+    // scrollport. On mobile it falls back to normal page scroll.
+    <div className="lg:fixed lg:inset-0 lg:flex lg:gap-3 lg:overflow-hidden lg:p-3">
+      <IconRail
+        items={items}
         user={profile ? { name: profile.name, role: profile.role } : null}
+        streak={streak}
       />
-      {children}
-      <Reveal>
-        <Footer />
-      </Reveal>
+      {/* Content is its own rounded card, separated from the rail by the gap so
+          the ambient background shows through — the floating-glass-panels look.
+          It scrolls internally; the rail card stays put beside it. */}
+      <div className="flex min-w-0 flex-1 flex-col lg:min-h-0 lg:overflow-y-auto lg:rounded-2xl lg:border lg:border-border lg:bg-surface/20">
+        {children}
+      </div>
     </div>
   );
 }

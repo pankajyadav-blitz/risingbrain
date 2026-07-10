@@ -21,13 +21,17 @@ export function SheetStats({
   activity,
   todayDelta = 0,
   greetingName,
+  variant = "panel",
 }: {
   difficulty: DifficultyStat;
   activity?: SheetActivity | null;
   todayDelta?: number;
   greetingName?: string | null;
+  /** "panel" = wide horizontal (in-content); "rail" = vertical (sticky rail). */
+  variant?: "panel" | "rail";
 }) {
   const totals = overallTotals(difficulty);
+  const rail = variant === "rail";
 
   return (
     <div className="glass rounded-3xl p-4 sm:p-5">
@@ -46,8 +50,12 @@ export function SheetStats({
         </div>
       </div>
 
-      {/* Two containers in a single row (stack on mobile) */}
-      <div className="flex flex-col gap-5 lg:flex-row lg:items-stretch lg:gap-5">
+      {/* Two containers — a row on wide panels, stacked in the sticky rail */}
+      <div
+        className={`flex flex-col gap-5 lg:gap-5 ${
+          rail ? "" : "lg:flex-row lg:items-stretch"
+        }`}
+      >
         {/* 1 · Total progress ring on top of the per-difficulty bars */}
         <div className="flex min-w-0 flex-1 flex-col justify-center gap-4">
           <div className="flex items-center gap-5 border-b border-border pb-4">
@@ -74,8 +82,14 @@ export function SheetStats({
         {/* 2 · Solve-streak calendar */}
         {activity ? (
           <>
-            <div className="hidden self-stretch border-l border-border lg:block" />
-            <div className="w-full shrink-0 lg:w-[17rem]">
+            <div
+              className={
+                rail
+                  ? "border-t border-border"
+                  : "hidden self-stretch border-l border-border lg:block"
+              }
+            />
+            <div className={rail ? "w-full" : "w-full shrink-0 lg:w-[17rem]"}>
               <SheetCalendar activity={activity} todayDelta={todayDelta} />
             </div>
           </>

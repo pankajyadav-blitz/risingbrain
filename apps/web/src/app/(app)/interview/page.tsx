@@ -32,7 +32,7 @@ export default async function InterviewPage({
 
   return (
     <main className="flex-1">
-      <Container>
+      <Container tight>
         <section className="relative py-14 sm:py-20">
           {/* Soft brand spotlight behind the heading. */}
           <div

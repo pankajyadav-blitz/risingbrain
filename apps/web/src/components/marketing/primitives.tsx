@@ -26,13 +26,22 @@ export function GlassCard({
 export function Container({
   children,
   className = "",
+  tight = false,
 }: {
   children: ReactNode;
   className?: string;
+  /**
+   * `tight` uses smaller horizontal gutters — for the signed-in app pages, whose
+   * content already sits inside the inset shell card, so the generous marketing
+   * gutters would just waste space (e.g. push a right rail off the card edge).
+   * Marketing pages omit it and keep the full-bleed gutters.
+   */
+  tight?: boolean;
 }) {
-  return (
-    <div className={`w-full px-4 sm:px-6 lg:px-8 xl:px-10 2xl:px-14 ${className}`}>{children}</div>
-  );
+  const gutters = tight
+    ? "px-4 sm:px-5 lg:px-6"
+    : "px-4 sm:px-6 lg:px-8 xl:px-10 2xl:px-14";
+  return <div className={`w-full ${gutters} ${className}`}>{children}</div>;
 }
 
 /** A small frosted pill used for eyebrows/badges above a section title. */

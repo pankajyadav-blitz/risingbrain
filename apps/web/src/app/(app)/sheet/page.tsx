@@ -151,7 +151,7 @@ export default async function SheetPage() {
 
   return (
     <main className="flex-1">
-      <Container className="py-8 sm:py-12">
+      <Container tight className="py-8 sm:py-12">
         <SheetSelector
           sheets={sheetData}
           difficulty={difficultyStats}
@@ -164,19 +164,24 @@ export default async function SheetPage() {
                 aria-hidden
                 className="pointer-events-none absolute left-1/2 top-0 -z-10 h-72 w-[44rem] max-w-full -translate-x-1/2 rounded-full bg-rb-green-500/10 blur-3xl"
               />
-              <div className="max-w-2xl animate-in">
-                <h2 className="text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">
-                  Master DSA
-                  <span className="block text-gradient">
-                    pattern by pattern
-                  </span>
-                </h2>
-                <p className="mt-3 text-muted">
-                  Hand-sequenced sheets that group every problem by topic and
-                  reusable pattern. Pick a sheet, track what you&apos;ve solved,
-                  and jot private notes as you go.
-                </p>
-                <div className="mt-6 flex flex-wrap gap-2.5">
+              <div className="animate-in lg:flex lg:items-end lg:justify-between lg:gap-8">
+                <div className="max-w-2xl">
+                  <h2 className="text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">
+                    Master DSA
+                    <span className="block text-gradient">
+                      pattern by pattern
+                    </span>
+                  </h2>
+                  <p className="mt-3 text-muted">
+                    Hand-sequenced sheets that group every problem by topic and
+                    reusable pattern. Pick a sheet, track what you&apos;ve solved,
+                    and jot private notes as you go.
+                  </p>
+                </div>
+                {/* Content counts sit to the RIGHT of the heading on wide screens
+                    so the top row uses the full width instead of leaving the
+                    top-right empty. */}
+                <div className="mt-6 flex flex-wrap gap-2.5 lg:mt-0 lg:shrink-0">
                   <StatPill
                     icon={<BookOpen className="h-4 w-4" />}
                     value={sheetsRaw.length}

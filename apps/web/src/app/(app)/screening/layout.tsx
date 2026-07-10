@@ -36,7 +36,7 @@ export default async function AptitudeLayout({
 
   return (
     <main className="flex-1 lg:flex lg:min-h-0 lg:flex-col">
-      <Container className="py-6 sm:py-8 lg:flex lg:min-h-0 lg:flex-1 lg:flex-col">
+      <Container tight className="py-6 sm:py-8 lg:flex lg:min-h-0 lg:flex-1 lg:flex-col">
         <Suspense fallback={<AptitudeWorkspaceSkeleton />}>
           <AptitudeWorkspace profileId={user?.id ?? null} nav={nav}>
             {children}
