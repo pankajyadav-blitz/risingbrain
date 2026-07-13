@@ -1,41 +1,44 @@
-import { BookOpen, Sigma, type LucideIcon } from "lucide-react";
 import { QuestionCard } from "./question-card";
 import { TopicProgressBar } from "./topic-progress-bar";
 import { PaperAttemptProvider } from "./paper-attempt";
 import { SubmitBar, TopRetakeButton } from "./submit-bar";
+import { PaperTabs } from "./paper-tabs";
+import { NotesMarkdown } from "./notes-markdown";
 import type { AptPaper } from "../_data";
-
-function NoteBox({
-  icon: Icon,
-  title,
-  body,
-  mono = false,
-}: {
-  icon: LucideIcon;
-  title: string;
-  body: string;
-  mono?: boolean;
-}) {
-  return (
-    <div className="rounded-xl bg-surface-2 p-3.5">
-      <p className="mb-1 flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wide text-accent">
-        <Icon className="h-3.5 w-3.5" /> {title}
-      </p>
-      <p
-        className={`whitespace-pre-line text-sm leading-relaxed text-muted ${mono ? "font-mono" : ""}`}
-      >
-        {body}
-      </p>
-    </div>
-  );
-}
 
 /**
  * One topic's exam paper. Rendered by the `[topicId]` segment — so it only ever
  * holds the questions for the topic in the URL (the lazy split). The header bar
  * and per-question dots stay live via the shared progress provider.
+ *
+ * Inside the header, the body is a Notes | Practice switch (`PaperTabs`): the
+ * learner lands on the topic's notes (theory + diagrams, rendered from markdown
+ * held in `QuizTopic.theory`) and flips to the graded questions when ready.
  */
 export function Paper({ paper }: { paper: AptPaper }) {
+  const practice = (
+    <>
+      {/* Questions — paper style */}
+      <ol className="divide-y divide-border/60">
+        {paper.questions.map((q, i) => (
+          <li key={q.id}>
+            <QuestionCard
+              question={{
+                id: q.id,
+                prompt: q.prompt,
+                options: q.options,
+                difficulty: q.difficulty,
+                hint: q.hint,
+              }}
+              index={i + 1}
+            />
+          </li>
+        ))}
+      </ol>
+      <SubmitBar />
+    </>
+  );
+
   return (
     <div className="glass rounded-3xl p-5 sm:p-7">
       {/* Whole paper shares one attempt so the header's Retake button can react
@@ -61,34 +64,11 @@ export function Paper({ paper }: { paper: AptPaper }) {
           <TopicProgressBar topicId={paper.topicId} total={paper.questions.length} />
         </div>
 
-        {/* Theory / formulae */}
-        {paper.theory || paper.formula ? (
-          <div className="mb-6 grid gap-3 sm:grid-cols-2">
-            {paper.theory ? <NoteBox icon={BookOpen} title="Theory" body={paper.theory} /> : null}
-            {paper.formula ? (
-              <NoteBox icon={Sigma} title="Key formulae" body={paper.formula} mono />
-            ) : null}
-          </div>
-        ) : null}
-
-        {/* Questions — paper style */}
-        <ol className="divide-y divide-border/60">
-          {paper.questions.map((q, i) => (
-            <li key={q.id}>
-              <QuestionCard
-                question={{
-                  id: q.id,
-                  prompt: q.prompt,
-                  options: q.options,
-                  difficulty: q.difficulty,
-                  hint: q.hint,
-                }}
-                index={i + 1}
-              />
-            </li>
-          ))}
-        </ol>
-        <SubmitBar />
+        <PaperTabs
+          questionCount={paper.questions.length}
+          notes={paper.theory ? <NotesMarkdown source={paper.theory} /> : null}
+          practice={practice}
+        />
       </PaperAttemptProvider>
     </div>
   );

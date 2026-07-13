@@ -260,7 +260,8 @@
             "hint": "Spot that 55 + 17 = 72 and use a^3 + b^3 - (a+b)^3 = -3ab(a+b).",
             "explanation": "N = -3 x 55 x 17 x 72, which contains factors 3 and 17 (but not 7 or 13), so it is divisible by both 3 and 17, option d."
           }
-        ]
+        ],
+        "theory": "## Number System\n\n### 1. Divisibility Rules\n\n| Divisor | Rule |\n| --- | --- |\n| 2 | Last digit is even (0, 2, 4, 6, 8) |\n| 3 | Sum of digits divisible by 3 |\n| 4 | Last **2** digits divisible by 4 |\n| 5 | Last digit is 0 or 5 |\n| 6 | Divisible by **both** 2 and 3 |\n| 8 | Last **3** digits divisible by 8 |\n| 9 | Sum of digits divisible by 9 |\n| 10 | Last digit is 0 |\n| 11 | (Sum of odd-place digits) − (sum of even-place digits) is 0 or a multiple of 11 |\n| 7 | Drop last digit *d*, take *rest* + 5*d*; repeat |\n| 13 | Drop last digit *d*, take *rest* + 4*d*; repeat |\n| 17 | Drop last digit *d*, take *rest* − 5*d*; repeat |\n| 19 | Drop last digit *d*, take *rest* + 2*d*; repeat |\n\n### 2. HCF & LCM\n\nFor two numbers, $\\text{HCF} \\times \\text{LCM} = a \\times b$, so $\\text{LCM} = \\dfrac{a\\times b}{\\text{HCF}}$ and $\\text{HCF} = \\dfrac{a\\times b}{\\text{LCM}}$.\n\n**Fractions:** $\\text{HCF} = \\dfrac{\\text{HCF of numerators}}{\\text{LCM of denominators}}$ and $\\text{LCM} = \\dfrac{\\text{LCM of numerators}}{\\text{HCF of denominators}}$.\n\n### 3. Prime Factorisation & Factors\n\nIf $N = p^{a}\\,q^{b}\\,r^{c}$ with $p, q, r$ prime:\n\n- **Total factors:** $d(N) = (a+1)(b+1)(c+1)$\n- **Sum of factors:** $\\sigma(N) = \\dfrac{p^{a+1}-1}{p-1}\\cdot\\dfrac{q^{b+1}-1}{q-1}\\cdot\\dfrac{r^{c+1}-1}{r-1}$\n- **Product of factors:** $N^{\\,d(N)/2}$\n- **Distinct prime factors:** count the distinct primes (e.g. $2^{3}\\cdot 3^{2}\\cdot 5 \\Rightarrow 3$)\n- **Odd factors:** ignore the power of 2, then $(a_{\\text{odd}}+1)(b_{\\text{odd}}+1)\\cdots$\n- **Even factors:** total factors − odd factors\n\n### 4. Factorials\n\n$N! = N(N-1)(N-2)\\cdots 2\\cdot 1$, with $0! = 1! = 1$.\n\n- **Trailing zeros in $N!$:** $Z = \\left\\lfloor\\frac{N}{5}\\right\\rfloor + \\left\\lfloor\\frac{N}{25}\\right\\rfloor + \\left\\lfloor\\frac{N}{125}\\right\\rfloor + \\cdots$\n- **Highest power of prime $p$ in $N!$ (Legendre):** $\\left\\lfloor\\frac{N}{p}\\right\\rfloor + \\left\\lfloor\\frac{N}{p^{2}}\\right\\rfloor + \\left\\lfloor\\frac{N}{p^{3}}\\right\\rfloor + \\cdots$\n\n### 5. Remainder & Divisibility Theorems\n\n- $a^{n} - b^{n}$ is **always** divisible by $a - b$.\n- $a^{n} + b^{n}$ is divisible by $a + b$ **only when $n$ is odd**.\n- $a^{n} - b^{n}$ is divisible by $a + b$ **only when $n$ is even**.\n- **Fermat:** if $p$ is prime and $\\gcd(a,p)=1$, then $a^{p-1} \\equiv 1 \\pmod{p}$.\n- **Wilson:** if $p$ is prime, $(p-1)! \\equiv -1 \\pmod{p}$.\n\n### 6. Unit Digit (Cyclicity)\n\nOnly unit digits matter in a product — e.g. $37\\times 48\\times 29 \\Rightarrow 7\\times 8\\times 9 = 504 \\Rightarrow$ unit digit **4**.\n\n| Last digit | Cycle | Length |\n| --- | --- | --- |\n| 0, 1, 5, 6 | itself | 1 |\n| 4 | 4, 6 | 2 |\n| 9 | 9, 1 | 2 |\n| 2 | 2, 4, 8, 6 | 4 |\n| 3 | 3, 9, 7, 1 | 4 |\n| 7 | 7, 9, 3, 1 | 4 |\n| 8 | 8, 4, 2, 6 | 4 |\n\nUse $n \\bmod 2$ for length-2 digits and $n \\bmod 4$ for length-4 (if the remainder is 0, use the last value in the cycle).\n\n### 7. Number of Digits\n\nDigits in $N$: $\\lfloor \\log_{10} N \\rfloor + 1$. Digits in $N^{k}$: $\\lfloor k\\log_{10} N \\rfloor + 1$.\n\n### 8. Base Conversion\n\n- **Decimal → base $b$:** repeated division by $b$ (read remainders bottom-up).\n- **Base $b$ → decimal:** $(a_n a_{n-1}\\dots a_0)_b = a_n b^{n} + a_{n-1} b^{\\,n-1} + \\cdots + a_0$.\n\n### 9. Handy Properties\n\n- $\\gcd(n, n+1) = 1$ · $\\gcd(2n, 2n+2) = 2$\n- $n(n+1)$ is always even.\n- $n(n+1)(n+2)$ is always divisible by **6**.\n- $n(n+1)(n+2)(n+3)$ is always divisible by **24**.\n"
       },
       {
         "name": "Percentage, profit and loss",
@@ -517,7 +518,8 @@
             "hint": "Set each installment x and equate the present value of both installments to the principal.",
             "explanation": "x/1.1 + x/1.1^2 = 21000 gives x = 12100, option b."
           }
-        ]
+        ],
+        "theory": "## Percentage, Profit & Loss\n\n### 1. Percentages\n\n**Golden rule:** the base is always the *original* quantity.\n\n- Fraction → percentage: multiply by 100. Percentage → fraction: divide by 100.\n- **Successive change** of $a\\%$ then $b\\%$ → net $= a + b + \\dfrac{ab}{100}$ (use negative signs for decreases).\n- **Product constancy:** if price rises $x\\%$, consumption must fall by $\\dfrac{x}{100+x}\\times 100\\%$ to keep spend fixed.\n\n### 2. Profit, Loss & Discount\n\nProfit / loss is always on **Cost Price (CP)** unless stated otherwise.\n\n$$\n\\text{Profit \\%} = \\frac{SP - CP}{CP}\\times 100 \\qquad \\text{Loss \\%} = \\frac{CP - SP}{CP}\\times 100\n$$\n\n$$\nSP = CP\\left(\\frac{100 \\pm \\text{P/L\\%}}{100}\\right) \\qquad CP = SP\\left(\\frac{100}{100 \\pm \\text{P/L\\%}}\\right)\n$$\n\n- **Discount** is on **Marked Price (MP)**: $\\text{Discount\\%} = \\dfrac{MP - SP}{MP}\\times 100$.\n- **Markup** is on **CP**: $\\text{Markup\\%} = \\dfrac{MP - CP}{CP}\\times 100$.\n- **MP/CP master relation** (given both discount and profit):\n\n$$\n\\frac{MP}{CP} = \\frac{100 + \\text{Profit\\%}}{100 - \\text{Discount\\%}}\n$$\n\n### 3. Simple & Compound Interest\n\n$$\nSI = \\frac{P\\,R\\,T}{100} \\qquad A = P\\left(1 + \\frac{R}{100}\\right)^{n},\\quad CI = A - P\n$$\n\n- **CI − SI over 2 years:** $P\\left(\\dfrac{R}{100}\\right)^{2}$\n- **CI − SI over 3 years:** $P\\left(\\dfrac{R}{100}\\right)^{2}\\left(3 + \\dfrac{R}{100}\\right)$\n- **Rule of 72:** money doubles in roughly $72 / R$ years at rate $R\\%$ compounded.\n"
       },
       {
         "name": "Ratio and proportion",
@@ -774,7 +776,8 @@
             "hint": "Let failed = f, passed = 4f, then form the new ratio equation after the stated changes.",
             "explanation": "(4f-44)/(f+9) = 2 gives f = 31, so total appeared = 5f = 155, option c."
           }
-        ]
+        ],
+        "theory": "## Ratio & Proportion\n\n### 1. The Proportion Core\n\nIf $a : b :: c : d$ then **product of extremes = product of means**: $a\\times d = b\\times c$.\n\n- **Mean proportional** of $a, b$: $\\sqrt{ab}$\n- **Third proportional** to $a, b$: $\\dfrac{b^{2}}{a}$\n- **Fourth proportional** to $a, b, c$: $\\dfrac{bc}{a}$\n\n### 2. Work & Efficiency Flip\n\nEfficiency is **inversely** proportional to time. If efficiencies are $x : y$, the times taken flip to $y : x$.\n\n### 3. Partnerships\n\n- **Same time period** → profit splits by investment: $\\text{Profit}_A : \\text{Profit}_B = I_A : I_B$.\n- **Different periods** (the 90% case) → multiply capital by months active:\n\n$$\n\\frac{\\text{Profit}_A}{\\text{Profit}_B} = \\frac{I_1 \\times T_1}{I_2 \\times T_2}\n$$\n\n**Trap:** \"joins 3 months later\" (active 9 of 12 months) or \"withdraws half after 6 months\" (split into two phases and add).\n\n### 4. Compound (Merge) Ratios\n\n- Compound ratio of $a:b$ and $c:d$ is $ac : bd$.\n- **Chaining:** for $A:B = 2:3$ and $B:C = 4:5$, make $B$ common (12) → $A:B:C = 8:12:15$.\n"
       },
       {
         "name": "Probability and combinatorics",
@@ -1031,7 +1034,8 @@
             "hint": "C wins on the 3rd, 6th, ... turn; sum the geometric series with single-throw success p = 1/12.",
             "explanation": "P(C) = q^2 p/(1-q^3) with q=11/12 = (121/1728)/(397/1728) = 121/397, option a."
           }
-        ]
+        ],
+        "theory": "## Probability & Combinatorics\n\n### 1. The AND / OR Rule\n\n- **AND → multiply** ($m \\times n$).\n- **OR → add** ($m + n$).\n\n### 2. Permutation & Combination Patterns\n\n- **Word with repeats** (e.g. MISSISSIPPI): $\\dfrac{n!}{p!\\,q!\\,r!}$\n- **Circular (around a table):** $(n-1)!$\n- **Necklace / garland** (clockwise = anticlockwise): $\\dfrac{(n-1)!}{2}$\n- **Handshakes / lines from $n$ points:** $\\dbinom{n}{2} = \\dfrac{n(n-1)}{2}$\n- **Diagonals of an $n$-gon:** $\\dfrac{n(n-3)}{2}$\n- **Select at least one** from $n$ distinct items: $2^{n} - 1$\n\n### 3. Probability\n\n$$\nP(E) = \\frac{\\text{favourable outcomes}}{\\text{total outcomes}}\n$$\n\n| Item | Quick facts |\n| --- | --- |\n| Coins | $n$ coins → $2^{n}$ outcomes |\n| Dice | $n$ dice → $6^{n}$ outcomes; for two dice, sum 7 is likeliest (6 ways) |\n| Cards | 52 cards, 4 suits of 13; 12 face cards |\n\n- **\"At least one\":** $P(\\text{at least one}) = 1 - P(\\text{none})$.\n- **Without replacement** (dependent): denominator drops each draw — e.g. $\\dfrac{5}{12}\\times\\dfrac{4}{11}$.\n- **With replacement** (independent): denominator stays — e.g. $\\dfrac{5}{12}\\times\\dfrac{5}{12}$.\n- **Addition theorem:** mutually exclusive → $P(A\\cup B) = P(A)+P(B)$; otherwise subtract the overlap $-\\,P(A\\cap B)$.\n"
       },
       {
         "name": "Time and work",
@@ -1213,7 +1217,8 @@
             "hint": "Payment splits in the ratio of work rates (1/days), not in the ratio of days.",
             "explanation": "Rates 1/6:1/8:1/12 = 4:3:2; B's share = 3/9 x 1350 = 450, option c."
           }
-        ]
+        ],
+        "theory": "## Time & Work\n\n### 1. LCM Method (the golden rule)\n\nTake **Total Work = LCM of the given days**, then **Total Work = Efficiency × Time**.\n\n*Example:* A in 10 days, B in 15 → Total = 30 units; A = 3 units/day, B = 2 units/day.\n\n### 2. Direct Formulas\n\n- **Two together:** $\\dfrac{xy}{x+y}$\n- **Three together:** $\\dfrac{xyz}{xy + yz + zx}$\n- **MDH rule** (comparing two groups): $\\dfrac{M_1 D_1 H_1}{W_1} = \\dfrac{M_2 D_2 H_2}{W_2}$ — Men, Days, Hours/day, Work.\n\n### 3. Common Patterns\n\n- **Leaving / joining midway:** compute work done in $n$ days by both, subtract from total, divide the rest by the remaining person's efficiency.\n- **Efficiency ratios:** \"A is 3× as efficient as B\" → time ratio flips to $1:3$.\n- **Alternate days:** find the 2-day cycle's work, count full cycles, finish the remainder by hand.\n\n### 4. Pipes & Cisterns (the evil twin)\n\nSame as work, but **emptying pipes / leaks have negative efficiency**. If a pipe fills in $x$ h but takes $y$ h with a leak, the leak alone empties a full tank in $\\dfrac{xy}{y-x}$ hours.\n"
       },
       {
         "name": "Time, speed and distance",
@@ -1370,7 +1375,8 @@
             "hint": "Convert each 'beat' into a speed ratio, chain A:B and B:C, then scale to the 500 m race.",
             "explanation": "A:B = 10:9 and B:C = 10:9, so A:C = 100:81; when A runs 500, C runs 405, a 95 m lead, option b."
           }
-        ]
+        ],
+        "theory": "## Time, Speed & Distance\n\nEverything comes from $D = S \\times T$.\n\n**Unit conversion:** km/hr → m/s multiply by $\\frac{5}{18}$; m/s → km/hr multiply by $\\frac{18}{5}$.\n\n### Average Speed\n\nAverage speed $= \\dfrac{\\text{total distance}}{\\text{total time}}$ — **never** the average of the speeds.\n\n- **Equal distance, two speeds:** $\\dfrac{2xy}{x+y}$\n- **Equal distance, three speeds:** $\\dfrac{3xyz}{xy+yz+zx}$\n\n### Relative Speed\n\nSame direction: $S_1 - S_2$. Opposite directions: $S_1 + S_2$.\n\n### Early / Late Shortcut\n\n$$\nD = \\frac{S_1 \\times S_2}{\\lvert S_1 - S_2\\rvert}\\times \\Delta T\n$$\n\n$\\Delta T$ = total time gap (add the early + late minutes), converted to hours.\n\n### Trains\n\n- Crossing a **point** (pole / man): distance $= L_1$.\n- Crossing a **length** (platform / bridge): distance $= L_1 + L_2$.\n- **Two trains:** distance $= L_1 + L_2$ always; $T = \\dfrac{L_1 + L_2}{S_1 \\pm S_2}$ (± by direction).\n\n### Boats & Streams\n\nDownstream $D = B + S$; upstream $U = B - S$. Hence $B = \\dfrac{D+U}{2}$ and $S = \\dfrac{D-U}{2}$.\n\n### More Hacks\n\n- **Cross-over after meeting:** $\\dfrac{S_1}{S_2} = \\sqrt{\\dfrac{T_2}{T_1}}$.\n- **Stoppage per hour:** $\\dfrac{\\text{fast} - \\text{slow}}{\\text{fast}}\\times 60$ minutes.\n- **Circular track, first meeting:** $\\dfrac{C}{\\text{relative speed}}$.\n"
       },
       {
         "name": "Progressions (AP, GP..)",
@@ -1577,7 +1583,8 @@
             "hint": "Take logs and use the AP relation on the exponents plus the GP relation on x, y, z.",
             "explanation": "The log coefficients of both ln(first term) and ln(ratio) vanish by the AP property, so the product = 1, option b."
           }
-        ]
+        ],
+        "theory": "## Progressions (AP, GP, HP)\n\n### Arithmetic Progression (AP)\n\n- $n$-th term: $T_n = a + (n-1)d$\n- Sum: $S_n = \\dfrac{n}{2}\\big[2a + (n-1)d\\big] = \\dfrac{n}{2}(a + l)$\n- Arithmetic mean of $a, b$: $\\dfrac{a+b}{2}$\n\n**Tricks:** if the sum of the first $p$ terms equals the sum of the first $q$, then $S_{p+q} = 0$. If $T_p = q$ and $T_q = p$, then $T_{p+q} = 0$. Assume 3 terms as $(a-d), a, (a+d)$; 4 terms as $(a-3d),(a-d),(a+d),(a+3d)$.\n\n### Geometric Progression (GP)\n\n- $n$-th term: $T_n = a\\,r^{\\,n-1}$\n- Sum: $S_n = \\dfrac{a(r^{n}-1)}{r-1}$ (for $r>1$) or $\\dfrac{a(1-r^{n})}{1-r}$ (for $r<1$)\n- Geometric mean of $a, b$: $\\sqrt{ab}$\n- **Infinite GP** ($\\lvert r\\rvert<1$): $S_\\infty = \\dfrac{a}{1-r}$ (bouncing-ball problems).\n\n### Harmonic Progression (HP)\n\n$a, b, c$ are in HP iff $\\frac1a, \\frac1b, \\frac1c$ are in AP. Harmonic mean of $a, b$: $\\dfrac{2ab}{a+b}$ (the same formula as equal-distance average speed!).\n\n### AM – GM – HM\n\n- Order: $AM \\ge GM \\ge HM$ (equal only when all values are identical).\n- $AM \\times HM = GM^{2}$.\n- Minimum of $x + \\frac1x$ (for $x>0$) is **2**.\n\n### Special Series\n\n- $\\sum n = \\dfrac{n(n+1)}{2}$\n- $\\sum n^{2} = \\dfrac{n(n+1)(2n+1)}{6}$\n- $\\sum n^{3} = \\left[\\dfrac{n(n+1)}{2}\\right]^{2}$\n- First $n$ odd numbers: $n^{2}$. First $n$ even numbers: $n(n+1)$.\n"
       },
       {
         "name": "Ages",
@@ -1809,7 +1816,8 @@
             "hint": "Set present ages F, S and form two equations from the future and past ratios.",
             "explanation": "3F-5S = 20 and F = 3S-20 give S = 20, F = 40, so son:father = 1:2, option a."
           }
-        ]
+        ],
+        "theory": "## Ages\n\n### Core Rules\n\n- **Constant difference:** the age gap between two people never changes.\n- **Present anchor:** let the *present* age be $x$ — never a past or future age.\n- **Group shift:** if $n$ people sum to $S$ today, after $y$ years the sum is $S + n\\cdot y$ (not $S + y$).\n\n### Ratio Cross-Product Shortcut\n\nPresent ratio $a:b$ becomes $c:d$ after $t$ years. The multiplier is\n\n$$\nx = \\frac{t\\,(c - d)}{ad - bc}\n$$\n\n(take absolute values top and bottom). Present ages are then $ax$ and $bx$. Works for \"t years ago\" too.\n\n### Common Patterns\n\n- **Times / multiple shift:** \"A is 3× B; after 10 yr A is 2× B\" → present $A = 3x, B = x$; solve $3x+10 = 2(x+10)$.\n- **Double shift** (past ratio → future ratio): total gap $t$ = past + future years; apply the cross-product shortcut with that $t$.\n- **\"As much older than B as younger than C\":** A is the midpoint, $A = \\dfrac{B + C}{2}$.\n\n### Average Age\n\n- Aging group: the average after $y$ years is $A + y$; $y$ years ago it was $A - y$.\n- **Replacement:** new person's age = replaced age $\\pm$ (change in average × members). *E.g.* $60 - (2\\times 5) = 50$.\n"
       }
     ]
   },
@@ -2024,7 +2032,8 @@
             "hint": "Fix the two married couples and the three generations before placing S and V.",
             "explanation": "S is R's mother (mother-in-law of T, R's wife), and V is the son of R and T; so S is V's grandmother."
           }
-        ]
+        ],
+        "theory": "## Blood Relation\n\n![Three-generation family tree: squares are male, circles female, a horizontal line is a marriage and vertical lines are parent to child.](/study-notes/blood-relation/family-tree.png)\n\n**Draw it, don't hold it in your head.** Squares = male, circles = female, a horizontal line = marriage, vertical lines = parent → child. Every blood-relation puzzle collapses once it is on paper.\n\n### Core Relation Pairs\n\n| Given | Relation |\n| --- | --- |\n| Father's / mother's son | Brother (or self) |\n| Father's / mother's daughter | Sister (or self) |\n| Father's father / mother | Grandfather / grandmother |\n| Father's brother / sister | Paternal uncle / aunt |\n| Mother's brother / sister | Maternal uncle / aunt |\n| Son's wife | Daughter-in-law |\n| Daughter's husband | Son-in-law |\n| Husband's / wife's brother | Brother-in-law |\n| Husband's / wife's sister | Sister-in-law |\n| Sister's husband | Brother-in-law |\n| Brother's wife | Sister-in-law |\n| Uncle's / aunt's child | Cousin |\n\n### Generation-Counting Shortcut\n\n- **Same generation** → sibling, cousin, or spouse\n- **One up** → parent, uncle, or aunt\n- **One down** → child, niece, or nephew\n- **Two up / down** → grandparent / grandchild\n\nOnce you know how many rows apart two people are and the connecting person's gender, the relation is almost mechanical.\n\n### Coded / Symbol Relations\n\nA typical scheme: `A + B` → A is father of B · `A − B` → A is mother of B · `A × B` → A is brother of B · `A ÷ B` → A is sister of B.\n\n**Method:** convert each symbol to a word, **track gender at every link** (this is where marks are lost), and draw a 3-node tree even for coded chains — 10 seconds that prevents chain-reading errors.\n"
       },
       {
         "name": "Coding Decoding",
@@ -2231,7 +2240,8 @@
             "hint": "Check the shift letter-by-letter; it may not be the same direction throughout.",
             "explanation": "The first four letters shift -1 and the last five shift +1, so INVISIBLE becomes H-M-U-H-T-J-C-M-F = HMUHTJCMF."
           }
-        ]
+        ],
+        "theory": "## Coding & Decoding\n\n![Alphabet number line A1 to Z26 with the reverse line Z1 to A26, the EJOTY trick (E5, J10, O15, T20, Y25) and the opposite-letter formula: opposite position equals 27 minus position.](/study-notes/coding-decoding/alphabet-number-line.png)\n\n**Two foundations:** the alphabet number line (with the **EJOTY** trick — E5, J10, O15, T20, Y25) and the **opposite-letter** formula, opposite position $= 27 - \\text{position}$ (A↔Z, B↔Y, …).\n\n![A five-by-five letter matrix; each letter's code is its (row, column) pair — check the worked example to see whether it is written row-first or column-first.](/study-notes/coding-decoding/matrix-grid.png)\n\n### Pattern Catalogue\n\n1. **Letter shift (Caesar):** each letter moves a fixed number of steps (watch for a *variable* shift like +1, +2, +3…).\n2. **Opposite / mirror:** every letter → its mirror via $27 - \\text{position}$.\n3. **Number / position:** letter → its alphabet number (confirm A=1 vs Z=1 from the example).\n4. **Matrix / coordinate:** letter → (row, column); deduce row-first vs column-first from the example.\n5. **Symbol / number substitution:** an arbitrary lookup table, no logic — map carefully.\n6. **Word substitution:** \"apple is called orange…\" — build the swap table first, then re-read.\n7. **Sum / difference:** code = sum (or product / difference) of letter positions, e.g. CAT = 3+1+20 = 24.\n8. **Reversed / jumbled:** letters reversed, or reversed in groups.\n\n### Universal Method\n\n1. **Extract the rule from the given example only** — never guess it from the target word.\n2. Apply the *same* operation, direction and order to the new word.\n3. For coded sentences, build one combined word→code dictionary from all the example sentences before answering.\n\n**Most common mistakes:** assuming A=1 when the paper uses Z=1 (check with EJOTY); missing that vowels / consonants may follow different rules; transposing row and column in matrix coding.\n"
       },
       {
         "name": "Number Series",
@@ -2488,7 +2498,8 @@
             "hint": "It is intertwined — split into two alternating series and extend each.",
             "explanation": "Even-position terms run 10,13,18,25 with differences 3,5,7; the next difference 9 gives 25+9 = 34."
           }
-        ]
+        ],
+        "theory": "## Number Series\n\n![The differences ladder: the series 2, 5, 10, 17, 26, 37 has first differences +3, +5, +7, +9, +11 and constant second differences of +2 — a quadratic series whose next term is 37 + 13 = 50.](/study-notes/number-series/differences-ladder.png)\n\nThe **differences ladder** (1st differences → 2nd differences) is the master key. If the first differences aren't constant, check the second differences *before* guessing multiplication.\n\n### Pattern Catalogue\n\n1. **Arithmetic** — constant difference: $a_n = a_1 + (n-1)d$.\n2. **Geometric** — constant ratio: $a_n = a_1\\,r^{\\,n-1}$.\n3. **Quadratic** — 1st differences form an AP (2nd differences constant).\n4. **Cubic** — needs a third layer of differencing.\n5. **Square-based** — terms are $n^{2} \\pm$ constant (e.g. 3, 8, 15, 24, 35 $= n^{2}+2n$).\n6. **Cube-based** — terms are $n^{3} \\pm$ constant (e.g. 9, 28, 65, 126 $= n^{3}+1$).\n7. **Primes** — 2, 3, 5, 7, 11, … or a twist (alternate primes, primes ±1).\n8. **Alternating operations** — e.g. ×3, −1, ×3, −1 (2, 6, 5, 15, 14, 42).\n9. **Interleaved** — odd and even positions follow separate rules (split first).\n10. **Multiplication / division** — a changing factor (2, 6, 24, 120 → ×3, ×4, ×5).\n11. **Fibonacci-style** — each term = sum of the previous two.\n12. **Digit-sum** — the next term uses the digits of the current one (12 → 12+1+2 = 15…).\n13. **Wrong number / odd-one-out** — find the majority rule, then the term that breaks it.\n\n### Solving Checklist (in order)\n\n1. Simple AP or GP? 2. First differences constant / their own AP? 3. Squares, cubes, primes near each term? 4. Split odd / even positions? 5. Alternating operations? 6. Digit manipulation.\n\n**Speed trap:** never lock a rule after two terms — verify it against **three** consecutive gaps.\n"
       },
       {
         "name": "Direction Sense",
@@ -2745,7 +2756,8 @@
             "hint": "Plot every leg as coordinates and apply Pythagoras between start and end.",
             "explanation": "He ends at (60,80) from start (0,0); distance = √(60²+80²) = 100 m."
           }
-        ]
+        ],
+        "theory": "## Direction Sense\n\n![Compass rose with N, NE, E, SE, S, SW, W, NW plus turn rules (facing N a left turn goes to W, a right turn to E; 180 degrees is the opposite; clockwise is right) and shadow rules (sunrise shadow falls west, sunset east, noon shortest).](/study-notes/direction-sense/compass-rules.png)\n\n### The One Method: Coordinate / Vector Tracking\n\nStart at $(0,0)$; treat N/S as the y-axis and E/W as the x-axis. Add / subtract each leg, then read off the final point. Everything else is a shortcut on top of this.\n\n![Coordinate example: 3 km north, then 4 km east, then 3 km south — the north and south legs cancel, leaving 4 km east; when both axes remain, distance equals the square root of x squared plus y squared.](/study-notes/direction-sense/coordinate-plot.png)\n\n| Situation | Rule |\n| --- | --- |\n| All N/S or all E/W | Add / subtract along that one axis |\n| Off both axes | Shortest distance $= \\sqrt{x^{2} + y^{2}}$ |\n| Right-angle path | Hypotenuse $= \\sqrt{\\text{leg}_1^{2} + \\text{leg}_2^{2}}$ |\n| Opposite legs (N then S) | They cancel — subtract smaller from larger |\n| 180° turn | Face the exact opposite |\n| 90° left (anticlockwise) | N→W→S→E→N |\n| 90° right (clockwise) | N→E→S→W→N |\n\n**Angles (clockwise from North):** N = 0°, NE = 45°, E = 90°, SE = 135°, S = 180°, SW = 225°, W = 270°, NW = 315°.\n\n**Shadows:** at sunrise the shadow falls **west** (facing the sun = facing east); at sunset it falls **east**; at noon in the tropics it is shortest.\n\n### Common Traps\n\n1. A left / right turn is relative to your **current facing**, not to North.\n2. \"Facing towards\" ≠ \"walking towards\" — don't assume movement happened.\n3. \"How far\" wants the distance (Pythagoras); \"which direction\" wants the compass bearing.\n4. Two people → plot both on one grid; comparisons (\"who is farther east\") read straight off it.\n"
       },
       {
         "name": "Seating arrangement",
@@ -2902,7 +2914,8 @@
             "hint": "Place K first, then follow the right/left chain around the circle and read the opposite seat.",
             "explanation": "The order gives K,N,P,L,Q,M,O,J; M's diametrically opposite seat is held by N."
           }
-        ]
+        ],
+        "theory": "## Seating Arrangement\n\n### Linear (in a row)\n\n- $n$ people in a row: $n!$\n- $n$ people in $r$ seats: ${}^{n}P_{r} = \\dfrac{n!}{(n-r)!}$\n- A block of $r$ people together: $(n - r + 1)! \\times r!$\n- Two people **never** together: $n! - (n-1)!\\times 2!$\n- $m$ men and $n$ women alternately ($m = n$): $2 \\times m! \\times n!$\n\n### Circular (around a table)\n\n- $n$ people: $(n-1)!$\n- A block of $r$ together: $(n - r)! \\times r!$\n- $m$ men, $n$ women alternately ($m = n$): $(m-1)! \\times n!$\n- Beads on a necklace (clockwise = anticlockwise): $\\dfrac{(n-1)!}{2}$\n\n> For arrangement *puzzles* (not counting), draw the row or circle, place the most-constrained clue first, and pencil in only definite positions before guessing.\n"
       },
       {
         "name": "Clock & Calendars",
@@ -3109,7 +3122,8 @@
             "hint": "Find the weekday of 1 April 2001, then list that weekday's dates every 7 days.",
             "explanation": "1 April 2001 was a Sunday, so Wednesday fell on the 4th, 11th, 18th and 25th."
           }
-        ]
+        ],
+        "theory": "## Clock & Calendar\n\n### Clocks\n\n| Hand | per 60 min | per minute |\n| --- | --- | --- |\n| Minute | 360° | 6° |\n| Hour | 30° | 0.5° |\n| Gain (minute over hour) | — | 5.5° |\n\n- **Angle between hands** at $H{:}M$: $\\theta = \\lvert 30H - 5.5M\\rvert$ (if $>180°$, subtract from 360°).\n- **Minute for a given angle:** $M = \\dfrac{2}{11}\\,(30H \\pm \\theta)$ — try both signs.\n- **Faulty clock** (hands coincide every $x$ min instead of $\\frac{720}{11}$): gain / loss per day $= \\left(\\dfrac{720}{11} - x\\right)\\times \\dfrac{60\\times 24}{x}$ (positive = fast).\n\n**Alignments per 12 h:** hands coincide (0°) 11 times, are opposite (180°) 11 times, at a right angle (90°) 22 times.\n\n**Image tricks:** mirror image $= 11{:}60$ − time; water image $= 18{:}30$ − time.\n\n### Calendars — Odd Days\n\nSolve by the remainder when total days ÷ 7. An ordinary year has **1** odd day; a leap year **2**.\n\n$$\n\\text{Total} = \\text{Date} + \\text{Month code} + \\text{Year} + \\left\\lfloor \\frac{\\text{Year}}{4} \\right\\rfloor + \\text{Century code}\n$$\n\nDivide by 7; the remainder is the day code.\n\n- **Month codes:** 1, 4, 4 (Jan–Mar) · 0, 2, 5 (Apr–Jun) · 0, 3, 6 (Jul–Sep) · 1, 4, 6 (Oct–Dec). *(Subtract 1 from Jan & Feb in a leap year.)*\n- **Century codes:** 1600s = 6, 1700s = 4, 1800s = 2, 1900s = 0, 2000s = 6.\n- **Day codes:** 1 Sun · 2 Mon · 3 Tue · 4 Wed · 5 Thu · 6 Fri · 0 Sat.\n\n**Year repeats** (by year mod 4): remainder 1 → +6 yr, 2 → +11, 3 → +11, 0 / leap → +28.\n"
       },
       {
         "name": "Inequalities",
@@ -3241,7 +3255,8 @@
             "hint": "Set revenue strictly greater than cost and solve for the smallest whole x.",
             "explanation": "40x > 20x+500 gives x > 25, so the minimum whole number of units is 26."
           }
-        ]
+        ],
+        "theory": "## Inequalities\n\n### Logical (symbol chains)\n\nEvaluate a chain such as $P > Q \\ge R = S$. The highest-priority sign between two letters decides the result.\n\n| Priority | Signs | Rule |\n| --- | --- | --- |\n| 1 · King | $>$ , $<$ | Overrides everything |\n| 2 · Soldier | $\\ge$ , $\\le$ | Beats $=$, loses to $>$ , $<$ |\n| 3 · Public | $=$ | Ignored unless it is the only sign |\n\n- **Gate-closed (broken chain):** opposite-facing signs between two elements → **no relation**; any single definite conclusion is then False.\n- **Either / Or** applies only when the two conclusions use the *same* pair, both are individually false, and together they cover the split — e.g. I. $A > B$, II. $A \\le B$; or a Soldier split I. $A > B$, II. $A = B$.\n\n### Algebraic\n\n- **Flip the sign** when multiplying / dividing by a negative, or taking reciprocals of same-sign values: $-x > 5 \\Rightarrow x < -5$; $x > y \\Rightarrow \\frac1x < \\frac1y$.\n- **Wavy curve** for $(x-a)(x-b)$ with $a<b$: product $<0 \\Rightarrow a<x<b$; product $>0 \\Rightarrow x<a$ or $x>b$.\n- **AM–GM for minimums:** $\\dfrac{a+b}{2} \\ge \\sqrt{ab}$, hence $x + \\frac1x \\ge 2$ for $x>0$.\n"
       },
       {
         "name": "Assertion and Reasoning",
@@ -3373,7 +3388,8 @@
             "hint": "Chain the definite premises for conclusion I and test the possibility for II.",
             "explanation": "Some Alpha are Beta→Gamma→not Delta, so 'Some Alpha are not Delta' follows (I); and nothing forbids all Beta being Alpha, so that possibility holds (II) — both follow."
           }
-        ]
+        ],
+        "theory": "## Assertion & Reasoning (with Venn / Syllogism)\n\n### Venn Diagrams (set counting)\n\n![Three-set Venn diagram showing all seven regions with the master union formula: n(A union B union C) equals n(A) plus n(B) plus n(C) minus the three pairwise intersections plus the triple intersection.](/study-notes/assertion-and-reasoning/venn-3set.png)\n\n**Two sets:** $n(A\\cup B) = n(A) + n(B) - n(A\\cap B)$; exactly one $= n(A)+n(B) - 2n(A\\cap B)$; neither $= \\text{Total} - n(A\\cup B)$.\n\n**Three sets (what exams test):**\n\n- Only A $= n(A) - n(A\\cap B) - n(A\\cap C) + n(A\\cap B\\cap C)$\n- Exactly two $= n(A\\cap B) + n(B\\cap C) + n(A\\cap C) - 3\\,n(A\\cap B\\cap C)$\n- At least two $= n(A\\cap B) + n(B\\cap C) + n(A\\cap C) - 2\\,n(A\\cap B\\cap C)$\n- None $= \\text{Total} - n(A\\cup B\\cup C)$\n\n**Trap:** when a question gives the pairwise overlaps *and* the triple overlap, subtract the triple out before answering \"exactly two\".\n\n**Syllogism shapes:** *All A are B* → A inside B · *No A is B* → separate circles · *Some A are B* → partial overlap.\n\n### Assertion – Reasoning Logic\n\n![Decision flowchart: check if A is true, then if R is true, then whether R explains A — leading to option A (both true and R explains), B (both true but R does not explain), C (A true, R false) or D (A false, R true).](/study-notes/assertion-and-reasoning/decision-flowchart.png)\n\n**Standard option key:**\n\n- **(A)** Both true, and R correctly explains A\n- **(B)** Both true, but R does **not** explain A\n- **(C)** A true, R false\n- **(D)** A false, R true\n- **(E)** Both false\n\n**Trap patterns:** (1) *true-but-irrelevant* R — ask \"could I derive A from R alone?\"; if not, it's (B). (2) *sounds-right-but-factually-wrong* R — check R's truth before its relevance. (3) *reversed causality* → still (B). (4) *partial truth* — if R holds only in some contexts, treat it as false.\n"
       }
     ]
   },
