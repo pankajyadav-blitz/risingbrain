@@ -1,18 +1,21 @@
 /**
- * Interview-experience-only seed.
+ * Interview-experience-only reseed.
  *
  * `prisma/seed.ts` wipes every content table before reloading, which is fine on
  * a fresh database but destructive once real user data exists. This script
- * touches *only* interview experiences (plus the demo author users they need),
- * so it is safe to run against a populated database.
+ * touches *only* the interview tables, so it can be run against a populated
+ * database without losing DSA/SQL/quiz/course content or user progress.
  *
  *   bun run db:seed-interviews
  *
- * Idempotent: posts are matched by `title` (unique across seed/interview.json)
- * and updated in place, so re-running never creates duplicates and never
- * detaches existing likes/comments. `likeCount` is only written on create —
- * on an existing post the denormalized counter is left alone because
- * InterviewLike rows are the source of truth there.
+ * DESTRUCTIVE within its scope: every InterviewExperience is deleted (along
+ * with its likes and comments, via cascade) before the 27 posts in
+ * seed/interview.json are re-inserted. User-authored posts are NOT spared.
+ *
+ * Posts are inserted in a random order that never places two posts from the
+ * same company back to back, and `createdAt` is spaced out so the feed's
+ * `ORDER BY createdAt DESC` reproduces that order. The shuffle is re-rolled on
+ * every run, so the feed order changes each time you reseed.
  */
 import {
   PrismaClient,
@@ -26,6 +29,9 @@ import interviewData from "../seed/interview.json";
 
 const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL });
 const prisma = new PrismaClient({ adapter });
+
+/** Minutes between consecutive posts' createdAt, newest first. */
+const SPACING_MINUTES = 47;
 
 function slugify(s: string): string {
   return s
@@ -58,14 +64,77 @@ type InterviewPostJson = {
   likeCount: number;
 };
 
+/**
+ * Spread posts so no two neighbours share a company.
+ *
+ * Greedy "reorganize string": at each step take the company with the most
+ * posts still unplaced, excluding whichever one we just placed. Always
+ * draining the largest bucket is what keeps a dominant company (here Microsoft,
+ * 9 of 27) from piling up at the tail with nothing left to separate it. Ties
+ * are broken randomly, and each company's own posts are shuffled, so the order
+ * differs on every run.
+ *
+ * Only possible when no company holds more than ceil(n/2) posts; if the data
+ * ever crosses that line we throw rather than silently emitting a run.
+ */
+function shuffleAvoidingAdjacentCompanies(
+  posts: InterviewPostJson[],
+): InterviewPostJson[] {
+  const buckets = new Map<string, InterviewPostJson[]>();
+  for (const post of posts) {
+    const bucket = buckets.get(post.company);
+    if (bucket) bucket.push(post);
+    else buckets.set(post.company, [post]);
+  }
+  for (const bucket of buckets.values()) {
+    // Fisher-Yates, so which post of a company lands where also varies.
+    for (let i = bucket.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [bucket[i], bucket[j]] = [bucket[j]!, bucket[i]!];
+    }
+  }
+
+  const largest = Math.max(...[...buckets.values()].map((b) => b.length));
+  if (largest > Math.ceil(posts.length / 2)) {
+    throw new Error(
+      `Cannot separate companies: one has ${largest} of ${posts.length} posts ` +
+        `(max ${Math.ceil(posts.length / 2)}).`,
+    );
+  }
+
+  const out: InterviewPostJson[] = [];
+  let previous: string | null = null;
+
+  while (out.length < posts.length) {
+    const candidates = [...buckets.entries()].filter(
+      ([company, bucket]) => bucket.length > 0 && company !== previous,
+    );
+    if (candidates.length === 0) {
+      // Unreachable given the ceil(n/2) check above.
+      throw new Error("Ran out of companies to interleave.");
+    }
+
+    const most = Math.max(...candidates.map(([, b]) => b.length));
+    const tied = candidates.filter(([, b]) => b.length === most);
+    const [company, bucket] = tied[Math.floor(Math.random() * tied.length)]!;
+
+    out.push(bucket.pop()!);
+    previous = company;
+  }
+
+  return out;
+}
+
 async function main() {
   const posts = interviewData as InterviewPostJson[];
-  console.log(`🌱 Syncing ${posts.length} interview experiences…`);
+  const ordered = shuffleAvoidingAdjacentCompanies(posts);
 
-  let created = 0;
-  let updated = 0;
+  const deleted = await prisma.interviewExperience.deleteMany();
+  console.log(`🗑️  Deleted ${deleted.count} existing interview experiences.`);
 
-  for (const post of posts) {
+  const now = Date.now();
+
+  for (const [index, post] of ordered.entries()) {
     const email = `${slugify(post.authorName)}@example.com`;
     const author = await prisma.user.upsert({
       where: { email },
@@ -73,38 +142,27 @@ async function main() {
       create: { email, name: post.authorName, role: Role.NORMAL },
     });
 
-    const shared = {
-      authorId: author.id,
-      company: post.company,
-      role: post.role,
-      verdict: post.verdict as InterviewVerdict,
-      difficulty: toDifficulty(post.difficulty),
-      roundsCount: post.roundsCount,
-      excerpt: post.excerpt,
-      body: post.body,
-      tags: post.tags,
-    };
-
-    const existing = await prisma.interviewExperience.findFirst({
-      where: { title: post.title },
-      select: { id: true },
+    await prisma.interviewExperience.create({
+      data: {
+        authorId: author.id,
+        company: post.company,
+        role: post.role,
+        verdict: post.verdict as InterviewVerdict,
+        difficulty: toDifficulty(post.difficulty),
+        roundsCount: post.roundsCount,
+        title: post.title,
+        excerpt: post.excerpt,
+        body: post.body,
+        tags: post.tags,
+        likeCount: post.likeCount,
+        // Index 0 is newest, so the feed's createdAt DESC sort mirrors `ordered`.
+        createdAt: new Date(now - index * SPACING_MINUTES * 60_000),
+      },
     });
-
-    if (existing) {
-      await prisma.interviewExperience.update({
-        where: { id: existing.id },
-        data: shared,
-      });
-      updated += 1;
-    } else {
-      await prisma.interviewExperience.create({
-        data: { ...shared, title: post.title, likeCount: post.likeCount },
-      });
-      created += 1;
-    }
   }
 
-  console.log(`✅ Done — ${created} created, ${updated} updated.`);
+  console.log(`✅ Inserted ${ordered.length} interview experiences.`);
+  console.log(`   order: ${ordered.map((p) => p.company).join(" → ")}`);
 }
 
 main()
