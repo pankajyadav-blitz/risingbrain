@@ -15,15 +15,28 @@ import { DAY_MS, istToday, keyOf } from "@/lib/ist";
  * badge entirely rather than show a misleading "broken streak". A real `0` (user
  * signed in, no activity yet) is still a valid value that shows the dull flame.
  */
+/**
+ * The badge renders on every page, so it gets a hard time budget as well as an
+ * error guard. Without one, an unreachable serverless Postgres would block the
+ * whole page for the pool's full connect timeout before this returned null —
+ * failing soft but arriving far too late to matter.
+ */
+const STREAK_BUDGET_MS = 2_500;
+
 export async function getCurrentStreak(userId: string): Promise<number | null> {
   const since = new Date(Date.now() - 400 * DAY_MS);
 
   let rows: { day: Date }[];
   try {
-    rows = await prisma.activityDay.findMany({
-      where: { userId, day: { gte: since }, count: { gt: 0 } },
-      select: { day: true },
-    });
+    rows = await Promise.race([
+      prisma.activityDay.findMany({
+        where: { userId, day: { gte: since }, count: { gt: 0 } },
+        select: { day: true },
+      }),
+      new Promise<never>((_, reject) =>
+        setTimeout(() => reject(new Error("streak lookup timed out")), STREAK_BUDGET_MS)
+      ),
+    ]);
   } catch (err) {
     console.error("[streak] failed to load activity, hiding the badge:", err);
     return null;

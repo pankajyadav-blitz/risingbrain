@@ -1,7 +1,7 @@
 import { Navbar } from "@/components/marketing/navbar";
 import { Footer } from "@/components/marketing/footer";
 import { Reveal } from "@/components/motion/reveal";
-import { getCurrentUserProfile } from "@/lib/auth/current-user";
+import { getCurrentUserProfileForChrome } from "@/lib/auth/current-user";
 
 /**
  * Marketing chrome — the public landing page (and any other top-nav marketing
@@ -14,11 +14,13 @@ export default async function MarketingLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const profile = await getCurrentUserProfile();
+  // Fail-soft: this is the public landing page, so a Postgres hiccup must
+  // degrade the navbar, not replace the page with the error boundary.
+  const user = await getCurrentUserProfileForChrome();
 
   return (
     <div className="flex min-h-screen flex-col">
-      <Navbar user={profile ? { name: profile.name, role: profile.role } : null} />
+      <Navbar user={user} />
       {children}
       <Reveal>
         <Footer />

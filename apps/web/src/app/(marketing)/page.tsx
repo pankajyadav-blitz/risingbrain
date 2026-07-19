@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Hero } from "@/components/marketing/hero";
 import { Stats } from "@/components/marketing/stats";
 import { FeatureGrid } from "@/components/marketing/feature-grid";
+import { HowItWorks } from "@/components/marketing/how-it-works";
 import { Reviews } from "@/components/marketing/reviews";
 import { Founder } from "@/components/marketing/founder";
 import { Community } from "@/components/marketing/community";
@@ -64,14 +65,22 @@ export default function HomePage() {
       <Reveal>
         <FeatureGrid />
       </Reveal>
+      {/* Mechanism before proof: the reader needs to know what they'd actually
+          do here before a testimonial about it means anything. */}
+      <Reveal>
+        <HowItWorks />
+      </Reveal>
       <Reveal>
         <Reviews />
       </Reveal>
       <Reveal>
-        <Founder />
-      </Reveal>
-      <Reveal>
         <Community />
+      </Reveal>
+      {/* The founder story is the emotional close, so it sits immediately
+          before the final CTA rather than mid-page. It also now carries the
+          credential that used to be duplicated in the hero badge. */}
+      <Reveal>
+        <Founder />
       </Reveal>
       <Reveal>
         <CtaBanner />

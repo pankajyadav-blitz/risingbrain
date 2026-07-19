@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ArrowRight, Layers } from "lucide-react";
-import { Container, Eyebrow, GlassCard } from "./primitives";
+import { Container, Eyebrow } from "./primitives";
 import { FEATURE_ART, type FeatureArtKey } from "./feature-banners";
 
 type Feature = {
@@ -9,106 +9,115 @@ type Feature = {
   title: string;
   desc: string;
   tag: string;
+  /** Inventory metadata — only where the repo already states a real number. */
+  meta?: string;
+  /** Column span on `lg`, out of 6. Two wide + two narrow, alternating. */
+  span: 2 | 4;
 };
 
+/**
+ * Deliberately asymmetric: a 6-column track where the two anchor sections get
+ * 4 columns and the two supporting ones get 2, alternating across the rows.
+ * Four equal cards in a row is one of the clearest "assembled, not designed"
+ * tells — size is what encodes priority.
+ *
+ * DOM order is visual order, so no `grid-auto-flow: dense`: these are links,
+ * and dense packing reorders them visually without reordering focus.
+ */
 const features: Feature[] = [
   {
     key: "sheets",
     href: "/sheet",
     title: "DSA Sheets",
-    desc: "The curated SWE Sheet and a focused Last-Minute 100 for revision day.",
+    desc: "The curated SWE Sheet, sequenced pattern-by-pattern rather than topic-by-topic — plus a focused Last-Minute 100 for revision day.",
     tag: "Pattern-first",
+    meta: "496 problems · 85 patterns",
+    span: 4,
   },
   {
     key: "domain",
     href: "/domain",
     title: "Domain",
-    desc: "SQL, DBMS, OS and more — problem, best approach and the clean answer, side by side.",
+    desc: "SQL, DBMS and OS — the problem, the best approach and the clean answer, side by side.",
     tag: "Core CS",
+    span: 2,
   },
   {
     key: "screening",
     href: "/screening",
     title: "Screening",
-    desc: "Quant aptitude, logical reasoning and puzzles — crisp theory plus MCQ practice.",
+    desc: "Quant aptitude, logical reasoning and puzzles — crisp theory, then timed MCQ practice.",
     tag: "MCQ drills",
+    span: 2,
   },
   {
     key: "interview",
     href: "/interview",
     title: "Interview Stories",
-    desc: "Real experiences from real candidates — wins, lessons and round-by-round breakdowns.",
+    desc: "Round-by-round breakdowns from candidates who sat the loop — what got asked, what they'd do differently, and how it ended.",
     tag: "Community",
+    span: 4,
   },
 ];
 
 export function FeatureGrid() {
   return (
     <Container>
-      <section className="relative py-20">
-        {/* Soft brand spotlight behind the heading. */}
-        <div
-          aria-hidden
-          className="pointer-events-none absolute left-1/2 top-4 -z-10 h-72 w-[44rem] max-w-full -translate-x-1/2 rounded-full bg-rb-green-500/10 blur-3xl"
-        />
-
-        <div className="mb-12 max-w-2xl">
+      <section className="relative py-24">
+        <div className="mb-14 max-w-2xl">
           <Eyebrow>
             <Layers className="h-3.5 w-3.5" /> What you get
           </Eyebrow>
-          <h2 className="mt-4 text-3xl font-bold tracking-tight sm:text-4xl">
-            Everything you need, <span className="text-gradient">one place</span>
+          {/* Heading makes the claim; the number lives one line down, in the
+              subcopy, so the headline stays clean. */}
+          <h2 className="display-2 mt-5 font-bold">
+            Four tracks, <span className="text-gradient">one sequence</span>
           </h2>
-          <p className="mt-3 text-muted">
-            Tightly-built sections, one consistent glass theme — from your first pattern to your
-            final round.
+          <p className="lead mt-4 text-muted">
+            Each section picks up where the last leaves off — so you always know what to open next
+            instead of tab-hopping across five sites.
           </p>
         </div>
 
-        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-6">
           {features.map((f) => {
             const Art = FEATURE_ART[f.key];
             return (
-              <Link key={f.href} href={f.href} className="group block h-full">
-                <GlassCard hover className="flex h-full flex-col overflow-hidden">
-                  {/* Banner — themed SVG scene on a brand-tinted gradient. */}
-                  <div className="relative h-28 overflow-hidden bg-gradient-to-br from-rb-green-500/20 via-rb-green-500/[0.06] to-transparent">
-                    <Art className="absolute inset-0 h-full w-full text-accent transition-transform duration-500 ease-out group-hover:scale-105" />
+              <Link
+                key={f.href}
+                href={f.href}
+                className={`feat-card group flex flex-col overflow-hidden rounded-2xl border border-border bg-surface hover:border-rb-green-500/40 ${
+                  f.span === 4 ? "lg:col-span-4" : "lg:col-span-2"
+                }`}
+              >
+                {/* Banner — a cropped slice of the section's real UI. */}
+                <div className="feat-banner feat-art relative h-44 overflow-hidden">
+                  <Art className="absolute inset-0 h-full w-full" />
+                  <span className="glass-pill absolute right-3 top-3 rounded-full px-2.5 py-1 text-[11px] font-medium uppercase tracking-wide text-muted">
+                    {f.tag}
+                  </span>
+                </div>
 
-                    {/* Hover corner glow — drifts inward as the card lifts. */}
-                    <span
-                      aria-hidden
-                      className="pointer-events-none absolute -right-10 -top-10 h-28 w-28 rounded-full bg-rb-green-500/30 opacity-0 blur-2xl transition-all duration-500 ease-out group-hover:-translate-x-3 group-hover:translate-y-3 group-hover:scale-125 group-hover:opacity-100"
-                    />
-                    {/* Fade into the card body + accent line on hover */}
-                    <span
-                      aria-hidden
-                      className="pointer-events-none absolute inset-x-0 bottom-0 h-10 bg-gradient-to-t from-surface/40 to-transparent"
-                    />
-                    <span
-                      aria-hidden
-                      className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-rb-green-400/70 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-                    />
+                <div className="flex flex-1 flex-col p-6">
+                  <h3 className="text-lg font-semibold transition-colors group-hover:text-accent">
+                    {f.title}
+                  </h3>
+                  <p className="mt-2 max-w-[52ch] text-sm leading-relaxed text-muted">{f.desc}</p>
 
-                    {/* Category tag */}
-                    <span className="glass-pill absolute right-3 top-3 rounded-full px-2.5 py-1 text-[11px] font-medium uppercase tracking-wide text-muted">
-                      {f.tag}
-                    </span>
-                  </div>
-
-                  {/* Content */}
-                  <div className="flex flex-1 flex-col p-6">
-                    <h3 className="mb-1.5 text-lg font-semibold transition-colors group-hover:text-accent">
-                      {f.title}
-                    </h3>
-                    <p className="text-sm leading-relaxed text-muted">{f.desc}</p>
-
-                    <div className="mt-auto inline-flex items-center gap-1.5 pt-5 text-sm font-semibold text-accent">
+                  <div className="mt-auto flex items-center justify-between gap-4 pt-6">
+                    {/* Inventory metadata is the depth proof — a title says
+                        nothing, a count says the content exists. */}
+                    {f.meta ? (
+                      <span className="font-mono text-xs text-muted">{f.meta}</span>
+                    ) : (
+                      <span />
+                    )}
+                    <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-accent">
                       Explore
                       <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
-                    </div>
+                    </span>
                   </div>
-                </GlassCard>
+                </div>
               </Link>
             );
           })}

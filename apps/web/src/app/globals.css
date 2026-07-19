@@ -176,3 +176,102 @@ body::before {
   overflow-y: hidden;
   padding: 0.35rem 0;
 }
+
+/* ==========================================================================
+   Marketing / landing-page craft layer.
+
+   Two ideas, both built on the shared tokens in @risingbrain/config-tailwind:
+     ① a real display type scale (the landing page needs a step the app
+        doesn't — body sizes are unchanged);
+     ② depth-on-hover for the feature cards, driven by the three `.art-*`
+        layers inside each banner SVG.
+   ========================================================================== */
+
+/* --- ① Display type ------------------------------------------------------
+   Fluid only at display size; body stays on discrete steps so line-heights
+   keep landing on the baseline. Negative tracking is what stops a large
+   sans headline reading as a scaled-up paragraph. */
+.display-1 {
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  line-height: 1.03;
+  letter-spacing: -0.033em;
+  text-wrap: balance;
+}
+.display-2 {
+  font-size: clamp(1.85rem, 3.4vw, 2.75rem);
+  line-height: 1.1;
+  letter-spacing: -0.025em;
+  text-wrap: balance;
+}
+/* Lead paragraph: capped at a real measure so it never runs past ~70ch. */
+.lead {
+  font-size: 1.0625rem;
+  line-height: 1.65;
+  max-width: 60ch;
+}
+@media (min-width: 640px) {
+  .lead {
+    font-size: 1.125rem;
+  }
+}
+
+/* --- ② Feature-card banner depth ----------------------------------------
+   The banner's three layers travel at different rates from one hover, which
+   is what makes a flat SVG read as having a foreground. Transform/opacity
+   only, so it stays on the compositor. */
+.feat-art .art-bg,
+.feat-art .art-mid,
+.feat-art .art-fg {
+  transition: transform 320ms var(--ease-soft);
+  will-change: transform;
+}
+@media (hover: hover) and (pointer: fine) {
+  .feat-card:hover .feat-art .art-bg {
+    transform: translate3d(0, -1px, 0);
+  }
+  .feat-card:hover .feat-art .art-mid {
+    transform: translate3d(0, -4px, 0);
+  }
+  .feat-card:hover .feat-art .art-fg {
+    transform: translate3d(0, -8px, 0);
+  }
+}
+
+/* The banner sits on a flat step of the surface ladder rather than a glow —
+   depth by value, not by blur. */
+.feat-banner {
+  background: linear-gradient(180deg, var(--surface-2) 0%, var(--surface) 100%);
+  border-bottom: 1px solid var(--border);
+}
+
+/* Hairline that warms to the accent as the card is hovered — the one-rung
+   state change the premium systems use in place of a lift-and-glow. */
+.feat-card {
+  transition:
+    border-color var(--dur-fast) ease,
+    background-color var(--dur-fast) ease;
+}
+
+/* --- Hero track chips ---------------------------------------------------- */
+.chip {
+  transition:
+    border-color var(--dur-fast) ease,
+    background-color var(--dur-fast) ease,
+    transform var(--dur-fast) var(--ease-soft);
+}
+@media (hover: hover) and (pointer: fine) {
+  .chip:hover {
+    transform: translateY(-1px);
+    border-color: color-mix(in srgb, var(--rb-green-500) 45%, transparent);
+  }
+}
+
+/* Reduced motion: collapse the parallax entirely, keep the state change. */
+@media (prefers-reduced-motion: reduce) {
+  .feat-card:hover .feat-art .art-bg,
+  .feat-card:hover .feat-art .art-mid,
+  .feat-card:hover .feat-art .art-fg,
+  .chip:hover {
+    transform: none !important;
+  }
+}
