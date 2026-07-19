@@ -1,6 +1,7 @@
 import Link from "next/link";
-import { ArrowRight, Flame } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { Container } from "./primitives";
+import { PatternRecognition } from "./pattern-recognition";
 
 /**
  * Hero.
@@ -27,110 +28,6 @@ const tracks = [
   { label: "Interview Stories", href: "/interview" },
   { label: "Courses", href: "/courses" },
 ];
-
-/* --------------------------------------------------------------------- */
-/* Product proof: the activity heatmap.                                   */
-/*                                                                        */
-/* This is the one visual no competitor leads with, and it is unmistakably */
-/* "this product tracks real work" rather than a generic SaaS chart. The   */
-/* pattern is generated from a fixed seed so server and client agree and   */
-/* the render is stable between builds.                                   */
-/* --------------------------------------------------------------------- */
-const WEEKS = 26;
-const DAYS = 7;
-
-function heatmapLevels(): number[] {
-  // Small deterministic LCG — no Math.random, so SSR and hydration match.
-  let seed = 20260719;
-  const next = () => {
-    seed = (seed * 1103515245 + 12345) % 2147483648;
-    return seed / 2147483648;
-  };
-  return Array.from({ length: WEEKS * DAYS }, (_, i) => {
-    const day = i % DAYS;
-    const r = next();
-    // Weekends dip, and the streak strengthens toward the present.
-    const recency = 0.35 + (Math.floor(i / DAYS) / WEEKS) * 0.65;
-    const weekend = day === 0 || day === 6 ? 0.55 : 1;
-    const v = r * recency * weekend;
-    if (v < 0.18) return 0;
-    if (v < 0.34) return 1;
-    if (v < 0.5) return 2;
-    if (v < 0.68) return 3;
-    return 4;
-  });
-}
-
-const LEVEL_OPACITY = [0, 0.22, 0.42, 0.68, 1];
-
-function Heatmap() {
-  const levels = heatmapLevels();
-  return (
-    <div className="flex gap-[3px]" aria-hidden>
-      {Array.from({ length: WEEKS }).map((_, w) => (
-        <div key={w} className="flex flex-col gap-[3px]">
-          {Array.from({ length: DAYS }).map((_, d) => {
-            const level = levels[w * DAYS + d] ?? 0;
-            return (
-              <span
-                key={d}
-                className="h-[11px] w-[11px] rounded-[3px]"
-                style={
-                  level === 0
-                    ? { background: "var(--highlight)", border: "1px solid var(--border)" }
-                    : {
-                        background: `color-mix(in srgb, var(--rb-green-500) ${
-                          (LEVEL_OPACITY[level] ?? 0) * 100
-                        }%, transparent)`,
-                      }
-                }
-              />
-            );
-          })}
-        </div>
-      ))}
-    </div>
-  );
-}
-
-/** A small app-chrome frame so the panel reads as product, not decoration. */
-function ProductPanel() {
-  return (
-    <div className="overflow-hidden rounded-2xl border border-border bg-surface">
-      {/* Window chrome — the same signature element the card banners use. */}
-      <div className="flex items-center gap-2 border-b border-border bg-surface-2 px-4 py-3">
-        <span className="h-2.5 w-2.5 rounded-full bg-muted/40" />
-        <span className="h-2.5 w-2.5 rounded-full bg-muted/25" />
-        <span className="h-2.5 w-2.5 rounded-full bg-muted/15" />
-        <span className="ml-2 font-mono text-xs text-muted">your activity</span>
-      </div>
-
-      <div className="flex flex-col gap-8 p-6 lg:flex-row lg:items-center lg:justify-between">
-        {/* The heatmap scrolls rather than shrinking — 11px cells stay 11px. */}
-        <div className="-mx-1 overflow-x-auto px-1 pb-1">
-          <Heatmap />
-        </div>
-
-        {/* Two stats, not three. A row of exactly three big numbers with small
-            labels underneath is its own recognisable template. */}
-        <div className="flex shrink-0 gap-8 lg:flex-col lg:gap-5 lg:border-l lg:border-border lg:pl-8">
-          <div>
-            <div className="flex items-baseline gap-1.5">
-              <Flame className="h-4 w-4 self-center text-accent" />
-              <span className="text-2xl font-bold tabular-nums">18</span>
-              <span className="text-sm text-muted">days</span>
-            </div>
-            <div className="mt-0.5 text-xs text-muted">Current streak</div>
-          </div>
-          <div>
-            <div className="text-2xl font-bold tabular-nums">247</div>
-            <div className="mt-0.5 text-xs text-muted">Problems solved</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
 
 export function Hero() {
   return (
@@ -181,7 +78,7 @@ export function Hero() {
 
         {/* Product proof, below the CTA — no tilt, no glow, no fake browser. */}
         <div className="mx-auto mt-16 max-w-5xl">
-          <ProductPanel />
+          <PatternRecognition />
         </div>
       </section>
     </Container>

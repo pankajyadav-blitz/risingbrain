@@ -275,3 +275,17 @@ body::before {
     transform: none !important;
   }
 }
+
+/* --- Hero pattern-recognition demo --------------------------------------- */
+/* The active rail bar fills over the dwell time so the panel telegraphs when
+   it is about to advance. The component skips the animation entirely under
+   reduced motion (it renders the bar at 100% instead), so no guard is needed
+   here — but keep the keyframe cheap: height only, no layout-triggering props. */
+@keyframes pr-fill {
+  from {
+    height: 0%;
+  }
+  to {
+    height: 100%;
+  }
+}

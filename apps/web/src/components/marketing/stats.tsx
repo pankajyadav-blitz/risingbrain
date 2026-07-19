@@ -1,13 +1,16 @@
 import { Container, GlassCard } from "./primitives";
 import { CountUp } from "@/components/motion/count-up";
 import { Reveal } from "@/components/motion/reveal";
+import { CATALOG_STATS } from "./catalog-stats";
 
 // [value, suffix, label] — the number counts up from zero when scrolled into view.
+// Catalog figures come from CATALOG_STATS so this band and the hero panel always
+// quote the same numbers.
 const stats: [number, string, string][] = [
-  [50, "k+", "Learners mentored"],
-  [496, "+", "Curated problems"],
+  [100, "k+", "Learners mentored"],
+  [CATALOG_STATS.problems, "+", "Curated problems"],
   [500, "+", "Placed at top firms"],
-  [85, "+", "Topic-wise patterns"],
+  [CATALOG_STATS.patterns, "+", "Topic-wise patterns"],
 ];
 
 export function Stats() {

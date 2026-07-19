@@ -167,15 +167,12 @@ export default async function SheetPage() {
               <div className="animate-in lg:flex lg:items-end lg:justify-between lg:gap-8">
                 <div className="max-w-2xl">
                   <h2 className="text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">
-                    Master DSA
-                    <span className="block text-gradient">
-                      pattern by pattern
-                    </span>
+                    Learn the pattern,
+                    <span className="block text-gradient">not the problem</span>
                   </h2>
                   <p className="mt-3 text-muted">
-                    Hand-sequenced sheets that group every problem by topic and
-                    reusable pattern. Pick a sheet, track what you&apos;ve solved,
-                    and jot private notes as you go.
+                    Pattern Wise goes topic by topic. Last Minute 100 is the
+                    short version for when the interview is close.
                   </p>
                 </div>
                 {/* Content counts sit to the RIGHT of the heading on wide screens

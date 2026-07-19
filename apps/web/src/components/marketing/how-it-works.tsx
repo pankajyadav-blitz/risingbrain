@@ -1,4 +1,4 @@
-import { Route } from "lucide-react";
+import { Flag, Lightbulb, NotebookPen, Route } from "lucide-react";
 import { Container, Eyebrow } from "./primitives";
 
 /**
@@ -98,28 +98,34 @@ function SheetRows() {
   );
 }
 
-/** Step 3 — revision, driven by what you actually got wrong. */
+/** Step 3 — revision, driven by what you actually got wrong.
+ *
+ * These used to carry counts (14 / 23 / 61). They were invented, and shown to a
+ * visitor with no account they described nobody's revision queue. The count was
+ * never the point either — that the three signals *exist* is. So the number
+ * slot holds the signal's icon, and each row says what feeds it instead. */
 function RevisionStack() {
   const items = [
-    { label: "Flagged for revision", n: 14, tone: "accent" as const },
-    { label: "Solved with a hint", n: 23, tone: "muted" as const },
-    { label: "Notes written", n: 61, tone: "muted" as const },
+    { label: "Flagged for revision", hint: "you mark it", Icon: Flag, tone: "accent" as const },
+    { label: "Solved with a hint", hint: "auto-tracked", Icon: Lightbulb, tone: "muted" as const },
+    { label: "Notes written", hint: "private to you", Icon: NotebookPen, tone: "muted" as const },
   ];
   return (
     <div className="grid gap-3">
-      {items.map((i) => (
+      {items.map(({ label, hint, Icon, tone }) => (
         <div
-          key={i.label}
-          className="flex items-center justify-between rounded-xl border border-border bg-surface px-4 py-3"
+          key={label}
+          className="flex items-center gap-3 rounded-xl border border-border bg-surface px-4 py-3"
         >
-          <span className="text-sm text-muted">{i.label}</span>
           <span
-            className={`font-mono text-lg font-bold tabular-nums ${
-              i.tone === "accent" ? "text-accent" : "text-foreground"
+            className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg ${
+              tone === "accent" ? "bg-accent/10 text-accent" : "bg-highlight text-muted"
             }`}
           >
-            {i.n}
+            <Icon className="h-4 w-4" />
           </span>
+          <span className="text-sm text-foreground">{label}</span>
+          <span className="ml-auto shrink-0 font-mono text-xs text-muted">{hint}</span>
         </div>
       ))}
     </div>
