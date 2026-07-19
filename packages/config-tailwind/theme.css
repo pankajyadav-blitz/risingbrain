@@ -56,6 +56,12 @@
   --brand-muted: var(--rb-green-800); /* hover = darker */
   --accent: var(--rb-green-700);
 
+  /* Depth cast under the sheet-calendar brain icons, which deepens with the
+     day's activity level. Space-separated RGB so callers can vary the alpha
+     per level via `rgb(var(--brain-shadow) / <a>)`. On light surfaces a deep
+     green-black shadow gives the icon weight. */
+  --brain-shadow: 17 32 26;
+
   --ambient: radial-gradient(55% 38% at 20% -10%, rgba(53, 164, 92, 0.07) 0%, transparent 60%);
   --shadow-card: 0 6px 20px rgba(15, 18, 22, 0.07);
   --shadow-card-hover: 0 12px 28px rgba(15, 18, 22, 0.11);
@@ -83,6 +89,10 @@
   --brand-foreground: #0b130f;
   --brand-muted: var(--rb-green-400); /* hover = lighter */
   --accent: var(--rb-green-500); /* mid green — legible on dark surfaces */
+
+  /* Same ramp as light, but a dark shadow is invisible on a dark surface, so
+     here the "depth" reads as an intensifying green glow instead. */
+  --brain-shadow: 53 164 92;
 
   --ambient: radial-gradient(55% 38% at 20% -10%, rgba(53, 164, 92, 0.05) 0%, transparent 60%);
   --shadow-card: 0 6px 20px rgba(0, 0, 0, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.03);

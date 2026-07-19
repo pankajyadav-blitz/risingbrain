@@ -286,9 +286,6 @@ model DsaProblem {
   slug        String     @unique
   title       String
   reference   String? // e.g. "LC 167"
-  // Normalized key (e.g. "lc-167") so the same LeetCode problem across sheets
-  // can be aggregated later without a migration.
-  canonicalKey String?
   difficulty  Difficulty @default(MEDIUM)
   leetcodeUrl String?
   gfgUrl      String?
@@ -302,7 +299,6 @@ model DsaProblem {
 
   @@index([patternId])
   @@index([difficulty])
-  @@index([canonicalKey])
   @@map("dsa_problems")
 }
 

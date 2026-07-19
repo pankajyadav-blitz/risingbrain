@@ -1,7 +1,7 @@
 "use client";
 
-import { useMemo, useState } from "react";
-import { Brain, ChevronLeft, ChevronRight, Flame } from "lucide-react";
+import { useMemo, useState, type SVGProps } from "react";
+import { ChevronLeft, ChevronRight, Flame } from "lucide-react";
 import type { SheetActivity } from "../_data";
 
 /**
@@ -17,7 +17,7 @@ import type { SheetActivity } from "../_data";
 
 const WEEKDAYS = ["S", "M", "T", "W", "T", "F", "S"];
 
-// Icon stroke color per activity level (rb-green-500 = #35a45c).
+// Icon fill color per activity level (rb-green-500 = #35a45c).
 const BRAIN_COLOR = [
   "",
   "rgba(53,164,92,0.50)",
@@ -25,6 +25,75 @@ const BRAIN_COLOR = [
   "rgba(53,164,92,0.92)",
   "#35a45c",
 ] as const;
+
+// Depth cast under the icon, deepening with the day's activity level so a
+// heavier day reads as physically heavier. Two stacked drop-shadows per level:
+// a tight contact shadow for definition plus a wider ambient one for depth.
+//
+// The color comes from the `--brain-shadow` theme token, NOT a hardcoded black:
+// on light surfaces it resolves to a deep green-black, and on dark surfaces to
+// green — because a dark shadow on a dark background is invisible, so there the
+// same ramp reads as an intensifying glow. Same progression either way.
+const BRAIN_SHADOW = [
+  "",
+  "drop-shadow(0 0.5px 0.5px rgb(var(--brain-shadow) / 0.25))",
+  "drop-shadow(0 1px 1px rgb(var(--brain-shadow) / 0.40)) drop-shadow(0 1px 2px rgb(var(--brain-shadow) / 0.20))",
+  "drop-shadow(0 1px 1.5px rgb(var(--brain-shadow) / 0.55)) drop-shadow(0 2px 4px rgb(var(--brain-shadow) / 0.30))",
+  "drop-shadow(0 1.5px 2px rgb(var(--brain-shadow) / 0.70)) drop-shadow(0 3px 6px rgb(var(--brain-shadow) / 0.45))",
+] as const;
+
+// Glow filling the whole day cell, spreading inward from its edges and
+// deepening with the level — so a busy day reads as a "hotter" square, not just
+// a darker icon. Same `--brain-shadow` token as the icon, so it stays a shadow
+// on light surfaces and a glow on dark ones.
+const CELL_GLOW = [
+  "",
+  "inset 0 0 6px 0 rgb(var(--brain-shadow) / 0.10)",
+  "inset 0 0 10px 0 rgb(var(--brain-shadow) / 0.17)",
+  "inset 0 0 14px 1px rgb(var(--brain-shadow) / 0.26)",
+  "inset 0 0 18px 2px rgb(var(--brain-shadow) / 0.36)",
+] as const;
+
+/**
+ * The RisingBrain mark (lucide `Brain`, same icon the nav bar uses) with the
+ * central fissure turned into an upward arrow — a "growth" brain for days the
+ * user solved something.
+ *
+ * Every lobe path is lucide's `brain` verbatim, so this stays visually identical
+ * to the nav-bar logo. The only change: lucide's rounded middle chevron
+ * (`M15 13a4.17 4.17 0 0 1-3-4 4.17 4.17 0 0 1-3 4`) is swapped for a straight
+ * arrowhead, which turns the existing `M12 18V5` stem into the arrow's shaft.
+ * The arrow is drawn — not filled — so it reads as hollow, and its tip lands at
+ * the brain's visual center.
+ *
+ * Stroked with `currentColor`, so callers tint it via `style={{ color }}` exactly
+ * like the `<Brain />` it replaces.
+ */
+function BrainGrowthIcon(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={2}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden
+      {...props}
+    >
+      {/* lucide `brain` lobes — unmodified */}
+      <path d="M17.598 6.5A3 3 0 1 0 12 5a3 3 0 1 0-5.598 1.5" />
+      <path d="M17.997 5.125a4 4 0 0 1 2.526 5.77" />
+      <path d="M18 18a4 4 0 0 0 2-7.464" />
+      <path d="M19.967 17.483A4 4 0 1 1 12 18a4 4 0 1 1-7.967-.517" />
+      <path d="M6 18a4 4 0 0 1-2-7.464" />
+      <path d="M6.003 5.125a4 4 0 0 0-2.526 5.77" />
+      {/* arrow: lucide's central stem as the shaft + a straight head at center */}
+      <path d="M12 18V9.5" />
+      <path d="M8.4 13.1 12 9.5l3.6 3.6" />
+    </svg>
+  );
+}
 
 /** Exact Twemoji 😢 crying face (U+1F622) — pixel-faithful recreation. */
 function RegretFace() {
@@ -177,7 +246,7 @@ export function SheetCalendar({
                   ? `No solves on ${prettyDate(c.key)}`
                   : `${c.count} solved on ${prettyDate(c.key)}`
             }
-            className={`aspect-square rounded-lg p-[2px] transition-all ${
+            className={`relative aspect-square rounded-lg p-[2px] transition-all ${
               c.future
                 ? "opacity-25"
                 : `bg-surface-2/50 ring-1 ring-inset ring-border/30 hover:scale-[1.08] ${
@@ -185,6 +254,17 @@ export function SheetCalendar({
                   }`
             }`}
           >
+            {/* Cell glow: an inset shadow filling the whole day box, deepening
+                with the level. Lives on its own overlay rather than the cell's
+                `style` because Tailwind's `ring-*` is itself a box-shadow — an
+                inline boxShadow on the cell would replace the ring outright. */}
+            {!c.future && c.level > 0 ? (
+              <div
+                aria-hidden
+                className="pointer-events-none absolute inset-0 rounded-lg"
+                style={{ boxShadow: CELL_GLOW[c.level] }}
+              />
+            ) : null}
             {c.future ? (
               /* future days: show the date number so the calendar remains navigable */
               <div className="flex h-full items-center justify-center">
@@ -192,10 +272,9 @@ export function SheetCalendar({
               </div>
             ) : c.count > 0 ? (
               <div className="flex h-full w-full items-center justify-center">
-                <Brain
-                  className="h-[70%] w-[70%]"
-                  strokeWidth={1.75}
-                  style={{ color: BRAIN_COLOR[c.level] }}
+                <BrainGrowthIcon
+                  className="h-[76%] w-[76%]"
+                  style={{ color: BRAIN_COLOR[c.level], filter: BRAIN_SHADOW[c.level] }}
                 />
               </div>
             ) : c.key >= activity.joinedKey ? (

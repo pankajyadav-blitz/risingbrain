@@ -159,7 +159,7 @@ export default async function SheetPage() {
           greetingName={firstName}
           signedIn={!!user}
           header={
-            <section className="relative pb-6">
+            <section key="sheet-header" className="relative pb-6">
               <div
                 aria-hidden
                 className="pointer-events-none absolute left-1/2 top-0 -z-10 h-72 w-[44rem] max-w-full -translate-x-1/2 rounded-full bg-rb-green-500/10 blur-3xl"
@@ -182,17 +182,26 @@ export default async function SheetPage() {
                     so the top row uses the full width instead of leaving the
                     top-right empty. */}
                 <div className="mt-6 flex flex-wrap gap-2.5 lg:mt-0 lg:shrink-0">
+                  {/* Explicit keys: this JSX is built in a SERVER component and
+                      handed to the client `SheetSelector` as the `header` prop.
+                      Crossing the RSC boundary turns these static siblings into
+                      a dynamic children array, so React runs key validation on
+                      them and warns ("passed a child from SheetPage") even
+                      though they'd need no keys in a normal client tree. */}
                   <StatPill
+                    key="sheets"
                     icon={<BookOpen className="h-4 w-4" />}
                     value={sheetsRaw.length}
                     label="sheets"
                   />
                   <StatPill
+                    key="topics"
                     icon={<Layers className="h-4 w-4" />}
                     value={totalTopics}
                     label="topics"
                   />
                   <StatPill
+                    key="problems"
                     icon={<ListChecks className="h-4 w-4" />}
                     value={totalProblems}
                     label="problems"

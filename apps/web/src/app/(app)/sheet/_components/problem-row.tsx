@@ -277,7 +277,8 @@ export function ProblemRow({
           {index}
         </span>
 
-        {/* Title + reference */}
+        {/* Title. The `reference` ("LC 167") badge that used to sit here was
+            removed; `reference` is still loaded because search matches on it. */}
         <div className="flex min-w-0 flex-1 flex-wrap items-center gap-2">
           {problem.leetcodeUrl ? (
             <a
@@ -297,11 +298,6 @@ export function ProblemRow({
               }`}
             >
               {problem.title}
-            </span>
-          )}
-          {problem.reference && (
-            <span className="glass-pill shrink-0 rounded-full px-2 py-0.5 text-[10px] font-medium text-muted">
-              {problem.reference}
             </span>
           )}
         </div>

@@ -35,8 +35,19 @@ export function PaperTabs({
       <div
         role="tablist"
         aria-label="Topic view"
-        className="mb-6 inline-flex rounded-xl bg-surface-2 p-1"
+        className="relative mb-6 inline-grid grid-cols-2 rounded-xl bg-surface-2 p-1"
       >
+        {/* Sliding green pill marking the active tab. It's one element that
+            translates between the two cells rather than a background on each
+            button, so the selection visibly *moves* instead of blinking.
+            The grid is gapless with p-1, so a cell is exactly `50% - 0.25rem`
+            wide and `translate-x-full` lands the pill precisely on cell two. */}
+        <span
+          aria-hidden
+          className={`pointer-events-none absolute inset-y-1 left-1 w-[calc(50%-0.25rem)] rounded-lg bg-rb-green-500/15 shadow-[0_2px_10px_rgba(53,164,92,0.22)] ring-1 ring-inset ring-rb-green-500/35 transition-transform duration-300 ease-out motion-reduce:transition-none ${
+            tab === "practice" ? "translate-x-full" : "translate-x-0"
+          }`}
+        />
         <TabButton
           active={tab === "notes"}
           onClick={() => setTab("notes")}
@@ -78,13 +89,19 @@ function TabButton({
       role="tab"
       aria-selected={active}
       onClick={onClick}
-      className={`flex items-center gap-1.5 rounded-lg px-3.5 py-1.5 text-sm font-semibold transition-colors ${
-        active
-          ? "bg-background text-foreground shadow-sm"
-          : "text-muted hover:text-foreground"
+      className={`relative z-10 flex items-center justify-center gap-1.5 rounded-lg px-3.5 py-1.5 text-sm font-semibold transition-colors ${
+        active ? "text-brand" : "text-muted hover:text-foreground"
       }`}
     >
-      {icon}
+      {/* `relative z-10` lifts the label above the absolutely-positioned pill —
+          a positioned sibling would otherwise paint over static content. */}
+      <span
+        className={`transition-transform duration-300 ease-out motion-reduce:transition-none ${
+          active ? "scale-110" : "scale-100"
+        }`}
+      >
+        {icon}
+      </span>
       {label}
     </button>
   );

@@ -1,1 +1,561 @@
-[]
+[
+  {
+    "company": "Google",
+    "role": "Software Engineer (L3)",
+    "authorName": "Anonymous",
+    "verdict": "SELECTED",
+    "difficulty": "HARD",
+    "roundsCount": 6,
+    "title": "Google L3 Software Engineer — referral to offer",
+    "excerpt": "Referral via LinkedIn, then a recruiter call, phone screen, three DSA onsites and a Googliness round. Selected for L3.",
+    "body": "## How I applied\nI was referred after reaching out on **LinkedIn** and sharing my resume.\n\n## Timeline\n1. Recruiter call — role, background, logistics\n2. Technical phone screen (DSA)\n3. Onsite loop — 3 DSA rounds\n4. Googliness (behavioural / culture fit)\n\n## Round-by-round\n\n### 1. Recruiter call\nUnexpectedly technical for an intro call — complexity of Bubble Sort and how heap operations work at a high level. Don't treat this as a pure logistics call; keep fundamentals warm from day one.\n\n### 2. Technical phone screen\nA **graph** problem. Not the hardest of the loop, but clearly designed to filter anyone without solid traversal basics.\n\n### 3. Onsite 1 — Strings\nString manipulation. The interviewer mostly watched how cleanly I handled edge cases while parsing/transforming.\n\n### 4. Onsite 2 — Optimisation (Bucket Sort)\nThe toughest round for me. I first solved it with **heaps** at O(n log n); the interviewer kept pushing for better. Thinking out loud, I reached a **bucket sort** solution — constant time for this specific problem. Really a test of how far you can optimise a working solution under pressure.\n\n### 5. Onsite 3 — Range queries\nHardest round of the loop: range queries on an array, with a follow-up that needed **binary search** to make querying efficient.\n\n### 6. Googliness\nA conversation rather than an interrogation — background, deep dive into projects and my exact contribution, and why Google specifically.\n\n## Verdict\n**Selected for L3.**",
+    "tags": [
+      "Google",
+      "L3",
+      "DSA",
+      "Graphs",
+      "Bucket Sort",
+      "Binary Search",
+      "Googliness"
+    ],
+    "likeCount": 0
+  },
+  {
+    "company": "Google",
+    "role": "Software Engineer (L4)",
+    "authorName": "Anonymous",
+    "verdict": "REJECTED",
+    "difficulty": "HARD",
+    "roundsCount": 5,
+    "title": "Google L4 — strong start, fell short on the DP round",
+    "excerpt": "Recruiter outreach in December, phone screen, three virtual onsites and Googliness. Two rounds went well, a hard DP round did not.",
+    "body": "## How I applied\nA recruiter reached out on **LinkedIn** in December — a 15–16 minute call covering open roles, my background, a self-rating on DSA (I said ~8/10) and availability. Prep resources, a rough schedule and a mock-interview group followed.\n\n## Timeline\n1. Recruiter screening call\n2. Technical phone screen\n3. 3 onsite technical rounds (virtual)\n4. Googliness round\n\n## Round-by-round\n\n### 1. Phone screen\nGiven a grid-like matrix plus a list of items and quantities, arrange items so similar ones end up adjacent row-wise or column-wise. It looked like a graph problem but was really about spotting the right pattern. Talked through the approach, coded it, discussed complexity — finished on schedule.\n\n### 2. Onsite 1 — Dependency graph\nFramed as managing storage disks and snapshots: a snapshot can only be removed once all disks (and disks derived from them) are deleted. Output a valid deletion order. Took some back-and-forth to understand, then solved it cleanly.\n\n### 3. Onsite 2 — Dynamic programming\n2D boxes of varying dimensions; find the maximum number that can be nested. A genuinely tough DP problem. I only reached brute force in the time available, and I knew while explaining it that it wasn't what they wanted.\n\n### 4. Onsite 3 — Sorting / binary search\nA neighbourhood of blocks with houses of different colours; rearrange so each block has uniquely coloured houses in sorted order. I got to something workable but not optimal. With a couple of minutes left it clicked that **binary search** was the key — too late.\n\n### 5. Googliness\nRelaxed conversation about background, projects and behavioural questions. A nice change of pace, and it went well.\n\n## Verdict\n**Not selected.**",
+    "tags": [
+      "Google",
+      "L4",
+      "DSA",
+      "Dynamic Programming",
+      "Graphs",
+      "Binary Search"
+    ],
+    "likeCount": 0
+  },
+  {
+    "company": "Amazon",
+    "role": "SDE-1",
+    "authorName": "Anonymous",
+    "verdict": "SELECTED",
+    "difficulty": "MEDIUM",
+    "roundsCount": 4,
+    "title": "Amazon SDE-1 off-campus — a loop that ran February to July",
+    "excerpt": "Applied in November, loop started in February and stretched to July. OA plus three rounds. Joined the Amazon Music team.",
+    "body": "## Background\nI applied off-campus in November, but the loop didn't start until February and ran to July. Amazon seems to hold on to promising profiles and revisit them when an opening appears rather than closing them out.\n\n## Online assessment\nTwo DSA problems plus a separate work-style/behavioural assessment. For the work-style section I kept answers aligned with Amazon's **Leadership Principles**.\n\n## Round format\nRoughly 45 minutes of coding (usually two problems, medium to medium-hard) followed by 10–15 minutes of Leadership Principles questions.\n\n## Round-by-round\n\n### Round 1\nA 2D matrix/graph problem, plus a second question needing a **line sweep** approach.\n\n### Round 2 — first attempt\nA string problem alongside one requiring a **monotonic stack**.\n\n### Round 2 — repeated\nRescheduling on their end meant this round was redone from scratch, and it was noticeably tougher: a **priority queue** problem plus a design question in the spirit of a bill-splitting app.\n\n### Round 3 — final\nConducted by a principal engineer, with no coding at all. Entirely focused on past experience, internship projects and the reasoning behind specific design choices.\n\n## Verdict\n**Selected** — joined the Amazon Music team.",
+    "tags": [
+      "Amazon",
+      "SDE-1",
+      "Off-Campus",
+      "Leadership Principles",
+      "Line Sweep",
+      "Monotonic Stack"
+    ],
+    "likeCount": 0
+  },
+  {
+    "company": "Amazon",
+    "role": "SDE-1",
+    "authorName": "Anonymous",
+    "verdict": "SELECTED",
+    "difficulty": "MEDIUM",
+    "roundsCount": 3,
+    "title": "Amazon India SDE-1 — OA to offer in a few weeks",
+    "excerpt": "A fast loop: resume + DSA, a low-level design round, and a Bar Raiser centred on Leadership Principles.",
+    "body": "## Background\nThis moved quickly — from OA to final result in a few weeks.\n\n## Online assessment\nDSA-heavy with a behavioural component. I kept my responses honest and straightforward rather than trying to game it.\n\n## Round-by-round\n\n### Round 1 — Resume & DSA\nA resume walkthrough plus a coding problem. The problem was math-heavy; solving it efficiently needed **binary search** with the **Sieve of Eratosthenes**, plus further optimisation.\n\n### Round 2 — Low-level design\nDesign the architecture for a streaming service. Getting to an efficient design came down to using **HashMaps** and **HashSets** in the right places.\n\n### Round 3 — Bar Raiser\nThe toughest round — managerial, entirely around Amazon's **Leadership Principles**. It works as a checkpoint on whether you'd genuinely raise the bar versus the existing team, not just be an acceptable hire.\n\n## Verdict\n**Selected.**",
+    "tags": [
+      "Amazon",
+      "SDE-1",
+      "Bar Raiser",
+      "Binary Search",
+      "Sieve of Eratosthenes",
+      "LLD"
+    ],
+    "likeCount": 0
+  },
+  {
+    "company": "Amazon",
+    "role": "SDE-1",
+    "authorName": "Anonymous",
+    "verdict": "SELECTED",
+    "difficulty": "MEDIUM",
+    "roundsCount": 3,
+    "title": "Amazon SDE-1 — second attempt, with a referral",
+    "excerpt": "A previous rejection, then a referral and ~6 months of experience. OA on HackerRank plus a workplace simulation, then three rounds.",
+    "body": "## Background\nNot my first attempt at Amazon — I'd tried before without success. I applied again in January with a referral from a friend, with about six months of professional experience.\n\n## Online assessment\nThe invite came in March: two DSA questions on HackerRank, a one-hour workplace simulation (a distinctive part of Amazon's process), and behavioural questions.\n\n## Round-by-round\n\n### Round 1\nTwo DSA problems plus discussion tied to the **Leadership Principles**.\n\n### Round 2\nPurely technical, with DSA a step up in difficulty from Round 1.\n\n### Round 3 — Managerial\nA blend of everything: a DSA component, more Leadership Principles discussion, and a deeper conversation about my resume and background.\n\n## Verdict\nAn official offer came about a week after the final round. **Selected.**",
+    "tags": [
+      "Amazon",
+      "SDE-1",
+      "Referral",
+      "Leadership Principles",
+      "HackerRank"
+    ],
+    "likeCount": 0
+  },
+  {
+    "company": "Amazon",
+    "role": "SDE-2",
+    "authorName": "Anonymous",
+    "verdict": "SELECTED",
+    "difficulty": "HARD",
+    "roundsCount": 4,
+    "title": "Amazon SDE-2 — an offer after years of trying",
+    "excerpt": "Roughly three rejections and several cooling-off periods before this one. DSA, LLD, HLD and a Bar Raiser round.",
+    "body": "## Background\nThis offer didn't come easily — years of trying and more than three rejections, each with its own cooling-off period before I felt ready to try again. Eventually a recruiter reached out on **LinkedIn** about an SDE-2 opening.\n\n## Online assessment\nThree parts: a DSA coding section, a system design case study, and a behavioural component.\n\n## Round-by-round\n\n### Round 1 — DSA\nGraph problems requiring both **BFS** and **Dijkstra's algorithm**.\n\n### Round 2 — Low-level design\nClass diagrams and applying the relevant design patterns.\n\n### Round 3 — High-level design\nFunctional and non-functional requirements, choosing an appropriate database, and operational excellence considerations.\n\n### Round 4 — Bar Raiser\nThe most demanding round: a deep dive into problem solving that tested fundamentals including **binary search** and **topological sort**.\n\n## Verdict\n**Selected.**",
+    "tags": [
+      "Amazon",
+      "SDE-2",
+      "Bar Raiser",
+      "Graphs",
+      "Dijkstra",
+      "HLD",
+      "LLD",
+      "Topological Sort"
+    ],
+    "likeCount": 0
+  },
+  {
+    "company": "Amazon",
+    "role": "SDE",
+    "authorName": "Anonymous",
+    "verdict": "SELECTED",
+    "difficulty": "MEDIUM",
+    "roundsCount": 3,
+    "title": "Amazon SDE off-campus — LRU cache, trees and an SDM round",
+    "excerpt": "A multi-part OA including a debugging exercise, then two DSA rounds and a behavioural round with an SDM. Offer in 5–6 days.",
+    "body": "## Online assessment\nSeveral distinct parts: three coding problems (two medium, one hard) across **dynamic programming**, strings and graphs; a work-style section with situational logic and data-interpretation questions; a debugging exercise working through logs to find the underlying issue; and a slider-based psychometric behavioural section.\n\n## Round-by-round\n\n### Round 1 — DSA\nAn **LRU cache** design problem (medium) plus a **binary search** question.\n\n### Round 2 — DSA\nA step up: a hard binary tree problem paired with a **graph BFS** question, with time and space complexity expected for both.\n\n### Round 3 — Behavioural (with an SDM)\nEntirely focused on the **Leadership Principles**. I'd prepared seven or eight personal stories covering challenges, handling feedback and taking ownership — having them ready made a real difference.\n\n## Verdict\nOffer within 5–6 days of the final round. **Selected.**",
+    "tags": [
+      "Amazon",
+      "SDE",
+      "Off-Campus",
+      "LRU Cache",
+      "Binary Search",
+      "Graphs",
+      "Leadership Principles"
+    ],
+    "likeCount": 0
+  },
+  {
+    "company": "Amazon",
+    "role": "SDE-1",
+    "authorName": "Anonymous",
+    "verdict": "SELECTED",
+    "difficulty": "MEDIUM",
+    "roundsCount": 3,
+    "title": "Amazon SDE-1 from a Tier-3 college — applying broadly paid off",
+    "excerpt": "Applied to several SDE-1 openings rather than one. A four-section OA, then three rounds heavy on Leadership Principles.",
+    "body": "## Background\nI'm from a Tier-3 college, so to maximise my chances I applied to several different SDE-1 openings through Amazon's careers portal rather than pinning everything on one application.\n\n## Online assessment\nFour sections: DSA, a work-style assessment (responding to sample workplace emails), a behavioural section, and Leadership Principles questions. The non-DSA sections were where a lot of technically strong candidates seemed to stumble.\n\n## Round-by-round\n\n### Round 1\nConducted by two SDEs together: two DSA problems — one **binary search**, one combining **DP and graphs** — plus behavioural and Leadership Principles questions. I made a conscious effort to stay calm where I got stuck rather than letting it derail the round.\n\n### Round 2\nWith an SDE-2, starting with a deep dive into past work and projects. Then a hard DSA problem followed by a medium **topological sort** question, with Leadership Principles throughout.\n\n### Round 3\nWith a senior lead, almost entirely behavioural and Leadership Principles. The technical portion can apparently be skipped at this stage if earlier rounds went well, which seemed to be the case.\n\n## Verdict\n**Selected.**",
+    "tags": [
+      "Amazon",
+      "SDE-1",
+      "Tier-3",
+      "Leadership Principles",
+      "Binary Search",
+      "Topological Sort"
+    ],
+    "likeCount": 0
+  },
+  {
+    "company": "Amazon",
+    "role": "SDE-2",
+    "authorName": "Anonymous",
+    "verdict": "SELECTED",
+    "difficulty": "HARD",
+    "roundsCount": 4,
+    "title": "Amazon SDE-2 with 3 years experience — DSA, LLD, HLD, Bar Raiser",
+    "excerpt": "Four loop rounds mixing in-person and virtual. Leadership Principles came up in every single round.",
+    "body": "## Background\nThe process opened with an OA covering DSA, behavioural questions and a system design component. After clearing it I moved into four loop rounds, a mix of in-person and virtual.\n\n## Round-by-round\n\n### Round 1 — Coding / DSA\nFairly standard territory — graphs, DP, arrays and strings. The interviewer wanted more than a working solution: it had to be syntactically clean, and I had to handle follow-up constraints added as the conversation went on.\n\n### Round 2 — Low-level design\nRequirement gathering, then API design and schema design. Doing well came down to solid OOP fundamentals and the right design patterns, backed by class and UML diagrams.\n\n### Round 3 — High-level design & hiring manager\nDefine requirements up front, then estimate scale — expected users, queries per second, database size — and justify every design decision, including caching strategy and the overall logical flow.\n\n### Round 4 — Bar Raiser\nConducted by someone from a completely different team, evaluating performance holistically. A mix of HLD, LLD and DSA, and I was expected to produce fully functional, tested code rather than pseudocode.\n\n## A note on Leadership Principles\nThese weren't confined to one round — one or two came up in every session, always tied back to real experiences from my background.\n\n## Verdict\n**Selected.**",
+    "tags": [
+      "Amazon",
+      "SDE-2",
+      "Bar Raiser",
+      "HLD",
+      "LLD",
+      "System Design",
+      "Leadership Principles"
+    ],
+    "likeCount": 0
+  },
+  {
+    "company": "Amazon",
+    "role": "SDE-1 (Contract)",
+    "authorName": "Anonymous",
+    "verdict": "REJECTED",
+    "difficulty": "MEDIUM",
+    "roundsCount": 1,
+    "title": "Amazon SDE-1 FTC — cleared the OA, fell short on DP",
+    "excerpt": "A contract-based SDE-1 role. Cleared a HackerRank OA, then two coding questions on interview day.",
+    "body": "## Background\nThis started with a recruiter call I missed; they followed up by email about a contract-based SDE-1 role. Since it was structured differently from a standard full-time offer, I got clarity on the contract terms up front before moving forward.\n\n## Online assessment\nOn HackerRank: a fairly basic **dynamic programming** question plus an algorithmic problem combining **binary search** and tree concepts. I cleared this stage.\n\n## Interview day\nAbout two weeks to prepare, then two coding questions.\n\n### Question 1 — Binary search\nManageable on the surface, but the test cases in the round were slightly different from what I expected, which threw me off and made it trickier than it first looked.\n\n### Question 2 — Dynamic programming (medium)\nThe harder of the two. Looking back I hadn't put in enough targeted practice in this area, and it showed.\n\n## Verdict\n**Not selected.**",
+    "tags": [
+      "Amazon",
+      "SDE-1",
+      "Contract",
+      "Binary Search",
+      "Dynamic Programming",
+      "HackerRank"
+    ],
+    "likeCount": 0
+  },
+  {
+    "company": "Microsoft",
+    "role": "Senior Software Engineer (SDE-3)",
+    "authorName": "Anonymous",
+    "verdict": "REJECTED",
+    "difficulty": "HARD",
+    "roundsCount": 2,
+    "title": "Microsoft SDE-3 Friday Drive — positive feedback, no further rounds",
+    "excerpt": "Applied via the careers portal. Cleared coding and LLD with positive feedback, but the process didn't continue past interview day.",
+    "body": "## Background\nI applied directly through Microsoft's careers portal for a Senior Software Engineer (SDE-3) opening.\n\n## Online assessment\nA coding assessment leaning heavily on **monotonic stack** and **sliding window** techniques.\n\n## Interview format\nScheduled as part of what Microsoft calls a **\"Friday Drive\"** — back-to-back slots packed into a single day rather than spread over weeks.\n\n## Round-by-round\n\n### Round 1 — Coding & problem solving (9:00–10:00)\nCore DSA. The main problem was a variant of \"Longest Substring with At Least K Repeating Characters\" (LeetCode 395). Midway through, a situational design question: model an organisational hierarchy (a CEO with multiple layers of reports) using the most suitable data structure.\n\n### Round 2 — Low-level design (10:30–11:30)\nObject-oriented design of a system similar to Zomato — core entities, relationships between classes, functional requirements and edge cases. I stayed in the driver's seat, walking the happy path first before exceptions rather than waiting to be prompted.\n\n### Round 3 — High-level design (scheduled)\nPlanned to cover load balancers and caching strategies. I didn't reach this stage.\n\n### Round 4 — Behavioural / managerial (scheduled)\nExpected to cover past challenges and conflicts in **STAR** format. Also not reached.\n\n## Outcome\nPositive feedback after both Round 1 and Round 2, but the process didn't move beyond the initial interview day.\n\n**Not selected (post Round 2).**",
+    "tags": [
+      "Microsoft",
+      "SDE-3",
+      "Friday Drive",
+      "Monotonic Stack",
+      "Sliding Window",
+      "LLD"
+    ],
+    "likeCount": 0
+  },
+  {
+    "company": "Microsoft",
+    "role": "SDE-2",
+    "authorName": "Anonymous",
+    "verdict": "SELECTED",
+    "difficulty": "HARD",
+    "roundsCount": 5,
+    "title": "Microsoft SDE-2 — one online round plus four rounds in a single day",
+    "excerpt": "Sequential rounds with no second chances: DSA, LLD, an unusual trees-and-queues problem, and system design with a partner-level interviewer.",
+    "body": "## Process overview\nFive rounds in total — one standalone online coding round, then four back-to-back rounds condensed into a single day.\n\n## Online coding round\nDSA-heavy, on a platform similar to HackerRank. Two problems between medium and hard. To clear it you need to **fully** solve at least one including all hidden test cases; partial credit across both isn't enough.\n\n## The \"big day\"\nThe remaining four rounds all landed on one day (typically a Friday or Saturday slot). Each round is sequential — you must clear one before the next, with no skipping ahead and no second chance if you stumble early.\n\n## Round-by-round\n\n### Round 1 — DSA\nPure DSA, leaning hard toward the difficult end: a mix of **dynamic programming and graphs**. No warm-up at all.\n\n### Round 2 — LLD / DSA\nThis round can go either way depending on the interviewer. Mine was an **LLD** discussion: clarify requirements first, walk through the design, then handle cross-questioning — especially on why I'd chosen C++ and how language-specific decisions played into the design.\n\n### Round 3 — DSA\nA genuinely unusual problem built around **trees and queues**. Not something I recognised from practice platforms, so it was less about recalling a pattern and more about reasoning through something unfamiliar under time pressure.\n\n### Round 4 — System design + resume deep dive\nWith a partner-level interviewer, combining a deep dive into my work experience with a **system design** problem. Less a puzzle, more a conversation about how I think and what I've built.\n\n## Verdict\nCleared all five rounds. **Selected.**",
+    "tags": [
+      "Microsoft",
+      "SDE-2",
+      "System Design",
+      "LLD",
+      "Dynamic Programming",
+      "Graphs",
+      "Trees"
+    ],
+    "likeCount": 0
+  },
+  {
+    "company": "Microsoft",
+    "role": "SDE-2",
+    "authorName": "Anonymous",
+    "verdict": "SELECTED",
+    "difficulty": "HARD",
+    "roundsCount": 3,
+    "title": "Microsoft SDE-2 via LinkedIn referral — offer one day after the final round",
+    "excerpt": "Graph-based OA, then trees and DP, an unexpected DSA round in place of LLD, and a notification-service design.",
+    "body": "## Background\nI applied to Microsoft through a **LinkedIn referral**, with 3.5 years of experience (previously at JP Morgan).\n\n## Online assessment\nOn HackerRank: two problems centred on **graphs**, medium-to-hard.\n\n## Round-by-round\n\n### Round 1 — DSA\nAbout an hour on **tree** and **dynamic programming** problems — both common themes in Microsoft's process.\n\n### Round 2 — DSA (originally slated as LLD)\nI'd prepared for low-level design, but the interviewer pivoted to two more DSA problems: one on **linked lists**, one math-based. Also close to an hour.\n\n### Round 3 — High-level design\nDesign a **notification service** from the ground up: functional requirements, non-functional requirements and back-of-the-envelope capacity calculations.\n\nA consistent thread across all three rounds: interviewers kept circling back to my previous project work — every round involved a deep dive into what I'd actually built and owned.\n\n## Verdict\nAn offer one day after the final round. **Selected.**",
+    "tags": [
+      "Microsoft",
+      "SDE-2",
+      "Referral",
+      "Trees",
+      "Dynamic Programming",
+      "HLD",
+      "System Design"
+    ],
+    "likeCount": 0
+  },
+  {
+    "company": "Microsoft",
+    "role": "SDE-1",
+    "authorName": "Anonymous",
+    "verdict": "SELECTED",
+    "difficulty": "MEDIUM",
+    "roundsCount": 2,
+    "title": "Microsoft SDE-1 on-campus (IIT Roorkee) — resume depth and in-place constraints",
+    "excerpt": "Two rounds, each opening with a detailed resume deep dive, then medium-level string and array problems with in-place constraints.",
+    "body": "## Round 1\n\n### Introduction & resume deep dive\nA standard self-introduction covering background and college, then 15–20 minutes on my resume and projects. The interviewer wanted specifics — the tech stack, how each project worked end to end, and what value it delivered. I made sure I could speak to every detail listed, since nothing was off-limits.\n\n### DSA question\nA medium-level **string manipulation** problem. I first proposed a solution using a separate string to build the result; the interviewer then added a constraint — solve it **in place**, without extra memory. Once the logic was down they pushed on edge cases: extra spaces at the beginning, at the end and between words. I had to adjust my logic for each.\n\n## Round 2\n\n### Introduction & resume\nAnother introduction, then a deeper look at my resume — this time weighted toward internship experience and technical projects.\n\n### Core fundamentals\nBrief coverage of OOP and DBMS, though the bulk stayed on DSA. On OOP the questions stayed close to encapsulation, polymorphism and virtual classes.\n\n### DSA question 1 — Array manipulation\nA medium **array rearrangement** problem: move specific elements to one end while keeping the relative order of the rest. I used an in-place read-and-write pointer strategy and walked through both brute force and the optimised version with complexities.\n\n### DSA question 2 — Tree / graph\nA medium tree/graph problem centred on counting a specific type of node.\n\n## Verdict\n**Selected.**",
+    "tags": [
+      "Microsoft",
+      "SDE-1",
+      "On-Campus",
+      "Strings",
+      "Arrays",
+      "Trees",
+      "OOP",
+      "DBMS"
+    ],
+    "likeCount": 0
+  },
+  {
+    "company": "Microsoft",
+    "role": "SDE-2",
+    "authorName": "Anonymous",
+    "verdict": "SELECTED",
+    "difficulty": "HARD",
+    "roundsCount": 4,
+    "title": "Microsoft SDE-2 — rounds anchored to my own past projects",
+    "excerpt": "Referral-driven application. LLD and scaling rounds both built on my own project work rather than generic prompts.",
+    "body": "## Background\nRather than applying through the standard portal, I reached out directly to recruiters and leaned on referrals — that route worked better for getting noticed.\n\n## Online coding round\nOn HackerRank, two problems in 90 minutes. Clearing it came down to passing as many test cases as possible to hit the internal cutoff score.\n\n## Round-by-round\n\n### Round 1\nMedium-level problems. The interviewer expected a fully optimised solution rather than brute force; once I had it, the conversation moved to space complexity and then my past projects.\n\n### Round 2 — Low-level design\nInstead of a standalone design prompt, the interviewer asked me to walk through class diagrams and relationships based directly on one of my own past projects.\n\n### Round 3 — System design / scaling\nAlso anchored to my own project work, but focused on scalability concepts and the **CAP theorem**, and how those applied to what I'd built.\n\n### Round 4 — Behavioural\nWorkplace scenarios — navigating conflicts with a manager or colleague. One question: looking back, what could you have done differently to convince your manager? I made sure to have real, specific stories ready rather than answering in the abstract.\n\n## Verdict\n**Selected.**",
+    "tags": [
+      "Microsoft",
+      "SDE-2",
+      "Referral",
+      "LLD",
+      "System Design",
+      "CAP Theorem",
+      "Behavioural"
+    ],
+    "likeCount": 0
+  },
+  {
+    "company": "Microsoft",
+    "role": "SDE-1",
+    "authorName": "Anonymous",
+    "verdict": "SELECTED",
+    "difficulty": "MEDIUM",
+    "roundsCount": 3,
+    "title": "Microsoft SDE-1 off-campus — Tic-Tac-Toe LLD and a URL shortener",
+    "excerpt": "Three same-day rounds of about 45 minutes each: LLD with a game-tree follow-up, a URL-shortening system design, and a managerial round on networking fundamentals.",
+    "body": "## Background\nI applied directly through the Microsoft careers portal using a referral from a senior contact.\n\n## Resume shortlisting\nMy internship experience at a couple of well-known tech companies seemed to carry real weight at this stage.\n\n## Online assessment\nCoding problems around two medium and one hard. To clear it I needed to solve them completely rather than partially.\n\n## Round-by-round\n*(All three rounds on the same day, roughly 45 minutes each.)*\n\n### Technical round 1 — Low-level design\nDesign a simple two-player grid-based game (think Tic-Tac-Toe): class structure, relationships, and how game state would be managed. The follow-up was to extend it with logic for the optimal move at any state, which meant a game-tree-based decision algorithm.\n\nThere was also a coding question on rotating a 2D matrix — **in place**, modifying the original rather than creating a new one.\n\n### Technical round 2 — System design\nDesigning a large-scale **URL-shortening service**: how the mapping between short and long URLs works, handling billions of unique addresses, what hashing strategy makes sense, and edge cases at that scale.\n\n### Managerial round\nTechnical and behavioural. On the technical side, networking fundamentals — DNS, HTTP, the three-way handshake, TLS/SSL. On the behavioural side, academic background and internships in more depth.\n\n## Verdict\n**Selected.**",
+    "tags": [
+      "Microsoft",
+      "SDE-1",
+      "Off-Campus",
+      "LLD",
+      "System Design",
+      "Matrix",
+      "Networking"
+    ],
+    "likeCount": 0
+  },
+  {
+    "company": "Microsoft",
+    "role": "SDE-2 (Frontend)",
+    "authorName": "Anonymous",
+    "verdict": "SELECTED",
+    "difficulty": "HARD",
+    "roundsCount": 4,
+    "title": "Microsoft SDE-2 Frontend — DSA, JS fundamentals and a collaborative editor design",
+    "excerpt": "A Saturday hiring drive with all four rounds in one day. Offer extended at the L62 level.",
+    "body": "## Background\nA recruiter reached out on **LinkedIn** about a Frontend-focused SDE-2 opening. I have 4+ years of experience.\n\n## Online assessment\nA HackerRank assessment with two DSA problems, both medium-to-hard.\n\n## Hiring drive\nShortlisted for a Saturday drive with all four rounds packed into a single day.\n\n## Round-by-round\n\n### Round 1 — DSA & JavaScript\nTwo parts. The DSA portion was a medium **graph** problem. The JavaScript portion involved working with **Date** objects to build a calendar view.\n\n### Round 2 — Frontend fundamentals\nFast-moving: rapid-fire conceptual questions, output-based questions (predicting what a snippet prints), and a debugging exercise finding the issue without a debugger. I was also asked to build a custom hook to handle a dynamic form.\n\n### Round 3 — System design\nA high-level design discussion on building a **collaborative editor** — a real-time, multi-user document tool. The focus was heavily on trade-offs between architectural approaches rather than one \"correct\" design.\n\n### Round 4 — Behavioural & technical\nWith a Group Engineering Manager. Career aspirations on the behavioural side; on the technical side, the architecture of a file uploader.\n\n## Verdict\n**Selected** — offer extended at the **L62** level.",
+    "tags": [
+      "Microsoft",
+      "SDE-2",
+      "Frontend",
+      "JavaScript",
+      "React",
+      "System Design",
+      "Graphs"
+    ],
+    "likeCount": 0
+  },
+  {
+    "company": "Microsoft",
+    "role": "SDE-2",
+    "authorName": "Anonymous",
+    "verdict": "SELECTED",
+    "difficulty": "HARD",
+    "roundsCount": 4,
+    "title": "Microsoft SDE-2 — interviewed for L61, offered L62",
+    "excerpt": "Four technical rounds covering DSA, SOLID-driven LLD, AI-service architecture and a hiring manager round.",
+    "body": "## Background\nI focused a lot on getting in front of the right people — leaning on referrals and reaching out to recruiters directly rather than relying on the standard application route.\n\n## Online assessment\nTwo DSA-heavy problems, one a fairly involved **3D dynamic programming** question.\n\n## Round-by-round\n*(Four technical rounds in total.)*\n\n### Round 1 — DSA\nLinked lists, priority queues and graphs. The bar wasn't just a working answer — optimal time and space complexity was expected for each problem.\n\n### Round 2 — Low-level design\nHow well I understood **SOLID** principles and could apply the right design patterns in a real scenario.\n\n### Round 3 — High-level design\nArchitecture-level thinking: scalability, system optimisation, and specifically how those principles apply when designing AI-driven services.\n\n### Round 4 — Hiring manager\nA deeper look at the technical choices I'd made through my career, plus behavioural questions on cultural fit.\n\n## Verdict\n**Selected.** I interviewed for an **L61** position but was offered **L62** based on performance across the rounds.",
+    "tags": [
+      "Microsoft",
+      "SDE-2",
+      "LLD",
+      "HLD",
+      "SOLID",
+      "Graphs",
+      "Priority Queue"
+    ],
+    "likeCount": 0
+  },
+  {
+    "company": "Microsoft",
+    "role": "SDE",
+    "authorName": "Anonymous",
+    "verdict": "SELECTED",
+    "difficulty": "MEDIUM",
+    "roundsCount": 5,
+    "title": "Microsoft SDE with 2.5 years experience — five rounds from a LinkedIn message",
+    "excerpt": "Reverse a linked list in groups of K, a logging framework LLD, an arcade-game HLD, and a word-chaining problem in the hiring manager round.",
+    "body": "## Background\nIt started with a **LinkedIn** message — a Microsoft recruiter asking if I'd be open to interviewing. I was serving my notice period, so it felt worth exploring.\n\nI finished my B.Tech in Computer Science in 2021, then joined a networking/telecom company as a Software Engineer working mostly in C/C++, with some Python, Bash and YANG. After about two and a half years I was ready for a change.\n\n## Round-by-round\n*(Five rounds in total.)*\n\n### Round 1 — Online coding\nA test link from the recruiter. The problems sat in the easy-to-medium range. Clearing it led to a call to move forward.\n\n### Round 2 — Technical (1 hour)\nAfter introductions, straight into problem solving:\n- Reverse a **linked list in groups of size K**, each set reversed in place.\n- Find the element in an array appearing more than n/2 times.\n\n### Round 3 — Low-level design (1 hour)\nDesign a **logging framework** from scratch: multiple log levels (debug, info, error), different appenders attachable per level, and support for changing the log level or adding appenders dynamically at runtime.\n\n### Round 4 — High-level design (1 hour)\nDesigning a well-known arcade-style game from a system/architecture standpoint, plus a transaction design for an e-commerce scenario.\n\n### Round 5 — Hiring manager (1 hour)\nTechnical and non-technical:\n- A **word chaining** problem — whether a set of words can be linked in sequence, where a word chains to the next only if its last three characters exactly match the first three of the following word.\n- The rest went in depth on specific projects from my previous role.\n\n## Verdict\nHR called four days after the final round. **Selected.**",
+    "tags": [
+      "Microsoft",
+      "SDE",
+      "Linked List",
+      "LLD",
+      "HLD",
+      "System Design",
+      "Strings"
+    ],
+    "likeCount": 0
+  },
+  {
+    "company": "PhonePe",
+    "role": "SDE-1",
+    "authorName": "Anonymous",
+    "verdict": "SELECTED",
+    "difficulty": "MEDIUM",
+    "roundsCount": 4,
+    "title": "PhonePe SDE-1 — machine coding, code review, DSA and hiring manager",
+    "excerpt": "Reached out to a recruiter on LinkedIn. A full working Java application in the machine coding round, then a review of that same code.",
+    "body": "## Background\nI reached out to a recruiter on **LinkedIn** and got the opportunity from there.\n\n## Round-by-round\n\n### Round 1 — Machine coding\nSubmitting a fully functional **Java application** rather than solving an isolated problem.\n\n### Round 2 — Explanation / code review\nWalking the interviewer through the code I'd submitted in the machine coding round, and being ready to modify or extend it on the spot based on their questions.\n\n### Round 3 — DSA\nTwo to three algorithmic problems covering linked lists, binary search and graphs.\n\n### Round 4 — Hiring manager\nA blend of past projects, deeper technical questions and behavioural questions.\n\n## Verdict\n**Selected.**",
+    "tags": [
+      "PhonePe",
+      "SDE-1",
+      "Machine Coding",
+      "Java",
+      "DSA",
+      "Graphs"
+    ],
+    "likeCount": 0
+  },
+  {
+    "company": "PhonePe",
+    "role": "SDE-2",
+    "authorName": "Anonymous",
+    "verdict": "REJECTED",
+    "difficulty": "HARD",
+    "roundsCount": 4,
+    "title": "PhonePe SDE-2 (~54 LPA) — stopped at the DSA round",
+    "excerpt": "A 90-minute e-commerce machine coding round went fine; a competitive-programming-level graph problem in the DSA round did not.",
+    "body": "## Background\nAn SDE-2 opening with a package of roughly 54 LPA, structured across four rounds. I applied via referral.\n\n## Round-by-round\n\n### Round 1 — Machine coding\n90 minutes centred on **low-level design**: design an e-commerce application similar in spirit to a large online shopping platform, writing actual executable code while applying relevant design patterns. Followed by a 30-minute evaluation and discussion of what I'd built.\n\n### Round 2 — DSA\n60 minutes, two problems. The first was a genuinely tough **graph** problem at competitive-programming difficulty, which I struggled with. The second was a **dynamic programming** problem.\n\n### Round 3 — High-level design (not reached)\nI'd prepared for it but didn't progress far enough.\n\n### Round 4 — Managerial (not reached)\nPart of the overall process, but I didn't reach this stage either.\n\n## Verdict\n**Not selected** — did not progress past the DSA round.",
+    "tags": [
+      "PhonePe",
+      "SDE-2",
+      "Machine Coding",
+      "LLD",
+      "Graphs",
+      "Dynamic Programming"
+    ],
+    "likeCount": 0
+  },
+  {
+    "company": "PhonePe",
+    "role": "SDE-1",
+    "authorName": "Anonymous",
+    "verdict": "SELECTED",
+    "difficulty": "HARD",
+    "roundsCount": 4,
+    "title": "PhonePe SDE-1 on-campus — the whole process in about six hours",
+    "excerpt": "Four rounds in a single day, including pen-and-paper technical rounds and an hour-long HR round covering OS and DBMS.",
+    "body": "## Background\nThe entire process wrapped up in a single day — roughly six hours across four rounds.\n\n## Round-by-round\n\n### Online assessment\nFour fairly challenging problems focused on **dynamic programming** and **graphs**. I fully solved one and passed partial test cases on a second.\n\n### Technical round 1\nA one-on-one, pen-and-paper style round with two problems in the medium to medium-hard range — one involving prefix/suffix logic, the other a graph problem solvable with **BFS**.\n\n### Technical round 2\nSimilar format, but the difficulty stepped up again — **dynamic programming** plus another BFS-based problem.\n\n### HR round\nThe longest round, over an hour, covering:\n- A deep dive into a MERN-stack project including backend architecture and data flow\n- Core CS subjects, particularly **Operating Systems** (deadlocks, synchronisation) and **DBMS**\n- Behavioural questions on leadership experience, why PhonePe specifically, and how I'd approach my first two weeks\n\n## Verdict\n**Selected.**",
+    "tags": [
+      "PhonePe",
+      "SDE-1",
+      "On-Campus",
+      "Dynamic Programming",
+      "Graphs",
+      "BFS",
+      "Operating Systems",
+      "DBMS"
+    ],
+    "likeCount": 0
+  },
+  {
+    "company": "PhonePe",
+    "role": "SDE Intern + FTE",
+    "authorName": "Anonymous",
+    "verdict": "SELECTED",
+    "difficulty": "HARD",
+    "roundsCount": 3,
+    "title": "PhonePe SDE Intern + FTE — 800 applicants, 29 shortlisted",
+    "excerpt": "A 90-minute OA of four LeetCode-hard problems. Interviewers cared more about communication than immediate optimality.",
+    "body": "## Eligibility & online assessment\nOpen to CS/IT branches with a CGPA cutoff of 9.35+.\n\nThe OA saw about 800 applicants, of which 29 were shortlisted. It ran 90 minutes with four **LeetCode Hard**-level problems. The bar was roughly 16 of 40 total test cases across the set — full solutions on every problem weren't necessary to make the cut.\n\n## Round-by-round\n\n### Round 1 — DSA\nTwo problems: one graph-based, another a tree scenario needing a **binary lifting** approach. The interviewer wanted me to start with brute force before working toward something optimised, rather than jumping straight to the best approach.\n\n### Round 2 — Technical deep dive\nDifficulty stepped up with two harder problems touching **binary search** and graph patterns. As in Round 1, the interviewer cared more about how clearly I communicated my problem-solving process than about arriving at the optimal solution immediately.\n\n### Round 3 — HR & behavioural\nA detailed discussion of my main personal project (an AI-based learning platform), past internship experience, and a basic database schema design exercise around a social-media-style scenario.\n\n## Verdict\n**Selected.**",
+    "tags": [
+      "PhonePe",
+      "Intern",
+      "FTE",
+      "On-Campus",
+      "Graphs",
+      "Binary Lifting",
+      "Binary Search"
+    ],
+    "likeCount": 0
+  },
+  {
+    "company": "Zomato",
+    "role": "SDE-1",
+    "authorName": "Anonymous",
+    "verdict": "SELECTED",
+    "difficulty": "MEDIUM",
+    "roundsCount": 4,
+    "title": "Zomato SDE-1 — an internal opening found through a referral",
+    "excerpt": "A whiteboard DSA and DBMS round, a system design round that became a database deep dive, HR, and a final CTO conversation.",
+    "body": "## Background\nI got in through an internal opening thanks to a referral from a friend. The role wasn't listed on any public job portal — it only came my way through that connection, which made me realise how much networking with seniors and peers matters for off-campus hiring.\n\n## Round-by-round\n\n### Round 1 — DSA & DBMS\nConducted on a whiteboard and fairly open-ended rather than standard, repetitive problems. Core topics were **topological sorting** and **dynamic programming**. Partway through I proactively mentioned that I intended to keep running my startup and YouTube channel alongside the role, just to be transparent up front.\n\n### Round 2 — System design\nNot a typical system design format. It pivoted into a deep discussion of my previous internship experience, digging into database concepts — **SQL vs NoSQL**, indexing and sharding.\n\n### Round 3 — HR\nMore conversational, centred on my future goals and what specifically drew me to Zomato.\n\n### Final round — CTO discussion\nA candid one-on-one with the CTO focused on my broader achievements.\n\n## Verdict\n**Selected.**",
+    "tags": [
+      "Zomato",
+      "SDE-1",
+      "Referral",
+      "Topological Sort",
+      "Dynamic Programming",
+      "DBMS",
+      "Sharding"
+    ],
+    "likeCount": 0
+  },
+  {
+    "company": "Zomato",
+    "role": "SDE-1",
+    "authorName": "Anonymous",
+    "verdict": "SELECTED",
+    "difficulty": "HARD",
+    "roundsCount": 4,
+    "title": "Zomato SDE-1 on-campus — an Air Force internship that stood out",
+    "excerpt": "A hard 90-minute OA, then HLD around my own projects, core CS fundamentals, and an HR round.",
+    "body": "## Background\nAn on-campus hiring drive. Eligibility required a CGPA of 7+ and was open to all branches.\n\n## Round-by-round\n\n### Online assessment\n90 minutes, three problems, all at hard/competitive-programming level — two **dynamic programming** based, and a third combining **binary search** with **DFS**.\n\n### Technical round 1\nCentred on high-level design around the projects I'd built. I'd also done an internship with the **Indian Air Force**, which turned out to be a genuine conversation-starter and stood out as something different from the usual resume. There was also a DSA problem — a variation on the classic coin-change type.\n\n### Technical round 2\nCore CS fundamentals — Operating Systems, DBMS and SQL.\n\n### HR round\nCultural fit and communication skills in a more conversational format.\n\n## Verdict\n**Selected.**",
+    "tags": [
+      "Zomato",
+      "SDE-1",
+      "On-Campus",
+      "Dynamic Programming",
+      "Binary Search",
+      "DFS",
+      "Operating Systems",
+      "SQL"
+    ],
+    "likeCount": 0
+  },
+  {
+    "company": "Zomato",
+    "role": "SDE",
+    "authorName": "Anonymous",
+    "verdict": "SELECTED",
+    "difficulty": "HARD",
+    "roundsCount": 3,
+    "title": "Zomato SDE off-campus — competitive-programming style rounds and a VP chat",
+    "excerpt": "Two technical interviews followed by an in-person round at the Gurugram office.",
+    "body": "## Background\nThree main rounds — two technical interviews followed by an in-person round at Zomato's Gurugram office.\n\n## Round-by-round\n\n### Technical round 1\nFour coding questions in total, mostly leaning toward competitive-programming-style problems rather than typical interview questions.\n\n### Technical round 2\nA DSA coding question combined with a low-level design problem — designing a **library management system** — along with a set of CS fundamentals questions.\n\n### Final round — VP discussion\nWith Zomato's VP, noticeably more relaxed and conversational than the earlier technical rounds.\n\n## Verdict\n**Selected.**",
+    "tags": [
+      "Zomato",
+      "SDE",
+      "Off-Campus",
+      "Competitive Programming",
+      "LLD",
+      "CS Fundamentals"
+    ],
+    "likeCount": 0
+  },
+  {
+    "company": "Zomato",
+    "role": "Android Developer",
+    "authorName": "Anonymous",
+    "verdict": "SELECTED",
+    "difficulty": "MEDIUM",
+    "roundsCount": 3,
+    "title": "Zomato Android Developer — LinkedIn outreach to offer",
+    "excerpt": "Core Android concepts, then a deeper technical round on DI and KMM, and a cultural-fit conversation about startup environments.",
+    "body": "## Background\nI relied mostly on **LinkedIn** during my job search — finding relevant postings and sending personalised connection requests to people already working there, which turned out to be a solid way to increase my chances of a referral. I'm a 2025 graduate.\n\n## Round-by-round\n\n### Round 1\nAbout an hour on core Android development concepts — **Activity** and **Fragment** lifecycles, **ViewModels** and **Flows** — plus a few scenario-based questions to see how I'd apply them in practice.\n\n### Round 2\nWith an engineering manager, and much deeper technically: **Singleton** design patterns, **Dependency Injection**, **Kotlin Multiplatform Mobile (KMM)**, and a detailed discussion of specific projects on my resume.\n\n### Round 3\nMore conversational — cultural fit, and how genuinely interested I was in working in a startup-like environment.\n\n## Verdict\n**Selected.**",
+    "tags": [
+      "Zomato",
+      "Android",
+      "Kotlin",
+      "KMM",
+      "Dependency Injection",
+      "Design Patterns"
+    ],
+    "likeCount": 0
+  }
+]

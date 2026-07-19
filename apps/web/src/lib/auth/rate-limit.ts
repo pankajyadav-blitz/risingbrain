@@ -5,7 +5,7 @@
  */
 import { NextResponse } from "next/server";
 import { RateLimiterRedis } from "rate-limiter-flexible";
-import { redis } from "./redis";
+import { redis, redisTry } from "./redis";
 
 // 5 attempts / 15 min per identifier — for login, register, password reset.
 const authLimiter = new RateLimiterRedis({
@@ -30,17 +30,25 @@ export interface RateResult {
 }
 
 async function consume(limiter: RateLimiterRedis, id: string): Promise<RateResult> {
-  try {
-    await limiter.consume(id);
-    return { ok: true };
-  } catch (res: unknown) {
-    // RateLimiterRes when blocked; a thrown Error means Redis is down → fail open.
-    if (res && typeof res === "object" && "msBeforeNext" in res) {
-      const ms = (res as { msBeforeNext: number }).msBeforeNext;
-      return { ok: false, retryAfterSeconds: Math.ceil(ms / 1000) };
+  // `redisTry` bounds this with a timeout: without it a Redis outage doesn't just
+  // fail, it HANGS the request until ioredis gives up — turning "rate limiting is
+  // degraded" into "login times out with a 500".
+  const result = await redisTry(async () => {
+    try {
+      await limiter.consume(id);
+      return { ok: true } as RateResult;
+    } catch (res: unknown) {
+      // RateLimiterRes when blocked; anything else is a Redis fault → rethrow so
+      // redisTry catches it and we fail open.
+      if (res && typeof res === "object" && "msBeforeNext" in res) {
+        const ms = (res as { msBeforeNext: number }).msBeforeNext;
+        return { ok: false, retryAfterSeconds: Math.ceil(ms / 1000) } as RateResult;
+      }
+      throw res;
     }
-    return { ok: true };
-  }
+  });
+  // null = Redis unreachable/timed out → fail open.
+  return result ?? { ok: true };
 }
 
 export const limitAuth = (id: string) => consume(authLimiter, id);

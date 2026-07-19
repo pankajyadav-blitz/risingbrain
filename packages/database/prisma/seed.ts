@@ -46,11 +46,6 @@ function toDifficulty(v: string | undefined): Difficulty {
   return Difficulty.MEDIUM;
 }
 
-function canonicalKey(reference: string | null | undefined): string | null {
-  if (!reference) return null;
-  return slugify(reference); // "LC 167" -> "lc-167"
-}
-
 // ---- types for the loosely-typed JSON ----
 type DsaProblemJson = {
   id: string;
@@ -218,7 +213,6 @@ async function seedDsa(companyIds: Map<string, string>) {
               slug: uniqueSlug(p.id), // stable dataset id; suffixed if reused across patterns
               title: p.title,
               reference: p.reference ?? null,
-              canonicalKey: canonicalKey(p.reference),
               difficulty: toDifficulty(p.difficulty),
               leetcodeUrl: p.leetcodeUrl ?? null,
               gfgUrl: p.gfgUrl ?? null,

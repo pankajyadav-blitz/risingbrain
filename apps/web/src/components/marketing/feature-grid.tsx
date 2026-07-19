@@ -30,7 +30,7 @@ const features: Feature[] = [
     key: "screening",
     href: "/screening",
     title: "Screening",
-    desc: "Crisp topic theory plus MCQ practice to sharpen your speed.",
+    desc: "Quant aptitude, logical reasoning and puzzles — crisp theory plus MCQ practice.",
     tag: "MCQ drills",
   },
   {

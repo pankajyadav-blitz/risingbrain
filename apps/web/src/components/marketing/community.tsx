@@ -12,7 +12,7 @@ const socials = [
   },
   {
     label: "YouTube",
-    handle: "RisingBrain · 20k+ subs",
+    handle: "RisingBrain · 30k+ subs",
     href: "https://www.youtube.com/@rbanjalikumari",
     Icon: YouTubeIcon,
     accent: "from-[#ff0000]/30 to-[#ff0000]/5 text-[#e25555]",

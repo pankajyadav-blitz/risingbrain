@@ -1,8 +1,6 @@
 import Link from "next/link";
 import { ArrowRight, BookOpen, Sparkles } from "lucide-react";
-import { Avatar, Container, Stars } from "./primitives";
-
-const proofNames = ["Priya Sharma", "Rahul Verma", "Sneha Iyer", "Aditya Kulkarni", "Karan Mehta"];
+import { Container } from "./primitives";
 
 export function Hero() {
   return (
@@ -37,28 +35,20 @@ export function Hero() {
           </Link>
         </div>
 
+        {/* Social proof, stated as what the method actually does rather than as a
+            rating. The previous version showed stock-ish learner avatars plus
+            "Rated 4.9/5 · placed at Amazon, Microsoft, Walmart" — numbers with no
+            review source behind them, which reads as claim-first. */}
         <div className="mt-12 flex flex-col items-center gap-3">
-          <div className="flex items-center">
-            <div className="flex -space-x-3">
-              {proofNames.map((name) => (
-                <Avatar
-                  key={name}
-                  name={name}
-                  className="h-10 w-10 border-2 border-background text-xs"
-                />
-              ))}
-            </div>
-            <span className="glass-pill ml-3 rounded-full px-3 py-1.5 text-xs font-semibold text-accent">
-              +50k learners
-            </span>
-          </div>
-          <div className="flex items-center gap-2 text-sm text-muted">
-            <Stars />
-            <span>
-              Rated <strong className="text-foreground">4.9/5</strong> · placed at Amazon, Microsoft,
-              Walmart &amp; more
-            </span>
-          </div>
+          <span className="glass-pill rounded-full px-3 py-1.5 text-xs font-semibold text-accent">
+            +50k learners
+          </span>
+          {/* Kept short enough to sit on one line from `sm` up — the longer
+              phrasing wrapped even at max-w-2xl. `text-balance` evens out the
+              two lines on mobile, where it has to wrap regardless. */}
+          <p className="mx-auto max-w-2xl text-balance text-sm text-muted">
+            People use it to recognise patterns and build logic on their own.
+          </p>
         </div>
       </section>
     </Container>

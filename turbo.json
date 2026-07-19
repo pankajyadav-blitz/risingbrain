@@ -3,6 +3,7 @@
   "ui": "tui",
   "globalEnv": [
     "DATABASE_URL",
+    "LEGACY_DATABASE_URL",
     "NODE_ENV",
     "REDIS_URL",
     "AUTH_SECRET",
