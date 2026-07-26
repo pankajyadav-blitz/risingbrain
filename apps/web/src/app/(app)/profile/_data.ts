@@ -87,7 +87,7 @@ export async function getProfileData(userId: string, year?: number) {
     windowRows,
     streakRows,
     dsaTotalsRows,
-    sqlTotalsRows,
+    domainTopicTotal,
     dsaSolvedRows,
     quizTotal,
     quizSolved,
@@ -104,7 +104,7 @@ export async function getProfileData(userId: string, year?: number) {
       select: { day: true },
     }),
     prisma.dsaProblem.groupBy({ by: ["difficulty"], _count: { _all: true } }),
-    prisma.sqlProblem.groupBy({ by: ["difficulty"], _count: { _all: true } }),
+    prisma.domainTopic.count({ where: { isPublished: true } }),
     prisma.userProblemProgress.findMany({
       where: { userId, status: ProblemStatus.SOLVED },
       select: { problem: { select: { difficulty: true } } },
@@ -203,9 +203,6 @@ export async function getProfileData(userId: string, year?: number) {
   for (const r of dsaSolvedRows) {
     dsaSolved[r.problem.difficulty] = (dsaSolved[r.problem.difficulty] ?? 0) + 1;
   }
-  const sqlTotal = { EASY: 0, MEDIUM: 0, HARD: 0 } as Record<string, number>;
-  for (const r of sqlTotalsRows) sqlTotal[r.difficulty] = r._count._all;
-
   const sections: SectionStat[] = [
     {
       key: "dsa",
@@ -221,13 +218,9 @@ export async function getProfileData(userId: string, year?: number) {
     {
       key: "sql",
       label: "Domain",
-      solved: 0, // no per-user SQL solve tracking yet
-      total: sqlTotal.EASY! + sqlTotal.MEDIUM! + sqlTotal.HARD!,
-      byDifficulty: [
-        { label: "Easy", solved: 0, total: sqlTotal.EASY! },
-        { label: "Medium", solved: 0, total: sqlTotal.MEDIUM! },
-        { label: "Hard", solved: 0, total: sqlTotal.HARD! },
-      ],
+      solved: 0, // no per-user domain progress tracking yet
+      total: domainTopicTotal,
+      byDifficulty: null,
     },
     {
       key: "aptitude",

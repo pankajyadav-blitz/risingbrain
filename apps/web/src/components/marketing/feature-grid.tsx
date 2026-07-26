@@ -11,18 +11,11 @@ type Feature = {
   tag: string;
   /** Inventory metadata — only where the repo already states a real number. */
   meta?: string;
-  /** Column span on `lg`, out of 6. Two wide + two narrow, alternating. */
-  span: 2 | 4;
 };
 
 /**
- * Deliberately asymmetric: a 6-column track where the two anchor sections get
- * 4 columns and the two supporting ones get 2, alternating across the rows.
- * Four equal cards in a row is one of the clearest "assembled, not designed"
- * tells — size is what encodes priority.
- *
- * DOM order is visual order, so no `grid-auto-flow: dense`: these are links,
- * and dense packing reorders them visually without reordering focus.
+ * The four tracks, shown as four equal cards in a single row on `lg` (stacking to
+ * two columns on `sm` and one on mobile). DOM order is visual order.
  */
 const features: Feature[] = [
   {
@@ -32,7 +25,6 @@ const features: Feature[] = [
     desc: "The curated SWE Sheet, sequenced pattern-by-pattern rather than topic-by-topic — plus a focused Last-Minute 100 for revision day.",
     tag: "Pattern-first",
     meta: "496 problems · 85 patterns",
-    span: 4,
   },
   {
     key: "domain",
@@ -40,7 +32,6 @@ const features: Feature[] = [
     title: "Domain",
     desc: "SQL, DBMS and OS — the problem, the best approach and the clean answer, side by side.",
     tag: "Core CS",
-    span: 2,
   },
   {
     key: "screening",
@@ -48,7 +39,6 @@ const features: Feature[] = [
     title: "Screening",
     desc: "Quant aptitude, logical reasoning and puzzles — crisp theory, then timed MCQ practice.",
     tag: "MCQ drills",
-    span: 2,
   },
   {
     key: "interview",
@@ -56,7 +46,6 @@ const features: Feature[] = [
     title: "Interview Stories",
     desc: "Round-by-round breakdowns from candidates who sat the loop — what got asked, what they'd do differently, and how it ended.",
     tag: "Community",
-    span: 4,
   },
 ];
 
@@ -79,16 +68,14 @@ export function FeatureGrid() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-6">
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {features.map((f) => {
             const Art = FEATURE_ART[f.key];
             return (
               <Link
                 key={f.href}
                 href={f.href}
-                className={`feat-card group flex flex-col overflow-hidden rounded-2xl border border-border bg-surface hover:border-rb-green-500/40 ${
-                  f.span === 4 ? "lg:col-span-4" : "lg:col-span-2"
-                }`}
+                className="feat-card group flex flex-col overflow-hidden rounded-2xl border border-border bg-surface hover:border-rb-green-500/40"
               >
                 {/* Banner — a cropped slice of the section's real UI. */}
                 <div className="feat-banner feat-art relative h-44 overflow-hidden">

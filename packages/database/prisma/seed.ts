@@ -21,10 +21,10 @@ import {
 import { PrismaPg } from "@prisma/adapter-pg";
 
 import dsaData from "../seed/dsa.json";
-import sqlData from "../seed/sql.json";
 import quizData from "../seed/quiz.json";
 import coursesData from "../seed/courses.json";
 import interviewData from "../seed/interview.json";
+import { seedDomain } from "../scripts/domain-loader";
 
 const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL });
 const prisma = new PrismaClient({ adapter });
@@ -85,7 +85,7 @@ async function clearContent() {
   await prisma.dsaSheet.deleteMany();
   await prisma.company.deleteMany();
   await prisma.quizCategory.deleteMany();
-  await prisma.sqlProblem.deleteMany();
+  await prisma.domainTopic.deleteMany();
   await prisma.course.deleteMany();
   await prisma.instructor.deleteMany();
 }
@@ -227,34 +227,6 @@ async function seedDsa(companyIds: Map<string, string>) {
     }
   }
   return problemCount;
-}
-
-async function seedSql() {
-  const problems = sqlData as Array<{
-    slug: string;
-    title: string;
-    difficulty: string;
-    tags: string[];
-    topic?: string;
-    description: string;
-    bestApproach: string;
-    solutionQuery: string;
-    order?: number;
-  }>;
-  await prisma.sqlProblem.createMany({
-    data: problems.map((p, i) => ({
-      slug: p.slug,
-      title: p.title,
-      difficulty: toDifficulty(p.difficulty),
-      tags: p.tags,
-      topic: p.topic ?? null,
-      description: p.description,
-      bestApproach: p.bestApproach,
-      solutionQuery: p.solutionQuery,
-      order: p.order ?? i,
-    })),
-  });
-  return problems.length;
 }
 
 async function seedQuiz() {
@@ -453,8 +425,8 @@ async function main() {
   const problems = await seedDsa(companyIds);
   console.log(`   dsa problems: ${problems}`);
 
-  const sql = await seedSql();
-  console.log(`   sql problems: ${sql}`);
+  const domain = await seedDomain(prisma);
+  console.log(`   domain topics: ${domain.topics} (${domain.withExample} with example)`);
 
   const questions = await seedQuiz();
   console.log(`   quiz questions: ${questions}`);

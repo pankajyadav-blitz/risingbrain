@@ -13,6 +13,7 @@
     "db:migrate": "bun --filter @risingbrain/database db:migrate",
     "db:studio": "bun --filter @risingbrain/database db:studio",
     "db:seed": "bun --filter @risingbrain/database db:seed",
+    "db:seed-domain": "bun --filter @risingbrain/database db:seed-domain",
     "db:seed-interviews": "bun --filter @risingbrain/database db:seed-interviews",
     "db:backfill-activity": "bun --filter @risingbrain/database db:backfill-activity",
     "db:setup": "turbo run db:generate && turbo run db:push && bun run db:seed",

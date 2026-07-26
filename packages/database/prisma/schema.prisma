@@ -314,26 +314,42 @@ model ProblemCompany {
 }
 
 // ============================================================================
-// SQL PRACTICE
+// DOMAIN  (core-CS interview subjects: SQL, DBMS, OS, CN, OOPS) — unified notes
 // ============================================================================
 
-model SqlProblem {
-  id            String     @id @default(cuid())
-  slug          String     @unique
-  title         String
-  difficulty    Difficulty @default(MEDIUM)
-  description   String // plain-English statement
-  bestApproach  String // explanation of the optimal approach
-  solutionQuery String // clean, copy-ready SQL
-  tags          String[]
-  topic         String? // optional grouping for the future
-  order         Int        @default(0)
-  isPublished   Boolean    @default(true)
-  createdAt     DateTime   @default(now())
-  updatedAt     DateTime   @updatedAt
+// The discriminating "key" that keeps every Domain section in one table.
+enum DomainSubject {
+  SQL
+  DBMS
+  OS
+  CN
+  OOPS
+}
 
-  @@index([difficulty])
-  @@map("sql_problems")
+// One study topic inside a subject. Content is two markdown fields — `notes`
+// (theory + inline diagrams/code screenshots) and optional `example` (clean,
+// copy-ready code) — mirroring the Screening "Notes / Practice" split. Topics are
+// bucketed into the left-nav sections by `groupLabel` (e.g. a phase / unit).
+// Shared, seeded, cookie-free content: cached cross-request and tagged for
+// revalidation (CACHE_TAGS.domainCatalog), never merged with per-user state.
+model DomainTopic {
+  id          String        @id @default(cuid())
+  subject     DomainSubject
+  slug        String
+  title       String
+  groupLabel  String // left-nav section header, e.g. "Phase 3 — The Four Pillars"
+  groupOrder  Int           @default(0)
+  summary     String? // one-line subtitle
+  notes       String // markdown: theory + inline diagrams/code screenshots
+  example     String? // markdown: clean, copy-ready code example
+  order       Int           @default(0)
+  isPublished Boolean       @default(true)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  @@unique([subject, slug])
+  @@index([subject])
+  @@map("domain_topics")
 }
 
 // ============================================================================

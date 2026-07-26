@@ -24,7 +24,7 @@ import { CATALOG_STATS } from "./catalog-stats";
 /** The tracks, doubling as the hero's first visual layer and as navigation. */
 const tracks = [
   { label: "DSA Sheets", href: "/sheet" },
-  { label: "SQL & DBMS", href: "/domain" },
+  { label: "Domain", href: "/domain" },
   { label: "Aptitude", href: "/screening" },
   { label: "Interview Stories", href: "/interview" },
   { label: "Courses", href: "/courses" },

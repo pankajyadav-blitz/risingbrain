@@ -11,7 +11,7 @@
 export const CACHE_TAGS = {
   dsaCatalog: "dsa-catalog",
   quizCatalog: "quiz-catalog",
-  sqlCatalog: "sql-catalog",
+  domainCatalog: "domain-catalog",
 } as const;
 
 export type CacheTag = (typeof CACHE_TAGS)[keyof typeof CACHE_TAGS];

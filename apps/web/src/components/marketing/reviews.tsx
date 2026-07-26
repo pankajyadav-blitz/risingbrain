@@ -3,83 +3,76 @@ import { Avatar, Container, Eyebrow, Stars } from "./primitives";
 
 type Review = {
   name: string;
-  role: string;
-  college: string;
+  /** A handle or location — whatever the learner shared. */
+  meta: string;
   text: string;
 };
 
 const reviews: Review[] = [
   {
-    name: "Priya Sharma",
-    role: "SDE-1 @ Amazon",
-    college: "NIT Bhopal",
-    text: "The pattern-first sheet completely changed how I see problems. I stopped memorising and started recognising shapes — cleared Amazon's loop in my first attempt.",
+    name: "Boddupally Hema",
+    meta: "Hyderabad, Telangana",
+    text: "Previously I was stuck somewhere in logic. After consistently following your pattern-wise sheet, I can now write code for arrays in both brute force and optimal — it's all because of you, sister. Love from Hyderabad.",
   },
   {
-    name: "Rahul Verma",
-    role: "Software Engineer @ Walmart",
-    college: "PSIT Kanpur",
-    text: "Coming from a tier-3 college with zero coding culture, RisingBrain was my roadmap. The Last-Minute 100 saved me the night before my final round.",
+    name: "Harshit Pachauri",
+    meta: "@harshitpachauri8849",
+    text: "I saw your sheet on my LinkedIn feed — it's incredibly well-organised, based on patterns. Thank you for making it. I'm using it to master every pattern concept.",
   },
   {
-    name: "Sneha Iyer",
-    role: "SDE @ Microsoft",
-    college: "VIT Vellore",
-    text: "Anjali's explanations are gold. The interview stories told me exactly what to expect. Worth every single hour I put in.",
+    name: "Sai Pothuraju",
+    meta: "@saipothuraju3847",
+    text: "I've watched many DSA playlists, but I'd understand a concept and then forget how to solve the problem later. Your pattern-wise sheet is one of the best resources I've come across — it builds problem-solving step by step, with explanations that are easy to follow. I'd recommend the Rising Brain sheet to every beginner.",
   },
   {
-    name: "Aditya Kulkarni",
-    role: "SDE @ Atlassian",
-    college: "COEP Pune",
-    text: "I'd grinded random LeetCode for months with no structure. Two months on RisingBrain's 85 patterns and everything finally clicked.",
+    name: "Sruthi",
+    meta: "Working professional",
+    text: "I'm a working professional in a service-based company and not a CS/IT student, but this isn't difficult to learn from you. You're actually rising our brains.",
   },
   {
-    name: "Megha Nair",
-    role: "Backend Engineer @ Flipkart",
-    college: "CUSAT Kochi",
-    text: "The SQL section is criminally underrated — problem, approach and clean query side by side. I aced the data round because of it.",
+    name: "Rupendra Yadav",
+    meta: "@RupendraYadav22",
+    text: "Thank you so much ma'am — you're providing such wonderful content free of cost! Keep continuing; I'll pray to Krishna ji that all your wishes come true.",
   },
   {
-    name: "Karan Mehta",
-    role: "Analyst @ Goldman Sachs",
-    college: "DTU Delhi",
-    text: "Aptitude drills + DSA sheets in one place meant I never tab-hopped across 5 sites. Consistency got me the offer.",
+    name: "Parth",
+    meta: "@parthdeveloper2793",
+    text: "Hello ma'am, your content and explanation are excellent!!",
   },
   {
-    name: "Ananya Reddy",
-    role: "SDE-1 @ Google",
-    college: "IIIT Hyderabad",
-    text: "The graph and DP patterns were exactly what showed up in my Google loop. Talking through brute-force first, like the sheet teaches, made all the difference.",
+    name: "Anshu Thakur",
+    meta: "@anshu11thakur1",
+    text: "I wanted to learn DSA in a way where I could identify patterns too. I searched, and I found this sheet — thank god.",
   },
   {
-    name: "Vikram Singh",
-    role: "SWE @ Uber",
-    college: "NIT Surathkal",
-    text: "What sold me was the structure. Each pattern has an identification cue, so in the interview I knew within seconds which tool to reach for.",
+    name: "Priyanka",
+    meta: "@Priyankakk",
+    text: "Solved and submitted — thank you! Because of you I started doing DSA, and now I feel I can crack good companies too.",
   },
   {
-    name: "Fatima Khan",
-    role: "Software Engineer @ Microsoft",
-    college: "Jamia Millia Islamia",
-    text: "I revised the whole Last-Minute 100 in two evenings before my final. Three of those exact patterns came up. Surreal.",
+    name: "Arpan Goyal",
+    meta: "@Arpan-Goyal",
+    text: "One thing I have to admire about the Rising Brain pattern-wise sheet — after learning a single problem from you, the next related one gets easily solved. Thank you for this sheet; it's boosting my confidence again.",
   },
   {
-    name: "Rohan Das",
-    role: "SDE @ Razorpay",
-    college: "KIIT Bhubaneswar",
-    text: "The interview experiences section is a cheat code — reading real rounds from people who got in told me how to pace myself and what to ask.",
+    name: "Jivas",
+    meta: "@jus_jivas_things",
+    text: "I just love your DSA sheet and your explanation, ma'am — cracked a startup with just your sheet within one month of prep.",
   },
   {
-    name: "Ishita Gupta",
-    role: "Backend Engineer @ Swiggy",
-    college: "BIT Mesra",
-    text: "Notes on each problem meant my revision was mine — my intuition, my edge cases. By round two I barely needed to re-read solutions.",
+    name: "Pasunuti Sharan Teja",
+    meta: "@PasunutiSharanteja",
+    text: "I've been following your content for a long time, and your teaching has had a significant impact on my journey. Your explanations have strengthened my understanding and built my confidence and interest in problem-solving. Thank you, Anjali ma'am.",
   },
   {
-    name: "Arjun Pillai",
-    role: "SDE-1 @ Meta",
-    college: "Anna University",
-    text: "From a college nobody recruits at to a Meta offer. The honest answer is consistency on one focused platform instead of ten scattered ones.",
+    name: "Atharva Yadav",
+    meta: "@Atharvayadav",
+    text: "I started DSA from this sheet and already got an interview at a startup — and the best part is they asked questions straight from the sheet. The pattern-wise sheet helped me recognise patterns like nothing before.",
+  },
+  {
+    name: "Riya Batra",
+    meta: "@Riyabatra",
+    text: "This is the best pattern-wise sheet I've come across — the questions are categorised in the way that's best for someone just starting with DSA. Thank you so much to Rising Brain and Anjali ma'am; this is the real one.",
   },
 ];
 
@@ -92,8 +85,7 @@ function ReviewCard({ r }: { r: Review }) {
         <Avatar name={r.name} />
         <div className="min-w-0">
           <div className="truncate text-sm font-semibold">{r.name}</div>
-          <div className="truncate text-xs text-accent">{r.role}</div>
-          <div className="truncate text-xs text-muted">{r.college}</div>
+          <div className="truncate text-xs text-accent">{r.meta}</div>
         </div>
         <div className="ml-auto self-start">
           <Stars />
@@ -146,7 +138,7 @@ export function Reviews() {
             What our <span className="text-gradient">students say</span>
           </h2>
           <p className="mx-auto mt-3 max-w-xl text-muted">
-            Real stories from learners who turned consistent practice into product-company offers.
+            Real messages from learners following the RisingBrain pattern-wise sheet.
           </p>
         </div>
       </Container>

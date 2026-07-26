@@ -24,7 +24,7 @@ const previously = ["Walmart Global Tech", "Morgan Stanley", "Nagarro"];
  */
 const metrics: [LucideIcon, string, string][] = [
   [Users, "100+", "Mentored 1:1"],
-  [Rocket, "150k+", "Community reached"],
+  [Rocket, "450K+", "Community reached"],
 ];
 
 /**
@@ -112,7 +112,7 @@ export function Founder() {
                     Through her <strong className="text-foreground">30-Day DSA Challenge</strong>{" "}
                     and daily breakdowns, she has mentored{" "}
                     <strong className="text-foreground">100+ engineers 1:1</strong> and reached a
-                    community of <strong className="text-foreground">150k+</strong> learners across
+                    community of <strong className="text-foreground">450K+</strong> learners across
                     LinkedIn, YouTube and Instagram.
                   </p>
                 </div>

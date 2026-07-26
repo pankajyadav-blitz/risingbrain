@@ -162,7 +162,12 @@ body::before {
 }
 .notes-prose img {
   display: block;
-  max-width: 100%;
+  /* Diagrams/screenshots are extracted from PDFs and read best at a comfortable
+     reading size — cap the width so they don't blow up to the full column and
+     let `margin: auto` center them within the content. Still shrinks on narrow
+     viewports via the `100%` term. */
+  width: auto;
+  max-width: min(100%, 34rem);
   height: auto;
   margin: 1.25rem auto;
   border-radius: 0.75rem;

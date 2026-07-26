@@ -1,33 +1,64 @@
 "use client";
 
-import type { DomainCategoryKey, DomainCategoryMeta } from "../_categories";
+import { usePathname, useRouter } from "next/navigation";
+import { useSelectedSubject } from "./selected-subject";
+import { SUBJECT_META } from "../_categories";
+import type { DomainSubjectIndex } from "../_data";
 
 /**
- * The Domain category selector — a full-width segmented control on top, mirroring
- * the Screening section's `CategoryTabs`. Sections without content yet still
- * select (to preview the "coming soon" view) and carry a small "Soon" badge.
+ * The subject selector — a full-width segmented control at the TOP of the Domain
+ * workspace (mirrors Screening's category tabs). Only subjects that have content
+ * are rendered (data-driven from the index). With a SINGLE subject the tab bar
+ * collapses to a plain header — there is nothing to switch between.
+ *
+ * Picking a subject also opens its first topic, so the sidebar and the URL-driven
+ * content never fall out of sync.
  */
-export function CategoryTabs({
-  categories,
-  selectedKey,
-  onSelect,
-}: {
-  categories: DomainCategoryMeta[];
-  selectedKey: DomainCategoryKey;
-  onSelect: (key: DomainCategoryKey) => void;
-}) {
+export function CategoryTabs() {
+  const ctx = useSelectedSubject();
+  const router = useRouter();
+  const pathname = usePathname();
+  const activeTopicId = pathname.split("/")[2] ?? "";
+  if (!ctx) return null;
+  const { subjects, selected, select } = ctx;
+
+  function open(s: DomainSubjectIndex) {
+    select(s.subject);
+    const already = s.groups.some((g) => g.topics.some((t) => t.id === activeTopicId));
+    if (already) return;
+    const first = s.groups[0]?.topics[0];
+    if (first) router.push(`/domain/${first.id}`);
+  }
+
+  // One subject → a plain header, not a lone clickable tab.
+  if (subjects.length === 1) {
+    const s = subjects[0]!;
+    const Icon = SUBJECT_META[s.subject].icon;
+    return (
+      <div className="flex items-center gap-3">
+        <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-rb-green-500 text-black">
+          <Icon className="h-5 w-5" />
+        </span>
+        <div className="flex flex-col">
+          <span className="text-lg font-bold tracking-tight text-brand">{s.label}</span>
+          <span className="text-xs font-medium text-muted">{s.blurb}</span>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div role="tablist" aria-label="Choose a subject" className="flex flex-wrap gap-2.5 sm:gap-3">
-      {categories.map((c) => {
-        const Icon = c.icon;
-        const isActive = c.key === selectedKey;
+      {subjects.map((s) => {
+        const Icon = SUBJECT_META[s.subject].icon;
+        const isActive = s.subject === selected;
         return (
           <button
-            key={c.key}
+            key={s.subject}
             type="button"
             role="tab"
             aria-selected={isActive}
-            onClick={() => onSelect(c.key)}
+            onClick={() => open(s)}
             className={`group flex items-center gap-3 rounded-2xl px-4 py-3 text-left transition-all sm:px-5 ${
               isActive
                 ? "bg-rb-green-500/15 text-brand ring-1 ring-rb-green-500/40"
@@ -45,10 +76,10 @@ export function CategoryTabs({
               <span
                 className={`text-sm font-semibold ${isActive ? "text-brand" : "text-foreground"}`}
               >
-                {c.label}
+                {s.label}
               </span>
               <span className="text-xs font-medium text-muted">
-                {c.available ? "Practice" : "Coming soon"}
+                {s.total} {s.total === 1 ? "topic" : "topics"}
               </span>
             </span>
           </button>
