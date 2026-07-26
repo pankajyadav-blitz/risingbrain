@@ -77,6 +77,9 @@ export async function GET(req: Request, ctx: { params: Promise<{ provider: strin
     },
   });
 
+  // Admin-disabled accounts are denied a session even with a valid OAuth handshake.
+  if (user.disabledAt) return fail("account_disabled");
+
   const tokens = await createSession({
     userId: user.id,
     role: user.role,

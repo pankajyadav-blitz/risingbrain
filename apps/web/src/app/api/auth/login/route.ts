@@ -40,6 +40,11 @@ export async function POST(req: Request) {
   const ok = await verifyPassword(user.passwordHash, password);
   if (!ok) return invalid;
 
+  // Admin-disabled accounts can authenticate but are denied a session.
+  if (user.disabledAt) {
+    return NextResponse.json({ error: "This account has been disabled." }, { status: 403 });
+  }
+
   const tokens = await createSession({
     userId: user.id,
     role: user.role,

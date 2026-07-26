@@ -131,6 +131,10 @@ model User {
   passwordHash  String?
   role          Role      @default(NORMAL)
 
+  // Set by an admin to disable an account: blocks login / OAuth / refresh and the
+  // user's live sessions are revoked. Null = active. See admin users management.
+  disabledAt    DateTime?
+
   // Denormalized streak/heatmap summary (IST day boundaries; see streak logic).
   currentStreak Int       @default(0)
   longestStreak Int       @default(0)
