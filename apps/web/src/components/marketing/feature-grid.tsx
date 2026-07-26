@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { ArrowRight, Layers } from "lucide-react";
 import { Container, Eyebrow } from "./primitives";
-import { FEATURE_ART, type FeatureArtKey } from "./feature-banners";
+import { FeatureArt, type FeatureArtKey } from "./feature-banners";
 
 type Feature = {
   key: FeatureArtKey;
@@ -70,16 +70,15 @@ export function FeatureGrid() {
 
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {features.map((f) => {
-            const Art = FEATURE_ART[f.key];
             return (
               <Link
                 key={f.href}
                 href={f.href}
                 className="feat-card group flex flex-col overflow-hidden rounded-2xl border border-border bg-surface hover:border-rb-green-500/40"
               >
-                {/* Banner — a cropped slice of the section's real UI. */}
-                <div className="feat-banner feat-art relative h-44 overflow-hidden">
-                  <Art className="absolute inset-0 h-full w-full" />
+                {/* Banner — an animated canvas evoking the section. */}
+                <div className="feat-banner relative h-44 overflow-hidden">
+                  <FeatureArt artKey={f.key} className="absolute inset-0 h-full w-full" />
                   <span className="glass-pill absolute right-3 top-3 rounded-full px-2.5 py-1 text-[11px] font-medium uppercase tracking-wide text-muted">
                     {f.tag}
                   </span>
