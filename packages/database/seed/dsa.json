@@ -578,7 +578,7 @@
                   "reference": "LC 1749",
                   "difficulty": "MEDIUM",
                   "leetcodeUrl": "https://leetcode.com/problems/maximum-absolute-sum-of-any-subarray/description/",
-                  "gfgUrl": null,
+                  "gfgUrl": "https://www.geeksforgeeks.org/dsa/minimizing-maximum-absolute-subarray-sums/",
                   "companies": [
                     {
                       "name": "Microsoft",
@@ -805,7 +805,7 @@
                   "title": "Longest Substring with K Uniques",
                   "reference": "LC 340",
                   "difficulty": "MEDIUM",
-                  "leetcodeUrl": null,
+                  "leetcodeUrl": "https://leetcode.com/problems/longest-substring-with-at-most-k-distinct-characters/",
                   "gfgUrl": "https://www.geeksforgeeks.org/problems/longest-k-unique-characters-substring0853/1",
                   "companies": [
                     {
@@ -875,7 +875,7 @@
                   "reference": "LC 30",
                   "difficulty": "HARD",
                   "leetcodeUrl": "https://leetcode.com/problems/substring-with-concatenation-of-all-words/",
-                  "gfgUrl": null,
+                  "gfgUrl": "https://www.geeksforgeeks.org/dsa/find-starting-indices-substrings-string-s-made-concatenating-words-listl/ ",
                   "companies": [
                     {
                       "name": "Google",
@@ -1249,7 +1249,7 @@
                   "title": "Aggressive cows",
                   "reference": "GFG",
                   "difficulty": "MEDIUM",
-                  "leetcodeUrl": null,
+                  "leetcodeUrl": "https://leetcode.com/discuss/post/4133198/c-aggressive-cows-binary-search-by-tle-5nlw/",
                   "gfgUrl": "https://www.geeksforgeeks.org/problems/aggressive-cows/1",
                   "companies": [
                     {
@@ -1296,7 +1296,7 @@
                   "reference": "LC 1552",
                   "difficulty": "MEDIUM",
                   "leetcodeUrl": "https://leetcode.com/problems/magnetic-force-between-two-balls/description/",
-                  "gfgUrl": null,
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/magnet-array-problem3743/1",
                   "companies": [
                     {
                       "name": "Flipkart",
@@ -1318,7 +1318,7 @@
                   "title": "Allocate Minimum Number of Pages",
                   "reference": "GFG",
                   "difficulty": "MEDIUM",
-                  "leetcodeUrl": null,
+                  "leetcodeUrl": "https://leetcode.com/discuss/post/3340922/ALLOCATE-MIN-NUMBER-OF-PAGES/ ",
                   "gfgUrl": "https://www.geeksforgeeks.org/problems/allocate-minimum-number-of-pages0937/1",
                   "companies": [
                     {
@@ -1442,7 +1442,7 @@
                   "title": "Matrix Median",
                   "reference": "GFG",
                   "difficulty": "HARD",
-                  "leetcodeUrl": null,
+                  "leetcodeUrl": "https://leetcode.com/problems/median-of-a-row-wise-sorted-matrix/description/",
                   "gfgUrl": "https://www.geeksforgeeks.org/problems/median-in-a-row-wise-sorted-matrix1527/1",
                   "companies": [
                     {
@@ -1482,7 +1482,7 @@
                   "reference": "LC 496",
                   "difficulty": "EASY",
                   "leetcodeUrl": "https://leetcode.com/problems/next-greater-element-i/",
-                  "gfgUrl": "https://www.geeksforgeeks.org/problems/next-larger-element-1587115620/1",
+                  "gfgUrl": null,
                   "companies": [
                     {
                       "name": "Amazon",
@@ -1505,7 +1505,7 @@
                   "reference": "LC 503",
                   "difficulty": "MEDIUM",
                   "leetcodeUrl": "https://leetcode.com/problems/next-greater-element-ii/",
-                  "gfgUrl": null,
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/next-larger-element-1587115620/1",
                   "companies": [
                     {
                       "name": "Microsoft",
@@ -1528,7 +1528,7 @@
                   "reference": "LC 739",
                   "difficulty": "MEDIUM",
                   "leetcodeUrl": "https://leetcode.com/problems/daily-temperatures/",
-                  "gfgUrl": null,
+                  "gfgUrl": "https://www.geeksforgeeks.org/dsa/count-of-days-remaining-for-the-next-day-with-higher-temperature/",
                   "companies": [
                     {
                       "name": "Flipkart",
@@ -1977,7 +1977,7 @@
                   "title": "Max Stack",
                   "reference": "GFG",
                   "difficulty": "MEDIUM",
-                  "leetcodeUrl": null,
+                  "leetcodeUrl": "https://leetcode.com/problems/max-stack/description/",
                   "gfgUrl": "https://www.geeksforgeeks.org/problems/get-max-from-stack/1",
                   "companies": [
                     {
@@ -2106,7 +2106,7 @@
                   "reference": "LC 316",
                   "difficulty": "MEDIUM",
                   "leetcodeUrl": "https://leetcode.com/problems/remove-duplicate-letters/",
-                  "gfgUrl": null,
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/remove-all-duplicates-from-a-given-string4321/1",
                   "companies": [
                     {
                       "name": "Google",
@@ -2129,7 +2129,7 @@
                   "reference": "LC 1081",
                   "difficulty": "MEDIUM",
                   "leetcodeUrl": "https://leetcode.com/problems/smallest-subsequence-of-distinct-characters/",
-                  "gfgUrl": null,
+                  "gfgUrl": "https://www.geeksforgeeks.org/dsa/lexicographically-smallest-subsequence-possible-by-removing-a-character-from-given-string/",
                   "companies": [
                     {
                       "name": "Google",
@@ -2206,7 +2206,7 @@
                   "title": "Reverse a Stack (Recursive)",
                   "reference": "GFG",
                   "difficulty": "MEDIUM",
-                  "leetcodeUrl": null,
+                  "leetcodeUrl": "https://leetcode.com/discuss/post/6155674/sort-and-reverse-stack-with-recursion-by-szbt/",
                   "gfgUrl": "https://www.geeksforgeeks.org/problems/reverse-a-stack/1",
                   "companies": [
                     {
@@ -2225,7 +2225,7 @@
                   "title": "Insert at Bottom of Stack",
                   "reference": "GFG",
                   "difficulty": "MEDIUM",
-                  "leetcodeUrl": "https://leetcode.com/problems/implement-stack-using-queues/",
+                  "leetcodeUrl": null,
                   "gfgUrl": "https://www.geeksforgeeks.org/problems/insert-an-element-at-the-bottom-of-a-stack/1",
                   "companies": [
                     {
@@ -2325,7 +2325,7 @@
                   "title": "Check Palindrome (Recursive)",
                   "reference": "Classic",
                   "difficulty": "EASY",
-                  "leetcodeUrl": null,
+                  "leetcodeUrl": " https://leetcode.com/problems/palindrome-number/description/",
                   "gfgUrl": "https://practice.geeksforgeeks.org/problems/palindrome0746/1",
                   "companies": [
                     {
@@ -2481,7 +2481,7 @@
                   "title": "Merge Sort",
                   "reference": "Classic",
                   "difficulty": "MEDIUM",
-                  "leetcodeUrl": null,
+                  "leetcodeUrl": "https://leetcode.com/problems/sort-an-array/description/",
                   "gfgUrl": "https://practice.geeksforgeeks.org/problems/merge-sort/1",
                   "companies": [
                     {
@@ -2504,7 +2504,7 @@
                   "title": "Quick Sort",
                   "reference": "Classic",
                   "difficulty": "MEDIUM",
-                  "leetcodeUrl": null,
+                  "leetcodeUrl": "https://leetcode.com/problems/sort-an-array/description/",
                   "gfgUrl": "https://practice.geeksforgeeks.org/problems/quick-sort/1",
                   "companies": [
                     {
@@ -2528,7 +2528,7 @@
                   "reference": "LC 704",
                   "difficulty": "EASY",
                   "leetcodeUrl": "https://leetcode.com/problems/binary-search/",
-                  "gfgUrl": "https://practice.geeksforgeeks.org/problems/binary-search/1",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/who-will-win-1587115621/1",
                   "companies": [
                     {
                       "name": "Google",
@@ -2551,7 +2551,7 @@
                   "reference": "LC 50",
                   "difficulty": "MEDIUM",
                   "leetcodeUrl": "https://leetcode.com/problems/powx-n/",
-                  "gfgUrl": null,
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/powx-n/1",
                   "companies": [
                     {
                       "name": "Flipkart",
@@ -2574,7 +2574,7 @@
                   "reference": "Classic",
                   "difficulty": "HARD",
                   "leetcodeUrl": "https://leetcode.com/problems/median-of-two-sorted-arrays/",
-                  "gfgUrl": "https://www.geeksforgeeks.org/problems/median-of-two-sorted-arrays-of-different-sizes/1",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/median-of-2-sorted-arrays-of-different-sizes/1",
                   "companies": [
                     {
                       "name": "Google",
@@ -2595,7 +2595,7 @@
             },
             {
               "id": "topic_0009_sub_3",
-              "name": "Recursion on LinkedList/Stack",
+              "name": "Recursion on LinkedList",
               "order": 3,
               "strategy": "Process data structures recursively by handling the first/last element and recursing on the rest.",
               "identification": "Problems asking to reverse, delete, or merge standard linear data structures.",
@@ -2645,52 +2645,6 @@
                     }
                   ],
                   "youtubeUrl": null
-                },
-                {
-                  "id": "prob_rec_struct_5",
-                  "title": "Delete Middle of Stack",
-                  "reference": "Classic",
-                  "difficulty": "EASY",
-                  "leetcodeUrl": null,
-                  "gfgUrl": "https://practice.geeksforgeeks.org/problems/delete-middle-element-of-a-stack/1",
-                  "companies": [
-                    {
-                      "name": "Zoho",
-                      "logo": "https://companieslogo.com/img/orig/ZOHO.NS-a78b54e3.png"
-                    },
-                    {
-                      "name": "Freshworks",
-                      "logo": "https://cdn.worldvectorlogo.com/logos/freshworks-1.svg"
-                    },
-                    {
-                      "name": "Oracle",
-                      "logo": "https://upload.wikimedia.org/wikipedia/commons/5/50/Oracle_logo.svg"
-                    }
-                  ],
-                  "youtubeUrl": null
-                },
-                {
-                  "id": "prob_rec_struct_6",
-                  "title": "Reverse Stack",
-                  "reference": "Classic",
-                  "difficulty": "MEDIUM",
-                  "leetcodeUrl": null,
-                  "gfgUrl": "https://practice.geeksforgeeks.org/problems/reverse-a-stack/1",
-                  "companies": [
-                    {
-                      "name": "Amazon",
-                      "logo": "https://upload.wikimedia.org/wikipedia/commons/d/de/Amazon_icon.png"
-                    },
-                    {
-                      "name": "Adobe",
-                      "logo": "https://companieslogo.com/img/orig/ADBE-fb158b30.png?t=1740130206"
-                    },
-                    {
-                      "name": "Zoho",
-                      "logo": "https://companieslogo.com/img/orig/ZOHO.NS-a78b54e3.png"
-                    }
-                  ],
-                  "youtubeUrl": "https://youtu.be/PrvZ91XczPA?si=4p8IwVUzKUPV_jtX"
                 }
               ]
             },
@@ -2729,7 +2683,7 @@
                   "title": "Subset Sum",
                   "reference": "Classic",
                   "difficulty": "MEDIUM",
-                  "leetcodeUrl": null,
+                  "leetcodeUrl": "https://leetcode.com/problems/partition-equal-subset-sum/ ",
                   "gfgUrl": "https://practice.geeksforgeeks.org/problems/subset-sum-problem2014/1",
                   "companies": [
                     {
@@ -2907,7 +2861,7 @@
                   "reference": "LC 160",
                   "difficulty": "EASY",
                   "leetcodeUrl": "https://leetcode.com/problems/intersection-of-two-linked-lists/",
-                  "gfgUrl": "https://www.geeksforgeeks.org/write-a-function-to-get-the-intersection-point-of-two-linked-lists/",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/intersection-point-in-y-shapped-linked-lists/1",
                   "companies": [
                     {
                       "name": "Amazon",
@@ -3108,7 +3062,7 @@
                   "title": "Maximum Twin Sum of a Linked List",
                   "difficulty": "MEDIUM",
                   "leetcodeUrl": "https://leetcode.com/problems/maximum-twin-sum-of-a-linked-list/",
-                  "gfgUrl": null,
+                  "gfgUrl": "https://www.geeksforgeeks.org/dsa/find-maximum-pairwise-sum-in-linked-list-that-are-equidistant-from-front-and-back/",
                   "companies": [
                     {
                       "name": "Amazon",
@@ -3325,7 +3279,7 @@
                   "reference": "LC 82",
                   "difficulty": "MEDIUM",
                   "leetcodeUrl": "https://leetcode.com/problems/remove-duplicates-from-sorted-list-ii/",
-                  "gfgUrl": "https://www.geeksforgeeks.org/remove-duplicates-sorted-linked-list/",
+                  "gfgUrl": null,
                   "companies": [
                     {
                       "name": "Amazon",
@@ -3348,7 +3302,7 @@
                   "reference": "LC 86",
                   "difficulty": "MEDIUM",
                   "leetcodeUrl": "https://leetcode.com/problems/partition-list/",
-                  "gfgUrl": "https://www.geeksforgeeks.org/partitioning-a-linked-list-around-a-given-value/",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/partition-a-linked-list-around-a-given-value/1",
                   "companies": [
                     {
                       "name": "Amazon",
@@ -3380,7 +3334,7 @@
                   "reference": "LC 2",
                   "difficulty": "MEDIUM",
                   "leetcodeUrl": "https://leetcode.com/problems/add-two-numbers/",
-                  "gfgUrl": "https://www.geeksforgeeks.org/problems/add-two-numbers-represented-by-linked-lists/1",
+                  "gfgUrl": null,
                   "companies": [
                     {
                       "name": "Amazon",
@@ -3426,7 +3380,7 @@
                   "reference": "LC 1019",
                   "difficulty": "MEDIUM",
                   "leetcodeUrl": "https://leetcode.com/problems/next-greater-node-in-linked-list/",
-                  "gfgUrl": null,
+                  "gfgUrl": "https://www.geeksforgeeks.org/dsa/next-greater-element-in-the-linked-list/",
                   "companies": [
                     {
                       "name": "Flipkart",
@@ -3472,7 +3426,7 @@
                   "reference": "LC 138",
                   "difficulty": "MEDIUM",
                   "leetcodeUrl": "https://leetcode.com/problems/copy-list-with-random-pointer/",
-                  "gfgUrl": "https://www.geeksforgeeks.org/clone-linked-list-next-random-pointer-o1-space/",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/clone-a-linked-list-with-next-and-random-pointer/1",
                   "companies": [
                     {
                       "name": "Amazon",
@@ -3511,7 +3465,7 @@
                   "reference": "GFG",
                   "difficulty": "EASY",
                   "leetcodeUrl": null,
-                  "gfgUrl": "https://www.geeksforgeeks.org/problems/insert-a-node-in-doubly-linked-list/1",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/create-a-doubly-linked-list-from-a-given-array/1",
                   "companies": [
                     {
                       "name": "Amazon",
@@ -3657,7 +3611,7 @@
                   "title": "Merge Two Sorted DLLs",
                   "reference": "GFG",
                   "difficulty": "MEDIUM",
-                  "leetcodeUrl": null,
+                  "leetcodeUrl": "https://leetcode.com/problems/merge-two-sorted-lists/description/",
                   "gfgUrl": "https://www.geeksforgeeks.org/problems/merge-two-sorted-linked-lists/1",
                   "companies": [
                     {
@@ -3681,7 +3635,7 @@
                   "reference": "LC 430",
                   "difficulty": "MEDIUM",
                   "leetcodeUrl": "https://leetcode.com/problems/flatten-a-multilevel-doubly-linked-list/description/",
-                  "gfgUrl": null,
+                  "gfgUrl": "https://www.geeksforgeeks.org/dsa/flatten-a-multi-level-linked-list-set-2-depth-wise/",
                   "companies": [
                     {
                       "name": "Amazon",
@@ -3703,7 +3657,7 @@
                   "title": "Convert DLL to Binary Tree",
                   "reference": "GFG",
                   "difficulty": "MEDIUM",
-                  "leetcodeUrl": null,
+                  "leetcodeUrl": "https://leetcode.com/problems/flatten-binary-tree-to-linked-list/description/",
                   "gfgUrl": "https://www.geeksforgeeks.org/problems/binary-tree-to-dll/1",
                   "companies": [
                     {
@@ -3811,7 +3765,7 @@
                   "title": "Task Scheduler (frequency-based greedy)",
                   "reference": "LC 621",
                   "difficulty": "MEDIUM",
-                  "leetcodeUrl": null,
+                  "leetcodeUrl": "https://leetcode.com/problems/task-scheduler/description/",
                   "gfgUrl": "https://www.geeksforgeeks.org/problems/task-scheduler/1",
                   "companies": [
                     {
@@ -3867,7 +3821,7 @@
                   "reference": "LC 523",
                   "difficulty": "MEDIUM",
                   "leetcodeUrl": "https://leetcode.com/problems/continuous-subarray-sum/",
-                  "gfgUrl": "https://www.geeksforgeeks.org/problems/largest-subarray-with-0-sum/1",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/subarray-with-given-sum-1587115621/1",
                   "companies": [
                     {
                       "name": "Google",
@@ -3912,7 +3866,7 @@
                   "title": "Count Subarrays with Sum K",
                   "reference": "GFG",
                   "difficulty": "MEDIUM",
-                  "leetcodeUrl": null,
+                  "leetcodeUrl": "https://leetcode.com/problems/subarray-sum-equals-k/description/",
                   "gfgUrl": "https://www.geeksforgeeks.org/problems/subarrays-with-sum-k/1",
                   "companies": [
                     {
@@ -4036,7 +3990,7 @@
                   "title": "Longest Substring with At Most K Distinct Characters",
                   "reference": "LC 340",
                   "difficulty": "MEDIUM",
-                  "leetcodeUrl": null,
+                  "leetcodeUrl": "https://leetcode.com/problems/longest-substring-with-at-most-k-distinct-characters/ ",
                   "gfgUrl": "https://www.geeksforgeeks.org/problems/longest-k-unique-characters-substring0853/1",
                   "companies": [
                     {
@@ -5211,7 +5165,7 @@
                   "title": "Walls and Gates",
                   "reference": "LC 286",
                   "difficulty": "MEDIUM",
-                  "leetcodeUrl": null,
+                  "leetcodeUrl": "https://leetcode.com/problems/walls-and-gates/description/",
                   "gfgUrl": "https://www.geeksforgeeks.org/problems/reducing-walls4443/1",
                   "companies": [
                     {
@@ -5469,7 +5423,7 @@
                   "title": "Articulation Points",
                   "reference": "GFG",
                   "difficulty": "HARD",
-                  "leetcodeUrl": null,
+                  "leetcodeUrl": "https://leetcode.com/problems/critical-connections-in-a-network/description/",
                   "gfgUrl": "https://www.geeksforgeeks.org/problems/articulation-point-1/1",
                   "companies": [
                     {
@@ -5520,8 +5474,8 @@
                   "title": "Task Scheduling with Dependencies",
                   "reference": "LC 2050",
                   "difficulty": "MEDIUM",
-                  "leetcodeUrl": "https://leetcode.com/problems/task-scheduler/description/",
-                  "gfgUrl": "https://www.geeksforgeeks.org/problems/prerequisite-tasks/1",
+                  "leetcodeUrl": "https://leetcode.com/problems/parallel-courses-iii/",
+                  "gfgUrl": null,
                   "companies": [
                     {
                       "name": "Amazon",
@@ -5713,7 +5667,7 @@
                   "title": "Kruskal’s algorithm",
                   "reference": "GFG",
                   "difficulty": "MEDIUM",
-                  "leetcodeUrl": null,
+                  "leetcodeUrl": "https://leetcode.com/problems/min-cost-to-connect-all-points/description/ ",
                   "gfgUrl": "https://www.geeksforgeeks.org/problems/minimum-spanning-tree-kruskals-algorithm/1",
                   "companies": [
                     {
@@ -5759,7 +5713,7 @@
                   "title": "Number of Connected Components in Graph",
                   "reference": "LC 323",
                   "difficulty": "MEDIUM",
-                  "leetcodeUrl": "https://leetcode.com/problems/count-the-number-of-complete-components/description/",
+                  "leetcodeUrl": "https://leetcode.com/problems/number-of-connected-components-in-an-undirected-graph/ ",
                   "gfgUrl": "https://www.geeksforgeeks.org/problems/connected-components-in-an-undirected-graph/1",
                   "companies": [
                     {
@@ -5783,7 +5737,7 @@
                   "reference": "LC 684",
                   "difficulty": "MEDIUM",
                   "leetcodeUrl": "https://leetcode.com/problems/redundant-connection/",
-                  "gfgUrl": "https://www.geeksforgeeks.org/problems/disjoint-set-union-find/1",
+                  "gfgUrl": " https://www.geeksforgeeks.org/dsa/extra-edge-in-an-undirected-tree/ ",
                   "companies": [
                     {
                       "name": "Flipkart",
@@ -5883,7 +5837,7 @@
                   "title": "Shortest Path in Weighted Graph",
                   "reference": "GFG",
                   "difficulty": "MEDIUM",
-                  "leetcodeUrl": "https://leetcode.com/problems/shortest-path-visiting-all-nodes/description/",
+                  "leetcodeUrl": null,
                   "gfgUrl": "https://www.geeksforgeeks.org/problems/shortest-path-in-weighted-undirected-graph/1",
                   "companies": [
                     {
@@ -5976,7 +5930,7 @@
                   "reference": "LC 778",
                   "difficulty": "MEDIUM",
                   "leetcodeUrl": "https://leetcode.com/problems/swim-in-rising-water/description/",
-                  "gfgUrl": null,
+                  "gfgUrl": "https://www.geeksforgeeks.org/dsa/minimum-time-required-to-swim-in-rising-water/",
                   "companies": [
                     {
                       "name": "Amazon",
@@ -6077,7 +6031,7 @@
                   "reference": "GFG",
                   "difficulty": "MEDIUM",
                   "leetcodeUrl": "https://leetcode.com/problems/find-the-city-with-the-smallest-number-of-neighbors-at-a-threshold-distance/description/",
-                  "gfgUrl": null,
+                  "gfgUrl": "-https://www.geeksforgeeks.org/problems/city-with-the-smallest-number-of-neighbors-at-a-threshold-distance/1 ",
                   "companies": [
                     {
                       "name": "Amazon",
@@ -6194,7 +6148,7 @@
                   "reference": "GFG",
                   "difficulty": "MEDIUM",
                   "leetcodeUrl": "https://leetcode.com/problems/top-k-frequent-words/description/",
-                  "gfgUrl": "https://www.geeksforgeeks.org/problems/word-with-maximum-frequency0120/1",
+                  "gfgUrl": "https://www.geeksforgeeks.org/dsa/find-the-k-most-frequent-words-from-a-file/",
                   "companies": [
                     {
                       "name": "Google",
@@ -6308,7 +6262,7 @@
                   "title": "Minimum Cost to Connect Ropes",
                   "reference": "LC 1167",
                   "difficulty": "MEDIUM",
-                  "leetcodeUrl": null,
+                  "leetcodeUrl": "https://leetcode.com/problems/minimum-cost-to-connect-sticks/",
                   "gfgUrl": "https://www.geeksforgeeks.org/problems/minimum-cost-of-ropes-1587115620/1",
                   "companies": [
                     {
@@ -6465,7 +6419,7 @@
                   "reference": "LC 480",
                   "difficulty": "HARD",
                   "leetcodeUrl": "https://leetcode.com/problems/sliding-window-median/",
-                  "gfgUrl": "https://www.geeksforgeeks.org/problems/find-the-median0527/1",
+                  "gfgUrl": "https://www.geeksforgeeks.org/dsa/median-of-sliding-window-in-an-array/ ",
                   "companies": [
                     {
                       "name": "Google",
@@ -6620,7 +6574,7 @@
                   "title": "Merge Files with Minimum Cost",
                   "reference": "GFG",
                   "difficulty": "MEDIUM",
-                  "leetcodeUrl": null,
+                  "leetcodeUrl": "https://leetcode.com/problems/minimum-cost-to-merge-stones/description/",
                   "gfgUrl": "https://www.geeksforgeeks.org/problems/optimal-file-merge/1",
                   "companies": [
                     {
@@ -6921,7 +6875,7 @@
                   "reference": "LC 52",
                   "difficulty": "HARD",
                   "leetcodeUrl": "https://leetcode.com/problems/n-queens-ii/description/",
-                  "gfgUrl": null,
+                  "gfgUrl": "https://www.geeksforgeeks.org/dsa/n-queen-ii-problem/",
                   "companies": [
                     {
                       "name": "Google",
@@ -6939,7 +6893,7 @@
                   "title": "Graph Coloring (M-Coloring Problem)",
                   "reference": "GFG",
                   "difficulty": "MEDIUM",
-                  "leetcodeUrl": null,
+                  "leetcodeUrl": "https://leetcode.com/problems/flower-planting-with-no-adjacent/description/ ",
                   "gfgUrl": "https://www.geeksforgeeks.org/problems/m-coloring-problem-1587115620/1",
                   "companies": [
                     {
@@ -6958,7 +6912,7 @@
                   "title": "Knight’s Tour",
                   "reference": "GFG",
                   "difficulty": "MEDIUM",
-                  "leetcodeUrl": null,
+                  "leetcodeUrl": "https://leetcode.com/problems/the-knights-tour/description/",
                   "gfgUrl": "https://www.geeksforgeeks.org/problems/knight-walk4521/1",
                   "companies": [
                     {
@@ -6997,7 +6951,7 @@
                   "reference": "LC 473",
                   "difficulty": "MEDIUM",
                   "leetcodeUrl": "https://leetcode.com/problems/matchsticks-to-square/",
-                  "gfgUrl": "https://www.geeksforgeeks.org/problems/partition-to-k-equal-sum-subsets/1",
+                  "gfgUrl": null,
                   "companies": [
                     {
                       "name": "Amazon",
@@ -7028,7 +6982,7 @@
                   "title": "Rat in a Maze",
                   "reference": "GFG",
                   "difficulty": "MEDIUM",
-                  "leetcodeUrl": null,
+                  "leetcodeUrl": "https://leetcode.com/discuss/post/2073103/rat-in-a-maze-problem-by-kabiland-fsox/",
                   "gfgUrl": "https://www.geeksforgeeks.org/problems/rat-in-a-maze-problem/1",
                   "companies": [
                     {
@@ -7090,7 +7044,7 @@
                   "reference": "LC 980",
                   "difficulty": "HARD",
                   "leetcodeUrl": "https://leetcode.com/problems/unique-paths-iii/",
-                  "gfgUrl": null,
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/unique-paths-in-a-grid--170647/1",
                   "companies": [
                     {
                       "name": "Google",
@@ -7175,7 +7129,7 @@
                   "reference": "LC 894",
                   "difficulty": "MEDIUM",
                   "leetcodeUrl": "https://leetcode.com/problems/all-possible-full-binary-trees/description/",
-                  "gfgUrl": "https://www.geeksforgeeks.org/problems/full-binary-tree/1",
+                  "gfgUrl": "https://www.geeksforgeeks.org/dsa/print-all-possible-n-nodes-full-binary-trees/",
                   "companies": [
                     {
                       "name": "Google",
@@ -7305,7 +7259,7 @@
                   "title": "Meeting Rooms II",
                   "reference": "LC 253",
                   "difficulty": "MEDIUM",
-                  "leetcodeUrl": null,
+                  "leetcodeUrl": "https://leetcode.com/problems/meeting-rooms-ii/description/ ",
                   "gfgUrl": "https://www.geeksforgeeks.org/problems/attend-all-meetings-ii/1",
                   "companies": [
                     {
@@ -7329,7 +7283,7 @@
                   "reference": "LC 452",
                   "difficulty": "MEDIUM",
                   "leetcodeUrl": "https://leetcode.com/problems/minimum-number-of-arrows-to-burst-balloons/",
-                  "gfgUrl": "https://www.geeksforgeeks.org/problems/hit-most-balloons--170637/1",
+                  "gfgUrl": "https://www.geeksforgeeks.org/dsa/find-minimum-number-of-arrows-needed-to-burst-all-balloons/",
                   "companies": [
                     {
                       "name": "Amazon",
@@ -7444,7 +7398,7 @@
                   "reference": "LC 1094",
                   "difficulty": "MEDIUM",
                   "leetcodeUrl": "https://leetcode.com/problems/car-pooling/",
-                  "gfgUrl": null,
+                  "gfgUrl": "https://www.geeksforgeeks.org/dsa/feasibility-of-car-trips-with-passenger-pickup-and-drop-off/",
                   "companies": [
                     {
                       "name": "Amazon",
@@ -7522,7 +7476,7 @@
                   "reference": "LC 763",
                   "difficulty": "MEDIUM",
                   "leetcodeUrl": "https://leetcode.com/problems/partition-labels/",
-                  "gfgUrl": "https://www.geeksforgeeks.org/problems/partition-the-array--170647/1",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/maximize-partitions-in-a-string/1",
                   "companies": [
                     {
                       "name": "Flipkart",
@@ -8365,7 +8319,7 @@
                   "title": "Evaluate Expression to True (Boolean Parenthesization)",
                   "reference": "GFG",
                   "difficulty": "HARD",
-                  "leetcodeUrl": null,
+                  "leetcodeUrl": "https://leetcode.com/problems/parsing-a-boolean-expression/description/",
                   "gfgUrl": "https://www.geeksforgeeks.org/problems/boolean-parenthesization5610/1",
                   "companies": [
                     {
@@ -8544,7 +8498,7 @@
                   "title": "0-1 Knapsack",
                   "reference": "GFG",
                   "difficulty": "MEDIUM",
-                  "leetcodeUrl": null,
+                  "leetcodeUrl": "https://www.geeksforgeeks.org/problems/0-1-knapsack-problem0945/1",
                   "gfgUrl": "https://www.geeksforgeeks.org/0-1-knapsack-problem-dp-10/",
                   "companies": [
                     {
@@ -8705,8 +8659,8 @@
                   "title": "Combination Sum IV",
                   "reference": "LC 377",
                   "difficulty": "MEDIUM",
-                  "leetcodeUrl": null,
-                  "gfgUrl": "https://www.geeksforgeeks.org/problems/4-combination-sum/1",
+                  "leetcodeUrl": "https://leetcode.com/problems/combination-sum-iv/description/",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/combination-sum-ii-1664263832/1",
                   "companies": [
                     {
                       "name": "Amazon",
@@ -8738,7 +8692,7 @@
                   "reference": "LC 121",
                   "difficulty": "EASY",
                   "leetcodeUrl": "https://leetcode.com/problems/best-time-to-buy-and-sell-stock/",
-                  "gfgUrl": "https://www.geeksforgeeks.org/problems/buy-maximum-stocks-if-i-stocks-can-be-bought-on-i-th-day/1",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/buy-stock-2/1",
                   "companies": [
                     {
                       "name": "Amazon",
@@ -8761,7 +8715,7 @@
                   "reference": "LC 122",
                   "difficulty": "MEDIUM",
                   "leetcodeUrl": "https://leetcode.com/problems/best-time-to-buy-and-sell-stock-ii/",
-                  "gfgUrl": null,
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/stock-buy-and-sell-1587115621/1",
                   "companies": [
                     {
                       "name": "Adobe",
@@ -8784,7 +8738,7 @@
                   "reference": "LC 123",
                   "difficulty": "HARD",
                   "leetcodeUrl": "https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iii/",
-                  "gfgUrl": null,
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/buy-and-sell-a-share-at-most-twice/1",
                   "companies": [
                     {
                       "name": "Google",
@@ -8807,7 +8761,7 @@
                   "reference": "LC 188",
                   "difficulty": "HARD",
                   "leetcodeUrl": "https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iv/",
-                  "gfgUrl": null,
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/maximum-profit4657/1",
                   "companies": [
                     {
                       "name": "Google",
@@ -8830,7 +8784,7 @@
                   "reference": "LC 309",
                   "difficulty": "MEDIUM",
                   "leetcodeUrl": "https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-cooldown/",
-                  "gfgUrl": null,
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/buy-stock-with-cooldown/1",
                   "companies": [
                     {
                       "name": "Google",
@@ -8853,7 +8807,7 @@
                   "reference": "LC 714",
                   "difficulty": "MEDIUM",
                   "leetcodeUrl": "https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-transaction-fee/",
-                  "gfgUrl": null,
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/buy-stock-with-transaction-fee/1 ",
                   "companies": [
                     {
                       "name": "Amazon",
@@ -9316,7 +9270,7 @@
                   "title": "Unique Numbers 2",
                   "reference": "",
                   "difficulty": "MEDIUM",
-                  "leetcodeUrl": null,
+                  "leetcodeUrl": "https://leetcode.com/problems/single-number-ii/description/",
                   "gfgUrl": "https://www.geeksforgeeks.org/problems/finding-the-numbers0215/1",
                   "companies": [
                     {
@@ -9386,7 +9340,7 @@
                   "reference": "",
                   "difficulty": "MEDIUM",
                   "leetcodeUrl": "https://leetcode.com/problems/single-number-iii/description/",
-                  "gfgUrl": null,
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/find-element-occuring-once-when-all-other-are-present-thrice/1",
                   "companies": [
                     {
                       "name": "Amazon",
@@ -12211,6 +12165,1709 @@
                     }
                   ],
                   "youtubeUrl": null
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sheet_0003",
+      "name": "SBC",
+      "description": "Service Based Company sheet — the DSA problems most frequently asked by service-based / IT-consulting firms (TCS, Infosys, Wipro, Cognizant, Accenture, Capgemini, HCL), organized by pattern.",
+      "order": 3,
+      "topics": [
+        {
+          "id": "topic_sbc_01",
+          "name": "Array",
+          "description": "Contiguous, index-addressable collections — the substrate for most DSA patterns.",
+          "subtopics": [
+            {
+              "id": "subtopic_sbc_01",
+              "name": "Two-Pointer",
+              "order": 0,
+              "problems": [
+                {
+                  "id": "problem_sbc_0001",
+                  "title": "Trapping Rain Water",
+                  "difficulty": "HARD",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/trapping-rain-water-1587115621/1"
+                },
+                {
+                  "id": "problem_sbc_0002",
+                  "title": "Sort Colors — Dutch National Flag",
+                  "difficulty": "MEDIUM",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/sort-an-array-of-0s-1s-and-2s4231/1"
+                },
+                {
+                  "id": "problem_sbc_0003",
+                  "title": "Merge Sorted Array",
+                  "difficulty": "EASY",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/merge-two-sorted-arrays-1587115620/1"
+                },
+                {
+                  "id": "problem_sbc_0004",
+                  "title": "Move Zeroes",
+                  "difficulty": "EASY",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/move-all-zeroes-to-end-of-array0751/1"
+                },
+                {
+                  "id": "problem_sbc_0005",
+                  "title": "3Sum",
+                  "difficulty": "MEDIUM",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/triplet-sum-in-array-1587115621/1",
+                  "companies": [
+                    {
+                      "name": "Infosys",
+                      "logo": "https://logo.clearbit.com/infosys.com"
+                    }
+                  ]
+                },
+                {
+                  "id": "problem_sbc_0006",
+                  "title": "4Sum",
+                  "difficulty": "MEDIUM",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/find-all-four-sum-numbers1732/1",
+                  "companies": [
+                    {
+                      "name": "Infosys",
+                      "logo": "https://logo.clearbit.com/infosys.com"
+                    }
+                  ]
+                },
+                {
+                  "id": "problem_sbc_0007",
+                  "title": "Sort Array By Parity",
+                  "difficulty": "EASY",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/sort-in-specific-order2422/1",
+                  "companies": [
+                    {
+                      "name": "Wipro",
+                      "logo": "https://logo.clearbit.com/wipro.com"
+                    }
+                  ]
+                },
+                {
+                  "id": "problem_sbc_0008",
+                  "title": "Rotate Array",
+                  "difficulty": "MEDIUM",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/rotate-array-by-n-elements-1587115621/1"
+                },
+                {
+                  "id": "problem_sbc_0009",
+                  "title": "Find the Duplicate Number",
+                  "difficulty": "MEDIUM",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/find-duplicates-in-an-array/1",
+                  "companies": [
+                    {
+                      "name": "TCS",
+                      "logo": "https://logo.clearbit.com/tcs.com"
+                    },
+                    {
+                      "name": "Capgemini",
+                      "logo": "https://logo.clearbit.com/capgemini.com"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "subtopic_sbc_02",
+              "name": "Sliding Window",
+              "order": 1,
+              "problems": [
+                {
+                  "id": "problem_sbc_0010",
+                  "title": "Sliding Window Maximum",
+                  "difficulty": "HARD",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/maximum-of-all-subarrays-of-size-k3101/1",
+                  "companies": [
+                    {
+                      "name": "Cognizant",
+                      "logo": "https://logo.clearbit.com/cognizant.com"
+                    }
+                  ]
+                },
+                {
+                  "id": "problem_sbc_0011",
+                  "title": "Fruit Into Baskets",
+                  "difficulty": "MEDIUM",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/longest-subarray-with-atmost-two-distinct-integers/1"
+                },
+                {
+                  "id": "problem_sbc_0012",
+                  "title": "Maximum Sum Subarray of Size K",
+                  "difficulty": "MEDIUM",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/max-sum-subarray-of-size-k5313/1"
+                },
+                {
+                  "id": "problem_sbc_0013",
+                  "title": "Count Distinct Elements in Window",
+                  "difficulty": "MEDIUM",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/count-distinct-elements-in-every-window/1"
+                }
+              ]
+            },
+            {
+              "id": "subtopic_sbc_03",
+              "name": "Prefix Sum",
+              "order": 2,
+              "problems": [
+                {
+                  "id": "problem_sbc_0014",
+                  "title": "Product of Array Except Self",
+                  "difficulty": "MEDIUM",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/product-array-puzzle4525/1"
+                }
+              ]
+            },
+            {
+              "id": "subtopic_sbc_04",
+              "name": "Kadane's Algorithm",
+              "order": 3,
+              "problems": [
+                {
+                  "id": "problem_sbc_0015",
+                  "title": "Maximum Subarray (Kadane's)",
+                  "difficulty": "MEDIUM",
+                  "companies": [
+                    {
+                      "name": "Infosys",
+                      "logo": "https://logo.clearbit.com/infosys.com"
+                    }
+                  ]
+                },
+                {
+                  "id": "problem_sbc_0016",
+                  "title": "Maximum Product Subarray",
+                  "difficulty": "MEDIUM",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/maximum-product-subarray3604/1",
+                  "companies": [
+                    {
+                      "name": "Infosys",
+                      "logo": "https://logo.clearbit.com/infosys.com"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "subtopic_sbc_05",
+              "name": "Array — General / Math",
+              "order": 4,
+              "problems": [
+                {
+                  "id": "problem_sbc_0017",
+                  "title": "Pascal's Triangle",
+                  "difficulty": "EASY",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/pascal-triangle0652/1",
+                  "companies": [
+                    {
+                      "name": "TCS",
+                      "logo": "https://logo.clearbit.com/tcs.com"
+                    },
+                    {
+                      "name": "Capgemini",
+                      "logo": "https://logo.clearbit.com/capgemini.com"
+                    }
+                  ]
+                },
+                {
+                  "id": "problem_sbc_0018",
+                  "title": "Leaders in an Array",
+                  "difficulty": "EASY",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/leaders-in-an-array-1587115620/1"
+                },
+                {
+                  "id": "problem_sbc_0019",
+                  "title": "Spiral Matrix",
+                  "difficulty": "MEDIUM",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/spirally-traversing-a-matrix-1587115621/1",
+                  "companies": [
+                    {
+                      "name": "Cognizant",
+                      "logo": "https://logo.clearbit.com/cognizant.com"
+                    },
+                    {
+                      "name": "Wipro",
+                      "logo": "https://logo.clearbit.com/wipro.com"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "topic_sbc_02",
+          "name": "Strings",
+          "description": "Sequence problems on characters — two-pointer, windowing and parsing.",
+          "subtopics": [
+            {
+              "id": "subtopic_sbc_06",
+              "name": "Two-Pointer (Palindrome)",
+              "order": 0,
+              "problems": [
+                {
+                  "id": "problem_sbc_0020",
+                  "title": "Valid Palindrome",
+                  "difficulty": "EASY",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/palindrome-string0817/1"
+                },
+                {
+                  "id": "problem_sbc_0021",
+                  "title": "Reverse Words in a String",
+                  "difficulty": "MEDIUM",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/reverse-words-in-a-given-string5459/1"
+                },
+                {
+                  "id": "problem_sbc_0022",
+                  "title": "Reverse Words in a String III",
+                  "difficulty": "EASY",
+                  "companies": [
+                    {
+                      "name": "HCL",
+                      "logo": "https://logo.clearbit.com/hcltech.com"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "subtopic_sbc_07",
+              "name": "Sliding Window (String)",
+              "order": 1,
+              "problems": [
+                {
+                  "id": "problem_sbc_0023",
+                  "title": "Longest Substring Without Repeating Characters",
+                  "difficulty": "MEDIUM",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/longest-distinct-characters-in-string5848/1"
+                },
+                {
+                  "id": "problem_sbc_0024",
+                  "title": "Minimum Window Substring",
+                  "difficulty": "HARD",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/smallest-window-in-a-string-containing-all-the-characters-of-another-string-1587115621/1"
+                },
+                {
+                  "id": "problem_sbc_0025",
+                  "title": "Longest Repeating Character Replacement",
+                  "difficulty": "MEDIUM",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/longest-repeating-character-replacement/1"
+                }
+              ]
+            },
+            {
+              "id": "subtopic_sbc_08",
+              "name": "Strings — General",
+              "order": 2,
+              "problems": [
+                {
+                  "id": "problem_sbc_0026",
+                  "title": "Longest Common Prefix",
+                  "difficulty": "EASY",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/longest-common-prefix-in-an-array5129/1"
+                },
+                {
+                  "id": "problem_sbc_0027",
+                  "title": "String to Integer (atoi)",
+                  "difficulty": "MEDIUM",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/implement-atoi/1"
+                },
+                {
+                  "id": "problem_sbc_0028",
+                  "title": "Count and Say",
+                  "difficulty": "MEDIUM",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/decode-the-pattern1138/1"
+                },
+                {
+                  "id": "problem_sbc_0029",
+                  "title": "Roman to Integer",
+                  "difficulty": "EASY",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/roman-number-to-integer3201/1",
+                  "companies": [
+                    {
+                      "name": "Accenture",
+                      "logo": "https://logo.clearbit.com/accenture.com"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "topic_sbc_03",
+          "name": "Binary Search",
+          "description": "Halving the search space over sorted data or a monotonic answer range.",
+          "subtopics": [
+            {
+              "id": "subtopic_sbc_09",
+              "name": "Classic Binary Search",
+              "order": 0,
+              "problems": [
+                {
+                  "id": "problem_sbc_0030",
+                  "title": "Binary Search",
+                  "difficulty": "EASY",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/who-will-win-1587115621/1"
+                },
+                {
+                  "id": "problem_sbc_0031",
+                  "title": "Search in Rotated Sorted Array",
+                  "difficulty": "MEDIUM",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/search-in-a-rotated-array4618/1",
+                  "companies": [
+                    {
+                      "name": "Cognizant",
+                      "logo": "https://logo.clearbit.com/cognizant.com"
+                    },
+                    {
+                      "name": "Accenture",
+                      "logo": "https://logo.clearbit.com/accenture.com"
+                    }
+                  ]
+                },
+                {
+                  "id": "problem_sbc_0032",
+                  "title": "Find Minimum in Rotated Sorted Array",
+                  "difficulty": "MEDIUM",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/minimum-element-in-a-sorted-and-rotated-array3611/1"
+                },
+                {
+                  "id": "problem_sbc_0033",
+                  "title": "Median of Two Sorted Arrays",
+                  "difficulty": "HARD",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/median-of-2-sorted-arrays-of-different-sizes/1"
+                },
+                {
+                  "id": "problem_sbc_0034",
+                  "title": "Find in Mountain Array",
+                  "difficulty": "HARD",
+                  "companies": [
+                    {
+                      "name": "TCS",
+                      "logo": "https://logo.clearbit.com/tcs.com"
+                    },
+                    {
+                      "name": "Wipro",
+                      "logo": "https://logo.clearbit.com/wipro.com"
+                    }
+                  ]
+                },
+                {
+                  "id": "problem_sbc_0035",
+                  "title": "Peak Index in a Mountain Array",
+                  "difficulty": "MEDIUM",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/peak-element/1",
+                  "companies": [
+                    {
+                      "name": "TCS",
+                      "logo": "https://logo.clearbit.com/tcs.com"
+                    },
+                    {
+                      "name": "Wipro",
+                      "logo": "https://logo.clearbit.com/wipro.com"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "subtopic_sbc_10",
+              "name": "Lower / Upper Bound",
+              "order": 1,
+              "problems": [
+                {
+                  "id": "problem_sbc_0036",
+                  "title": "Find First and Last Position of Element in Sorted Array",
+                  "difficulty": "MEDIUM",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/first-and-last-occurrences-of-x3116/1",
+                  "companies": [
+                    {
+                      "name": "Wipro",
+                      "logo": "https://logo.clearbit.com/wipro.com"
+                    }
+                  ]
+                },
+                {
+                  "id": "problem_sbc_0037",
+                  "title": "Search Insert Position",
+                  "difficulty": "EASY",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/search-insert-position-of-k-in-a-sorted-array/1"
+                }
+              ]
+            },
+            {
+              "id": "subtopic_sbc_11",
+              "name": "Binary Search on Answers",
+              "order": 2,
+              "problems": [
+                {
+                  "id": "problem_sbc_0038",
+                  "title": "Koko Eating Bananas",
+                  "difficulty": "MEDIUM",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/koko-eating-bananas/1"
+                },
+                {
+                  "id": "problem_sbc_0039",
+                  "title": "Aggressive Cows",
+                  "difficulty": "MEDIUM",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/aggressive-cows/1"
+                }
+              ]
+            },
+            {
+              "id": "subtopic_sbc_12",
+              "name": "Search in 2D Matrix",
+              "order": 3,
+              "problems": [
+                {
+                  "id": "problem_sbc_0040",
+                  "title": "Search a 2D Matrix",
+                  "difficulty": "MEDIUM",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/search-in-a-matrix-1587115621/1",
+                  "companies": [
+                    {
+                      "name": "Wipro",
+                      "logo": "https://logo.clearbit.com/wipro.com"
+                    },
+                    {
+                      "name": "Accenture",
+                      "logo": "https://logo.clearbit.com/accenture.com"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "topic_sbc_04",
+          "name": "Linked List",
+          "description": "Pointer manipulation on singly linked nodes.",
+          "subtopics": [
+            {
+              "id": "subtopic_sbc_13",
+              "name": "Basic Operations",
+              "order": 0,
+              "problems": [
+                {
+                  "id": "problem_sbc_0041",
+                  "title": "Intersection of Two Linked Lists",
+                  "difficulty": "EASY",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/intersection-point-in-y-shapped-linked-lists/1"
+                }
+              ]
+            },
+            {
+              "id": "subtopic_sbc_14",
+              "name": "Fast and Slow Pointers",
+              "order": 1,
+              "problems": [
+                {
+                  "id": "problem_sbc_0042",
+                  "title": "Middle of the Linked List",
+                  "difficulty": "EASY",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/finding-middle-element-in-a-linked-list/1"
+                },
+                {
+                  "id": "problem_sbc_0043",
+                  "title": "Remove Nth Node From End of List",
+                  "difficulty": "MEDIUM"
+                },
+                {
+                  "id": "problem_sbc_0044",
+                  "title": "Linked List Cycle",
+                  "difficulty": "EASY",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/detect-loop-in-linked-list/1",
+                  "companies": [
+                    {
+                      "name": "TCS",
+                      "logo": "https://logo.clearbit.com/tcs.com"
+                    },
+                    {
+                      "name": "Cognizant",
+                      "logo": "https://logo.clearbit.com/cognizant.com"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "subtopic_sbc_15",
+              "name": "Reversal Pattern",
+              "order": 2,
+              "problems": [
+                {
+                  "id": "problem_sbc_0045",
+                  "title": "Reverse Linked List",
+                  "difficulty": "EASY",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/reverse-a-linked-list/1"
+                },
+                {
+                  "id": "problem_sbc_0046",
+                  "title": "Reverse Linked List II",
+                  "difficulty": "MEDIUM",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/reverse-a-sublist-of-a-linked-list/1",
+                  "companies": [
+                    {
+                      "name": "HCL",
+                      "logo": "https://logo.clearbit.com/hcltech.com"
+                    },
+                    {
+                      "name": "TCS",
+                      "logo": "https://logo.clearbit.com/tcs.com"
+                    },
+                    {
+                      "name": "Wipro",
+                      "logo": "https://logo.clearbit.com/wipro.com"
+                    }
+                  ]
+                },
+                {
+                  "id": "problem_sbc_0047",
+                  "title": "Reverse Nodes in k-Group",
+                  "difficulty": "HARD",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/reverse-a-linked-list-in-groups-of-given-size/1"
+                },
+                {
+                  "id": "problem_sbc_0048",
+                  "title": "Palindrome Linked List",
+                  "difficulty": "EASY",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/check-if-linked-list-is-pallindrome/1"
+                }
+              ]
+            },
+            {
+              "id": "subtopic_sbc_16",
+              "name": "Merge / Sort",
+              "order": 3,
+              "problems": [
+                {
+                  "id": "problem_sbc_0049",
+                  "title": "Merge Two Sorted Lists",
+                  "difficulty": "EASY",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/merge-two-sorted-linked-lists/1",
+                  "companies": [
+                    {
+                      "name": "Accenture",
+                      "logo": "https://logo.clearbit.com/accenture.com"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "subtopic_sbc_17",
+              "name": "LinkedList with Stack / HashMap",
+              "order": 4,
+              "problems": [
+                {
+                  "id": "problem_sbc_0050",
+                  "title": "Add Two Numbers II",
+                  "difficulty": "MEDIUM",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/add-two-numbers-represented-by-linked-lists/1",
+                  "companies": [
+                    {
+                      "name": "TCS",
+                      "logo": "https://logo.clearbit.com/tcs.com"
+                    },
+                    {
+                      "name": "Accenture",
+                      "logo": "https://logo.clearbit.com/accenture.com"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "topic_sbc_05",
+          "name": "Double Linked List",
+          "description": "Nodes with prev+next pointers — O(1) insert/remove at both ends.",
+          "subtopics": [
+            {
+              "id": "subtopic_sbc_18",
+              "name": "Basic DLL Operations",
+              "order": 0,
+              "problems": [
+                {
+                  "id": "problem_sbc_0051",
+                  "title": "LRU Cache — DLL + HashMap for O(1) cache",
+                  "difficulty": "MEDIUM",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/lru-cache/1",
+                  "companies": [
+                    {
+                      "name": "TCS",
+                      "logo": "https://logo.clearbit.com/tcs.com"
+                    },
+                    {
+                      "name": "Cognizant",
+                      "logo": "https://logo.clearbit.com/cognizant.com"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "topic_sbc_06",
+          "name": "HashMap",
+          "description": "O(1) average lookups — frequency counting, prefix maps and design.",
+          "subtopics": [
+            {
+              "id": "subtopic_sbc_19",
+              "name": "Frequency Map / Counting",
+              "order": 0,
+              "problems": [
+                {
+                  "id": "problem_sbc_0052",
+                  "title": "Two Sum",
+                  "difficulty": "EASY",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/key-pair5616/1",
+                  "companies": [
+                    {
+                      "name": "Accenture",
+                      "logo": "https://logo.clearbit.com/accenture.com"
+                    },
+                    {
+                      "name": "TCS",
+                      "logo": "https://logo.clearbit.com/tcs.com"
+                    }
+                  ]
+                },
+                {
+                  "id": "problem_sbc_0053",
+                  "title": "Contains Duplicate",
+                  "difficulty": "EASY",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/check-if-array-contains-duplicates/1"
+                },
+                {
+                  "id": "problem_sbc_0054",
+                  "title": "Longest Consecutive Sequence",
+                  "difficulty": "MEDIUM",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/longest-consecutive-subsequence2449/1"
+                },
+                {
+                  "id": "problem_sbc_0055",
+                  "title": "Majority Element",
+                  "difficulty": "EASY",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/majority-element-1587115620/1"
+                },
+                {
+                  "id": "problem_sbc_0056",
+                  "title": "Valid Anagram",
+                  "difficulty": "EASY",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/anagram-1587115620/1"
+                },
+                {
+                  "id": "problem_sbc_0057",
+                  "title": "Group Anagrams",
+                  "difficulty": "MEDIUM",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/print-anagrams-together/1"
+                },
+                {
+                  "id": "problem_sbc_0058",
+                  "title": "Remove Letter To Equalize Frequency",
+                  "difficulty": "EASY",
+                  "companies": [
+                    {
+                      "name": "TCS",
+                      "logo": "https://logo.clearbit.com/tcs.com"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "subtopic_sbc_20",
+              "name": "Prefix-Sum with Map",
+              "order": 1,
+              "problems": [
+                {
+                  "id": "problem_sbc_0059",
+                  "title": "Subarray Sum Equals K",
+                  "difficulty": "MEDIUM",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/subarrays-with-sum-k/1"
+                }
+              ]
+            },
+            {
+              "id": "subtopic_sbc_21",
+              "name": "HashMap Design (implementation)",
+              "order": 2,
+              "problems": [
+                {
+                  "id": "problem_sbc_0060",
+                  "title": "Design HashMap",
+                  "difficulty": "EASY",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/design-hashmap/1",
+                  "companies": [
+                    {
+                      "name": "TCS",
+                      "logo": "https://logo.clearbit.com/tcs.com"
+                    },
+                    {
+                      "name": "Cognizant",
+                      "logo": "https://logo.clearbit.com/cognizant.com"
+                    },
+                    {
+                      "name": "Infosys",
+                      "logo": "https://logo.clearbit.com/infosys.com"
+                    }
+                  ]
+                },
+                {
+                  "id": "problem_sbc_0061",
+                  "title": "Design HashSet",
+                  "difficulty": "EASY",
+                  "companies": [
+                    {
+                      "name": "Capgemini",
+                      "logo": "https://logo.clearbit.com/capgemini.com"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "topic_sbc_07",
+          "name": "Stack",
+          "description": "LIFO structure — monotonic stacks, expression evaluation and design.",
+          "subtopics": [
+            {
+              "id": "subtopic_sbc_22",
+              "name": "Monotonic Stack",
+              "order": 0,
+              "problems": [
+                {
+                  "id": "problem_sbc_0062",
+                  "title": "Next Greater Element I",
+                  "difficulty": "EASY",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/next-larger-element-1587115620/1"
+                },
+                {
+                  "id": "problem_sbc_0063",
+                  "title": "Daily Temperatures",
+                  "difficulty": "MEDIUM"
+                },
+                {
+                  "id": "problem_sbc_0064",
+                  "title": "Largest Rectangle in Histogram",
+                  "difficulty": "HARD",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/maximum-rectangular-area-in-a-histogram-1587115620/1"
+                }
+              ]
+            },
+            {
+              "id": "subtopic_sbc_23",
+              "name": "Expression Evaluation",
+              "order": 1,
+              "problems": [
+                {
+                  "id": "problem_sbc_0065",
+                  "title": "Evaluate Reverse Polish Notation",
+                  "difficulty": "MEDIUM"
+                }
+              ]
+            },
+            {
+              "id": "subtopic_sbc_24",
+              "name": "Stack Simulation / Undo Operation",
+              "order": 2,
+              "problems": [
+                {
+                  "id": "problem_sbc_0066",
+                  "title": "Decode String",
+                  "difficulty": "MEDIUM",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/decode-the-string2444/1"
+                }
+              ]
+            },
+            {
+              "id": "subtopic_sbc_25",
+              "name": "Parenthesis & Scoring",
+              "order": 3,
+              "problems": [
+                {
+                  "id": "problem_sbc_0067",
+                  "title": "Valid Parentheses",
+                  "difficulty": "EASY",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/parenthesis-checker2744/1"
+                }
+              ]
+            },
+            {
+              "id": "subtopic_sbc_26",
+              "name": "Stack-Based Design",
+              "order": 4,
+              "problems": [
+                {
+                  "id": "problem_sbc_0068",
+                  "title": "Min Stack",
+                  "difficulty": "MEDIUM",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/get-minimum-element-from-stack/1"
+                },
+                {
+                  "id": "problem_sbc_0069",
+                  "title": "Implement Queue using Stacks",
+                  "difficulty": "EASY",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/queue-using-stack/1"
+                },
+                {
+                  "id": "problem_sbc_0070",
+                  "title": "Implement Stack using Queues",
+                  "difficulty": "EASY",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/stack-using-queue/1",
+                  "companies": [
+                    {
+                      "name": "Accenture",
+                      "logo": "https://logo.clearbit.com/accenture.com"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "topic_sbc_08",
+          "name": "Recursion",
+          "description": "Solving a problem in terms of smaller instances of itself.",
+          "subtopics": [
+            {
+              "id": "subtopic_sbc_27",
+              "name": "Linear Recursion",
+              "order": 0,
+              "problems": [
+                {
+                  "id": "problem_sbc_0071",
+                  "title": "Count and Say",
+                  "difficulty": "MEDIUM",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/decode-the-pattern1138/1"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "topic_sbc_09",
+          "name": "Tree",
+          "description": "Binary tree traversals and structural queries.",
+          "subtopics": [
+            {
+              "id": "subtopic_sbc_28",
+              "name": "DFS Traversals",
+              "order": 0,
+              "problems": [
+                {
+                  "id": "problem_sbc_0072",
+                  "title": "Maximum Depth of Binary Tree",
+                  "difficulty": "EASY",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/maximum-depth-of-binary-tree/1"
+                },
+                {
+                  "id": "problem_sbc_0073",
+                  "title": "Same Tree",
+                  "difficulty": "EASY",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/determine-if-two-trees-are-identical/1"
+                },
+                {
+                  "id": "problem_sbc_0074",
+                  "title": "Binary Tree Preorder Traversal",
+                  "difficulty": "EASY",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/preorder-traversal/1",
+                  "companies": [
+                    {
+                      "name": "TCS",
+                      "logo": "https://logo.clearbit.com/tcs.com"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "subtopic_sbc_29",
+              "name": "BFS / Level-Order",
+              "order": 1,
+              "problems": [
+                {
+                  "id": "problem_sbc_0075",
+                  "title": "Invert Binary Tree",
+                  "difficulty": "EASY",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/mirror-tree/1"
+                },
+                {
+                  "id": "problem_sbc_0076",
+                  "title": "Binary Tree Level Order Traversal",
+                  "difficulty": "MEDIUM",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/level-order-traversal/1"
+                },
+                {
+                  "id": "problem_sbc_0077",
+                  "title": "Binary Tree Right Side View",
+                  "difficulty": "MEDIUM",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/right-view-of-binary-tree/1"
+                },
+                {
+                  "id": "problem_sbc_0078",
+                  "title": "Binary Tree Zigzag Level Order Traversal",
+                  "difficulty": "MEDIUM",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/zigzag-tree-traversal/1"
+                }
+              ]
+            },
+            {
+              "id": "subtopic_sbc_30",
+              "name": "Lowest Common Ancestor",
+              "order": 2,
+              "problems": [
+                {
+                  "id": "problem_sbc_0079",
+                  "title": "Lowest Common Ancestor of a Binary Tree",
+                  "difficulty": "MEDIUM",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/lowest-common-ancestor-in-a-binary-tree/1"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "topic_sbc_10",
+          "name": "Binary Search Tree",
+          "description": "Ordered binary trees — search, insert, delete and validation.",
+          "subtopics": [
+            {
+              "id": "subtopic_sbc_31",
+              "name": "BST Operations",
+              "order": 0,
+              "problems": [
+                {
+                  "id": "problem_sbc_0080",
+                  "title": "Validate Binary Search Tree",
+                  "difficulty": "MEDIUM",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/check-for-bst/1"
+                },
+                {
+                  "id": "problem_sbc_0081",
+                  "title": "Search in a Binary Search Tree",
+                  "difficulty": "EASY",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/search-a-node-in-bst/1"
+                },
+                {
+                  "id": "problem_sbc_0082",
+                  "title": "Insert into a Binary Search Tree",
+                  "difficulty": "MEDIUM",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/insert-a-node-in-a-bst/1"
+                },
+                {
+                  "id": "problem_sbc_0083",
+                  "title": "Delete Node in a BST",
+                  "difficulty": "MEDIUM",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/delete-a-node-from-bst/1"
+                },
+                {
+                  "id": "problem_sbc_0084",
+                  "title": "Unique Binary Search Trees II",
+                  "difficulty": "MEDIUM",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/unique-bsts-1587115621/1",
+                  "companies": [
+                    {
+                      "name": "Infosys",
+                      "logo": "https://logo.clearbit.com/infosys.com"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "topic_sbc_11",
+          "name": "Graph",
+          "description": "BFS/DFS, topological ordering and union-find over vertices & edges.",
+          "subtopics": [
+            {
+              "id": "subtopic_sbc_32",
+              "name": "BFS (Unweighted Path)",
+              "order": 0,
+              "problems": [
+                {
+                  "id": "problem_sbc_0085",
+                  "title": "Rotting Oranges",
+                  "difficulty": "MEDIUM",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/rotten-oranges2536/1"
+                },
+                {
+                  "id": "problem_sbc_0086",
+                  "title": "Word Ladder",
+                  "difficulty": "HARD",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/word-ladder/1"
+                },
+                {
+                  "id": "problem_sbc_0087",
+                  "title": "Shortest Path Visiting All Nodes",
+                  "difficulty": "HARD",
+                  "companies": [
+                    {
+                      "name": "HCL",
+                      "logo": "https://logo.clearbit.com/hcltech.com"
+                    },
+                    {
+                      "name": "TCS",
+                      "logo": "https://logo.clearbit.com/tcs.com"
+                    },
+                    {
+                      "name": "Cognizant",
+                      "logo": "https://logo.clearbit.com/cognizant.com"
+                    }
+                  ]
+                },
+                {
+                  "id": "problem_sbc_0088",
+                  "title": "01 Matrix",
+                  "difficulty": "MEDIUM",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/distance-of-nearest-cell-having-1-1587115620/1",
+                  "companies": [
+                    {
+                      "name": "Wipro",
+                      "logo": "https://logo.clearbit.com/wipro.com"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "subtopic_sbc_33",
+              "name": "DFS (Connectivity)",
+              "order": 1,
+              "problems": [
+                {
+                  "id": "problem_sbc_0089",
+                  "title": "Number of Islands",
+                  "difficulty": "MEDIUM",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/find-the-number-of-islands/1"
+                },
+                {
+                  "id": "problem_sbc_0090",
+                  "title": "Clone Graph",
+                  "difficulty": "MEDIUM",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/clone-graph/1"
+                },
+                {
+                  "id": "problem_sbc_0091",
+                  "title": "Is Graph Bipartite?",
+                  "difficulty": "MEDIUM",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/bipartite-graph/1",
+                  "companies": [
+                    {
+                      "name": "Infosys",
+                      "logo": "https://logo.clearbit.com/infosys.com"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "subtopic_sbc_34",
+              "name": "Topological Sort",
+              "order": 2,
+              "problems": [
+                {
+                  "id": "problem_sbc_0092",
+                  "title": "Course Schedule",
+                  "difficulty": "MEDIUM",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/course-schedule-i/1"
+                },
+                {
+                  "id": "problem_sbc_0093",
+                  "title": "Largest Color Value in a Directed Graph",
+                  "difficulty": "HARD",
+                  "companies": [
+                    {
+                      "name": "HCL",
+                      "logo": "https://logo.clearbit.com/hcltech.com"
+                    },
+                    {
+                      "name": "Cognizant",
+                      "logo": "https://logo.clearbit.com/cognizant.com"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "subtopic_sbc_35",
+              "name": "MST / Union-Find",
+              "order": 3,
+              "problems": [
+                {
+                  "id": "problem_sbc_0094",
+                  "title": "Min Cost to Connect All Points",
+                  "difficulty": "MEDIUM",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/minimum-cost-to-connect-all-houses-in-a-city/1",
+                  "companies": [
+                    {
+                      "name": "TCS",
+                      "logo": "https://logo.clearbit.com/tcs.com"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "topic_sbc_12",
+          "name": "Heap",
+          "description": "Priority queues — top-K, k-way merge and running medians.",
+          "subtopics": [
+            {
+              "id": "subtopic_sbc_36",
+              "name": "Top-K Elements",
+              "order": 0,
+              "problems": [
+                {
+                  "id": "problem_sbc_0095",
+                  "title": "Kth Largest Element in an Array",
+                  "difficulty": "MEDIUM",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/kth-largest-element5034/1",
+                  "companies": [
+                    {
+                      "name": "TCS",
+                      "logo": "https://logo.clearbit.com/tcs.com"
+                    },
+                    {
+                      "name": "Infosys",
+                      "logo": "https://logo.clearbit.com/infosys.com"
+                    },
+                    {
+                      "name": "Accenture",
+                      "logo": "https://logo.clearbit.com/accenture.com"
+                    }
+                  ]
+                },
+                {
+                  "id": "problem_sbc_0096",
+                  "title": "Top K Frequent Elements",
+                  "difficulty": "MEDIUM",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/top-k-frequent-elements-in-array/1"
+                },
+                {
+                  "id": "problem_sbc_0097",
+                  "title": "Task Scheduler",
+                  "difficulty": "MEDIUM",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/task-scheduler/1"
+                },
+                {
+                  "id": "problem_sbc_0098",
+                  "title": "Reorganize String — max-heap by frequency",
+                  "difficulty": "MEDIUM",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/rearrange-characters4649/1",
+                  "companies": [
+                    {
+                      "name": "Capgemini",
+                      "logo": "https://logo.clearbit.com/capgemini.com"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "subtopic_sbc_37",
+              "name": "Merge K Sorted",
+              "order": 1,
+              "problems": [
+                {
+                  "id": "problem_sbc_0099",
+                  "title": "Merge k Sorted Lists",
+                  "difficulty": "HARD",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/merge-k-sorted-linked-lists/1"
+                }
+              ]
+            },
+            {
+              "id": "subtopic_sbc_38",
+              "name": "Implementation of Heap",
+              "order": 2,
+              "problems": [
+                {
+                  "id": "problem_sbc_0100",
+                  "title": "Find Median from Data Stream",
+                  "difficulty": "HARD",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/find-median-in-a-stream-1587115620/1"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "topic_sbc_13",
+          "name": "Backtracking",
+          "description": "Systematic search with pruning over the decision tree.",
+          "subtopics": [
+            {
+              "id": "subtopic_sbc_39",
+              "name": "Choice-Based Backtracking",
+              "order": 0,
+              "problems": [
+                {
+                  "id": "problem_sbc_0101",
+                  "title": "Permutations",
+                  "difficulty": "MEDIUM",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/permutations-of-a-given-string-1587115620/1",
+                  "companies": [
+                    {
+                      "name": "TCS",
+                      "logo": "https://logo.clearbit.com/tcs.com"
+                    },
+                    {
+                      "name": "Infosys",
+                      "logo": "https://logo.clearbit.com/infosys.com"
+                    },
+                    {
+                      "name": "Cognizant",
+                      "logo": "https://logo.clearbit.com/cognizant.com"
+                    }
+                  ]
+                },
+                {
+                  "id": "problem_sbc_0102",
+                  "title": "Combination Sum",
+                  "difficulty": "MEDIUM",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/combination-sum-1587115620/1"
+                }
+              ]
+            },
+            {
+              "id": "subtopic_sbc_40",
+              "name": "Constraint-Based Backtracking",
+              "order": 1,
+              "problems": [
+                {
+                  "id": "problem_sbc_0103",
+                  "title": "Subsets",
+                  "difficulty": "MEDIUM",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/subset-sum-problem-1611555638/1"
+                }
+              ]
+            },
+            {
+              "id": "subtopic_sbc_41",
+              "name": "Grid / Path Backtracking",
+              "order": 2,
+              "problems": [
+                {
+                  "id": "problem_sbc_0104",
+                  "title": "Word Search",
+                  "difficulty": "MEDIUM",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/word-search/1"
+                },
+                {
+                  "id": "problem_sbc_0105",
+                  "title": "N-Queens",
+                  "difficulty": "HARD",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/n-queen-problem0315/1"
+                }
+              ]
+            },
+            {
+              "id": "subtopic_sbc_42",
+              "name": "Decision Tree / Sequence Generation",
+              "order": 3,
+              "problems": [
+                {
+                  "id": "problem_sbc_0106",
+                  "title": "Generate Parentheses",
+                  "difficulty": "MEDIUM",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/generate-all-possible-parentheses/1"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "topic_sbc_14",
+          "name": "Greedy",
+          "description": "Locally optimal choices — intervals, reachability and sorting.",
+          "subtopics": [
+            {
+              "id": "subtopic_sbc_43",
+              "name": "Intervals & Reach",
+              "order": 0,
+              "problems": [
+                {
+                  "id": "problem_sbc_0107",
+                  "title": "Merge Intervals",
+                  "difficulty": "MEDIUM",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/overlapping-intervals--170633/1"
+                },
+                {
+                  "id": "problem_sbc_0108",
+                  "title": "Jump Game",
+                  "difficulty": "MEDIUM",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/jump-game/1"
+                },
+                {
+                  "id": "problem_sbc_0109",
+                  "title": "Gas Station",
+                  "difficulty": "MEDIUM",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/circular-tour-1587115620/1"
+                },
+                {
+                  "id": "problem_sbc_0110",
+                  "title": "Activity Selection",
+                  "difficulty": "MEDIUM",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/activity-selection-1587115620/1"
+                },
+                {
+                  "id": "problem_sbc_0111",
+                  "title": "Minimum Platforms",
+                  "difficulty": "MEDIUM",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/minimum-platforms-1587115620/1"
+                }
+              ]
+            },
+            {
+              "id": "subtopic_sbc_44",
+              "name": "Sorting / Local Choice",
+              "order": 1,
+              "problems": [
+                {
+                  "id": "problem_sbc_0112",
+                  "title": "Lemonade Change",
+                  "difficulty": "EASY"
+                },
+                {
+                  "id": "problem_sbc_0113",
+                  "title": "Candy",
+                  "difficulty": "HARD",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/candy/1",
+                  "companies": [
+                    {
+                      "name": "TCS",
+                      "logo": "https://logo.clearbit.com/tcs.com"
+                    },
+                    {
+                      "name": "Infosys",
+                      "logo": "https://logo.clearbit.com/infosys.com"
+                    },
+                    {
+                      "name": "Cognizant",
+                      "logo": "https://logo.clearbit.com/cognizant.com"
+                    }
+                  ]
+                },
+                {
+                  "id": "problem_sbc_0114",
+                  "title": "Fractional Knapsack",
+                  "difficulty": "MEDIUM",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/fractional-knapsack-1587115620/1"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "topic_sbc_15",
+          "name": "Dynamic Programming",
+          "description": "Overlapping subproblems solved once and reused.",
+          "subtopics": [
+            {
+              "id": "subtopic_sbc_45",
+              "name": "1D / Linear DP",
+              "order": 0,
+              "problems": [
+                {
+                  "id": "problem_sbc_0115",
+                  "title": "Longest Increasing Subsequence",
+                  "difficulty": "MEDIUM",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/longest-increasing-subsequence-1587115620/1",
+                  "companies": [
+                    {
+                      "name": "HCL",
+                      "logo": "https://logo.clearbit.com/hcltech.com"
+                    },
+                    {
+                      "name": "TCS",
+                      "logo": "https://logo.clearbit.com/tcs.com"
+                    },
+                    {
+                      "name": "Infosys",
+                      "logo": "https://logo.clearbit.com/infosys.com"
+                    }
+                  ]
+                },
+                {
+                  "id": "problem_sbc_0116",
+                  "title": "Integer Break",
+                  "difficulty": "MEDIUM",
+                  "companies": [
+                    {
+                      "name": "TCS",
+                      "logo": "https://logo.clearbit.com/tcs.com"
+                    },
+                    {
+                      "name": "Wipro",
+                      "logo": "https://logo.clearbit.com/wipro.com"
+                    }
+                  ]
+                },
+                {
+                  "id": "problem_sbc_0117",
+                  "title": "Maximum Product Subarray",
+                  "difficulty": "MEDIUM",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/maximum-product-subarray3604/1",
+                  "companies": [
+                    {
+                      "name": "Infosys",
+                      "logo": "https://logo.clearbit.com/infosys.com"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "subtopic_sbc_46",
+              "name": "2D / Grid DP",
+              "order": 1,
+              "problems": [
+                {
+                  "id": "problem_sbc_0118",
+                  "title": "Pascal's Triangle",
+                  "difficulty": "EASY",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/pascal-triangle0652/1",
+                  "companies": [
+                    {
+                      "name": "TCS",
+                      "logo": "https://logo.clearbit.com/tcs.com"
+                    },
+                    {
+                      "name": "Capgemini",
+                      "logo": "https://logo.clearbit.com/capgemini.com"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "subtopic_sbc_47",
+              "name": "DP on Strings",
+              "order": 2,
+              "problems": [
+                {
+                  "id": "problem_sbc_0119",
+                  "title": "Longest Palindromic Substring",
+                  "difficulty": "MEDIUM",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/longest-palindrome-in-a-string1956/1",
+                  "companies": [
+                    {
+                      "name": "HCL",
+                      "logo": "https://logo.clearbit.com/hcltech.com"
+                    },
+                    {
+                      "name": "Accenture",
+                      "logo": "https://logo.clearbit.com/accenture.com"
+                    }
+                  ]
+                },
+                {
+                  "id": "problem_sbc_0120",
+                  "title": "Interleaving String",
+                  "difficulty": "MEDIUM",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/interleaved-strings/1",
+                  "companies": [
+                    {
+                      "name": "Capgemini",
+                      "logo": "https://logo.clearbit.com/capgemini.com"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "subtopic_sbc_48",
+              "name": "Knapsack / Subset Sum",
+              "order": 3,
+              "problems": [
+                {
+                  "id": "problem_sbc_0121",
+                  "title": "Coin Change II",
+                  "difficulty": "MEDIUM",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/coin-change2448/1",
+                  "companies": [
+                    {
+                      "name": "TCS",
+                      "logo": "https://logo.clearbit.com/tcs.com"
+                    },
+                    {
+                      "name": "Infosys",
+                      "logo": "https://logo.clearbit.com/infosys.com"
+                    },
+                    {
+                      "name": "Cognizant",
+                      "logo": "https://logo.clearbit.com/cognizant.com"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "subtopic_sbc_49",
+              "name": "DP on Stocks",
+              "order": 4,
+              "problems": [
+                {
+                  "id": "problem_sbc_0122",
+                  "title": "Best Time to Buy and Sell Stock",
+                  "difficulty": "EASY",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/buy-stock-2/1"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "topic_sbc_16",
+          "name": "Trie",
+          "description": "Prefix trees for string retrieval and segmentation.",
+          "subtopics": [
+            {
+              "id": "subtopic_sbc_50",
+              "name": "Basic Trie Operations",
+              "order": 0,
+              "problems": [
+                {
+                  "id": "problem_sbc_0123",
+                  "title": "Longest Common Prefix",
+                  "difficulty": "EASY",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/longest-common-prefix-in-an-array5129/1"
+                }
+              ]
+            },
+            {
+              "id": "subtopic_sbc_51",
+              "name": "Word Break / Segmentation",
+              "order": 1,
+              "problems": [
+                {
+                  "id": "problem_sbc_0124",
+                  "title": "Word Break",
+                  "difficulty": "MEDIUM",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/word-break1352/1",
+                  "companies": [
+                    {
+                      "name": "Infosys",
+                      "logo": "https://logo.clearbit.com/infosys.com"
+                    },
+                    {
+                      "name": "Accenture",
+                      "logo": "https://logo.clearbit.com/accenture.com"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "topic_sbc_17",
+          "name": "Bit Manipulation",
+          "description": "Bitwise tricks for counting and set arithmetic.",
+          "subtopics": [
+            {
+              "id": "subtopic_sbc_52",
+              "name": "Basic Bit Operations",
+              "order": 0,
+              "problems": [
+                {
+                  "id": "problem_sbc_0125",
+                  "title": "Counting Bits",
+                  "difficulty": "EASY",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/count-total-set-bits-1587115620/1",
+                  "companies": [
+                    {
+                      "name": "Infosys",
+                      "logo": "https://logo.clearbit.com/infosys.com"
+                    },
+                    {
+                      "name": "Wipro",
+                      "logo": "https://logo.clearbit.com/wipro.com"
+                    }
+                  ]
+                },
+                {
+                  "id": "problem_sbc_0126",
+                  "title": "Single Number II",
+                  "difficulty": "MEDIUM",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/finding-the-numbers0215/1",
+                  "companies": [
+                    {
+                      "name": "TCS",
+                      "logo": "https://logo.clearbit.com/tcs.com"
+                    }
+                  ]
+                },
+                {
+                  "id": "problem_sbc_0127",
+                  "title": "Sort Integers by The Number of 1 Bits",
+                  "difficulty": "EASY",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/sort-by-set-bit-count1153/1",
+                  "companies": [
+                    {
+                      "name": "Infosys",
+                      "logo": "https://logo.clearbit.com/infosys.com"
+                    },
+                    {
+                      "name": "Accenture",
+                      "logo": "https://logo.clearbit.com/accenture.com"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "topic_sbc_18",
+          "name": "Miscellaneous / Math",
+          "description": "Pure math with low pattern-reuse — kept outside the pattern tree.",
+          "subtopics": [
+            {
+              "id": "subtopic_sbc_53",
+              "name": "General / Math",
+              "order": 0,
+              "problems": [
+                {
+                  "id": "problem_sbc_0128",
+                  "title": "Palindrome Number",
+                  "difficulty": "EASY",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/palindrome0746/1",
+                  "companies": [
+                    {
+                      "name": "Accenture",
+                      "logo": "https://logo.clearbit.com/accenture.com"
+                    }
+                  ]
+                },
+                {
+                  "id": "problem_sbc_0129",
+                  "title": "Count the Digits That Divide a Number",
+                  "difficulty": "EASY",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/count-digits5716/1",
+                  "companies": [
+                    {
+                      "name": "TCS",
+                      "logo": "https://logo.clearbit.com/tcs.com"
+                    }
+                  ]
                 }
               ]
             }

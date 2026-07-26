@@ -13,21 +13,38 @@ import {
   PrismaClient,
   Difficulty,
   QuizKind,
-  CourseLevel,
-  CourseTag,
   InterviewVerdict,
   Role,
 } from "../generated/prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
+import { randomUUID } from "node:crypto";
 
 import dsaData from "../seed/dsa.json";
 import quizData from "../seed/quiz.json";
-import coursesData from "../seed/courses.json";
 import interviewData from "../seed/interview.json";
 import { seedDomain } from "../scripts/domain-loader";
 
 const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL });
 const prisma = new PrismaClient({ adapter });
+
+// The whole tree is inserted with batched createMany() instead of per-row
+// create(): we pre-generate the primary keys here so children can reference
+// their parents without a round-trip per row. A random id is fine — external
+// references use the stable `slug`, never the pk. This turns the ~2k sequential
+// inserts the seed used to do into a handful of bulk statements.
+const newId = () => randomUUID();
+
+// Bulk-insert in chunks to stay well under Postgres' bind-parameter ceiling.
+async function insertMany<T>(
+  create: (rows: T[]) => Promise<unknown>,
+  rows: T[],
+  chunk = 5000,
+): Promise<number> {
+  for (let i = 0; i < rows.length; i += chunk) {
+    await create(rows.slice(i, i + chunk));
+  }
+  return rows.length;
+}
 
 function slugify(s: string): string {
   return s
@@ -107,6 +124,14 @@ const COMPANY_DOMAINS: Record<string, string> = {
   "Goldman Sachs": "goldmansachs.com",
   Google: "google.com",
   Intuit: "intuit.com",
+  // Service-based / IT-consulting firms (SBC sheet).
+  Accenture: "accenture.com",
+  Capgemini: "capgemini.com",
+  Cognizant: "cognizant.com",
+  HCL: "hcltech.com",
+  Infosys: "infosys.com",
+  TCS: "tcs.com",
+  Wipro: "wipro.com",
   LinkedIn: "linkedin.com",
   Meta: "meta.com",
   Microsoft: "microsoft.com",
@@ -156,7 +181,7 @@ async function seedCompanies() {
 
 async function seedDsa(companyIds: Map<string, string>) {
   const sheets = (dsaData as { sheets: DsaSheetJson[] }).sheets;
-  let problemCount = 0;
+
   // A handful of problems are placed in two patterns (same dataset id). Each
   // placement is its own row, so disambiguate the unique slug on collision.
   const usedSlugs = new Set<string>();
@@ -168,65 +193,113 @@ async function seedDsa(companyIds: Map<string, string>) {
     return slug;
   };
 
+  // Build the entire tree in memory with pre-generated ids, then bulk-insert one
+  // level at a time (parents before children so the FKs resolve).
+  const sheetRows: {
+    id: string;
+    slug: string;
+    name: string;
+    description: string | null;
+    order: number;
+  }[] = [];
+  const topicRows: {
+    id: string;
+    sheetId: string;
+    name: string;
+    slug: string;
+    description: string | null;
+    order: number;
+  }[] = [];
+  const patternRows: {
+    id: string;
+    topicId: string;
+    name: string;
+    slug: string;
+    strategy: string | null;
+    identification: string | null;
+    order: number;
+  }[] = [];
+  const problemRows: {
+    id: string;
+    patternId: string;
+    slug: string;
+    title: string;
+    reference: string | null;
+    difficulty: Difficulty;
+    leetcodeUrl: string | null;
+    gfgUrl: string | null;
+    youtubeUrl: string | null;
+    order: number;
+  }[] = [];
+  const joinRows: { problemId: string; companyId: string }[] = [];
+
   for (const [sheetIdx, sheet] of sheets.entries()) {
-    const createdSheet = await prisma.dsaSheet.create({
-      data: {
-        slug: slugify(sheet.name),
-        name: sheet.name,
-        description: sheet.description ?? null,
-        order: sheet.order ?? sheetIdx,
-      },
+    const sheetId = newId();
+    sheetRows.push({
+      id: sheetId,
+      slug: slugify(sheet.name),
+      name: sheet.name,
+      description: sheet.description ?? null,
+      order: sheet.order ?? sheetIdx,
     });
 
     for (const [topicIdx, topic] of sheet.topics.entries()) {
-      const createdTopic = await prisma.dsaTopic.create({
-        data: {
-          sheetId: createdSheet.id,
-          name: topic.name,
-          slug: `${slugify(topic.name)}-${topicIdx}`,
-          description: topic.description ?? null,
-          order: topicIdx,
-        },
+      const topicId = newId();
+      topicRows.push({
+        id: topicId,
+        sheetId,
+        name: topic.name,
+        slug: `${slugify(topic.name)}-${topicIdx}`,
+        description: topic.description ?? null,
+        order: topicIdx,
       });
 
       for (const [patternIdx, sub] of topic.subtopics.entries()) {
-        const createdPattern = await prisma.dsaPattern.create({
-          data: {
-            topicId: createdTopic.id,
-            name: sub.name,
-            slug: `${slugify(sub.name)}-${patternIdx}`,
-            strategy: sub.strategy ?? null,
-            identification: sub.identification ?? null,
-            order: sub.order ?? patternIdx,
-          },
+        const patternId = newId();
+        patternRows.push({
+          id: patternId,
+          topicId,
+          name: sub.name,
+          slug: `${slugify(sub.name)}-${patternIdx}`,
+          strategy: sub.strategy ?? null,
+          identification: sub.identification ?? null,
+          order: sub.order ?? patternIdx,
         });
 
         for (const [problemIdx, p] of sub.problems.entries()) {
-          const companyConnect = (p.companies ?? [])
-            .map((c) => companyIds.get(c.name))
-            .filter((id): id is string => Boolean(id))
-            .map((companyId) => ({ companyId }));
-
-          await prisma.dsaProblem.create({
-            data: {
-              patternId: createdPattern.id,
-              slug: uniqueSlug(p.id), // stable dataset id; suffixed if reused across patterns
-              title: p.title,
-              reference: p.reference ?? null,
-              difficulty: toDifficulty(p.difficulty),
-              leetcodeUrl: p.leetcodeUrl ?? null,
-              gfgUrl: p.gfgUrl ?? null,
-              youtubeUrl: p.youtubeUrl ?? null,
-              order: problemIdx,
-              companies: { create: companyConnect },
-            },
+          const problemId = newId();
+          problemRows.push({
+            id: problemId,
+            patternId,
+            slug: uniqueSlug(p.id), // stable dataset id; suffixed if reused across patterns
+            title: p.title,
+            reference: p.reference ?? null,
+            difficulty: toDifficulty(p.difficulty),
+            leetcodeUrl: p.leetcodeUrl ?? null,
+            gfgUrl: p.gfgUrl ?? null,
+            youtubeUrl: p.youtubeUrl ?? null,
+            order: problemIdx,
           });
-          problemCount++;
+
+          for (const c of p.companies ?? []) {
+            const companyId = companyIds.get(c.name);
+            if (companyId) joinRows.push({ problemId, companyId });
+          }
         }
       }
     }
   }
-  return problemCount;
+
+  await insertMany((r) => prisma.dsaSheet.createMany({ data: r }), sheetRows);
+  await insertMany((r) => prisma.dsaTopic.createMany({ data: r }), topicRows);
+  await insertMany((r) => prisma.dsaPattern.createMany({ data: r }), patternRows);
+  await insertMany((r) => prisma.dsaProblem.createMany({ data: r }), problemRows);
+  // skipDuplicates: a problem may list the same company twice across placements.
+  await insertMany(
+    (r) => prisma.problemCompany.createMany({ data: r, skipDuplicates: true }),
+    joinRows,
+  );
+  return problemRows.length;
 }
 
 async function seedQuiz() {
@@ -252,124 +325,75 @@ async function seedQuiz() {
     }>;
   }>;
 
-  let questionCount = 0;
+  const catRows: { id: string; kind: QuizKind; slug: string; name: string; order: number }[] = [];
+  const topicRows: {
+    id: string;
+    categoryId: string;
+    name: string;
+    slug: string;
+    theory: string | null;
+    formula: string | null;
+    order: number;
+  }[] = [];
+  const questionRows: {
+    id: string;
+    topicId: string;
+    prompt: string;
+    options: { key: string; label: string }[];
+    answerKey: string;
+    explanation: string | null;
+    hint: string | null;
+    order: number;
+  }[] = [];
+
   for (const cat of categories) {
-    const createdCat = await prisma.quizCategory.create({
-      data: {
-        kind: cat.kind as QuizKind,
-        slug: cat.slug,
-        name: cat.name,
-        order: cat.order,
-      },
+    const categoryId = newId();
+    catRows.push({
+      id: categoryId,
+      kind: cat.kind as QuizKind,
+      slug: cat.slug,
+      name: cat.name,
+      order: cat.order,
     });
     for (const topic of cat.topics) {
-      const createdTopic = await prisma.quizTopic.create({
-        data: {
-          categoryId: createdCat.id,
-          name: topic.name,
-          slug: topic.slug,
-          theory: topic.theory ?? null,
-          formula: topic.formula ?? null,
-          order: topic.order,
-        },
+      const topicId = newId();
+      topicRows.push({
+        id: topicId,
+        categoryId,
+        name: topic.name,
+        slug: topic.slug,
+        theory: topic.theory ?? null,
+        formula: topic.formula ?? null,
+        order: topic.order,
       });
-      if (topic.questions.length) {
-        await prisma.quizQuestion.createMany({
-          data: topic.questions.map((q) => ({
-            topicId: createdTopic.id,
-            prompt: q.prompt,
-            options: q.options,
-            answerKey: q.answerKey,
-            explanation: q.explanation ?? null,
-            hint: q.hint ?? null,
-            order: q.order,
-          })),
+      for (const q of topic.questions) {
+        questionRows.push({
+          id: newId(),
+          topicId,
+          prompt: q.prompt,
+          options: q.options,
+          answerKey: q.answerKey,
+          explanation: q.explanation ?? null,
+          hint: q.hint ?? null,
+          order: q.order,
         });
-        questionCount += topic.questions.length;
       }
     }
   }
-  return questionCount;
-}
 
-async function seedCourses() {
-  const { instructors, courses } = coursesData as {
-    instructors: Array<{
-      slug: string;
-      name: string;
-      bio?: string;
-      image?: string | null;
-      links?: Record<string, string>;
-    }>;
-    courses: Array<{
-      slug: string;
-      title: string;
-      blurb?: string;
-      icon?: string;
-      level: string;
-      tag: string;
-      priceInPaise: number;
-      isFree: boolean;
-      rating?: number;
-      learnersLabel?: string;
-      lessonCount: number;
-      durationHours: number;
-      isPublished: boolean;
-      order: number;
-      instructorSlug: string;
-    }>;
-  };
-
-  const instructorIds = new Map<string, string>();
-  for (const ins of instructors) {
-    const created = await prisma.instructor.create({
-      data: {
-        slug: ins.slug,
-        name: ins.name,
-        bio: ins.bio ?? null,
-        image: ins.image ?? null,
-        links: ins.links ?? {},
-      },
-    });
-    instructorIds.set(ins.slug, created.id);
-  }
-
-  for (const c of courses) {
-    await prisma.course.create({
-      data: {
-        slug: c.slug,
-        title: c.title,
-        blurb: c.blurb ?? null,
-        icon: c.icon ?? null,
-        level: c.level as CourseLevel,
-        tag: c.tag as CourseTag,
-        priceInPaise: c.priceInPaise,
-        isFree: c.isFree,
-        rating: c.rating ?? null,
-        learnersLabel: c.learnersLabel ?? null,
-        lessonCount: c.lessonCount,
-        durationHours: c.durationHours,
-        isPublished: c.isPublished,
-        order: c.order,
-        instructorId: instructorIds.get(c.instructorSlug) ?? null,
-      },
-    });
-  }
-  return courses.length;
+  await insertMany((r) => prisma.quizCategory.createMany({ data: r }), catRows);
+  await insertMany((r) => prisma.quizTopic.createMany({ data: r }), topicRows);
+  await insertMany((r) => prisma.quizQuestion.createMany({ data: r }), questionRows);
+  return questionRows.length;
 }
 
 async function seedUsers() {
   // Demo accounts for local testing. passwordHash stays null until the auth
   // phase wires argon2; these are usable via OAuth or future credential setup.
   const admin = await prisma.user.upsert({
-    where: { email: "admin@risingbrain.dev" },
+    where: { email: "pankajy9636@gmail.com" },
     update: { role: Role.ADMIN },
-    create: { email: "admin@risingbrain.dev", name: "RisingBrain Admin", role: Role.ADMIN },
-  });
-  await prisma.user.upsert({
-    where: { email: "learner@risingbrain.dev" },
-    update: {},
-    create: { email: "learner@risingbrain.dev", name: "Demo Learner", role: Role.NORMAL },
+    create: { email: "pankajy9636@gmail.com", name: "Pankaj Yadav", role: Role.ADMIN },
   });
   return admin;
 }
@@ -389,56 +413,69 @@ async function seedInterviews() {
     likeCount: number;
   }>;
 
+  const emailFor = (name: string) => `${slugify(name)}@example.com`;
+
+  // Bulk-create the unique authors first (skipDuplicates keeps existing users),
+  // then resolve their ids in one query and bulk-insert the experiences.
+  const authorRows = new Map<string, { email: string; name: string; role: Role }>();
   for (const post of posts) {
-    const email = `${slugify(post.authorName)}@example.com`;
-    const author = await prisma.user.upsert({
-      where: { email },
-      update: {},
-      create: { email, name: post.authorName, role: Role.NORMAL },
-    });
-    await prisma.interviewExperience.create({
-      data: {
-        authorId: author.id,
-        company: post.company,
-        role: post.role,
-        verdict: post.verdict as InterviewVerdict,
-        difficulty: toDifficulty(post.difficulty),
-        roundsCount: post.roundsCount,
-        title: post.title,
-        excerpt: post.excerpt,
-        body: post.body,
-        tags: post.tags,
-        likeCount: post.likeCount,
-      },
-    });
+    const email = emailFor(post.authorName);
+    if (!authorRows.has(email))
+      authorRows.set(email, { email, name: post.authorName, role: Role.NORMAL });
   }
+  await insertMany(
+    (r) => prisma.user.createMany({ data: r, skipDuplicates: true }),
+    [...authorRows.values()],
+  );
+
+  const authors = await prisma.user.findMany({
+    where: { email: { in: [...authorRows.keys()] } },
+    select: { id: true, email: true },
+  });
+  const authorId = new Map(authors.map((a) => [a.email, a.id]));
+
+  const experienceRows = posts.map((post) => ({
+    id: newId(),
+    authorId: authorId.get(emailFor(post.authorName))!,
+    company: post.company,
+    role: post.role,
+    verdict: post.verdict as InterviewVerdict,
+    difficulty: toDifficulty(post.difficulty),
+    roundsCount: post.roundsCount,
+    title: post.title,
+    excerpt: post.excerpt,
+    body: post.body,
+    tags: post.tags,
+    likeCount: post.likeCount,
+  }));
+  await insertMany((r) => prisma.interviewExperience.createMany({ data: r }), experienceRows);
   return posts.length;
 }
 
 async function main() {
   console.log("🌱 Seeding RisingBrain…");
+  const t0 = Date.now();
   await clearContent();
 
+  // DSA needs the company ids; everything else is independent, so run the
+  // content groups concurrently instead of one-after-another.
   const companyIds = await seedCompanies();
   console.log(`   companies: ${companyIds.size}`);
 
-  const problems = await seedDsa(companyIds);
+  const [problems, domain, questions, , interviews] = await Promise.all([
+    seedDsa(companyIds),
+    seedDomain(prisma),
+    seedQuiz(),
+    seedUsers(),
+    seedInterviews(),
+  ]);
+
   console.log(`   dsa problems: ${problems}`);
-
-  const domain = await seedDomain(prisma);
   console.log(`   domain topics: ${domain.topics} (${domain.withExample} with example)`);
-
-  const questions = await seedQuiz();
   console.log(`   quiz questions: ${questions}`);
-
-  const courses = await seedCourses();
-  console.log(`   courses: ${courses}`);
-
-  await seedUsers();
-  const interviews = await seedInterviews();
   console.log(`   interview experiences: ${interviews}`);
 
-  console.log("✅ Seed complete.");
+  console.log(`✅ Seed complete in ${((Date.now() - t0) / 1000).toFixed(1)}s.`);
 }
 
 main()

@@ -14,11 +14,8 @@
     "db:migrate": "prisma migrate dev",
     "db:studio": "prisma studio",
     "db:seed": "bun run prisma/seed.ts",
+    "db:update-dsa": "bun run scripts/update-dsa.ts",
     "db:seed-domain": "bun run scripts/seed-domain.ts",
-    "db:extract-oops": "bun run scripts/extract-oops.ts",
-    "db:extract-dbms": "bun run scripts/extract-dbms.ts",
-    "db:extract-os": "bun run scripts/extract-os.ts",
-    "db:extract-cn": "bun run scripts/extract-cn.ts",
     "db:seed-interviews": "bun run scripts/seed-interviews.ts",
     "db:backfill-activity": "bun run scripts/backfill-activity.ts",
     "lint": "eslint . --max-warnings 0",
@@ -36,8 +33,6 @@
     "@types/node": "^26.0.1",
     "@types/pg": "^8.20.0",
     "eslint": "^9.39.1",
-    "fflate": "^0.8.3",
-    "mupdf": "^1.28.0",
     "prisma": "^7.8.0",
     "typescript": "5.9.2"
   }

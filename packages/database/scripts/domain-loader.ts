@@ -4,8 +4,7 @@
  * so the two can never drift.
  *
  * Data sources:
- *   - seed/domain.json          — topics + markdown notes (PDF-extracted; see
- *                                 scripts/extract-oops.ts)
+ *   - seed/domain-*.json        — topics + markdown notes per subject
  *   - seed/domain-examples.json — authored, copy-ready code per topic slug
  *
  * Clears `domain_topics` and reloads it; safe to run repeatedly.
@@ -17,10 +16,8 @@ import osData from "../seed/domain-os.json";
 import cnData from "../seed/domain-cn.json";
 import exampleData from "../seed/domain-examples.json";
 
-// One entry per subject file. Add a subject by extracting its seed JSON and
+// One entry per subject file. Add a subject by dropping its seed JSON in and
 // listing it here — the loader, index and UI are all data-driven from this.
-// (OS / CN come from the "*WithDiagram.pdf" sources via scripts/extract-os.ts
-// and scripts/extract-cn.ts.)
 const SUBJECT_FILES = [oopsData, dbmsData, osData, cnData];
 
 type DomainTopicJson = {
