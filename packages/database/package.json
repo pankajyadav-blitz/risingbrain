@@ -17,6 +17,8 @@
     "db:seed-domain": "bun run scripts/seed-domain.ts",
     "db:extract-oops": "bun run scripts/extract-oops.ts",
     "db:extract-dbms": "bun run scripts/extract-dbms.ts",
+    "db:extract-os": "bun run scripts/extract-os.ts",
+    "db:extract-cn": "bun run scripts/extract-cn.ts",
     "db:seed-interviews": "bun run scripts/seed-interviews.ts",
     "db:backfill-activity": "bun run scripts/backfill-activity.ts",
     "lint": "eslint . --max-warnings 0",

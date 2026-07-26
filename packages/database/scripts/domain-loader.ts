@@ -13,11 +13,15 @@
 import type { PrismaClient, DomainSubject } from "../generated/prisma/client";
 import oopsData from "../seed/domain-oops.json";
 import dbmsData from "../seed/domain-dbms.json";
+import osData from "../seed/domain-os.json";
+import cnData from "../seed/domain-cn.json";
 import exampleData from "../seed/domain-examples.json";
 
 // One entry per subject file. Add a subject by extracting its seed JSON and
 // listing it here — the loader, index and UI are all data-driven from this.
-const SUBJECT_FILES = [oopsData, dbmsData];
+// (OS / CN come from the "*WithDiagram.pdf" sources via scripts/extract-os.ts
+// and scripts/extract-cn.ts.)
+const SUBJECT_FILES = [oopsData, dbmsData, osData, cnData];
 
 type DomainTopicJson = {
   subject: string;
