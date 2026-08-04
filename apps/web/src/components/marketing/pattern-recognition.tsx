@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { CATALOG_STATS } from "./catalog-stats";
+import { PatternCanvas } from "./pattern-canvas";
 
 /**
  * Hero product proof: the pattern-recognition demo.
@@ -23,36 +24,42 @@ import { CATALOG_STATS } from "./catalog-stats";
 /** Real patterns from the DSA seed. `tell` is the pattern's `identification`. */
 const PATTERNS = [
   {
+    key: "sliding-window",
     name: "Sliding Window",
     topic: "Array",
     tell: "“window of size k”, “longest”, “shortest”, or “at most K”",
     problems: ["Max Consecutive Ones III", "Subarray Product Less Than K", "Longest Repeating Character Replacement"],
   },
   {
+    key: "monotonic-stack",
     name: "Monotonic Stack",
     topic: "Stack",
     tell: "“next greater/smaller element”, spans, or trapping area",
     problems: ["Daily Temperatures", "Next Greater Element II", "Online Stock Span"],
   },
   {
+    key: "binary-search",
     name: "Binary Search on Answers",
     topic: "Binary Search",
     tell: "a minimum/maximum feasible value, or optimisation over a range",
     problems: ["Koko Eating Bananas", "Capacity To Ship Packages", "Aggressive Cows"],
   },
   {
+    key: "kadane",
     name: "Kadane’s Algorithm",
     topic: "Array",
     tell: "maximum/minimum sum or product of a contiguous subarray",
     problems: ["Maximum Subarray", "Maximum Product Subarray", "Maximum Sum Circular Subarray"],
   },
   {
+    key: "prefix-sum",
     name: "Prefix Sum",
     topic: "Array",
     tell: "range sum, subarray sum, cumulative sum, or prefix-based queries",
     problems: ["Subarray Sum Equals K", "Product of Array Except Self", "Continuous Subarray Sum"],
   },
   {
+    key: "two-pointer",
     name: "Two-Pointer",
     topic: "Array",
     tell: "pairs, sorted arrays, triplets, or opposite-end traversal",
@@ -137,6 +144,11 @@ export function PatternRecognition() {
         {/* Right: the resolution. Keyed on `active` so the whole block
             re-mounts and replays its entrance on every change. */}
         <div key={active} className={reduced ? undefined : "stagger"}>
+          {/* Live animation of the selected pattern. */}
+          <div className="relative mb-5 h-28 overflow-hidden rounded-xl border border-border bg-surface-2/50 sm:h-32">
+            <PatternCanvas pattern={current.key} className="absolute inset-0 h-full w-full" />
+          </div>
+
           <div className="text-xs uppercase tracking-wide text-muted">When a problem mentions</div>
 
           <p className="mt-2 text-lg font-medium leading-snug sm:text-xl">{current.tell}</p>

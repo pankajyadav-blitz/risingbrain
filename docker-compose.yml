@@ -12,23 +12,7 @@
 # `docker compose down -v` wipes it.
 
 services:
-  postgres:
-    image: postgres:17-alpine
-    container_name: risingbrain-postgres
-    restart: unless-stopped
-    environment:
-      POSTGRES_USER: ${POSTGRES_USER:-risingbrain}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-risingbrain}
-      POSTGRES_DB: ${POSTGRES_DB:-risingbrain}
-    ports:
-      - "${POSTGRES_PORT:-5432}:5432"
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-risingbrain} -d ${POSTGRES_DB:-risingbrain}"]
-      interval: 5s
-      timeout: 5s
-      retries: 10
+
 
   redis:
     image: redis:7-alpine

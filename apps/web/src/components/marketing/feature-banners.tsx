@@ -1041,3 +1041,7 @@ const DRAWS: Record<FeatureArtKey, Draw> = {
 export function FeatureArt({ artKey, className }: { artKey: FeatureArtKey; className?: string }) {
   return <AnimatedCanvas draw={DRAWS[artKey]} className={className} />;
 }
+
+// Shared canvas host + primitives, reused by the hero's pattern demo.
+export type { Colors, Draw };
+export { AnimatedCanvas, withAlpha, rr, lerp, clamp01, easeInOut, glowDot };
