@@ -1,5 +1,6 @@
 import Markdown, { type Components } from "react-markdown";
 import remarkGfm from "remark-gfm";
+import { NotesFigure } from "@/components/notes-figure";
 
 /**
  * Renders a Domain topic's markdown — the `notes` (theory + diagrams / code
@@ -7,10 +8,11 @@ import remarkGfm from "remark-gfm";
  * view. Server Component: no client JS is shipped for the content.
  *
  * - `remark-gfm` → GitHub tables / strikethrough / task-lists.
- * - Diagram `<img>`s point at `/study-notes/oops/<topic-slug>/fig-N.png` (static
- *   assets under `public/`, extracted from the source PDF by
- *   scripts/extract-oops.ts). The DB holds only markdown with those relative
- *   paths, so swapping to a CDN later is a base-path change.
+ * - Diagram `<img>`s point at `/study-notes/<subject>/<topic-slug>/fig-N.png`
+ *   (static assets under `public/`, extracted from the source PDFs by
+ *   packages/database/scripts/extract-sql-pdf.py and friends). The DB holds only
+ *   markdown with those relative paths, so swapping to a CDN later is a base-path
+ *   change. `NotesFigure` sizes each one from its own intrinsic dimensions.
  *
  * Styling lives in `globals.css` under `.notes-prose` (shared with Screening).
  */
@@ -23,17 +25,7 @@ const components: Components = {
       <table>{children}</table>
     </div>
   ),
-  // Figures: lazy, never overflow, subtle framing.
-  img: ({ src, alt }) =>
-    typeof src === "string" ? (
-      // eslint-disable-next-line @next/next/no-img-element
-      <img
-        src={src}
-        alt={alt ?? ""}
-        loading="lazy"
-        className="my-4 h-auto max-w-full rounded-xl border border-border bg-white"
-      />
-    ) : null,
+  img: NotesFigure,
 };
 
 export function NotesMarkdown({ source }: { source: string }) {

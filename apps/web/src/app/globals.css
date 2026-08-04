@@ -162,15 +162,22 @@ body::before {
 }
 .notes-prose img {
   display: block;
-  /* Diagrams/screenshots are extracted from PDFs and read best at a comfortable
-     reading size — cap the width so they don't blow up to the full column and
-     let `margin: auto` center them within the content. Still shrinks on narrow
-     viewports via the `100%` term. `max-height` bounds tall (portrait) figures
-     so the wider `max-width` only benefits short/landscape diagrams. */
+  /* Figures are PDF-extracted screenshots whose intrinsic widths run 212px →
+     2048px, so their rendered width is computed PER FIGURE from its own
+     dimensions in `lib/figure-size.ts` and arrives as an inline
+     `width: min(100%, Npx)`. That keeps a tiny result box from looking lost and a
+     portrait diagram from running a page tall, without picking one size for all.
+
+     The declarations here are the frame plus the fallback for any figure missing
+     from the manifest: `width: auto` renders it at intrinsic size and `max-height`
+     bounds it if it's tall. `object-fit: contain` matters once an inline width IS
+     set — on a narrow viewport `min(100%, …)` can produce a height above the cap,
+     and without it the image would stretch instead of scaling down. */
   width: auto;
   max-width: min(100%, 72rem);
   max-height: 50rem;
   height: auto;
+  object-fit: contain;
   margin: 1.25rem auto;
   border-radius: 0.75rem;
   background: var(--surface-2);

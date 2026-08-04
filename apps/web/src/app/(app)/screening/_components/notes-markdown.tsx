@@ -2,6 +2,7 @@ import Markdown, { type Components } from "react-markdown";
 import remarkGfm from "remark-gfm";
 import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
+import { NotesFigure } from "@/components/notes-figure";
 
 /**
  * Renders a topic's notes (stored as markdown in `QuizTopic.theory`, seeded from
@@ -29,6 +30,9 @@ const components: Components = {
       <table>{children}</table>
     </div>
   ),
+  // Size each diagram from its own intrinsic dimensions rather than letting one
+  // rule cover figures that range from 212px to 2048px wide.
+  img: NotesFigure,
 };
 
 export function NotesMarkdown({ source }: { source: string }) {
