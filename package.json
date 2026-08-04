@@ -15,6 +15,7 @@
     "db:seed": "bun --filter @risingbrain/database db:seed",
     "db:update-dsa": "bun --filter @risingbrain/database db:update-dsa",
     "db:seed-domain": "bun --filter @risingbrain/database db:seed-domain",
+    "db:seed-domain-sql": "bun --filter @risingbrain/database db:seed-domain-sql",
     "db:seed-interviews": "bun --filter @risingbrain/database db:seed-interviews",
     "db:backfill-activity": "bun --filter @risingbrain/database db:backfill-activity",
     "db:setup": "turbo run db:generate && turbo run db:push && bun run db:seed",

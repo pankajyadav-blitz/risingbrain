@@ -16,6 +16,7 @@
     "db:seed": "bun run prisma/seed.ts",
     "db:update-dsa": "bun run scripts/update-dsa.ts",
     "db:seed-domain": "bun run scripts/seed-domain.ts",
+    "db:seed-domain-sql": "bun run scripts/seed-domain-sql.ts",
     "db:seed-interviews": "bun run scripts/seed-interviews.ts",
     "db:backfill-activity": "bun run scripts/backfill-activity.ts",
     "lint": "eslint . --max-warnings 0",
