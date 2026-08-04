@@ -4,14 +4,48 @@
  * and applies the RBAC route map. Unauthorized requests are redirected before
  * any page renders. Server Components apply the second layer (gating data +
  * `getNavForRole`). See docs/ARCHITECTURE.md §2.
+ *
+ * It is ALSO where an expired access token gets silently renewed. That has to
+ * happen on every page, not just gated ones: `ROUTE_ACCESS` only guards /admin,
+ * /profile and /notes, so the entire signed-in surface (/sheet, /domain, …) is
+ * "allowed" for an anonymous visitor. Renewing only on a denied route meant a user
+ * whose 15-minute access cookie had lapsed was rendered a signed-out navbar on the
+ * main app — with a perfectly good 90-day refresh token sitting in their cookie jar.
  */
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { COOKIES } from "@/lib/auth/constants";
+import { COOKIES, REFRESH_ATTEMPT_COOKIE } from "@/lib/auth/constants";
 import { verifyAccessToken } from "@/lib/auth/jwt";
 import { checkRouteAccess } from "@/lib/rbac";
 
 const AUTH_PAGES = ["/login", "/signup"];
+
+/**
+ * Bounce through /api/auth/refresh (Node runtime + Redis) and come back to
+ * `pathname`, so the page renders signed-in on the very first paint.
+ *
+ * `soft` marks a request for a page the visitor may read anonymously: if the
+ * refresh turns out to be dead we want them back on that page, signed out, NOT
+ * shoved to /login. Gated routes stay hard — /login is the right destination there.
+ *
+ * The one-shot marker cookie makes this loop-proof. If the rotate succeeds but the
+ * new cookie never sticks (Secure cookies over plain http, say), the marker is
+ * present on the way back and we render signed-out instead of redirecting forever.
+ */
+function refreshThenReturn(req: NextRequest, pathname: string, soft: boolean) {
+  const url = new URL("/api/auth/refresh", req.url);
+  url.searchParams.set("redirect", pathname + req.nextUrl.search);
+  if (soft) url.searchParams.set("soft", "1");
+
+  const res = NextResponse.redirect(url);
+  res.cookies.set(REFRESH_ATTEMPT_COOKIE, "1", {
+    httpOnly: true,
+    sameSite: "lax",
+    path: "/",
+    maxAge: 10,
+  });
+  return res;
+}
 
 export default async function proxy(req: NextRequest) {
   const { pathname } = req.nextUrl;
@@ -20,35 +54,52 @@ export default async function proxy(req: NextRequest) {
   const claims = token ? await verifyAccessToken(token) : null;
   const role = claims?.role ?? null;
 
+  // A live session we can restore: refresh cookie present, access token gone or
+  // expired. Only for real GET navigations — redirecting a Server Action POST
+  // would drop its payload, and prefetches are speculative (renewing on them would
+  // rotate the token constantly for no one's benefit).
+  const isPrefetch =
+    req.headers.get("next-router-prefetch") === "1" || req.headers.get("purpose") === "prefetch";
+  const recoverable =
+    !role &&
+    req.method === "GET" &&
+    !isPrefetch &&
+    Boolean(req.cookies.get(COOKIES.REFRESH)?.value) &&
+    !req.cookies.get(REFRESH_ATTEMPT_COOKIE);
+
   // Signed-in users shouldn't see the login/signup pages.
   if (role && AUTH_PAGES.some((p) => pathname.startsWith(p))) {
     return NextResponse.redirect(new URL("/sheet", req.url));
   }
 
   const access = checkRouteAccess(pathname, role);
-  if (!access.allowed) {
-    if (access.reason === "unauthenticated") {
-      // Expired/absent access token but a live refresh cookie? Silently rotate
-      // via /api/auth/refresh (Node runtime + Redis) and bounce back, instead of
-      // logging the user out. The refresh route clears cookies + sends to /login
-      // if the refresh token is invalid, so this can't loop.
-      const hasRefresh = Boolean(req.cookies.get(COOKIES.REFRESH)?.value);
-      if (hasRefresh) {
-        const refreshUrl = new URL("/api/auth/refresh", req.url);
-        refreshUrl.searchParams.set("redirect", pathname + req.nextUrl.search);
-        return NextResponse.redirect(refreshUrl);
-      }
-      const url = new URL("/login", req.url);
-      url.searchParams.set("callbackUrl", pathname);
-      return NextResponse.redirect(url);
+
+  if (access.allowed) {
+    // Publicly readable, but this visitor has a restorable session — renew it now
+    // so per-user chrome (navbar, streak, progress) isn't missing on arrival.
+    // Skipped on the auth pages: someone deliberately opening /login while holding
+    // a stale token should get the form, not be bounced to /sheet.
+    if (recoverable && !AUTH_PAGES.some((p) => pathname.startsWith(p))) {
+      return refreshThenReturn(req, pathname, true);
     }
-    // Forbidden (signed in but lacking the role/subscription).
-    const url = new URL("/", req.url);
-    url.searchParams.set("forbidden", "1");
+    return NextResponse.next();
+  }
+
+  if (access.reason === "unauthenticated") {
+    // Expired/absent access token but a live refresh cookie? Rotate and bounce
+    // back instead of logging the user out. The refresh route clears cookies and
+    // sends to /login when the refresh token is genuinely dead, so this can't loop.
+    if (recoverable) return refreshThenReturn(req, pathname, false);
+
+    const url = new URL("/login", req.url);
+    url.searchParams.set("callbackUrl", pathname);
     return NextResponse.redirect(url);
   }
 
-  return NextResponse.next();
+  // Forbidden (signed in but lacking the role/subscription).
+  const url = new URL("/", req.url);
+  url.searchParams.set("forbidden", "1");
+  return NextResponse.redirect(url);
 }
 
 export const config = {

@@ -10,19 +10,78 @@ export const COOKIES = {
   REFRESH: "rb_rt",
 } as const;
 
-/** Access-token lifetime in seconds (15 minutes). */
-export const ACCESS_TTL_SECONDS = 15 * 60;
+/**
+ * Parse a duration like "900", "30s", "15m", "2h", "7d" into seconds. Returns
+ * `fallback` for anything unparseable so a typo in .env can never produce a
+ * zero-second (instantly-expiring) token.
+ */
+function seconds(raw: string | undefined, fallback: number): number {
+  if (!raw) return fallback;
+  const m = /^(\d+)\s*([smhd]?)$/.exec(raw.trim());
+  if (!m) return fallback;
+  const n = Number(m[1]);
+  if (!Number.isFinite(n) || n <= 0) return fallback;
+  return n * { "": 1, s: 1, m: 60, h: 3600, d: 86400 }[m[2] as "" | "s" | "m" | "h" | "d"];
+}
 
-/** Refresh-token lifetime in seconds (30 days). */
-export const REFRESH_TTL_SECONDS = 30 * 24 * 60 * 60;
+/**
+ * Access-token lifetime (default 15 minutes). Deliberately short: it is the
+ * revocation latency of the whole system — a banned user or a role change takes
+ * effect within one TTL, because nothing but the signature is checked per request.
+ * Expiry is invisible to users, silently rotated by the proxy + SessionKeepAlive.
+ *
+ * Read from `process.env` directly (like jwt.ts reads AUTH_SECRET) to keep this
+ * module edge-safe — importing ./env would pull Node-only config into the proxy.
+ */
+export const ACCESS_TTL_SECONDS = seconds(process.env.ACCESS_TOKEN_TTL, 15 * 60);
+
+/**
+ * Refresh-token lifetime (default 90 days) — the real "how long am I logged in"
+ * number. It is a *sliding* window: every rotation pushes it out by the full TTL,
+ * so this is the maximum IDLE time before a user must sign in again, not a cap on
+ * total session age. An active user is never logged out by it.
+ */
+export const REFRESH_TTL_SECONDS = seconds(
+  process.env.REFRESH_TOKEN_TTL_DAYS && `${process.env.REFRESH_TOKEN_TTL_DAYS}d`,
+  90 * 24 * 60 * 60
+);
+
+/**
+ * Grace period during which the immediately-previous refresh token still works.
+ *
+ * Rotation-on-every-use races with itself: two tabs (or a proxy refresh and a
+ * SessionKeepAlive ping) can present the SAME token within a few hundred ms, and
+ * without a grace window the loser resolves to "unknown token" and gets hard
+ * logged out. The old hash therefore lingers in Redis for this long, mapped to the
+ * session, so a racing request re-rotates instead of being killed.
+ *
+ * The tradeoff is that a stolen refresh token stays replayable for this window —
+ * standard practice (Auth0 calls it rotation leeway); keep it small.
+ */
+export const REFRESH_GRACE_SECONDS = 60;
 
 /**
  * Path the refresh cookie is scoped to. Site-wide ("/") so the edge proxy can
  * detect a recoverable session on an expired access token and silently refresh
- * instead of logging the user out. It stays HttpOnly + SameSite=Strict + Secure,
- * so it is never exposed to JS nor sent on cross-site requests (CSRF-safe).
+ * instead of logging the user out. It stays HttpOnly + Secure, so it is never
+ * exposed to JS.
+ *
+ * SameSite is `lax`, NOT `strict`: a strict cookie is withheld on every top-level
+ * navigation that originates off-site, so a user arriving from Google/WhatsApp/an
+ * email link would present no refresh token at all and be shown a signed-out page
+ * despite having a live session. `lax` still withholds it from cross-site POSTs
+ * (the CSRF vector), and the refresh endpoint only ever rotates the caller's own
+ * session and validates its redirect target locally.
  */
 export const REFRESH_COOKIE_PATH = "/";
+
+/**
+ * One-shot marker the proxy sets while it bounces a request through
+ * /api/auth/refresh, so a refresh that succeeds but whose cookie fails to stick
+ * (e.g. Secure cookies over plain http) degrades to "render signed out" instead of
+ * an infinite redirect loop.
+ */
+export const REFRESH_ATTEMPT_COOKIE = "rb_ref";
 
 export type AppRole = "NORMAL" | "STUDENT" | "SUBSCRIBER" | "ADMIN";
 

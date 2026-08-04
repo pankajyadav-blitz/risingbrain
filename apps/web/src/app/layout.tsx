@@ -86,7 +86,14 @@ export default async function RootLayout({
 }>) {
   // A session cookie present? Keep the access token fresh in the background.
   const jar = await cookies();
-  const hasSession = jar.has(COOKIES.REFRESH) || jar.has(COOKIES.ACCESS);
+  const hasRefresh = jar.has(COOKIES.REFRESH);
+  const hasSession = hasRefresh || jar.has(COOKIES.ACCESS);
+  // Refresh cookie but no access cookie = a recoverable session that has already
+  // lapsed (the browser drops rb_at at its max-age). Tell the keep-alive to renew
+  // immediately rather than on its next 12-minute tick, so the user isn't shown a
+  // signed-out navbar in the meantime. Normally the edge proxy has already fixed
+  // this before render; this is the fallback for the requests it doesn't handle.
+  const staleSession = hasRefresh && !jar.has(COOKIES.ACCESS);
   return (
     <html
       lang="en"
@@ -102,7 +109,7 @@ export default async function RootLayout({
         </Script>
       </head>
       <body className="min-h-screen bg-background font-sans text-foreground antialiased">
-        {hasSession && <SessionKeepAlive />}
+        {hasSession && <SessionKeepAlive stale={staleSession} />}
         {children}
       </body>
     </html>

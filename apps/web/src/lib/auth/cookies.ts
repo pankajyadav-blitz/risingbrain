@@ -9,6 +9,7 @@ import {
   ACCESS_TTL_SECONDS,
   REFRESH_TTL_SECONDS,
   REFRESH_COOKIE_PATH,
+  REFRESH_ATTEMPT_COOKIE,
 } from "./constants";
 import type { IssuedTokens } from "./session";
 
@@ -35,10 +36,13 @@ export async function setAuthCookies(tokens: IssuedTokens): Promise<void> {
     ...(tokens.persistent ? { maxAge: ACCESS_TTL_SECONDS } : {}),
   });
 
+  // `lax`, not `strict`: a strict cookie is withheld on off-site top-level
+  // navigations, so arriving from an email/search/WhatsApp link would look like a
+  // logout. See REFRESH_COOKIE_PATH in ./constants for the full rationale.
   jar.set(COOKIES.REFRESH, tokens.refreshToken, {
     httpOnly: true,
     secure,
-    sameSite: "strict",
+    sameSite: "lax",
     path: REFRESH_COOKIE_PATH,
     ...(tokens.persistent ? { maxAge: REFRESH_TTL_SECONDS } : {}),
   });
@@ -48,6 +52,15 @@ export async function clearAuthCookies(): Promise<void> {
   const jar = await cookies();
   jar.set(COOKIES.ACCESS, "", { httpOnly: true, path: "/", maxAge: 0 });
   jar.set(COOKIES.REFRESH, "", { httpOnly: true, path: REFRESH_COOKIE_PATH, maxAge: 0 });
+  // Drop the proxy's in-flight marker too, so the next real login isn't shadowed
+  // by a stale attempt cookie.
+  jar.set(REFRESH_ATTEMPT_COOKIE, "", { httpOnly: true, path: "/", maxAge: 0 });
+}
+
+/** Clear only the proxy's one-shot refresh marker (called after a successful rotate). */
+export async function clearRefreshAttemptCookie(): Promise<void> {
+  const jar = await cookies();
+  jar.set(REFRESH_ATTEMPT_COOKIE, "", { httpOnly: true, path: "/", maxAge: 0 });
 }
 
 export async function readRefreshCookie(): Promise<string | undefined> {
