@@ -27,28 +27,32 @@ export function ManagerShell({
   onBack: () => void;
 }) {
   return (
-    // `lg:items-start` stops the two panels from stretching to a common height —
-    // the list keeps its own full-height scroll, the editor sizes to its content.
-    <div className="flex min-h-0 flex-col gap-3 p-3 lg:h-full lg:flex-row lg:items-start">
+    // Both panels fill a common height rather than the editor sizing to content:
+    // it keeps the two columns visually balanced, and it pins the editor's save bar
+    // to the bottom of the panel instead of letting it float mid-screen under a
+    // short form. Each panel CLIPS on the outside and SCROLLS on the inside, so its
+    // scrollbar stays inside the rounded corner instead of poking through it.
+    <div className="flex min-h-0 flex-col gap-3 p-3 lg:h-full lg:flex-row">
       {/* ===== List panel ===== */}
       <aside
         className={cn(
-          "flex-col overflow-hidden rounded-2xl border border-border bg-surface/40 lg:flex lg:h-full lg:w-[300px] lg:shrink-0 xl:w-[340px]",
+          "glass flex-col overflow-hidden rounded-3xl lg:flex lg:h-full lg:w-[300px] lg:shrink-0 xl:w-[340px]",
           hasSelection ? "hidden lg:flex" : "flex",
         )}
       >
-        <div className="flex shrink-0 items-center justify-between gap-2 border-b border-border px-4 py-3">
-          <span className="text-sm font-semibold text-foreground">{sidebarTitle}</span>
+        <div className="flex shrink-0 items-center justify-between gap-2 border-b border-border bg-surface-2 px-4 py-2.5">
+          <span className="text-[11px] font-semibold uppercase tracking-wider text-accent">
+            {sidebarTitle}
+          </span>
           {sidebarAction}
         </div>
-        <div className="min-h-0 flex-1 space-y-0.5 overflow-y-auto p-2">{sidebar}</div>
+        <div className="pane-scroll min-h-0 flex-1 space-y-0.5 overflow-y-auto p-2">{sidebar}</div>
       </aside>
 
-      {/* ===== Editor panel — sizes to its own content, capped at the viewport
-              height so long forms scroll internally instead of stretching. ===== */}
+      {/* ===== Editor panel ===== */}
       <section
         className={cn(
-          "min-h-0 min-w-0 flex-1 flex-col overflow-hidden rounded-2xl border border-border bg-surface/40 lg:flex lg:max-h-full lg:self-start",
+          "glass min-h-0 min-w-0 flex-1 flex-col overflow-hidden rounded-3xl lg:flex lg:h-full",
           hasSelection ? "flex" : "hidden lg:flex",
         )}
       >

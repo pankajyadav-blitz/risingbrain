@@ -28,6 +28,64 @@ body::before {
 }
 
 /* ==========================================================================
+   Viewport-filling pages — opt-in repair of the app shell's height chain.
+
+   The (app) shell gives the center column a definite height and scrolls it
+   internally. Between that scrollport and the page sits `(app)/template.tsx`
+   (`.animate-page`), whose `grow` is deliberately `flex-basis: auto` so tall
+   pages size to CONTENT (/courses needs that — its ambient layer is
+   `absolute inset-0` of main and would otherwise stop at the fold).
+
+   That basis is wrong for a page that wants to FILL the shell and scroll its
+   own panes: a flex item's automatic minimum size is its content height, so
+   the wrapper can't shrink to the scrollport, every `flex-1`/`min-h-0` below it
+   resolves against an indefinite height, and a descendant `h-full` +
+   `overflow-y-auto` pane silently falls back to `height: auto` and never
+   scrolls. The page then scrolls as ONE block in the shell's scrollport, which
+   drags a sidebar off the top and leaves its column blank.
+
+   A page opts in by marking its <main data-fills-scrollport>. `min-height: 0`
+   lets the wrapper shrink to the scrollport, restoring a definite height for
+   the whole chain, and the shell's own scroll is switched off since the page
+   now owns its scrollports. Desktop only — mobile keeps normal page scroll.
+   ========================================================================== */
+@media (min-width: 1024px) {
+  .app-scrollport:has([data-fills-scrollport]) {
+    overflow: hidden;
+  }
+  .app-scrollport:has([data-fills-scrollport]) > .animate-page {
+    min-height: 0;
+  }
+}
+
+/* A pane that scrolls beside another gets a slimmer, quieter bar than the
+   page-level one: two full-weight rails side by side compete with the content.
+
+   Styled ONLY through ::-webkit-scrollbar — deliberately no `scrollbar-width` /
+   `scrollbar-color` here. Chromium 121+ treats the standard properties as
+   authoritative and drops the ::-webkit-scrollbar styling entirely the moment
+   either is set, which reverts these panes to a default light-grey bar that
+   looks pasted on over the dark surface. */
+.pane-scroll::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+.pane-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+/* Override the global thumb: its 2px transparent border + padding-box clip is
+   sized for a 10px rail and would leave almost nothing visible at 6px. */
+.pane-scroll::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--muted) 32%, transparent);
+  background-clip: border-box;
+  border: 0;
+  border-radius: 99px;
+}
+.pane-scroll:hover::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--muted) 55%, transparent);
+}
+
+/* ==========================================================================
    Topic-notes prose — styles the markdown rendered by NotesMarkdown
    (react-markdown + remark-gfm + KaTeX) in the screening "Notes" tab. No
    typography plugin is used; these element rules give the note bodies a clean,
@@ -35,42 +93,63 @@ body::before {
    ========================================================================== */
 .notes-prose {
   color: var(--foreground);
-  font-size: 0.9375rem;
-  line-height: 1.7;
+  /* Sized for sustained reading, not for fitting into a sidebar: these notes are
+     the primary content of the pane, so they set the page's reading size rather
+     than sitting a step below it. */
+  font-size: 1.0625rem;
+  line-height: 1.78;
   overflow-wrap: break-word;
 }
 .notes-prose > :first-child {
   margin-top: 0;
 }
+/* No measure cap here by design: the notes are reference material read at a
+   desk, and the content pane is meant to USE its width rather than strand a
+   column of empty space beside the text. */
 .notes-prose h1,
 .notes-prose h2,
 .notes-prose h3,
 .notes-prose h4 {
   font-weight: 700;
-  line-height: 1.3;
-  scroll-margin-top: 6rem;
+  line-height: 1.25;
+  letter-spacing: -0.015em;
+  text-wrap: balance;
+  /* The notes scroll in their OWN pane now, so an anchored heading only has to
+     clear its own top edge — the old page-level offset dropped it a long way
+     down the pane. */
+  scroll-margin-top: 1.25rem;
 }
+/* Heading rhythm: the space ABOVE a heading is what groups it with the section
+   it introduces, so each level gets a clearly larger lead-in than the gap it
+   leaves below. That difference is what makes the structure readable at a
+   glance instead of an even wall of text. */
 .notes-prose h1 {
-  font-size: 1.5rem;
-  margin: 0 0 1rem;
+  font-size: 1.8rem;
+  margin: 0 0 1.25rem;
 }
 .notes-prose h2 {
-  font-size: 1.2rem;
-  margin: 1.75rem 0 0.75rem;
-  padding-bottom: 0.4rem;
+  font-size: 1.4rem;
+  margin: 2.75rem 0 1rem;
+  padding-bottom: 0.5rem;
   border-bottom: 1px solid var(--border);
 }
 .notes-prose h3 {
-  font-size: 1.03rem;
-  margin: 1.4rem 0 0.5rem;
+  font-size: 1.175rem;
+  margin: 2.15rem 0 0.7rem;
   color: var(--accent);
 }
 .notes-prose h4 {
-  font-size: 0.95rem;
-  margin: 1.1rem 0 0.4rem;
+  font-size: 1.03rem;
+  margin: 1.65rem 0 0.5rem;
+}
+/* A heading straight after another shouldn't inherit the full section lead-in. */
+.notes-prose h2 + h3,
+.notes-prose h3 + h4 {
+  margin-top: 1rem;
 }
 .notes-prose p {
-  margin: 0.7rem 0;
+  margin: 1.05rem 0;
+  text-wrap: pretty;
 }
 .notes-prose strong {
   font-weight: 700;
@@ -83,11 +162,30 @@ body::before {
 }
 .notes-prose ul,
 .notes-prose ol {
-  margin: 0.7rem 0;
-  padding-left: 1.35rem;
+  margin: 1.05rem 0;
+  padding-left: 1.5rem;
 }
 .notes-prose li {
-  margin: 0.3rem 0;
+  margin: 0.5rem 0;
+  /* Keeps a wrapped line aligned to the first line's text rather than sliding
+     back under the marker. */
+  padding-left: 0.2rem;
+}
+/* A nested list belongs to its parent item, so it sits tighter than the gap
+   between top-level items. */
+.notes-prose li > ul,
+.notes-prose li > ol {
+  margin: 0.5rem 0;
+}
+/* A list item holding full paragraphs shouldn't double up on spacing. */
+.notes-prose li > p {
+  margin: 0.45rem 0;
+}
+.notes-prose li > p:first-child {
+  margin-top: 0;
+}
+.notes-prose li > p:last-child {
+  margin-bottom: 0;
 }
 .notes-prose ul {
   list-style: disc;
@@ -101,11 +199,11 @@ body::before {
 .notes-prose hr {
   border: 0;
   border-top: 1px solid var(--border);
-  margin: 1.75rem 0;
+  margin: 2.5rem 0;
 }
 .notes-prose blockquote {
-  margin: 1rem 0;
-  padding: 0.25rem 0 0.25rem 1rem;
+  margin: 1.5rem 0;
+  padding: 0.4rem 0 0.4rem 1.15rem;
   border-left: 3px solid color-mix(in srgb, var(--rb-green-500) 55%, transparent);
   color: var(--muted);
 }
@@ -122,34 +220,42 @@ body::before {
   background: var(--surface-2);
   border: 1px solid var(--border);
   border-radius: 0.75rem;
-  padding: 1rem;
+  padding: 1.15rem 1.25rem;
   overflow-x: auto;
-  margin: 1rem 0;
+  margin: 1.5rem 0;
 }
 .notes-prose pre code {
   font-family: var(--font-mono);
+  /* Mono runs visually larger than the body face at the same size, so it's held
+     a step below — and given its own leading, since code lines are read
+     individually rather than as flowing prose. */
   font-size: 0.85em;
+  line-height: 1.65;
 }
 /* Tables — the notes are dense with reference tables (divisibility, codes…). */
 .notes-prose .table-wrap {
   overflow-x: auto;
-  margin: 1rem 0;
+  margin: 1.5rem 0;
   border: 1px solid var(--border);
   border-radius: 0.75rem;
 }
 .notes-prose table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 0.875rem;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  /* Reference tables compare numbers down a column, so digits get fixed widths. */
+  font-variant-numeric: tabular-nums;
 }
 .notes-prose thead th {
   background: var(--surface-2);
   text-align: left;
   font-weight: 600;
+  letter-spacing: 0.01em;
 }
 .notes-prose th,
 .notes-prose td {
-  padding: 0.5rem 0.75rem;
+  padding: 0.65rem 0.9rem;
   border-bottom: 1px solid var(--border);
   vertical-align: top;
 }
@@ -158,7 +264,7 @@ body::before {
 }
 /* Diagram images extracted from the source PDFs. */
 .notes-prose figure {
-  margin: 1.25rem 0;
+  margin: 1.75rem 0;
 }
 .notes-prose img {
   display: block;

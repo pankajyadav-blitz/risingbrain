@@ -40,7 +40,9 @@ export function Paper({ paper }: { paper: AptPaper }) {
   );
 
   return (
-    <div className="glass rounded-3xl p-5 sm:p-7">
+    // Plain content, no card: the surrounding pane in `workspace.tsx` IS the card
+    // (see the note there on why only one box may carry the radius).
+    <div className="p-6 sm:p-8">
       {/* Whole paper shares one attempt so the header's Retake button can react
           to submission state alongside the questions and bottom SubmitBar. */}
       <PaperAttemptProvider
@@ -48,12 +50,14 @@ export function Paper({ paper }: { paper: AptPaper }) {
         questionIds={paper.questions.map((q) => q.id)}
       >
         {/* Header */}
-        <div className="mb-6 border-b border-border pb-5">
-          <p className="text-xs font-semibold uppercase tracking-wide text-accent">
+        <div className="mb-7 border-b border-border pb-6">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.08em] text-accent">
             {paper.categoryName}
           </p>
-          <div className="mt-1 flex flex-wrap items-center justify-between gap-3">
-            <h3 className="text-xl font-bold tracking-tight sm:text-2xl">{paper.topicName}</h3>
+          <div className="mt-1.5 flex flex-wrap items-center justify-between gap-3">
+            <h3 className="text-2xl font-bold tracking-tight text-balance sm:text-[1.75rem]">
+              {paper.topicName}
+            </h3>
             <div className="flex shrink-0 items-center gap-3">
               <span className="text-sm text-muted">
                 {paper.questions.length} question{paper.questions.length === 1 ? "" : "s"}

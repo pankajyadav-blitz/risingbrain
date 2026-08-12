@@ -23,18 +23,25 @@ export default async function AdminOverviewPage() {
       prisma.user.count(),
     ]);
 
+  /**
+   * Each section leads with ONE headline count — the unit that actually measures
+   * how much content the section holds — and carries the rest as a quiet
+   * supporting line. The counts are wildly uneven per section (Sheets has five,
+   * Users has one), and giving them all equal weight left the dense cards cramped
+   * and the sparse ones looking unfinished.
+   */
   const sections = [
     {
       href: "/admin/sheets",
       icon: ListTodo,
       title: "Sheets (DSA)",
       blurb: "Sheets, topics, patterns, problems & companies.",
-      stats: [
-        ["Sheets", sheets],
-        ["Topics", topics],
-        ["Patterns", patterns],
-        ["Problems", problems],
-        ["Companies", companies],
+      primary: { label: "Problems", value: problems },
+      secondary: [
+        ["sheets", sheets],
+        ["topics", topics],
+        ["patterns", patterns],
+        ["companies", companies],
       ] as const,
     },
     {
@@ -42,17 +49,18 @@ export default async function AdminOverviewPage() {
       icon: Database,
       title: "Domain",
       blurb: "OOPS · DBMS · OS · CN · SQL topic notes.",
-      stats: [["Topics", domainTopics]] as const,
+      primary: { label: "Topics", value: domainTopics },
+      secondary: [] as const,
     },
     {
       href: "/admin/screening",
       icon: NotebookPen,
       title: "Screening",
       blurb: "Aptitude / reasoning / puzzle MCQs.",
-      stats: [
-        ["Categories", quizCats],
-        ["Topics", quizTopics],
-        ["Questions", quizQuestions],
+      primary: { label: "Questions", value: quizQuestions },
+      secondary: [
+        ["categories", quizCats],
+        ["topics", quizTopics],
       ] as const,
     },
     {
@@ -60,45 +68,65 @@ export default async function AdminOverviewPage() {
       icon: Users,
       title: "Users",
       blurb: "Search by email · change role · disable.",
-      stats: [["Users", users]] as const,
+      primary: { label: "Accounts", value: users },
+      secondary: [] as const,
     },
   ];
 
   return (
-    <div className="mx-auto max-w-5xl px-4 py-6 sm:px-6">
-      <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
-        <p className="text-sm text-muted">
+    // `pb-10` rather than a symmetric `py-6`: this page owns its scroll now, and a
+    // scrollport that ends flush with its last card reads as truncated.
+    <div className="mx-auto max-w-5xl px-4 pb-10 pt-6 sm:px-6">
+      {/* `items-start` so the button stays aligned to the first line once the copy
+          wraps, instead of drifting to the middle of a two-line paragraph. */}
+      <div className="mb-6 flex flex-wrap items-start justify-between gap-x-4 gap-y-3">
+        <p className="max-w-prose text-sm leading-relaxed text-muted">
           Edit every content tree below. Changes save to the database and refresh the public pages
           immediately.
         </p>
         <RevalidateButton />
       </div>
 
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {/* Exactly four sections, so a 2×2 grid stays balanced at every width — a
+          three-column track would strand the fourth card alone on its own row. */}
+      <div className="grid gap-4 sm:grid-cols-2">
         {sections.map((s) => {
           const Icon = s.icon;
           return (
             <Link
               key={s.href}
               href={s.href}
-              className="glass glass-hover group flex flex-col rounded-2xl p-5 transition-transform hover:-translate-y-0.5"
+              className="glass glass-hover group flex flex-col rounded-3xl p-5"
             >
-              <div className="mb-3 flex items-center gap-3">
-                <span className="grid h-10 w-10 place-items-center rounded-2xl bg-rb-green-500/15 text-accent ring-1 ring-rb-green-500/20">
+              <div className="flex items-center gap-3">
+                <span className="grid h-10 w-10 shrink-0 place-items-center rounded-2xl bg-rb-green-500/15 text-accent ring-1 ring-rb-green-500/20 transition-colors group-hover:bg-rb-green-500/25">
                   <Icon className="h-5 w-5" />
                 </span>
-                <h2 className="text-base font-semibold text-foreground">{s.title}</h2>
-                <ArrowRight className="ml-auto h-4 w-4 text-muted transition-transform group-hover:translate-x-0.5" />
+                <h2 className="min-w-0 truncate text-base font-semibold text-foreground">
+                  {s.title}
+                </h2>
+                <ArrowRight className="ml-auto h-4 w-4 shrink-0 text-muted transition-transform group-hover:translate-x-0.5 group-hover:text-accent" />
               </div>
-              <p className="mb-4 text-sm text-muted">{s.blurb}</p>
-              <dl className="mt-auto flex flex-wrap gap-x-4 gap-y-1.5">
-                {s.stats.map(([label, value]) => (
-                  <div key={label} className="flex items-baseline gap-1.5">
-                    <dd className="text-lg font-bold tabular-nums text-foreground">{value}</dd>
-                    <dt className="text-xs text-muted">{label}</dt>
-                  </div>
-                ))}
-              </dl>
+
+              <p className="mt-3 text-sm leading-relaxed text-muted">{s.blurb}</p>
+
+              {/* `mt-auto` pins the figures to the bottom edge so they line up
+                  across cards whose blurbs run to different lengths. */}
+              <div className="mt-auto pt-5">
+                <div className="flex items-baseline gap-2 border-t border-border/70 pt-4">
+                  <span className="text-3xl font-bold leading-none tabular-nums text-foreground">
+                    {s.primary.value}
+                  </span>
+                  <span className="text-[11px] font-medium uppercase tracking-[0.08em] text-muted">
+                    {s.primary.label}
+                  </span>
+                </div>
+                {s.secondary.length > 0 ? (
+                  <p className="mt-2.5 text-xs tabular-nums text-muted">
+                    {s.secondary.map(([label, value]) => `${value} ${label}`).join(" · ")}
+                  </p>
+                ) : null}
+              </div>
             </Link>
           );
         })}

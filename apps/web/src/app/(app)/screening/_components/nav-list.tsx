@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 import Link, { useLinkStatus } from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { Loader2 } from "lucide-react";
+import { useTruncationTooltip } from "@/components/shell/truncation-tooltip";
 import { useProgress } from "./progress-provider";
 import { useSelectedCategory } from "./selected-category";
 import type { AptIndexCategory } from "../_data";
@@ -50,13 +51,32 @@ export function NavList({ categories }: { categories: AptIndexCategory[] }) {
     activeRef.current?.scrollIntoView({ block: "nearest" });
   }, [activeId, selectedId]);
 
+  // The index column is narrow, so long topic names are truncated; this reveals
+  // the rest on hover/focus.
+  const { tipProps, tooltip } = useTruncationTooltip();
+
   if (!active) return null;
 
   return (
-    <div>
-      <p className="mb-2 px-2 text-[11px] font-semibold uppercase tracking-wider text-accent">
-        {active.name}
-      </p>
+    // No top padding: the category header sits flush against the panel's top
+    // edge, so nothing shows above it and it clips cleanly to the rounded corner.
+    <div className="px-3 pb-3">
+      {/* Sticky within the index's own scrollport, so the category stays labelled
+          while you scroll its topics. Pulled to the panel's full width so nothing
+          shows through beside it.
+
+          Solid `surface-2`, NOT a translucent + `backdrop-blur` band: a child with
+          `backdrop-filter` is not clipped by an ancestor's border radius in
+          Chromium, so a blurred bar renders square over the panel's rounded top
+          corner. It also has to be opaque anyway — rows scroll under it. */}
+      <div className="sticky top-0 z-10 -mx-3 mb-1.5 flex items-baseline justify-between gap-2 border-b border-border/70 bg-surface-2 px-6 py-2">
+        <p className="truncate text-[11px] font-semibold uppercase tracking-wider text-accent">
+          {active.name}
+        </p>
+        <span className="shrink-0 text-[11px] font-medium tabular-nums text-muted">
+          {active.topics.length}
+        </span>
+      </div>
       <ul className="space-y-0.5">
         {active.topics.map((t) => {
           const sc = progress?.getTopicScore(t.id);
@@ -69,17 +89,21 @@ export function NavList({ categories }: { categories: AptIndexCategory[] }) {
                 href={href}
                 ref={isActive ? activeRef : undefined}
                 prefetch={false}
-                onMouseEnter={() => router.prefetch(href)}
-                onFocus={() => router.prefetch(href)}
+                {...tipProps(t.name)}
+                onPointerEnter={() => router.prefetch(href)}
                 scroll={false}
                 aria-current={isActive ? "page" : undefined}
-                className={`flex w-full items-center gap-2 rounded-xl px-3 py-2 text-left text-sm transition-colors ${
+                // `scroll-mt-10` clears the sticky category header, so the
+                // keep-active-in-view scroll never parks a topic under it.
+                className={`flex w-full scroll-mt-10 items-center gap-2 rounded-xl px-3 py-2 text-left text-sm transition-colors ${
                   isActive
                     ? "bg-rb-green-500/15 font-semibold text-brand ring-1 ring-rb-green-500/30"
                     : "text-muted hover:bg-surface-2 hover:text-foreground"
                 }`}
               >
-                <span className="min-w-0 flex-1 truncate">{t.name}</span>
+                <span data-truncate className="min-w-0 flex-1 truncate">
+                  {t.name}
+                </span>
                 <NavTrailing
                   label={signedIn && sc ? `${sc.score}/${t.total}` : String(t.total)}
                   done={done}
@@ -92,6 +116,7 @@ export function NavList({ categories }: { categories: AptIndexCategory[] }) {
           <li className="px-3 py-2 text-sm text-muted">No topics in this category yet.</li>
         ) : null}
       </ul>
+      {tooltip}
     </div>
   );
 }

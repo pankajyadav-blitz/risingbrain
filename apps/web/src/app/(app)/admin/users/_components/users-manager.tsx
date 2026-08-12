@@ -85,8 +85,10 @@ export function UsersManager({ currentUserId }: { currentUserId: string }) {
   }
 
   return (
-    <div className="mx-auto max-w-3xl px-4 py-6 sm:px-6">
-      <div className="mb-1 text-sm text-muted">
+    // `pb-10` rather than a symmetric `py-6`: this page owns its scroll now, and a
+    // scrollport that ends flush with its last result reads as truncated.
+    <div className="mx-auto max-w-3xl px-4 pb-10 pt-6 sm:px-6">
+      <div className="mb-1 max-w-prose text-sm text-muted">
         Search a user by email to change their role or disable their account. The full list is
         never loaded.
       </div>
@@ -135,7 +137,7 @@ export function UsersManager({ currentUserId }: { currentUserId: string }) {
             <div
               key={u.id}
               className={cn(
-                "glass rounded-2xl p-4",
+                "glass rounded-3xl p-4",
                 disabled && "opacity-70 ring-1 ring-rose-500/20",
               )}
             >

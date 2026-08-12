@@ -33,12 +33,17 @@ export function TopRetakeButton() {
  */
 export function SubmitBar() {
   const attempt = usePaperAttempt();
+  // NOTE ON THE STICKY BARS BELOW: solid `bg-surface`, not a translucent +
+  // `backdrop-blur` band. The paper pane is a rounded, clipping card, and a child
+  // with `backdrop-filter` is not clipped by an ancestor's border radius in
+  // Chromium — a blurred bar renders its square corner over the card's rounded
+  // bottom one. It has to be opaque regardless, since questions scroll under it.
   const { total, answeredCount, submitted, result, submitting, error } = attempt;
 
   if (submitted && result) {
     const pct = result.total > 0 ? Math.round((result.score / result.total) * 100) : 0;
     return (
-      <div className="sticky bottom-0 z-10 mt-6 border-t border-border bg-surface/80 py-4 backdrop-blur-md">
+      <div className="sticky bottom-0 z-10 mt-6 border-t border-border bg-surface py-4">
         <div className="flex flex-col gap-4 rounded-2xl bg-rb-green-500/10 px-5 py-4 ring-1 ring-rb-green-500/25 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-center gap-3">
             <span className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-rb-green-500/20 text-brand">

@@ -21,6 +21,13 @@ export const metadata: Metadata = {
  * workspace streams behind one <Suspense> (a pure skeleton, never half-real).
  *
  * The navbar + footer come from the parent (app) layout.
+ *
+ * SCROLL MODEL (desktop): this route fills the shell's center column and scrolls
+ * its two panes independently — the topic index and the topic content each own a
+ * scrollport, so neither drags the other out of view. `data-fills-scrollport` is
+ * what opts into that (see the rule of the same name in globals.css); without it
+ * the shared page-enter wrapper sizes to content and both panes lose their
+ * height, collapsing back to one page-level scroll.
  */
 export default function DomainLayout({
   children,
@@ -30,8 +37,13 @@ export default function DomainLayout({
   nav: React.ReactNode;
 }) {
   return (
-    <main className="flex-1 lg:flex lg:min-h-0 lg:flex-col">
-      <Container tight className="py-6 sm:py-8 lg:flex lg:min-h-0 lg:flex-1 lg:flex-col">
+    <main data-fills-scrollport className="flex-1 lg:flex lg:min-h-0 lg:flex-col">
+      {/* On desktop the panes fill the shell, so a full `py-8` bottom gutter is
+          just dead space under them — trim it and give the rows the height. */}
+      <Container
+        tight
+        className="py-6 sm:py-8 lg:flex lg:min-h-0 lg:flex-1 lg:flex-col lg:pt-5 lg:pb-3"
+      >
         <Suspense fallback={<DomainWorkspaceSkeleton />}>
           <DomainWorkspace nav={nav}>{children}</DomainWorkspace>
         </Suspense>

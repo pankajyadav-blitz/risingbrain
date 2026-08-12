@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 import Link, { useLinkStatus } from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { Loader2 } from "lucide-react";
+import { useTruncationTooltip } from "@/components/shell/truncation-tooltip";
 import { useSelectedSubject } from "./selected-subject";
 import type { DomainSubjectIndex } from "../_data";
 
@@ -42,15 +43,34 @@ export function NavList({ subjects }: { subjects: DomainSubjectIndex[] }) {
     activeRef.current?.scrollIntoView({ block: "nearest" });
   }, [activeId, selected]);
 
+  // The index column is narrow, so long topic titles are truncated; this reveals
+  // the rest on hover/focus.
+  const { tipProps, tooltip } = useTruncationTooltip();
+
   if (!active) return null;
 
   return (
-    <nav className="space-y-6">
+    // No top padding: the first group header sits flush against the panel's top
+    // edge, so nothing shows above it and it clips cleanly to the rounded corner.
+    <nav className="px-3 pb-3">
       {active.groups.map((group) => (
-        <div key={group.label}>
-          <p className="mb-2 px-2 text-[11px] font-semibold uppercase tracking-wider text-accent">
-            {group.label}
-          </p>
+        <div key={group.label} className="pb-5 last:pb-0">
+          {/* Sticky within the index's own scrollport: on a long subject the phase
+              you're reading stays labelled while you scroll past it. Pulled to the
+              panel's full width so nothing shows through beside it.
+
+              Solid `surface-2`, NOT a translucent + `backdrop-blur` band: a child
+              with `backdrop-filter` is not clipped by an ancestor's border radius
+              in Chromium, so a blurred bar renders square over the panel's rounded
+              top corner. It also has to be opaque anyway — rows scroll under it. */}
+          <div className="sticky top-0 z-10 -mx-3 mb-1.5 flex items-baseline justify-between gap-2 border-b border-border/70 bg-surface-2 px-6 py-2">
+            <p className="text-[11px] font-semibold uppercase tracking-wider text-accent">
+              {group.label}
+            </p>
+            <span className="shrink-0 text-[11px] font-medium tabular-nums text-muted">
+              {group.topics.length}
+            </span>
+          </div>
           <ul className="space-y-0.5">
             {group.topics.map((t) => {
               const isActive = t.id === activeId;
@@ -61,17 +81,21 @@ export function NavList({ subjects }: { subjects: DomainSubjectIndex[] }) {
                     href={href}
                     ref={isActive ? activeRef : undefined}
                     prefetch={false}
-                    onMouseEnter={() => router.prefetch(href)}
-                    onFocus={() => router.prefetch(href)}
+                    {...tipProps(t.title)}
+                    onPointerEnter={() => router.prefetch(href)}
                     scroll={false}
                     aria-current={isActive ? "page" : undefined}
-                    className={`flex w-full items-center gap-2 rounded-xl px-3 py-2 text-left text-sm transition-colors ${
+                    // `scroll-mt-10` clears the sticky group header, so the
+                    // keep-active-in-view scroll never parks a topic under it.
+                    className={`flex w-full scroll-mt-10 items-center gap-2 rounded-xl px-3 py-2 text-left text-sm transition-colors ${
                       isActive
                         ? "bg-rb-green-500/15 font-semibold text-brand ring-1 ring-rb-green-500/30"
                         : "text-muted hover:bg-surface-2 hover:text-foreground"
                     }`}
                   >
-                    <span className="min-w-0 flex-1 truncate">{t.title}</span>
+                    <span data-truncate className="min-w-0 flex-1 truncate">
+                      {t.title}
+                    </span>
                     <NavTrailing />
                   </Link>
                 </li>
@@ -80,6 +104,8 @@ export function NavList({ subjects }: { subjects: DomainSubjectIndex[] }) {
           </ul>
         </div>
       ))}
+
+      {tooltip}
     </nav>
   );
 }

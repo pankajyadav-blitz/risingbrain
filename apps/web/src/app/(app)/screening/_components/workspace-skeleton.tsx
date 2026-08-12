@@ -15,12 +15,12 @@ import { Skeleton } from "@/components/loading/loading-shell";
 /** Mirrors <Paper>: header → theory/formula notes → MCQ list. */
 export function PaperSkeleton() {
   return (
-    <div className="glass rounded-3xl p-5 sm:p-7">
+    <div className="p-6 sm:p-8">
       {/* Header */}
-      <div className="mb-6 border-b border-border pb-5">
+      <div className="mb-7 border-b border-border pb-6">
         <Skeleton className="h-3 w-24" />
-        <div className="mt-1 flex items-center justify-between gap-3">
-          <Skeleton className="h-7 w-2/5" />
+        <div className="mt-1.5 flex items-center justify-between gap-3">
+          <Skeleton className="h-8 w-2/5" />
           <Skeleton className="h-4 w-20 shrink-0" />
         </div>
         {/* Topic progress bar */}
@@ -85,8 +85,12 @@ export function PaperSkeleton() {
 /** Mirrors <NavList>: selected-category heading → its topic link rows. */
 export function NavIndexSkeleton() {
   return (
-    <div>
-      <Skeleton className="mb-2 ml-2 h-3 w-28" />
+    <div className="px-3 pb-3">
+      {/* Mirrors the sticky category header (full-bleed bar + trailing count). */}
+      <div className="-mx-3 mb-1.5 flex items-center justify-between border-b border-border/70 bg-surface-2 px-6 py-2">
+        <Skeleton className="h-3 w-28" />
+        <Skeleton className="h-3 w-3" />
+      </div>
       <ul className="space-y-0.5">
         {Array.from({ length: 6 }).map((_, t) => (
           <li key={t}>
@@ -139,15 +143,19 @@ export function AptitudeWorkspaceSkeleton() {
           <Skeleton className="h-11 w-full rounded-xl" />
         </div>
 
-        <div className="lg:flex lg:min-h-0 lg:flex-1 lg:gap-6 lg:overflow-hidden">
+        <div className="lg:flex lg:min-h-0 lg:flex-1 lg:gap-3 lg:overflow-hidden">
           {/* LEFT (@nav slot) */}
-          <aside className="hidden lg:block lg:h-full lg:w-72 lg:shrink-0 lg:overflow-y-auto lg:pr-1">
-            <NavIndexSkeleton />
+          <aside className="glass hidden lg:flex lg:h-full lg:w-60 lg:shrink-0 lg:flex-col lg:overflow-hidden lg:rounded-3xl xl:w-64">
+            <div className="pane-scroll min-h-0 flex-1 overflow-y-auto">
+              <NavIndexSkeleton />
+            </div>
           </aside>
 
           {/* MAIN ([topicId] paper) */}
-          <section className="min-w-0 lg:h-full lg:flex-1 lg:overflow-y-auto">
-            <PaperSkeleton />
+          <section className="glass min-w-0 rounded-3xl lg:h-full lg:flex-1 lg:overflow-hidden">
+            <div className="pane-scroll lg:h-full lg:overflow-y-auto">
+              <PaperSkeleton />
+            </div>
           </section>
         </div>
       </div>

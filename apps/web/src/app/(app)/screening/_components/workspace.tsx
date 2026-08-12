@@ -51,18 +51,27 @@ export async function AptitudeWorkspace({
           {/* Mobile: topic picker (scoped to the selected category) replaces the sidebar */}
           <MobilePicker categories={categories} />
 
-          {/* Full-height flex chain lets the workspace fill the space between
-              navbar and footer: the index stays in view, the paper scrolls
-              on its own, footer flush — no blank space. */}
-          <div className="lg:flex lg:min-h-0 lg:flex-1 lg:gap-6 lg:overflow-hidden">
+          {/* Two independent scrollports. Both panes are clipped to the SAME row
+              height, so whichever list is longer scrolls inside its own column and
+              neither can drag the other out of view or leave it blank. The row's
+              height is definite only because the route opts into filling the shell
+              (`data-fills-scrollport` on the layout's <main>).
+
+              Each pane CLIPS on the outside and SCROLLS on the inside: scrollbars
+              are painted outside the border radius, so a rounded element that
+              scrolls itself shows a square bar poking through its top corner.
+              Nesting puts the bar inside the parent's clip. And the card lives on
+              the pane, never also on the child — two rounded boxes never line up
+              once the scrollbar takes width off the inner one. */}
+          <div className="lg:flex lg:min-h-0 lg:flex-1 lg:gap-3 lg:overflow-hidden">
             {/* LEFT (@nav slot): the selected category's topics, scrolls independently */}
-            <aside className="hidden lg:block lg:h-full lg:w-72 lg:shrink-0 lg:overflow-y-auto lg:pr-1">
-              {nav}
+            <aside className="glass hidden lg:flex lg:h-full lg:w-60 lg:shrink-0 lg:flex-col lg:overflow-hidden lg:rounded-3xl xl:w-64">
+              <div className="pane-scroll min-h-0 flex-1 overflow-y-auto">{nav}</div>
             </aside>
 
             {/* MAIN ([topicId] paper): lazy per-topic, scrolls independently */}
-            <section className="min-w-0 lg:h-full lg:flex-1 lg:overflow-y-auto">
-              {children}
+            <section className="glass min-w-0 rounded-3xl lg:h-full lg:flex-1 lg:overflow-hidden">
+              <div className="pane-scroll lg:h-full lg:overflow-y-auto">{children}</div>
             </section>
           </div>
         </div>

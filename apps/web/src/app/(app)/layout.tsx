@@ -40,8 +40,12 @@ export default async function AppLayout({
       />
       {/* Content is its own rounded card, separated from the rail by the gap so
           the ambient background shows through — the floating-glass-panels look.
-          It scrolls internally; the rail card stays put beside it. */}
-      <div className="flex min-w-0 flex-1 flex-col lg:min-h-0 lg:overflow-y-auto lg:rounded-2xl lg:border lg:border-border lg:bg-surface/20">
+          It scrolls internally; the rail card stays put beside it.
+
+          `app-scrollport` is the hook a page uses to opt OUT of that scroll and
+          manage its own scrollports instead (see `[data-fills-scrollport]` in
+          globals.css) — /domain's two-pane reader needs that. */}
+      <div className="app-scrollport flex min-w-0 flex-1 flex-col lg:min-h-0 lg:overflow-y-auto lg:rounded-2xl lg:border lg:border-border lg:bg-surface/20">
         {children}
       </div>
     </div>

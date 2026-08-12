@@ -27,10 +27,15 @@ export function Section({
   children: React.ReactNode;
 }) {
   return (
-    <section className="rounded-2xl border border-border bg-surface/30 p-4 sm:p-5">
-      <div className="mb-4">
-        <h3 className="text-sm font-semibold text-foreground">{title}</h3>
-        {description && <p className="mt-0.5 text-xs text-muted">{description}</p>}
+    <section className="rounded-2xl border border-border bg-surface/40 p-4 sm:p-5">
+      {/* Uppercase accent label, matching how every other index/group header in the
+          app names a section — it separates the form's structure from its content
+          at a glance, which a long editor needs more than a bolder body-sized title. */}
+      <div className="mb-4 border-b border-border/70 pb-3">
+        <h3 className="text-[11px] font-semibold uppercase tracking-[0.08em] text-accent">
+          {title}
+        </h3>
+        {description && <p className="mt-1 text-xs text-muted">{description}</p>}
       </div>
       <div className={cols === 2 ? "grid gap-4 sm:grid-cols-2" : "space-y-4"}>{children}</div>
     </section>
@@ -55,7 +60,7 @@ export function Field({
 }) {
   return (
     <label className="block">
-      <span className="mb-1.5 flex items-center gap-1.5 text-xs font-medium text-foreground">
+      <span className="mb-1.5 flex items-center gap-1.5 text-[13px] font-medium text-foreground">
         {label}
         {required && <span className="text-rose-500">*</span>}
         {hint && <span className="font-normal text-muted">· {hint}</span>}

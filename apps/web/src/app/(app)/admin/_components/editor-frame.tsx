@@ -44,8 +44,12 @@ export function EditorFrame({
 }) {
   return (
     <div className="flex min-h-0 flex-1 flex-col">
-      {/* Header */}
-      <div className="sticky top-0 z-10 shrink-0 border-b border-border bg-surface/80 px-5 py-4 backdrop-blur-xl lg:static lg:bg-transparent lg:backdrop-blur-none">
+      {/* Header. Solid `surface-2`, NOT a translucent + `backdrop-blur` band: the
+          editor panel is a rounded, clipping card, and a child with
+          `backdrop-filter` is not clipped by an ancestor's border radius in
+          Chromium — a blurred bar renders its square corner over the card's
+          rounded one. It has to be opaque regardless, since fields scroll under it. */}
+      <div className="sticky top-0 z-10 shrink-0 border-b border-border bg-surface-2 px-5 py-4">
         <div className="flex items-start justify-between gap-3">
           <div className="flex min-w-0 items-center gap-3">
             {Icon && (
@@ -90,15 +94,17 @@ export function EditorFrame({
       </div>
 
       {/* Fields — wide, using the available editor width */}
-      <div className="min-h-0 flex-1 overflow-y-auto px-4 py-5 sm:px-6 lg:py-6">
+      <div className="pane-scroll min-h-0 flex-1 overflow-y-auto px-4 py-5 sm:px-6 lg:py-6">
         <div className="mx-auto max-w-5xl space-y-4">
           {children}
           {error && <FormError>{error}</FormError>}
         </div>
       </div>
 
-      {/* Footer */}
-      <div className="sticky bottom-0 z-10 flex shrink-0 items-center justify-between gap-3 border-t border-border bg-surface/80 px-5 py-3 backdrop-blur-xl lg:static lg:bg-transparent">
+      {/* Save bar — same opaque-surface reasoning as the header above. (It also
+          previously kept `backdrop-blur-xl` at lg while dropping to a transparent
+          background, which blurred the content scrolling behind it for no gain.) */}
+      <div className="sticky bottom-0 z-10 flex shrink-0 items-center justify-between gap-3 border-t border-border bg-surface-2 px-5 py-3">
         <span className="flex items-center gap-1.5 text-xs text-muted">
           {saving ? (
             <>

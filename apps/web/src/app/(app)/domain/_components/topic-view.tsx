@@ -10,14 +10,20 @@ import type { DomainTopicDetail } from "../_data";
  */
 export function TopicView({ topic }: { topic: DomainTopicDetail }) {
   return (
-    <article className="glass rounded-3xl p-5 sm:p-7">
+    // Plain content, no card: the surrounding pane in `workspace.tsx` IS the card
+    // (see the note there on why only one box may carry the radius).
+    <article className="p-6 sm:p-8">
       {/* Header */}
-      <div className="mb-6 border-b border-border pb-5">
-        <p className="text-xs font-semibold uppercase tracking-wide text-accent">
+      <div className="mb-7 border-b border-border pb-6">
+        <p className="text-[11px] font-semibold uppercase tracking-[0.08em] text-accent">
           {topic.subjectLabel} · {topic.groupLabel}
         </p>
-        <h1 className="mt-1 text-xl font-bold tracking-tight sm:text-2xl">{topic.title}</h1>
-        {topic.summary ? <p className="mt-2 text-sm text-muted">{topic.summary}</p> : null}
+        <h1 className="mt-1.5 text-2xl font-bold tracking-tight text-balance sm:text-[1.75rem]">
+          {topic.title}
+        </h1>
+        {topic.summary ? (
+          <p className="mt-2.5 text-base leading-relaxed text-muted">{topic.summary}</p>
+        ) : null}
       </div>
 
       <ContentTabs
