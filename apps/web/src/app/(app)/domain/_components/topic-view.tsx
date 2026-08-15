@@ -10,9 +10,10 @@ import type { DomainTopicDetail } from "../_data";
  */
 export function TopicView({ topic }: { topic: DomainTopicDetail }) {
   return (
-    // Plain content, no card: the surrounding pane in `workspace.tsx` IS the card
-    // (see the note there on why only one box may carry the radius).
-    <article className="p-6 sm:p-8">
+    // Plain content, no card and no frame inset: horizontal gutters come from the
+    // page <Container>, the scrollbar gutter from the pane in `workspace.tsx`. Only
+    // a bottom gutter is ours, so the last line isn't flush to the scroll end.
+    <article className="pb-10">
       {/* Header */}
       <div className="mb-7 border-b border-border pb-6">
         <p className="text-[11px] font-semibold uppercase tracking-[0.08em] text-accent">

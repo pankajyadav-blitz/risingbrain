@@ -12,7 +12,7 @@ import { Skeleton } from "@/components/loading/loading-shell";
 /** Mirrors <TopicView>: header → tab bar → prose blocks + a figure. */
 export function TopicSkeleton() {
   return (
-    <div className="p-6 sm:p-8">
+    <div className="pb-10">
       {/* Header */}
       <div className="mb-7 border-b border-border pb-6">
         <Skeleton className="h-3 w-40" />
@@ -40,18 +40,18 @@ export function TopicSkeleton() {
 /** Mirrors <NavList>: a group heading → its topic link rows. */
 export function NavIndexSkeleton() {
   return (
-    <div className="px-3 pb-3">
+    <div className="pb-3">
       {Array.from({ length: 2 }).map((_, g) => (
         <div key={g} className="pb-5 last:pb-0">
-          {/* Mirrors the sticky group header (full-bleed bar + trailing count). */}
-          <div className="-mx-3 mb-1.5 flex items-center justify-between border-b border-border/70 bg-surface-2 px-6 py-2">
+          {/* Mirrors the sticky group header (label bar + trailing count). */}
+          <div className="mb-1.5 flex items-center justify-between border-b border-border/70 bg-surface-2 px-3 py-2">
             <Skeleton className="h-3 w-32" />
             <Skeleton className="h-3 w-3" />
           </div>
           <ul className="space-y-0.5">
             {Array.from({ length: 4 }).map((_, t) => (
               <li key={t}>
-                <div className="flex items-center gap-2 rounded-xl px-3 py-2">
+                <div className="flex items-center gap-2 rounded-lg px-3 py-2">
                   <Skeleton className="h-3.5 w-3/4" />
                 </div>
               </li>
@@ -89,14 +89,14 @@ export function DomainWorkspaceSkeleton() {
           <Skeleton className="h-11 w-full rounded-xl" />
         </div>
 
-        <div className="lg:flex lg:min-h-0 lg:flex-1 lg:gap-3 lg:overflow-hidden">
-          <aside className="glass hidden lg:flex lg:h-full lg:w-60 lg:shrink-0 lg:flex-col lg:overflow-hidden lg:rounded-3xl xl:w-64">
+        <div className="lg:flex lg:min-h-0 lg:flex-1 lg:gap-6 lg:overflow-hidden">
+          <aside className="hidden lg:flex lg:h-full lg:w-[228px] lg:shrink-0 lg:flex-col lg:overflow-hidden lg:border-r lg:border-border lg:pr-2">
             <div className="pane-scroll min-h-0 flex-1 overflow-y-auto">
               <NavIndexSkeleton />
             </div>
           </aside>
-          <section className="glass min-w-0 rounded-3xl lg:h-full lg:flex-1 lg:overflow-hidden">
-            <div className="pane-scroll lg:h-full lg:overflow-y-auto">
+          <section className="min-w-0 lg:h-full lg:flex-1 lg:overflow-hidden">
+            <div className="pane-scroll lg:h-full lg:overflow-y-auto lg:pr-3">
               <TopicSkeleton />
             </div>
           </section>

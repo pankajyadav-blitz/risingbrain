@@ -45,32 +45,30 @@ export async function DomainWorkspace({
             neither can drag the other out of view or leave it blank. The row's
             height is definite only because the route opts into filling the shell
             (`data-fills-scrollport` on the layout's <main>). */}
-        <div className="lg:flex lg:min-h-0 lg:flex-1 lg:gap-3 lg:overflow-hidden">
-          {/* LEFT (@nav slot): the selected subject's topics. A panel matching the
-              content card, so the reader reads as a matched pair rather than a
-              bare list beside a card. Narrower than the content pane and held to a
-              tight gutter — the index is for scanning, the notes are for reading,
-              so the width belongs to the notes. */}
-          {/* The panel clips (`overflow-hidden` + radius) and an INNER element
-              scrolls. Scrollbars are painted outside the border radius, so a
-              rounded element that scrolls itself shows a square bar poking through
-              its top corner; nesting puts the bar inside the parent's clip. */}
-          <aside className="glass hidden lg:flex lg:h-full lg:w-60 lg:shrink-0 lg:flex-col lg:overflow-hidden lg:rounded-3xl xl:w-64">
+        <div className="lg:flex lg:min-h-0 lg:flex-1 lg:gap-6 lg:overflow-hidden">
+          {/* LEFT (@nav slot): the selected subject's topics. Deliberately NOT a
+              card — no glass fill, no radius, no shadow — just a divider rule
+              against the content pane, so the index reads as part of the page
+              rather than a second floating panel. Narrower than the content pane —
+              and one FIXED width at every breakpoint, not growing at xl: the index
+              is for scanning, the notes are for reading, so any extra width belongs
+              to the notes. Long titles clip, and `useTruncationTooltip` reveals the
+              full name on hover/focus. `pr-2` sits outside the scroller, so it is a
+              real gutter between the rows and the divider rule (the scrollbar rides
+              inside it) — the width is sized to absorb it plus the rows' own. */}
+          <aside className="hidden lg:flex lg:h-full lg:w-[228px] lg:shrink-0 lg:flex-col lg:overflow-hidden lg:border-r lg:border-border lg:pr-2">
             <div className="pane-scroll min-h-0 flex-1 overflow-y-auto">{nav}</div>
           </aside>
 
-          {/* MAIN ([topicId] view): lazy per-topic, scrolls independently. Same
-              clip-outside / scroll-inside split as the index, so this pane's bar is
-              held inside the rounded corner too. The scroller wraps `children`
-              rather than living in the topic view, so every state routed here — the
-              skeleton, the index page, not-found — scrolls without knowing about it.
-
-              THE CARD LIVES HERE, not on the topic view. Two rounded boxes (a
-              clipping shell around a glass card) never line up once the scrollbar
-              takes width off the inner one — the radii end up concentric but
-              offset, which reads as a doubled corner. One box, one radius. */}
-          <section className="glass min-w-0 rounded-3xl lg:h-full lg:flex-1 lg:overflow-hidden">
-            <div className="pane-scroll lg:h-full lg:overflow-y-auto">{children}</div>
+          {/* MAIN ([topicId] view): lazy per-topic, scrolls independently. No card
+              either — the notes read directly on the page, so the full column width
+              goes to the text instead of a frame + its inset. The scroller wraps
+              `children` rather than living in the topic view, so every state routed
+              here — the skeleton, the index page, not-found — scrolls without
+              knowing about it, and `pr-3` is the only inset: it keeps the prose off
+              the scrollbar. */}
+          <section className="min-w-0 lg:h-full lg:flex-1 lg:overflow-hidden">
+            <div className="pane-scroll lg:h-full lg:overflow-y-auto lg:pr-3">{children}</div>
           </section>
         </div>
       </div>

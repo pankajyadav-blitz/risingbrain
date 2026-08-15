@@ -19,9 +19,9 @@
     "slug": "select-specific-columns",
     "title": "SELECT Specific Columns",
     "summary": "Listing columns by name instead of `*` returns only what you need — less data moved over the network, and a query that keeps working even if unrelated columns are added to the table later.",
-    "notes": "Listing columns by name instead of `*` returns only what you need — less data moved over the network, and a query that keeps working even if unrelated columns are added to the table later.\n\n## Problem\n\nDisplay employee name and salary.\n\n```sql\nSELECT first_name, last_name, salary\nFROM employees;\n```\n\n![SELECT Specific Columns — result 1](/study-notes/sql/select-specific-columns/fig-1.png)",
+    "notes": "## Source data — Pattern 1: Basic Data Retrieval\n\nAll queries run against the shared `employees` table (see `schema.sql`).\n\n![SELECT Specific Columns — source table 1](/study-notes/sql/select/fig-1.png)\n\n---\n\nListing columns by name instead of `*` returns only what you need — less data moved over the network, and a query that keeps working even if unrelated columns are added to the table later.\n\n## Problem\n\nDisplay employee name and salary.\n\n```sql\nSELECT first_name, last_name, salary\nFROM employees;\n```\n\n![SELECT Specific Columns — result 1](/study-notes/sql/select-specific-columns/fig-1.png)",
     "example": null,
-    "figures": 1
+    "figures": 2
   },
   {
     "subject": "SQL",
@@ -31,9 +31,9 @@
     "slug": "distinct",
     "title": "DISTINCT",
     "summary": "`DISTINCT` removes duplicate rows from the result — it looks at the full row (or the listed columns) and collapses repeats down to one.",
-    "notes": "`DISTINCT` removes duplicate rows from the result — it looks at the full row (or the listed columns) and collapses repeats down to one. It runs after the columns are selected, so `SELECT DISTINCT department_id` only cares about duplicate `department_id` values, not the whole row.\n\n## Problem\n\nFind all unique departments.\n\n```sql\nSELECT DISTINCT department_id\nFROM employees;\n```\n\n![DISTINCT — result 1](/study-notes/sql/distinct/fig-1.png)\n\n## Tip\n\nTo show department names instead of IDs, this pairs naturally with a JOIN to `departments` — worth cross-linking once Pattern 6 is live.",
+    "notes": "## Source data — Pattern 1: Basic Data Retrieval\n\nAll queries run against the shared `employees` table (see `schema.sql`).\n\n![DISTINCT — source table 1](/study-notes/sql/select/fig-1.png)\n\n---\n\n`DISTINCT` removes duplicate rows from the result — it looks at the full row (or the listed columns) and collapses repeats down to one. It runs after the columns are selected, so `SELECT DISTINCT department_id` only cares about duplicate `department_id` values, not the whole row.\n\n## Problem\n\nFind all unique departments.\n\n```sql\nSELECT DISTINCT department_id\nFROM employees;\n```\n\n![DISTINCT — result 1](/study-notes/sql/distinct/fig-1.png)\n\n## Tip\n\nTo show department names instead of IDs, this pairs naturally with a JOIN to `departments` — worth cross-linking once Pattern 6 is live.",
     "example": null,
-    "figures": 1
+    "figures": 2
   },
   {
     "subject": "SQL",
@@ -43,9 +43,9 @@
     "slug": "aliases-as",
     "title": "Aliases (AS)",
     "summary": "`AS` renames a column (or table) in the output only — it doesn't touch the underlying schema.",
-    "notes": "`AS` renames a column (or table) in the output only — it doesn't touch the underlying schema. Useful for friendlier report headings, or for naming a computed expression so you can refer to it clearly.\n\n## Problem\n\nDisplay employee names with the heading 'Employee Name'.\n\n```sql\nSELECT first_name AS \"Employee Name\"\nFROM employees;\n```\n\n![Aliases (AS) — result 1](/study-notes/sql/aliases-as/fig-1.png)\n\n## Dialect note\n\nMySQL/PostgreSQL accept double quotes or backticks for the alias; SQL Server uses square brackets (`[Employee Name]`).",
+    "notes": "## Source data — Pattern 1: Basic Data Retrieval\n\nAll queries run against the shared `employees` table (see `schema.sql`).\n\n![Aliases (AS) — source table 1](/study-notes/sql/select/fig-1.png)\n\n---\n\n`AS` renames a column (or table) in the output only — it doesn't touch the underlying schema. Useful for friendlier report headings, or for naming a computed expression so you can refer to it clearly.\n\n## Problem\n\nDisplay employee names with the heading 'Employee Name'.\n\n```sql\nSELECT first_name AS \"Employee Name\"\nFROM employees;\n```\n\n![Aliases (AS) — result 1](/study-notes/sql/aliases-as/fig-1.png)\n\n## Dialect note\n\nMySQL/PostgreSQL accept double quotes or backticks for the alias; SQL Server uses square brackets (`[Employee Name]`).",
     "example": null,
-    "figures": 1
+    "figures": 2
   },
   {
     "subject": "SQL",
@@ -55,9 +55,9 @@
     "slug": "arithmetic-expressions",
     "title": "Arithmetic Expressions",
     "summary": "You can compute new values directly in the `SELECT` list — `+`, `-`, `*`, `/` all work on numeric columns just like a calculator.",
-    "notes": "You can compute new values directly in the `SELECT` list — `+`, `-`, `*`, `/` all work on numeric columns just like a calculator. The result is a new, unnamed column unless you alias it (see topic 4).\n\n## Problem\n\nDisplay salary after adding a ₹5,000 bonus.\n\n```sql\nSELECT first_name,\n       salary,\n       salary + 5000 AS salary_with_bonus\nFROM employees;\n```\n\n![Arithmetic Expressions — result 1](/study-notes/sql/arithmetic-expressions/fig-1.png)",
+    "notes": "## Source data — Pattern 1: Basic Data Retrieval\n\nAll queries run against the shared `employees` table (see `schema.sql`).\n\n![Arithmetic Expressions — source table 1](/study-notes/sql/select/fig-1.png)\n\n---\n\nYou can compute new values directly in the `SELECT` list — `+`, `-`, `*`, `/` all work on numeric columns just like a calculator. The result is a new, unnamed column unless you alias it (see topic 4).\n\n## Problem\n\nDisplay salary after adding a ₹5,000 bonus.\n\n```sql\nSELECT first_name,\n       salary,\n       salary + 5000 AS salary_with_bonus\nFROM employees;\n```\n\n![Arithmetic Expressions — result 1](/study-notes/sql/arithmetic-expressions/fig-1.png)",
     "example": null,
-    "figures": 1
+    "figures": 2
   },
   {
     "subject": "SQL",
@@ -67,9 +67,9 @@
     "slug": "limit-top-fetch-first",
     "title": "LIMIT / TOP / FETCH FIRST",
     "summary": "These cap how many rows come back, which matters once a table has thousands (or millions) of rows and you only need a preview.",
-    "notes": "These cap how many rows come back, which matters once a table has thousands (or millions) of rows and you only need a preview. Every major database does this slightly differently — one of the few places dialect really matters for something this basic.\n\n## Problem\n\nDisplay the first 5 employees.\n\n```sql\n-- MySQL / PostgreSQL / SQLite\nSELECT *\nFROM employees\nLIMIT 5;\n\n-- SQL Server\nSELECT TOP 5 *\nFROM employees;\n\n-- Oracle\nSELECT *\nFROM employees\nFETCH FIRST 5 ROWS ONLY;\n```\n\n![LIMIT / TOP / FETCH FIRST — result 1](/study-notes/sql/limit-top-fetch-first/fig-1.png)",
+    "notes": "## Source data — Pattern 1: Basic Data Retrieval\n\nAll queries run against the shared `employees` table (see `schema.sql`).\n\n![LIMIT / TOP / FETCH FIRST — source table 1](/study-notes/sql/select/fig-1.png)\n\n---\n\nThese cap how many rows come back, which matters once a table has thousands (or millions) of rows and you only need a preview. Every major database does this slightly differently — one of the few places dialect really matters for something this basic.\n\n## Problem\n\nDisplay the first 5 employees.\n\n```sql\n-- MySQL / PostgreSQL / SQLite\nSELECT *\nFROM employees\nLIMIT 5;\n\n-- SQL Server\nSELECT TOP 5 *\nFROM employees;\n\n-- Oracle\nSELECT *\nFROM employees\nFETCH FIRST 5 ROWS ONLY;\n```\n\n![LIMIT / TOP / FETCH FIRST — result 1](/study-notes/sql/limit-top-fetch-first/fig-1.png)",
     "example": null,
-    "figures": 1
+    "figures": 2
   },
   {
     "subject": "SQL",
@@ -79,9 +79,9 @@
     "slug": "order-by",
     "title": "ORDER BY",
     "summary": "Without `ORDER BY`, a database can return rows in any order it finds convenient — nothing guarantees insertion order.",
-    "notes": "Without `ORDER BY`, a database can return rows in any order it finds convenient — nothing guarantees insertion order. `ORDER BY column DESC` (or `ASC`, the default) is the only reliable way to control row order in the result.\n\n## Problem\n\nDisplay employees sorted by salary in descending order.\n\n```sql\nSELECT first_name, last_name, salary\nFROM employees\nORDER BY salary DESC;\n```\n\n![ORDER BY — result 1](/study-notes/sql/order-by/fig-1.png)",
+    "notes": "## Source data — Pattern 1: Basic Data Retrieval\n\nAll queries run against the shared `employees` table (see `schema.sql`).\n\n![ORDER BY — source table 1](/study-notes/sql/select/fig-1.png)\n\n---\n\nWithout `ORDER BY`, a database can return rows in any order it finds convenient — nothing guarantees insertion order. `ORDER BY column DESC` (or `ASC`, the default) is the only reliable way to control row order in the result.\n\n## Problem\n\nDisplay employees sorted by salary in descending order.\n\n```sql\nSELECT first_name, last_name, salary\nFROM employees\nORDER BY salary DESC;\n```\n\n![ORDER BY — result 1](/study-notes/sql/order-by/fig-1.png)",
     "example": null,
-    "figures": 1
+    "figures": 2
   },
   {
     "subject": "SQL",
@@ -103,9 +103,9 @@
     "slug": "comparison-operators",
     "title": "Comparison Operators",
     "summary": "`WHERE` conditions are built from comparison operators: `=`, `!=` / `<>`, `<`, `>`, `<=`, `>=`.",
-    "notes": "`WHERE` conditions are built from comparison operators: `=`, `!=` / `<>`, `<`, `>`, `<=`, `>=`. These compare a column to a value (or another column) and return true/false per row.\n\n## Problem\n\nFind employees whose salary is less than ₹50,000.\n\n```sql\nSELECT *\nFROM employees\nWHERE salary < 50000;\n```\n\n![Comparison Operators — result 1](/study-notes/sql/comparison-operators/fig-1.png)",
+    "notes": "## Source data — Pattern 2: Filtering Data\n\nAll queries run against the shared `employees` table (see `schema.sql`). This pattern also needs the `manager_id` column for topic 14 — not required back in Pattern 1. It also needs one row with `salary < 50000` for topic 9, which Pattern 1's 6 rows didn't have — add:\n\n```sql\nINSERT INTO employees (employee_id, first_name, last_name, salary, department_id,\nmanager_id)\nVALUES (7, 'Zoya', 'Khan', 42000, 500, 1);\n```\n\n![Comparison Operators — source table 1](/study-notes/sql/where/fig-1.png)\n\n---\n\n`WHERE` conditions are built from comparison operators: `=`, `!=` / `<>`, `<`, `>`, `<=`, `>=`. These compare a column to a value (or another column) and return true/false per row.\n\n## Problem\n\nFind employees whose salary is less than ₹50,000.\n\n```sql\nSELECT *\nFROM employees\nWHERE salary < 50000;\n```\n\n![Comparison Operators — result 1](/study-notes/sql/comparison-operators/fig-1.png)",
     "example": null,
-    "figures": 1
+    "figures": 2
   },
   {
     "subject": "SQL",
@@ -115,9 +115,9 @@
     "slug": "logical-operators-and-or-not",
     "title": "Logical Operators (AND, OR, NOT)",
     "summary": "`AND` requires every condition to be true, `OR` requires at least one, and `NOT` inverts a condition.",
-    "notes": "`AND` requires every condition to be true, `OR` requires at least one, and `NOT` inverts a condition. Combining them lets one `WHERE` clause express a rule with multiple parts — just watch operator precedence (`AND` binds tighter than `OR`; use parentheses when mixing them).\n\n## Problem\n\nFind IT employees earning more than ₹70,000.\n\n```sql\nSELECT *\nFROM employees\nWHERE department_id = 100    -- 100 = IT\n  AND salary > 70000;\n```\n\n![Logical Operators (AND, OR, NOT) — result 1](/study-notes/sql/logical-operators-and-or-not/fig-1.png)",
+    "notes": "## Source data — Pattern 2: Filtering Data\n\nAll queries run against the shared `employees` table (see `schema.sql`). This pattern also needs the `manager_id` column for topic 14 — not required back in Pattern 1. It also needs one row with `salary < 50000` for topic 9, which Pattern 1's 6 rows didn't have — add:\n\n```sql\nINSERT INTO employees (employee_id, first_name, last_name, salary, department_id,\nmanager_id)\nVALUES (7, 'Zoya', 'Khan', 42000, 500, 1);\n```\n\n![Logical Operators (AND, OR, NOT) — source table 1](/study-notes/sql/where/fig-1.png)\n\n---\n\n`AND` requires every condition to be true, `OR` requires at least one, and `NOT` inverts a condition. Combining them lets one `WHERE` clause express a rule with multiple parts — just watch operator precedence (`AND` binds tighter than `OR`; use parentheses when mixing them).\n\n## Problem\n\nFind IT employees earning more than ₹70,000.\n\n```sql\nSELECT *\nFROM employees\nWHERE department_id = 100    -- 100 = IT\n  AND salary > 70000;\n```\n\n![Logical Operators (AND, OR, NOT) — result 1](/study-notes/sql/logical-operators-and-or-not/fig-1.png)",
     "example": null,
-    "figures": 1
+    "figures": 2
   },
   {
     "subject": "SQL",
@@ -127,9 +127,9 @@
     "slug": "between",
     "title": "BETWEEN",
     "summary": "`BETWEEN a AND b` is shorthand for `column >= a AND column <= b` — both ends are inclusive.",
-    "notes": "`BETWEEN a AND b` is shorthand for `column >= a AND column <= b` — both ends are inclusive. Reads cleaner than writing the two comparisons out by hand.\n\n## Problem\n\nFind employees with salaries between ₹50,000 and ₹80,000.\n\n```sql\nSELECT *\nFROM employees\nWHERE salary BETWEEN 50000 AND 80000;\n```\n\n![BETWEEN — result 1](/study-notes/sql/between/fig-1.png)",
+    "notes": "## Source data — Pattern 2: Filtering Data\n\nAll queries run against the shared `employees` table (see `schema.sql`). This pattern also needs the `manager_id` column for topic 14 — not required back in Pattern 1. It also needs one row with `salary < 50000` for topic 9, which Pattern 1's 6 rows didn't have — add:\n\n```sql\nINSERT INTO employees (employee_id, first_name, last_name, salary, department_id,\nmanager_id)\nVALUES (7, 'Zoya', 'Khan', 42000, 500, 1);\n```\n\n![BETWEEN — source table 1](/study-notes/sql/where/fig-1.png)\n\n---\n\n`BETWEEN a AND b` is shorthand for `column >= a AND column <= b` — both ends are inclusive. Reads cleaner than writing the two comparisons out by hand.\n\n## Problem\n\nFind employees with salaries between ₹50,000 and ₹80,000.\n\n```sql\nSELECT *\nFROM employees\nWHERE salary BETWEEN 50000 AND 80000;\n```\n\n![BETWEEN — result 1](/study-notes/sql/between/fig-1.png)",
     "example": null,
-    "figures": 1
+    "figures": 2
   },
   {
     "subject": "SQL",
@@ -139,9 +139,9 @@
     "slug": "in",
     "title": "IN",
     "summary": "`IN (list)` is shorthand for a chain of `OR column = value` checks against a fixed list — much easier to read (and write) than several `OR`s once the list grows past two or three values.",
-    "notes": "`IN (list)` is shorthand for a chain of `OR column = value` checks against a fixed list — much easier to read (and write) than several `OR`s once the list grows past two or three values.\n\n## Problem\n\nFind employees working in IT or HR.\n\n```sql\nSELECT *\nFROM employees\nWHERE department_id IN (100, 200);   -- 100 = IT, 200 = HR\n```\n\n![IN — result 1](/study-notes/sql/in/fig-1.png)",
+    "notes": "## Source data — Pattern 2: Filtering Data\n\nAll queries run against the shared `employees` table (see `schema.sql`). This pattern also needs the `manager_id` column for topic 14 — not required back in Pattern 1. It also needs one row with `salary < 50000` for topic 9, which Pattern 1's 6 rows didn't have — add:\n\n```sql\nINSERT INTO employees (employee_id, first_name, last_name, salary, department_id,\nmanager_id)\nVALUES (7, 'Zoya', 'Khan', 42000, 500, 1);\n```\n\n![IN — source table 1](/study-notes/sql/where/fig-1.png)\n\n---\n\n`IN (list)` is shorthand for a chain of `OR column = value` checks against a fixed list — much easier to read (and write) than several `OR`s once the list grows past two or three values.\n\n## Problem\n\nFind employees working in IT or HR.\n\n```sql\nSELECT *\nFROM employees\nWHERE department_id IN (100, 200);   -- 100 = IT, 200 = HR\n```\n\n![IN — result 1](/study-notes/sql/in/fig-1.png)",
     "example": null,
-    "figures": 1
+    "figures": 2
   },
   {
     "subject": "SQL",
@@ -151,9 +151,9 @@
     "slug": "like",
     "title": "LIKE",
     "summary": "`LIKE` does pattern matching on text using two wildcards: `%` (zero or more characters) and `_` (exactly one character).",
-    "notes": "`LIKE` does pattern matching on text using two wildcards: `%` (zero or more characters) and `_` (exactly one character). `'A%'` means \"starts with A\"; `'%a'` would mean \"ends with a\".\n\n## Problem\n\nFind employees whose names start with 'A'.\n\n```sql\nSELECT *\nFROM employees\nWHERE first_name LIKE 'A%';\n```\n\n![LIKE — result 1](/study-notes/sql/like/fig-1.png)",
+    "notes": "## Source data — Pattern 2: Filtering Data\n\nAll queries run against the shared `employees` table (see `schema.sql`). This pattern also needs the `manager_id` column for topic 14 — not required back in Pattern 1. It also needs one row with `salary < 50000` for topic 9, which Pattern 1's 6 rows didn't have — add:\n\n```sql\nINSERT INTO employees (employee_id, first_name, last_name, salary, department_id,\nmanager_id)\nVALUES (7, 'Zoya', 'Khan', 42000, 500, 1);\n```\n\n![LIKE — source table 1](/study-notes/sql/where/fig-1.png)\n\n---\n\n`LIKE` does pattern matching on text using two wildcards: `%` (zero or more characters) and `_` (exactly one character). `'A%'` means \"starts with A\"; `'%a'` would mean \"ends with a\".\n\n## Problem\n\nFind employees whose names start with 'A'.\n\n```sql\nSELECT *\nFROM employees\nWHERE first_name LIKE 'A%';\n```\n\n![LIKE — result 1](/study-notes/sql/like/fig-1.png)",
     "example": null,
-    "figures": 1
+    "figures": 2
   },
   {
     "subject": "SQL",
@@ -163,9 +163,9 @@
     "slug": "is-null-is-not-null",
     "title": "IS NULL / IS NOT NULL",
     "summary": "`NULL` means \"unknown/absent,\" not zero or empty string — so `= NULL` never matches anything and always silently returns no rows.",
-    "notes": "`NULL` means \"unknown/absent,\" not zero or empty string — so `= NULL` never matches anything and always silently returns no rows. Checking for missing values needs the dedicated `IS NULL` / `IS NOT NULL` operators instead.\n\n## Problem\n\nFind employees who do not have a manager assigned.\n\n```sql\nSELECT *\nFROM employees\nWHERE manager_id IS NULL;\n```\n\n![IS NULL / IS NOT NULL — result 1](/study-notes/sql/is-null-is-not-null/fig-1.png)",
+    "notes": "## Source data — Pattern 2: Filtering Data\n\nAll queries run against the shared `employees` table (see `schema.sql`). This pattern also needs the `manager_id` column for topic 14 — not required back in Pattern 1. It also needs one row with `salary < 50000` for topic 9, which Pattern 1's 6 rows didn't have — add:\n\n```sql\nINSERT INTO employees (employee_id, first_name, last_name, salary, department_id,\nmanager_id)\nVALUES (7, 'Zoya', 'Khan', 42000, 500, 1);\n```\n\n![IS NULL / IS NOT NULL — source table 1](/study-notes/sql/where/fig-1.png)\n\n---\n\n`NULL` means \"unknown/absent,\" not zero or empty string — so `= NULL` never matches anything and always silently returns no rows. Checking for missing values needs the dedicated `IS NULL` / `IS NOT NULL` operators instead.\n\n## Problem\n\nFind employees who do not have a manager assigned.\n\n```sql\nSELECT *\nFROM employees\nWHERE manager_id IS NULL;\n```\n\n![IS NULL / IS NOT NULL — result 1](/study-notes/sql/is-null-is-not-null/fig-1.png)",
     "example": null,
-    "figures": 1
+    "figures": 2
   },
   {
     "subject": "SQL",
@@ -187,9 +187,9 @@
     "slug": "numeric-functions",
     "title": "Numeric Functions",
     "summary": "Numeric functions do math on numbers — `ROUND()`, `CEIL()`/`FLOOR()`, `ABS()`, `POWER()`.",
-    "notes": "Numeric functions do math on numbers — `ROUND()`, `CEIL()`/`FLOOR()`, `ABS()`, `POWER()`. `ROUND(value, -3)` rounds to the nearest thousand: a negative second argument rounds to the left of the decimal point instead of the right.\n\n## Problem\n\nRound salaries to the nearest thousand.\n\n```sql\nSELECT first_name,\n       salary,\n       ROUND(salary, -3) AS salary_rounded\nFROM employees;\n```\n\n![Numeric Functions — result 1](/study-notes/sql/numeric-functions/fig-1.png)",
+    "notes": "## Source data — Pattern 3: Built-in Functions\n\nAll queries run against the shared `employees` table (see `schema.sql`). This pattern needs two columns not used before: `hire_date` (topic 17) and `bonus`, nullable (topics 19–20).\n\n![Numeric Functions — source table 1](/study-notes/sql/string-functions/fig-1.png)\n\n---\n\nNumeric functions do math on numbers — `ROUND()`, `CEIL()`/`FLOOR()`, `ABS()`, `POWER()`. `ROUND(value, -3)` rounds to the nearest thousand: a negative second argument rounds to the left of the decimal point instead of the right.\n\n## Problem\n\nRound salaries to the nearest thousand.\n\n```sql\nSELECT first_name,\n       salary,\n       ROUND(salary, -3) AS salary_rounded\nFROM employees;\n```\n\n![Numeric Functions — result 1](/study-notes/sql/numeric-functions/fig-1.png)",
     "example": null,
-    "figures": 1
+    "figures": 2
   },
   {
     "subject": "SQL",
@@ -199,9 +199,9 @@
     "slug": "date-functions",
     "title": "Date Functions",
     "summary": "Date functions extract or manipulate parts of a date — `YEAR()`, `MONTH()`, `DATEDIFF()`, `CURRENT_DATE`.",
-    "notes": "Date functions extract or manipulate parts of a date — `YEAR()`, `MONTH()`, `DATEDIFF()`, `CURRENT_DATE`. \"This year\" isn't a fixed value, so the query needs to compare against whatever the database considers today, not a hardcoded year.\n\n## Problem\n\nFind employees hired this year.\n\n```sql\n-- MySQL\nSELECT *\nFROM employees\nWHERE YEAR(hire_date) = YEAR(CURDATE());\n\n-- PostgreSQL / Oracle / standard SQL\nSELECT *\nFROM employees\nWHERE EXTRACT(YEAR FROM hire_date) = EXTRACT(YEAR FROM CURRENT_DATE);\n```\n\n![Date Functions — result 1](/study-notes/sql/date-functions/fig-1.png)",
+    "notes": "## Source data — Pattern 3: Built-in Functions\n\nAll queries run against the shared `employees` table (see `schema.sql`). This pattern needs two columns not used before: `hire_date` (topic 17) and `bonus`, nullable (topics 19–20).\n\n![Date Functions — source table 1](/study-notes/sql/string-functions/fig-1.png)\n\n---\n\nDate functions extract or manipulate parts of a date — `YEAR()`, `MONTH()`, `DATEDIFF()`, `CURRENT_DATE`. \"This year\" isn't a fixed value, so the query needs to compare against whatever the database considers today, not a hardcoded year.\n\n## Problem\n\nFind employees hired this year.\n\n```sql\n-- MySQL\nSELECT *\nFROM employees\nWHERE YEAR(hire_date) = YEAR(CURDATE());\n\n-- PostgreSQL / Oracle / standard SQL\nSELECT *\nFROM employees\nWHERE EXTRACT(YEAR FROM hire_date) = EXTRACT(YEAR FROM CURRENT_DATE);\n```\n\n![Date Functions — result 1](/study-notes/sql/date-functions/fig-1.png)",
     "example": null,
-    "figures": 1
+    "figures": 2
   },
   {
     "subject": "SQL",
@@ -211,9 +211,9 @@
     "slug": "case-when",
     "title": "CASE WHEN",
     "summary": "`CASE WHEN ...",
-    "notes": "`CASE WHEN ... THEN ... ELSE ... END` is SQL's if/else — it evaluates conditions top to bottom and returns the result tied to the first one that matches, falling through to `ELSE` if none do. It's an expression, so it can sit anywhere a column would.\n\n## Problem\n\nCategorize salaries as High, Medium, or Low.\n\n```sql\nSELECT first_name,\n       salary,\n       CASE\n         WHEN salary >= 100000 THEN 'High'\n         WHEN salary >= 60000  THEN 'Medium'\n         ELSE 'Low'\n       END AS salary_band\nFROM employees;\n```\n\n![CASE WHEN — result 1](/study-notes/sql/case-when/fig-1.png)",
+    "notes": "## Source data — Pattern 3: Built-in Functions\n\nAll queries run against the shared `employees` table (see `schema.sql`). This pattern needs two columns not used before: `hire_date` (topic 17) and `bonus`, nullable (topics 19–20).\n\n![CASE WHEN — source table 1](/study-notes/sql/string-functions/fig-1.png)\n\n---\n\n`CASE WHEN ... THEN ... ELSE ... END` is SQL's if/else — it evaluates conditions top to bottom and returns the result tied to the first one that matches, falling through to `ELSE` if none do. It's an expression, so it can sit anywhere a column would.\n\n## Problem\n\nCategorize salaries as High, Medium, or Low.\n\n```sql\nSELECT first_name,\n       salary,\n       CASE\n         WHEN salary >= 100000 THEN 'High'\n         WHEN salary >= 60000  THEN 'Medium'\n         ELSE 'Low'\n       END AS salary_band\nFROM employees;\n```\n\n![CASE WHEN — result 1](/study-notes/sql/case-when/fig-1.png)",
     "example": null,
-    "figures": 1
+    "figures": 2
   },
   {
     "subject": "SQL",
@@ -223,9 +223,9 @@
     "slug": "coalesce",
     "title": "COALESCE",
     "summary": "`COALESCE(a, b, c, ...)` returns the first argument that isn't `NULL`.",
-    "notes": "`COALESCE(a, b, c, ...)` returns the first argument that isn't `NULL`. With two arguments it reads as \"use this value, but fall back to that default if it's missing\" — the most common real-world use is exactly this: replacing `NULL` with a sensible default.\n\n## Problem\n\nReplace NULL bonus values with 0.\n\n```sql\nSELECT employee_id,\n       bonus,\n       COALESCE(bonus, 0) AS bonus_or_zero\nFROM employees;\n```\n\n![COALESCE — result 1](/study-notes/sql/coalesce/fig-1.png)",
+    "notes": "## Source data — Pattern 3: Built-in Functions\n\nAll queries run against the shared `employees` table (see `schema.sql`). This pattern needs two columns not used before: `hire_date` (topic 17) and `bonus`, nullable (topics 19–20).\n\n![COALESCE — source table 1](/study-notes/sql/string-functions/fig-1.png)\n\n---\n\n`COALESCE(a, b, c, ...)` returns the first argument that isn't `NULL`. With two arguments it reads as \"use this value, but fall back to that default if it's missing\" — the most common real-world use is exactly this: replacing `NULL` with a sensible default.\n\n## Problem\n\nReplace NULL bonus values with 0.\n\n```sql\nSELECT employee_id,\n       bonus,\n       COALESCE(bonus, 0) AS bonus_or_zero\nFROM employees;\n```\n\n![COALESCE — result 1](/study-notes/sql/coalesce/fig-1.png)",
     "example": null,
-    "figures": 1
+    "figures": 2
   },
   {
     "subject": "SQL",
@@ -235,9 +235,9 @@
     "slug": "nullif",
     "title": "NULLIF",
     "summary": "`NULLIF(a, b)` returns `NULL` if `a` equals `b`, otherwise returns `a`.",
-    "notes": "`NULLIF(a, b)` returns `NULL` if `a` equals `b`, otherwise returns `a`. It's the reverse of COALESCE, and its classic use is guarding a division: dividing by an actual `0` errors or returns infinity depending on the engine, but dividing by `NULLIF(x, 0)` turns that `0` into `NULL` first, so the division safely returns `NULL` instead.\n\n## Problem\n\nAvoid division by zero using NULLIF.\n\n```sql\nSELECT employee_id,\n       salary,\n       bonus,\n       salary / NULLIF(bonus, 0) AS salary_to_bonus_ratio\nFROM employees;\n```\n\n![NULLIF — result 1](/study-notes/sql/nullif/fig-1.png)",
+    "notes": "## Source data — Pattern 3: Built-in Functions\n\nAll queries run against the shared `employees` table (see `schema.sql`). This pattern needs two columns not used before: `hire_date` (topic 17) and `bonus`, nullable (topics 19–20).\n\n![NULLIF — source table 1](/study-notes/sql/string-functions/fig-1.png)\n\n---\n\n`NULLIF(a, b)` returns `NULL` if `a` equals `b`, otherwise returns `a`. It's the reverse of COALESCE, and its classic use is guarding a division: dividing by an actual `0` errors or returns infinity depending on the engine, but dividing by `NULLIF(x, 0)` turns that `0` into `NULL` first, so the division safely returns `NULL` instead.\n\n## Problem\n\nAvoid division by zero using NULLIF.\n\n```sql\nSELECT employee_id,\n       salary,\n       bonus,\n       salary / NULLIF(bonus, 0) AS salary_to_bonus_ratio\nFROM employees;\n```\n\n![NULLIF — result 1](/study-notes/sql/nullif/fig-1.png)",
     "example": null,
-    "figures": 1
+    "figures": 2
   },
   {
     "subject": "SQL",
@@ -247,9 +247,9 @@
     "slug": "concat",
     "title": "CONCAT",
     "summary": "`CONCAT()` joins strings together.",
-    "notes": "`CONCAT()` joins strings together. Most databases also support the `||` operator as shorthand (SQL Server uses `+` instead) — `CONCAT()` is the more portable choice since it works the same way almost everywhere.\n\n## Problem\n\nDisplay full name by combining first and last names.\n\n```sql\nSELECT CONCAT(first_name, ' ', last_name) AS full_name\nFROM employees;\n```\n\n![CONCAT — result 1](/study-notes/sql/concat/fig-1.png)",
+    "notes": "## Source data — Pattern 3: Built-in Functions\n\nAll queries run against the shared `employees` table (see `schema.sql`). This pattern needs two columns not used before: `hire_date` (topic 17) and `bonus`, nullable (topics 19–20).\n\n![CONCAT — source table 1](/study-notes/sql/string-functions/fig-1.png)\n\n---\n\n`CONCAT()` joins strings together. Most databases also support the `||` operator as shorthand (SQL Server uses `+` instead) — `CONCAT()` is the more portable choice since it works the same way almost everywhere.\n\n## Problem\n\nDisplay full name by combining first and last names.\n\n```sql\nSELECT CONCAT(first_name, ' ', last_name) AS full_name\nFROM employees;\n```\n\n![CONCAT — result 1](/study-notes/sql/concat/fig-1.png)",
     "example": null,
-    "figures": 1
+    "figures": 2
   },
   {
     "subject": "SQL",
@@ -259,9 +259,9 @@
     "slug": "length-char-length",
     "title": "LENGTH / CHAR_LENGTH",
     "summary": "`LENGTH()` (MySQL/PostgreSQL/Oracle) or `LEN()` (SQL Server) returns how many characters are in a string — useful for validation rules or, here, filtering rows by name length.",
-    "notes": "`LENGTH()` (MySQL/PostgreSQL/Oracle) or `LEN()` (SQL Server) returns how many characters are in a string — useful for validation rules or, here, filtering rows by name length. `CHAR_LENGTH()` is the standard-SQL alias that's explicit about counting characters rather than bytes.\n\n## Problem\n\nFind employees whose names contain more than 8 characters.\n\n```sql\nSELECT first_name,\n       last_name,\n       LENGTH(CONCAT(first_name, ' ', last_name)) AS name_length\nFROM employees\nWHERE LENGTH(CONCAT(first_name, ' ', last_name)) > 8;\n```\n\n![LENGTH / CHAR_LENGTH — result 1](/study-notes/sql/length-char-length/fig-1.png)",
+    "notes": "## Source data — Pattern 3: Built-in Functions\n\nAll queries run against the shared `employees` table (see `schema.sql`). This pattern needs two columns not used before: `hire_date` (topic 17) and `bonus`, nullable (topics 19–20).\n\n![LENGTH / CHAR_LENGTH — source table 1](/study-notes/sql/string-functions/fig-1.png)\n\n---\n\n`LENGTH()` (MySQL/PostgreSQL/Oracle) or `LEN()` (SQL Server) returns how many characters are in a string — useful for validation rules or, here, filtering rows by name length. `CHAR_LENGTH()` is the standard-SQL alias that's explicit about counting characters rather than bytes.\n\n## Problem\n\nFind employees whose names contain more than 8 characters.\n\n```sql\nSELECT first_name,\n       last_name,\n       LENGTH(CONCAT(first_name, ' ', last_name)) AS name_length\nFROM employees\nWHERE LENGTH(CONCAT(first_name, ' ', last_name)) > 8;\n```\n\n![LENGTH / CHAR_LENGTH — result 1](/study-notes/sql/length-char-length/fig-1.png)",
     "example": null,
-    "figures": 1
+    "figures": 2
   },
   {
     "subject": "SQL",
@@ -283,9 +283,9 @@
     "slug": "sum",
     "title": "SUM",
     "summary": "`SUM()` adds up a numeric column across all matching rows, collapsing them into a single value.",
-    "notes": "`SUM()` adds up a numeric column across all matching rows, collapsing them into a single value. Rows with `NULL` in that column are silently skipped, not treated as zero.\n\n## Problem\n\nFind the total salary paid.\n\n```sql\nSELECT SUM(salary) AS total_salary\nFROM employees;\n```\n\n![SUM — result 1](/study-notes/sql/sum/fig-1.png)",
+    "notes": "## Source data — Pattern 4: Aggregation\n\nAll queries run against the shared `employees` table (see `schema.sql`) — no new columns needed for this pattern.\n\n![SUM — source table 1](/study-notes/sql/count/fig-1.png)\n\n---\n\n`SUM()` adds up a numeric column across all matching rows, collapsing them into a single value. Rows with `NULL` in that column are silently skipped, not treated as zero.\n\n## Problem\n\nFind the total salary paid.\n\n```sql\nSELECT SUM(salary) AS total_salary\nFROM employees;\n```\n\n![SUM — result 1](/study-notes/sql/sum/fig-1.png)",
     "example": null,
-    "figures": 1
+    "figures": 2
   },
   {
     "subject": "SQL",
@@ -295,9 +295,9 @@
     "slug": "avg",
     "title": "AVG",
     "summary": "`AVG()` is the mean — sum divided by count — computed only over the non-`NULL` values in that column.",
-    "notes": "`AVG()` is the mean — sum divided by count — computed only over the non-`NULL` values in that column. Like `SUM()`, `NULL`s are excluded rather than counted as zero, which can quietly change the result if a column has gaps.\n\n## Problem\n\nFind the average salary.\n\n```sql\nSELECT AVG(salary) AS average_salary\nFROM employees;\n```\n\n![AVG — result 1](/study-notes/sql/avg/fig-1.png)",
+    "notes": "## Source data — Pattern 4: Aggregation\n\nAll queries run against the shared `employees` table (see `schema.sql`) — no new columns needed for this pattern.\n\n![AVG — source table 1](/study-notes/sql/count/fig-1.png)\n\n---\n\n`AVG()` is the mean — sum divided by count — computed only over the non-`NULL` values in that column. Like `SUM()`, `NULL`s are excluded rather than counted as zero, which can quietly change the result if a column has gaps.\n\n## Problem\n\nFind the average salary.\n\n```sql\nSELECT AVG(salary) AS average_salary\nFROM employees;\n```\n\n![AVG — result 1](/study-notes/sql/avg/fig-1.png)",
     "example": null,
-    "figures": 1
+    "figures": 2
   },
   {
     "subject": "SQL",
@@ -307,9 +307,9 @@
     "slug": "min-max",
     "title": "MIN / MAX",
     "summary": "`MIN()` and `MAX()` return the smallest and largest value in a column.",
-    "notes": "`MIN()` and `MAX()` return the smallest and largest value in a column. They work on numbers, dates, and even text (alphabetical order) — and like the other aggregates, they collapse the whole result set into one row unless paired with `GROUP BY` (Pattern 5).\n\n## Problem\n\nFind the highest and lowest salary.\n\n```sql\nSELECT MAX(salary) AS highest_salary,\n       MIN(salary) AS lowest_salary\nFROM employees;\n```\n\n![MIN / MAX — result 1](/study-notes/sql/min-max/fig-1.png)",
+    "notes": "## Source data — Pattern 4: Aggregation\n\nAll queries run against the shared `employees` table (see `schema.sql`) — no new columns needed for this pattern.\n\n![MIN / MAX — source table 1](/study-notes/sql/count/fig-1.png)\n\n---\n\n`MIN()` and `MAX()` return the smallest and largest value in a column. They work on numbers, dates, and even text (alphabetical order) — and like the other aggregates, they collapse the whole result set into one row unless paired with `GROUP BY` (Pattern 5).\n\n## Problem\n\nFind the highest and lowest salary.\n\n```sql\nSELECT MAX(salary) AS highest_salary,\n       MIN(salary) AS lowest_salary\nFROM employees;\n```\n\n![MIN / MAX — result 1](/study-notes/sql/min-max/fig-1.png)",
     "example": null,
-    "figures": 1
+    "figures": 2
   },
   {
     "subject": "SQL",
@@ -319,9 +319,9 @@
     "slug": "aggregate-on-condition",
     "title": "Aggregate on Condition",
     "summary": "Aggregate functions can follow a `WHERE` clause just like any other query — the filter narrows down which rows get aggregated, so the calculation only runs over the subset that matches.",
-    "notes": "Aggregate functions can follow a `WHERE` clause just like any other query — the filter narrows down which rows get aggregated, so the calculation only runs over the subset that matches.\n\n## Problem\n\nFind the total salary of IT employees.\n\n```sql\nSELECT SUM(salary) AS it_total_salary\nFROM employees\nWHERE department_id = 100;   -- 100 = IT\n```\n\n![Aggregate on Condition — result 1](/study-notes/sql/aggregate-on-condition/fig-1.png)",
+    "notes": "## Source data — Pattern 4: Aggregation\n\nAll queries run against the shared `employees` table (see `schema.sql`) — no new columns needed for this pattern.\n\n![Aggregate on Condition — source table 1](/study-notes/sql/count/fig-1.png)\n\n---\n\nAggregate functions can follow a `WHERE` clause just like any other query — the filter narrows down which rows get aggregated, so the calculation only runs over the subset that matches.\n\n## Problem\n\nFind the total salary of IT employees.\n\n```sql\nSELECT SUM(salary) AS it_total_salary\nFROM employees\nWHERE department_id = 100;   -- 100 = IT\n```\n\n![Aggregate on Condition — result 1](/study-notes/sql/aggregate-on-condition/fig-1.png)",
     "example": null,
-    "figures": 1
+    "figures": 2
   },
   {
     "subject": "SQL",
@@ -343,9 +343,9 @@
     "slug": "having",
     "title": "HAVING",
     "summary": "`WHERE` filters individual rows before grouping; `HAVING` filters the groups themselves after aggregation.",
-    "notes": "`WHERE` filters individual rows before grouping; `HAVING` filters the groups themselves after aggregation. That's why `HAVING` can reference `COUNT(*)` or `SUM(...)` directly, while `WHERE` can't — the aggregate doesn't exist yet at the point `WHERE` runs.\n\n## Problem\n\nFind departments having more than 5 employees.\n\n```sql\nSELECT department_id,\n       COUNT(*) AS employee_count\nFROM employees\nGROUP BY department_id\nHAVING COUNT(*) > 5;\n```\n\n![HAVING — result 1](/study-notes/sql/having/fig-1.png)",
+    "notes": "## Source data — Pattern 5: Grouping\n\nAll queries run against the shared `employees` table (see `schema.sql`). This pattern needs two new columns — `city` (topic 30) and `job_role` (topic 31) — and enough rows in one department to actually cross a \"more than 5\" threshold (topic 29), so IT grows from 2 employees to 7.\n\n![HAVING — source table 1](/study-notes/sql/group-by/fig-1.png)\n\n---\n\n`WHERE` filters individual rows before grouping; `HAVING` filters the groups themselves after aggregation. That's why `HAVING` can reference `COUNT(*)` or `SUM(...)` directly, while `WHERE` can't — the aggregate doesn't exist yet at the point `WHERE` runs.\n\n## Problem\n\nFind departments having more than 5 employees.\n\n```sql\nSELECT department_id,\n       COUNT(*) AS employee_count\nFROM employees\nGROUP BY department_id\nHAVING COUNT(*) > 5;\n```\n\n![HAVING — result 1](/study-notes/sql/having/fig-1.png)",
     "example": null,
-    "figures": 1
+    "figures": 2
   },
   {
     "subject": "SQL",
@@ -355,9 +355,9 @@
     "slug": "group-by-multiple-columns",
     "title": "GROUP BY Multiple Columns",
     "summary": "Grouping by more than one column creates one group per unique combination of those columns, not one group per column.",
-    "notes": "Grouping by more than one column creates one group per unique combination of those columns, not one group per column. Two employees in the same department but different cities land in different groups — grouping by department alone would have merged them.\n\n## Problem\n\nFind average salary by department and city.\n\n```sql\nSELECT department_id,\n       city,\n       AVG(salary) AS average_salary\nFROM employees\nGROUP BY department_id, city;\n```\n\n![GROUP BY Multiple Columns — result 1](/study-notes/sql/group-by-multiple-columns/fig-1.png)",
+    "notes": "## Source data — Pattern 5: Grouping\n\nAll queries run against the shared `employees` table (see `schema.sql`). This pattern needs two new columns — `city` (topic 30) and `job_role` (topic 31) — and enough rows in one department to actually cross a \"more than 5\" threshold (topic 29), so IT grows from 2 employees to 7.\n\n![GROUP BY Multiple Columns — source table 1](/study-notes/sql/group-by/fig-1.png)\n\n---\n\nGrouping by more than one column creates one group per unique combination of those columns, not one group per column. Two employees in the same department but different cities land in different groups — grouping by department alone would have merged them.\n\n## Problem\n\nFind average salary by department and city.\n\n```sql\nSELECT department_id,\n       city,\n       AVG(salary) AS average_salary\nFROM employees\nGROUP BY department_id, city;\n```\n\n![GROUP BY Multiple Columns — result 1](/study-notes/sql/group-by-multiple-columns/fig-1.png)",
     "example": null,
-    "figures": 1
+    "figures": 2
   },
   {
     "subject": "SQL",
@@ -367,9 +367,9 @@
     "slug": "count-distinct",
     "title": "COUNT DISTINCT",
     "summary": "`COUNT(DISTINCT column)` counts unique values of that column within each group, rather than counting every row.",
-    "notes": "`COUNT(DISTINCT column)` counts unique values of that column within each group, rather than counting every row. A department can have several employees but only one or two distinct job roles among them — this is how you'd tell the difference.\n\n## Problem\n\nFind unique job roles in each department.\n\n```sql\nSELECT department_id,\n       COUNT(DISTINCT job_role) AS unique_roles\nFROM employees\nGROUP BY department_id;\n```\n\n![COUNT DISTINCT — result 1](/study-notes/sql/count-distinct/fig-1.png)",
+    "notes": "## Source data — Pattern 5: Grouping\n\nAll queries run against the shared `employees` table (see `schema.sql`). This pattern needs two new columns — `city` (topic 30) and `job_role` (topic 31) — and enough rows in one department to actually cross a \"more than 5\" threshold (topic 29), so IT grows from 2 employees to 7.\n\n![COUNT DISTINCT — source table 1](/study-notes/sql/group-by/fig-1.png)\n\n---\n\n`COUNT(DISTINCT column)` counts unique values of that column within each group, rather than counting every row. A department can have several employees but only one or two distinct job roles among them — this is how you'd tell the difference.\n\n## Problem\n\nFind unique job roles in each department.\n\n```sql\nSELECT department_id,\n       COUNT(DISTINCT job_role) AS unique_roles\nFROM employees\nGROUP BY department_id;\n```\n\n![COUNT DISTINCT — result 1](/study-notes/sql/count-distinct/fig-1.png)",
     "example": null,
-    "figures": 1
+    "figures": 2
   },
   {
     "subject": "SQL",
@@ -391,9 +391,9 @@
     "slug": "left-join",
     "title": "LEFT JOIN",
     "summary": "LEFT JOIN returns all rows from the left table and matching rows from the right table.",
-    "notes": "LEFT JOIN returns all rows from the left table and matching rows from the right table. If no match exists, the right-side columns return NULL.\n\n## Problem\n\nDisplay all employees, including those without a department.\n\n```sql\nSELECT e.first_name,\nd.department_name\nFROM employees e\nLEFT JOIN departments d\nON e.department_id = d.department_id;\n```\n\n![LEFT JOIN — result 1](/study-notes/sql/left-join/fig-1.png)",
+    "notes": "## Source data — Pattern 6: Joins\n\nAll queries run against the shared employees and departments tables (see schema.sql). This pattern introduces the departments table. Topic 38 also needs a projects table, while topic 39 introduces a salary_grades table for non-equi joins.\n\n![LEFT JOIN — source table 1](/study-notes/sql/inner-join/fig-1.png)\n\n![LEFT JOIN — source table 2](/study-notes/sql/inner-join/fig-2.png)\n\n![LEFT JOIN — source table 3](/study-notes/sql/inner-join/fig-3.png)\n\n![LEFT JOIN — source table 4](/study-notes/sql/inner-join/fig-4.png)\n\n---\n\nLEFT JOIN returns all rows from the left table and matching rows from the right table. If no match exists, the right-side columns return NULL.\n\n## Problem\n\nDisplay all employees, including those without a department.\n\n```sql\nSELECT e.first_name,\nd.department_name\nFROM employees e\nLEFT JOIN departments d\nON e.department_id = d.department_id;\n```\n\n![LEFT JOIN — result 1](/study-notes/sql/left-join/fig-1.png)",
     "example": null,
-    "figures": 1
+    "figures": 5
   },
   {
     "subject": "SQL",
@@ -403,9 +403,9 @@
     "slug": "right-join",
     "title": "RIGHT JOIN",
     "summary": "RIGHT JOIN returns all rows from the right table and matching rows from the left table.",
-    "notes": "RIGHT JOIN returns all rows from the right table and matching rows from the left table. If no employee belongs to a department, employee columns return NULL.\n\n## Problem\n\nDisplay all departments, including those without employees.\n\n```sql\nSELECT e.first_name,\nd.department_name\nFROM employees e\nRIGHT JOIN departments d\nON e.department_id = d.department_id;\n```\n\n![RIGHT JOIN — result 1](/study-notes/sql/right-join/fig-1.png)",
+    "notes": "## Source data — Pattern 6: Joins\n\nAll queries run against the shared employees and departments tables (see schema.sql). This pattern introduces the departments table. Topic 38 also needs a projects table, while topic 39 introduces a salary_grades table for non-equi joins.\n\n![RIGHT JOIN — source table 1](/study-notes/sql/inner-join/fig-1.png)\n\n![RIGHT JOIN — source table 2](/study-notes/sql/inner-join/fig-2.png)\n\n![RIGHT JOIN — source table 3](/study-notes/sql/inner-join/fig-3.png)\n\n![RIGHT JOIN — source table 4](/study-notes/sql/inner-join/fig-4.png)\n\n---\n\nRIGHT JOIN returns all rows from the right table and matching rows from the left table. If no employee belongs to a department, employee columns return NULL.\n\n## Problem\n\nDisplay all departments, including those without employees.\n\n```sql\nSELECT e.first_name,\nd.department_name\nFROM employees e\nRIGHT JOIN departments d\nON e.department_id = d.department_id;\n```\n\n![RIGHT JOIN — result 1](/study-notes/sql/right-join/fig-1.png)",
     "example": null,
-    "figures": 1
+    "figures": 5
   },
   {
     "subject": "SQL",
@@ -415,9 +415,9 @@
     "slug": "full-outer-join",
     "title": "FULL OUTER JOIN",
     "summary": "FULL OUTER JOIN returns every row from both tables.",
-    "notes": "FULL OUTER JOIN returns every row from both tables. Matching rows are combined, while non-matching rows contain NULL values.\n\n## Problem\n\nDisplay all employees and departments.\n\n```sql\nSELECT e.first_name,\nd.department_name\nFROM employees e\nFULL OUTER JOIN departments d\nON e.department_id = d.department_id;\n```\n\n![FULL OUTER JOIN — result 1](/study-notes/sql/full-outer-join/fig-1.png)",
+    "notes": "## Source data — Pattern 6: Joins\n\nAll queries run against the shared employees and departments tables (see schema.sql). This pattern introduces the departments table. Topic 38 also needs a projects table, while topic 39 introduces a salary_grades table for non-equi joins.\n\n![FULL OUTER JOIN — source table 1](/study-notes/sql/inner-join/fig-1.png)\n\n![FULL OUTER JOIN — source table 2](/study-notes/sql/inner-join/fig-2.png)\n\n![FULL OUTER JOIN — source table 3](/study-notes/sql/inner-join/fig-3.png)\n\n![FULL OUTER JOIN — source table 4](/study-notes/sql/inner-join/fig-4.png)\n\n---\n\nFULL OUTER JOIN returns every row from both tables. Matching rows are combined, while non-matching rows contain NULL values.\n\n## Problem\n\nDisplay all employees and departments.\n\n```sql\nSELECT e.first_name,\nd.department_name\nFROM employees e\nFULL OUTER JOIN departments d\nON e.department_id = d.department_id;\n```\n\n![FULL OUTER JOIN — result 1](/study-notes/sql/full-outer-join/fig-1.png)",
     "example": null,
-    "figures": 1
+    "figures": 5
   },
   {
     "subject": "SQL",
@@ -427,9 +427,9 @@
     "slug": "cross-join",
     "title": "CROSS JOIN",
     "summary": "CROSS JOIN returns every possible combination of rows from both tables without a join condition.",
-    "notes": "CROSS JOIN returns every possible combination of rows from both tables without a join condition.\n\n## Problem\n\nGenerate all employee-department combinations.\n\n```sql\nSELECT e.first_name,\nd.department_name\nFROM employees e\nCROSS JOIN departments d;\n```\n\n![CROSS JOIN — result 1](/study-notes/sql/cross-join/fig-1.png)\n\n## Note\n\nOnly the first 12 rows are shown. The complete CROSS JOIN result contains 36 rows (6 employees × 6 departments).",
+    "notes": "## Source data — Pattern 6: Joins\n\nAll queries run against the shared employees and departments tables (see schema.sql). This pattern introduces the departments table. Topic 38 also needs a projects table, while topic 39 introduces a salary_grades table for non-equi joins.\n\n![CROSS JOIN — source table 1](/study-notes/sql/inner-join/fig-1.png)\n\n![CROSS JOIN — source table 2](/study-notes/sql/inner-join/fig-2.png)\n\n![CROSS JOIN — source table 3](/study-notes/sql/inner-join/fig-3.png)\n\n![CROSS JOIN — source table 4](/study-notes/sql/inner-join/fig-4.png)\n\n---\n\nCROSS JOIN returns every possible combination of rows from both tables without a join condition.\n\n## Problem\n\nGenerate all employee-department combinations.\n\n```sql\nSELECT e.first_name,\nd.department_name\nFROM employees e\nCROSS JOIN departments d;\n```\n\n![CROSS JOIN — result 1](/study-notes/sql/cross-join/fig-1.png)\n\n## Note\n\nOnly the first 12 rows are shown. The complete CROSS JOIN result contains 36 rows (6 employees × 6 departments).",
     "example": null,
-    "figures": 1
+    "figures": 5
   },
   {
     "subject": "SQL",
@@ -439,9 +439,9 @@
     "slug": "self-join",
     "title": "SELF JOIN",
     "summary": "A SELF JOIN joins a table to itself using different aliases.",
-    "notes": "A SELF JOIN joins a table to itself using different aliases. It is commonly used to relate employees to their managers.\n\n## Problem\n\nFind employees and their managers.\n\n```sql\nSELECT e.first_name AS employee,\nm.first_name AS manager\nFROM employees e\nLEFT JOIN employees m\nON e.manager_id = m.employee_id;\n```\n\n![SELF JOIN — result 1](/study-notes/sql/self-join/fig-1.png)",
+    "notes": "## Source data — Pattern 6: Joins\n\nAll queries run against the shared employees and departments tables (see schema.sql). This pattern introduces the departments table. Topic 38 also needs a projects table, while topic 39 introduces a salary_grades table for non-equi joins.\n\n![SELF JOIN — source table 1](/study-notes/sql/inner-join/fig-1.png)\n\n![SELF JOIN — source table 2](/study-notes/sql/inner-join/fig-2.png)\n\n![SELF JOIN — source table 3](/study-notes/sql/inner-join/fig-3.png)\n\n![SELF JOIN — source table 4](/study-notes/sql/inner-join/fig-4.png)\n\n---\n\nA SELF JOIN joins a table to itself using different aliases. It is commonly used to relate employees to their managers.\n\n## Problem\n\nFind employees and their managers.\n\n```sql\nSELECT e.first_name AS employee,\nm.first_name AS manager\nFROM employees e\nLEFT JOIN employees m\nON e.manager_id = m.employee_id;\n```\n\n![SELF JOIN — result 1](/study-notes/sql/self-join/fig-1.png)",
     "example": null,
-    "figures": 1
+    "figures": 5
   },
   {
     "subject": "SQL",
@@ -451,9 +451,9 @@
     "slug": "multiple-joins",
     "title": "Multiple JOINs",
     "summary": "Multiple JOINs combine data from more than two related tables in a single query.",
-    "notes": "Multiple JOINs combine data from more than two related tables in a single query.\n\n## Problem\n\nDisplay employee, department, and project names.\n\n```sql\nSELECT e.first_name,\nd.department_name,\np.project_name\nFROM employees e\nINNER JOIN departments d\nON e.department_id = d.department_id\nINNER JOIN projects p\nON e.project_id = p.project_id;\n```\n\n![Multiple JOINs — result 1](/study-notes/sql/multiple-joins/fig-1.png)",
+    "notes": "## Source data — Pattern 6: Joins\n\nAll queries run against the shared employees and departments tables (see schema.sql). This pattern introduces the departments table. Topic 38 also needs a projects table, while topic 39 introduces a salary_grades table for non-equi joins.\n\n![Multiple JOINs — source table 1](/study-notes/sql/inner-join/fig-1.png)\n\n![Multiple JOINs — source table 2](/study-notes/sql/inner-join/fig-2.png)\n\n![Multiple JOINs — source table 3](/study-notes/sql/inner-join/fig-3.png)\n\n![Multiple JOINs — source table 4](/study-notes/sql/inner-join/fig-4.png)\n\n---\n\nMultiple JOINs combine data from more than two related tables in a single query.\n\n## Problem\n\nDisplay employee, department, and project names.\n\n```sql\nSELECT e.first_name,\nd.department_name,\np.project_name\nFROM employees e\nINNER JOIN departments d\nON e.department_id = d.department_id\nINNER JOIN projects p\nON e.project_id = p.project_id;\n```\n\n![Multiple JOINs — result 1](/study-notes/sql/multiple-joins/fig-1.png)",
     "example": null,
-    "figures": 1
+    "figures": 5
   },
   {
     "subject": "SQL",
@@ -463,9 +463,9 @@
     "slug": "non-equi-join",
     "title": "Non-Equi Join",
     "summary": "A non-equi join uses comparison operators such as BETWEEN, < or > instead of equality.",
-    "notes": "A non-equi join uses comparison operators such as BETWEEN, < or > instead of equality.\n\n## Problem\n\nFind salary grades using salary ranges.\n\n```sql\nSELECT e.first_name,\ns.grade\nFROM employees e\nJOIN salary_grades s\nON e.salary BETWEEN s.min_salary AND s.max_salary;\n```\n\n![Non-Equi Join — result 1](/study-notes/sql/non-equi-join/fig-1.png)",
+    "notes": "## Source data — Pattern 6: Joins\n\nAll queries run against the shared employees and departments tables (see schema.sql). This pattern introduces the departments table. Topic 38 also needs a projects table, while topic 39 introduces a salary_grades table for non-equi joins.\n\n![Non-Equi Join — source table 1](/study-notes/sql/inner-join/fig-1.png)\n\n![Non-Equi Join — source table 2](/study-notes/sql/inner-join/fig-2.png)\n\n![Non-Equi Join — source table 3](/study-notes/sql/inner-join/fig-3.png)\n\n![Non-Equi Join — source table 4](/study-notes/sql/inner-join/fig-4.png)\n\n---\n\nA non-equi join uses comparison operators such as BETWEEN, < or > instead of equality.\n\n## Problem\n\nFind salary grades using salary ranges.\n\n```sql\nSELECT e.first_name,\ns.grade\nFROM employees e\nJOIN salary_grades s\nON e.salary BETWEEN s.min_salary AND s.max_salary;\n```\n\n![Non-Equi Join — result 1](/study-notes/sql/non-equi-join/fig-1.png)",
     "example": null,
-    "figures": 1
+    "figures": 5
   },
   {
     "subject": "SQL",
@@ -487,9 +487,9 @@
     "slug": "union-all",
     "title": "UNION ALL",
     "summary": "UNION ALL combines multiple result sets but keeps duplicate rows.",
-    "notes": "UNION ALL combines multiple result sets but keeps duplicate rows. Since duplicate removal is not performed, it is generally faster than UNION.\n\n## Problem\n\nDisplay the names of all current and former employees, including duplicate records.\n\n```sql\nSELECT first_name, last_name\nFROM employees\nUNION ALL\nSELECT first_name, last_name\nFROM former_employees;\n```\n\n![UNION ALL — result 1](/study-notes/sql/union-all/fig-1.png)",
+    "notes": "## Source data — Pattern 7: Set Operators\n\nAll queries run against the shared employees table (see `schema.sql`). This pattern introduces the `former_employees` table. Topic 44 also introduces a `retired_employees` table to demonstrate combining multiple set operators in a single query.\n\n![UNION ALL — source table 1](/study-notes/sql/union/fig-1.png)\n\n![UNION ALL — source table 2](/study-notes/sql/union/fig-2.png)\n\n![UNION ALL — source table 3](/study-notes/sql/union/fig-3.png)\n\n---\n\nUNION ALL combines multiple result sets but keeps duplicate rows. Since duplicate removal is not performed, it is generally faster than UNION.\n\n## Problem\n\nDisplay the names of all current and former employees, including duplicate records.\n\n```sql\nSELECT first_name, last_name\nFROM employees\nUNION ALL\nSELECT first_name, last_name\nFROM former_employees;\n```\n\n![UNION ALL — result 1](/study-notes/sql/union-all/fig-1.png)",
     "example": null,
-    "figures": 1
+    "figures": 4
   },
   {
     "subject": "SQL",
@@ -499,9 +499,9 @@
     "slug": "intersect",
     "title": "INTERSECT",
     "summary": "INTERSECT returns only the rows that exist in both result sets.",
-    "notes": "INTERSECT returns only the rows that exist in both result sets. Both queries must have the same number of columns with compatible data types.\n\n## Problem\n\nFind employees who appear in both the current employees and former employees tables.\n\n```sql\nSELECT first_name, last_name\nFROM employees\nINTERSECT\nSELECT first_name, last_name\nFROM former_employees;\n```\n\n![INTERSECT — result 1](/study-notes/sql/intersect/fig-1.png)",
+    "notes": "## Source data — Pattern 7: Set Operators\n\nAll queries run against the shared employees table (see `schema.sql`). This pattern introduces the `former_employees` table. Topic 44 also introduces a `retired_employees` table to demonstrate combining multiple set operators in a single query.\n\n![INTERSECT — source table 1](/study-notes/sql/union/fig-1.png)\n\n![INTERSECT — source table 2](/study-notes/sql/union/fig-2.png)\n\n![INTERSECT — source table 3](/study-notes/sql/union/fig-3.png)\n\n---\n\nINTERSECT returns only the rows that exist in both result sets. Both queries must have the same number of columns with compatible data types.\n\n## Problem\n\nFind employees who appear in both the current employees and former employees tables.\n\n```sql\nSELECT first_name, last_name\nFROM employees\nINTERSECT\nSELECT first_name, last_name\nFROM former_employees;\n```\n\n![INTERSECT — result 1](/study-notes/sql/intersect/fig-1.png)",
     "example": null,
-    "figures": 1
+    "figures": 4
   },
   {
     "subject": "SQL",
@@ -511,9 +511,9 @@
     "slug": "except-minus",
     "title": "EXCEPT / MINUS",
     "summary": "EXCEPT returns rows from the first query that do not appear in the second query.",
-    "notes": "EXCEPT returns rows from the first query that do not appear in the second query. Oracle uses MINUS instead of EXCEPT.\n\n## Problem\n\nDisplay employees who are currently working but are not present in the former employees table. -- SQL Server / PostgreSQL\n\n```sql\nSELECT first_name, last_name\nFROM employees\nEXCEPT\nSELECT first_name, last_name\nFROM former_employees;\n\n-- Oracle\n```\n\n```sql\nSELECT first_name, last_name\nFROM employees\nMINUS\nSELECT first_name, last_name\nFROM former_employees;\n```\n\n![EXCEPT / MINUS — result 1](/study-notes/sql/except-minus/fig-1.png)",
+    "notes": "## Source data — Pattern 7: Set Operators\n\nAll queries run against the shared employees table (see `schema.sql`). This pattern introduces the `former_employees` table. Topic 44 also introduces a `retired_employees` table to demonstrate combining multiple set operators in a single query.\n\n![EXCEPT / MINUS — source table 1](/study-notes/sql/union/fig-1.png)\n\n![EXCEPT / MINUS — source table 2](/study-notes/sql/union/fig-2.png)\n\n![EXCEPT / MINUS — source table 3](/study-notes/sql/union/fig-3.png)\n\n---\n\nEXCEPT returns rows from the first query that do not appear in the second query. Oracle uses MINUS instead of EXCEPT.\n\n## Problem\n\nDisplay employees who are currently working but are not present in the former employees table. -- SQL Server / PostgreSQL\n\n```sql\nSELECT first_name, last_name\nFROM employees\nEXCEPT\nSELECT first_name, last_name\nFROM former_employees;\n\n-- Oracle\n```\n\n```sql\nSELECT first_name, last_name\nFROM employees\nMINUS\nSELECT first_name, last_name\nFROM former_employees;\n```\n\n![EXCEPT / MINUS — result 1](/study-notes/sql/except-minus/fig-1.png)",
     "example": null,
-    "figures": 1
+    "figures": 4
   },
   {
     "subject": "SQL",
@@ -535,9 +535,9 @@
     "slug": "correlated-subquery",
     "title": "Correlated Subquery",
     "summary": "A correlated subquery references columns from the outer query.",
-    "notes": "A correlated subquery references columns from the outer query. It executes once for every row processed by the outer query.\n\n## Problem\n\nFind employees earning above their department's average salary.\n\n```sql\nSELECT first_name, salary\nFROM employees e\nWHERE salary > (\nSELECT AVG(salary)\nFROM employees\nWHERE department_id = e.department_id\n);\n```\n\n![Correlated Subquery — result 1](/study-notes/sql/correlated-subquery/fig-1.png)",
+    "notes": "## Source data — Pattern 8: Subqueries\n\nAll queries run against the shared `employees` and `departments` tables (see `schema.sql`). This pattern introduces scalar, correlated, and multiple-row subqueries. Topics 47 and 48 demonstrate the EXISTS and NOT EXISTS operators, while Topics 49 and 50 introduce the ANY (SOME) and ALL comparison operators.\n\n![Correlated Subquery — source table 1](/study-notes/sql/scalar-subquery/fig-1.png)\n\n![Correlated Subquery — source table 2](/study-notes/sql/scalar-subquery/fig-2.png)\n\n---\n\nA correlated subquery references columns from the outer query. It executes once for every row processed by the outer query.\n\n## Problem\n\nFind employees earning above their department's average salary.\n\n```sql\nSELECT first_name, salary\nFROM employees e\nWHERE salary > (\nSELECT AVG(salary)\nFROM employees\nWHERE department_id = e.department_id\n);\n```\n\n![Correlated Subquery — result 1](/study-notes/sql/correlated-subquery/fig-1.png)",
     "example": null,
-    "figures": 1
+    "figures": 3
   },
   {
     "subject": "SQL",
@@ -547,9 +547,9 @@
     "slug": "in-subquery",
     "title": "IN Subquery",
     "summary": "An IN subquery returns multiple values.",
-    "notes": "An IN subquery returns multiple values. The outer query checks whether a value matches any value returned by the subquery.\n\n## Problem\n\nFind employees working in departments located in Delhi.\n\n```sql\nSELECT first_name\nFROM employees\nWHERE department_id IN (\nSELECT department_id\nFROM departments\nWHERE location = 'Delhi'\n);\n```\n\n![IN Subquery — result 1](/study-notes/sql/in-subquery/fig-1.png)",
+    "notes": "## Source data — Pattern 8: Subqueries\n\nAll queries run against the shared `employees` and `departments` tables (see `schema.sql`). This pattern introduces scalar, correlated, and multiple-row subqueries. Topics 47 and 48 demonstrate the EXISTS and NOT EXISTS operators, while Topics 49 and 50 introduce the ANY (SOME) and ALL comparison operators.\n\n![IN Subquery — source table 1](/study-notes/sql/scalar-subquery/fig-1.png)\n\n![IN Subquery — source table 2](/study-notes/sql/scalar-subquery/fig-2.png)\n\n---\n\nAn IN subquery returns multiple values. The outer query checks whether a value matches any value returned by the subquery.\n\n## Problem\n\nFind employees working in departments located in Delhi.\n\n```sql\nSELECT first_name\nFROM employees\nWHERE department_id IN (\nSELECT department_id\nFROM departments\nWHERE location = 'Delhi'\n);\n```\n\n![IN Subquery — result 1](/study-notes/sql/in-subquery/fig-1.png)",
     "example": null,
-    "figures": 1
+    "figures": 3
   },
   {
     "subject": "SQL",
@@ -559,9 +559,9 @@
     "slug": "exists",
     "title": "EXISTS",
     "summary": "The EXISTS operator returns TRUE if the subquery returns at least one row.",
-    "notes": "The EXISTS operator returns TRUE if the subquery returns at least one row.\n\n## Problem\n\nFind departments that have employees.\n\n```sql\nSELECT department_name\nFROM departments d\nWHERE EXISTS (\nSELECT 1\nFROM employees e\nWHERE e.department_id = d.department_id\n);\n```\n\n![EXISTS — result 1](/study-notes/sql/exists/fig-1.png)",
+    "notes": "## Source data — Pattern 8: Subqueries\n\nAll queries run against the shared `employees` and `departments` tables (see `schema.sql`). This pattern introduces scalar, correlated, and multiple-row subqueries. Topics 47 and 48 demonstrate the EXISTS and NOT EXISTS operators, while Topics 49 and 50 introduce the ANY (SOME) and ALL comparison operators.\n\n![EXISTS — source table 1](/study-notes/sql/scalar-subquery/fig-1.png)\n\n![EXISTS — source table 2](/study-notes/sql/scalar-subquery/fig-2.png)\n\n---\n\nThe EXISTS operator returns TRUE if the subquery returns at least one row.\n\n## Problem\n\nFind departments that have employees.\n\n```sql\nSELECT department_name\nFROM departments d\nWHERE EXISTS (\nSELECT 1\nFROM employees e\nWHERE e.department_id = d.department_id\n);\n```\n\n![EXISTS — result 1](/study-notes/sql/exists/fig-1.png)",
     "example": null,
-    "figures": 1
+    "figures": 3
   },
   {
     "subject": "SQL",
@@ -571,9 +571,9 @@
     "slug": "not-exists",
     "title": "NOT EXISTS",
     "summary": "The NOT EXISTS operator returns TRUE only when the subquery returns no rows.",
-    "notes": "The NOT EXISTS operator returns TRUE only when the subquery returns no rows.\n\n## Problem\n\nFind departments without employees.\n\n```sql\nSELECT department_name\nFROM departments d\nWHERE NOT EXISTS (\nSELECT 1\nFROM employees e\nWHERE e.department_id = d.department_id\n);\n```\n\n![NOT EXISTS — result 1](/study-notes/sql/not-exists/fig-1.png)",
+    "notes": "## Source data — Pattern 8: Subqueries\n\nAll queries run against the shared `employees` and `departments` tables (see `schema.sql`). This pattern introduces scalar, correlated, and multiple-row subqueries. Topics 47 and 48 demonstrate the EXISTS and NOT EXISTS operators, while Topics 49 and 50 introduce the ANY (SOME) and ALL comparison operators.\n\n![NOT EXISTS — source table 1](/study-notes/sql/scalar-subquery/fig-1.png)\n\n![NOT EXISTS — source table 2](/study-notes/sql/scalar-subquery/fig-2.png)\n\n---\n\nThe NOT EXISTS operator returns TRUE only when the subquery returns no rows.\n\n## Problem\n\nFind departments without employees.\n\n```sql\nSELECT department_name\nFROM departments d\nWHERE NOT EXISTS (\nSELECT 1\nFROM employees e\nWHERE e.department_id = d.department_id\n);\n```\n\n![NOT EXISTS — result 1](/study-notes/sql/not-exists/fig-1.png)",
     "example": null,
-    "figures": 1
+    "figures": 3
   },
   {
     "subject": "SQL",
@@ -583,9 +583,9 @@
     "slug": "any-some",
     "title": "ANY (SOME)",
     "summary": "The ANY (or SOME) operator compares a value with each value returned by the subquery.",
-    "notes": "The ANY (or SOME) operator compares a value with each value returned by the subquery. The condition is true if it matches at least one value.\n\n## Problem\n\nFind employees earning more than any HR employee.\n\n```sql\nSELECT first_name, salary\nFROM employees\nWHERE salary > ANY (\nSELECT salary\nFROM employees\nWHERE department_id = 200\n);\n```\n\n![ANY (SOME) — result 1](/study-notes/sql/any-some/fig-1.png)",
+    "notes": "## Source data — Pattern 8: Subqueries\n\nAll queries run against the shared `employees` and `departments` tables (see `schema.sql`). This pattern introduces scalar, correlated, and multiple-row subqueries. Topics 47 and 48 demonstrate the EXISTS and NOT EXISTS operators, while Topics 49 and 50 introduce the ANY (SOME) and ALL comparison operators.\n\n![ANY (SOME) — source table 1](/study-notes/sql/scalar-subquery/fig-1.png)\n\n![ANY (SOME) — source table 2](/study-notes/sql/scalar-subquery/fig-2.png)\n\n---\n\nThe ANY (or SOME) operator compares a value with each value returned by the subquery. The condition is true if it matches at least one value.\n\n## Problem\n\nFind employees earning more than any HR employee.\n\n```sql\nSELECT first_name, salary\nFROM employees\nWHERE salary > ANY (\nSELECT salary\nFROM employees\nWHERE department_id = 200\n);\n```\n\n![ANY (SOME) — result 1](/study-notes/sql/any-some/fig-1.png)",
     "example": null,
-    "figures": 1
+    "figures": 3
   },
   {
     "subject": "SQL",
@@ -595,9 +595,9 @@
     "slug": "all",
     "title": "ALL",
     "summary": "The ALL operator compares a value with every value returned by the subquery.",
-    "notes": "The ALL operator compares a value with every value returned by the subquery. The condition is true only if it satisfies the comparison for all returned values.\n\n## Problem\n\nFind employees earning more than all HR employees.\n\n```sql\nSELECT first_name, salary\nFROM employees\nWHERE salary > ALL (\nSELECT salary\nFROM employees\nWHERE department_id = 200\n);\n```\n\n![ALL — result 1](/study-notes/sql/all/fig-1.png)",
+    "notes": "## Source data — Pattern 8: Subqueries\n\nAll queries run against the shared `employees` and `departments` tables (see `schema.sql`). This pattern introduces scalar, correlated, and multiple-row subqueries. Topics 47 and 48 demonstrate the EXISTS and NOT EXISTS operators, while Topics 49 and 50 introduce the ANY (SOME) and ALL comparison operators.\n\n![ALL — source table 1](/study-notes/sql/scalar-subquery/fig-1.png)\n\n![ALL — source table 2](/study-notes/sql/scalar-subquery/fig-2.png)\n\n---\n\nThe ALL operator compares a value with every value returned by the subquery. The condition is true only if it satisfies the comparison for all returned values.\n\n## Problem\n\nFind employees earning more than all HR employees.\n\n```sql\nSELECT first_name, salary\nFROM employees\nWHERE salary > ALL (\nSELECT salary\nFROM employees\nWHERE department_id = 200\n);\n```\n\n![ALL — result 1](/study-notes/sql/all/fig-1.png)",
     "example": null,
-    "figures": 1
+    "figures": 3
   },
   {
     "subject": "SQL",
@@ -607,9 +607,9 @@
     "slug": "nested-subqueries",
     "title": "Nested Subqueries",
     "summary": "A nested subquery is a subquery inside another subquery.",
-    "notes": "A nested subquery is a subquery inside another subquery. It is commonly used to solve complex problems such as finding the second highest salary.\n\n## Problem\n\nFind the second highest salary using subqueries.\n\n```sql\nSELECT MAX(salary)\nFROM employees\nWHERE salary < (\nSELECT MAX(salary)\nFROM employees\n);\n```\n\n![Nested Subqueries — result 1](/study-notes/sql/nested-subqueries/fig-1.png)",
+    "notes": "## Source data — Pattern 8: Subqueries\n\nAll queries run against the shared `employees` and `departments` tables (see `schema.sql`). This pattern introduces scalar, correlated, and multiple-row subqueries. Topics 47 and 48 demonstrate the EXISTS and NOT EXISTS operators, while Topics 49 and 50 introduce the ANY (SOME) and ALL comparison operators.\n\n![Nested Subqueries — source table 1](/study-notes/sql/scalar-subquery/fig-1.png)\n\n![Nested Subqueries — source table 2](/study-notes/sql/scalar-subquery/fig-2.png)\n\n---\n\nA nested subquery is a subquery inside another subquery. It is commonly used to solve complex problems such as finding the second highest salary.\n\n## Problem\n\nFind the second highest salary using subqueries.\n\n```sql\nSELECT MAX(salary)\nFROM employees\nWHERE salary < (\nSELECT MAX(salary)\nFROM employees\n);\n```\n\n![Nested Subqueries — result 1](/study-notes/sql/nested-subqueries/fig-1.png)",
     "example": null,
-    "figures": 1
+    "figures": 3
   },
   {
     "subject": "SQL",
@@ -631,9 +631,9 @@
     "slug": "multiple-ctes",
     "title": "Multiple CTEs",
     "summary": "Multiple CTEs can be declared in a single WITH clause and referenced together.",
-    "notes": "Multiple CTEs can be declared in a single WITH clause and referenced together.\n\n## Problem\n\nCalculate department salary summaries.\n\n```sql\nWITH dept_salary AS (\n  SELECT department_id,SUM(salary) total_salary FROM employees GROUP BY department_id\n), dept_count AS (\n  SELECT department_id,COUNT(*) total_emp FROM employees GROUP BY department_id\n)\nSELECT * FROM dept_salary JOIN dept_count USING(department_id);\n```\n\n![Multiple CTEs — result 1](/study-notes/sql/multiple-ctes/fig-1.png)",
+    "notes": "## Source data — Pattern 9: Common Table Expressions (CTEs)\n\nAll queries run against the shared employees and departments tables (see schema.sql). This pattern introduces Common Table Expressions (CTEs). Topic 54 demonstrates a recursive CTE using the employee-manager hierarchy from the employees table.\n\n![Multiple CTEs — source table 1](/study-notes/sql/basic-cte/fig-1.png)\n\n![Multiple CTEs — source table 2](/study-notes/sql/basic-cte/fig-2.png)\n\n---\n\nMultiple CTEs can be declared in a single WITH clause and referenced together.\n\n## Problem\n\nCalculate department salary summaries.\n\n```sql\nWITH dept_salary AS (\n  SELECT department_id,SUM(salary) total_salary FROM employees GROUP BY department_id\n), dept_count AS (\n  SELECT department_id,COUNT(*) total_emp FROM employees GROUP BY department_id\n)\nSELECT * FROM dept_salary JOIN dept_count USING(department_id);\n```\n\n![Multiple CTEs — result 1](/study-notes/sql/multiple-ctes/fig-1.png)",
     "example": null,
-    "figures": 1
+    "figures": 3
   },
   {
     "subject": "SQL",
@@ -643,9 +643,9 @@
     "slug": "recursive-cte",
     "title": "Recursive CTE",
     "summary": "A recursive CTE repeatedly executes until no new rows are produced.",
-    "notes": "A recursive CTE repeatedly executes until no new rows are produced. It is commonly used for hierarchical data.\n\n## Problem\n\nDisplay employee-manager hierarchy.\n\n```sql\nWITH RECURSIVE emp_tree AS (\n  SELECT employee_id,first_name,manager_id FROM employees WHERE manager_id IS NULL\n  UNION ALL\n  SELECT e.employee_id,e.first_name,e.manager_id FROM employees e JOIN emp_tree t ON\ne.manager_id=t.employee_id\n)\nSELECT * FROM emp_tree;\n```\n\n![Recursive CTE — result 1](/study-notes/sql/recursive-cte/fig-1.png)",
+    "notes": "## Source data — Pattern 9: Common Table Expressions (CTEs)\n\nAll queries run against the shared employees and departments tables (see schema.sql). This pattern introduces Common Table Expressions (CTEs). Topic 54 demonstrates a recursive CTE using the employee-manager hierarchy from the employees table.\n\n![Recursive CTE — source table 1](/study-notes/sql/basic-cte/fig-1.png)\n\n![Recursive CTE — source table 2](/study-notes/sql/basic-cte/fig-2.png)\n\n---\n\nA recursive CTE repeatedly executes until no new rows are produced. It is commonly used for hierarchical data.\n\n## Problem\n\nDisplay employee-manager hierarchy.\n\n```sql\nWITH RECURSIVE emp_tree AS (\n  SELECT employee_id,first_name,manager_id FROM employees WHERE manager_id IS NULL\n  UNION ALL\n  SELECT e.employee_id,e.first_name,e.manager_id FROM employees e JOIN emp_tree t ON\ne.manager_id=t.employee_id\n)\nSELECT * FROM emp_tree;\n```\n\n![Recursive CTE — result 1](/study-notes/sql/recursive-cte/fig-1.png)",
     "example": null,
-    "figures": 1
+    "figures": 3
   },
   {
     "subject": "SQL",
@@ -667,9 +667,9 @@
     "slug": "rank",
     "title": "RANK()",
     "summary": "Ranks rows with gaps after ties.",
-    "notes": "Ranks rows with gaps after ties.\n\n## Problem\n\nRank employees by sales.\n\n```sql\nSELECT *,\nRANK() OVER(ORDER BY sales_amount DESC) AS result\nFROM sales;\n```\n\n![RANK() — result 1](/study-notes/sql/rank/fig-1.png)",
+    "notes": "## Source data — Pattern 10: Window Functions\n\nAll queries run against the shared employees table (see schema.sql). This pattern introduces a sales table to demonstrate window functions including ranking, navigation, running totals, moving averages and window aggregates.\n\n![RANK() — source table 1](/study-notes/sql/row-number/fig-1.png)\n\n![RANK() — source table 2](/study-notes/sql/row-number/fig-2.png)\n\n---\n\nRanks rows with gaps after ties.\n\n## Problem\n\nRank employees by sales.\n\n```sql\nSELECT *,\nRANK() OVER(ORDER BY sales_amount DESC) AS result\nFROM sales;\n```\n\n![RANK() — result 1](/study-notes/sql/rank/fig-1.png)",
     "example": null,
-    "figures": 1
+    "figures": 3
   },
   {
     "subject": "SQL",
@@ -679,9 +679,9 @@
     "slug": "dense-rank",
     "title": "DENSE_RANK()",
     "summary": "Ranks rows without gaps after ties.",
-    "notes": "Ranks rows without gaps after ties.\n\n## Problem\n\nAssign dense ranks based on sales.\n\n```sql\nSELECT *,\nDENSE_RANK() OVER(ORDER BY sales_amount DESC) AS result\nFROM sales;\n```\n\n![DENSE_RANK() — result 1](/study-notes/sql/dense-rank/fig-1.png)",
+    "notes": "## Source data — Pattern 10: Window Functions\n\nAll queries run against the shared employees table (see schema.sql). This pattern introduces a sales table to demonstrate window functions including ranking, navigation, running totals, moving averages and window aggregates.\n\n![DENSE_RANK() — source table 1](/study-notes/sql/row-number/fig-1.png)\n\n![DENSE_RANK() — source table 2](/study-notes/sql/row-number/fig-2.png)\n\n---\n\nRanks rows without gaps after ties.\n\n## Problem\n\nAssign dense ranks based on sales.\n\n```sql\nSELECT *,\nDENSE_RANK() OVER(ORDER BY sales_amount DESC) AS result\nFROM sales;\n```\n\n![DENSE_RANK() — result 1](/study-notes/sql/dense-rank/fig-1.png)",
     "example": null,
-    "figures": 1
+    "figures": 3
   },
   {
     "subject": "SQL",
@@ -691,9 +691,9 @@
     "slug": "ntile",
     "title": "NTILE()",
     "summary": "Divides rows into equal-sized buckets.",
-    "notes": "Divides rows into equal-sized buckets.\n\n## Problem\n\nDivide employees into four salary groups.\n\n```sql\nSELECT first_name,salary,\nNTILE(4) OVER(ORDER BY salary DESC) AS result\nFROM employees;\n```\n\n![NTILE() — result 1](/study-notes/sql/ntile/fig-1.png)",
+    "notes": "## Source data — Pattern 10: Window Functions\n\nAll queries run against the shared employees table (see schema.sql). This pattern introduces a sales table to demonstrate window functions including ranking, navigation, running totals, moving averages and window aggregates.\n\n![NTILE() — source table 1](/study-notes/sql/row-number/fig-1.png)\n\n![NTILE() — source table 2](/study-notes/sql/row-number/fig-2.png)\n\n---\n\nDivides rows into equal-sized buckets.\n\n## Problem\n\nDivide employees into four salary groups.\n\n```sql\nSELECT first_name,salary,\nNTILE(4) OVER(ORDER BY salary DESC) AS result\nFROM employees;\n```\n\n![NTILE() — result 1](/study-notes/sql/ntile/fig-1.png)",
     "example": null,
-    "figures": 1
+    "figures": 3
   },
   {
     "subject": "SQL",
@@ -703,9 +703,9 @@
     "slug": "lead",
     "title": "LEAD()",
     "summary": "Accesses the next row.",
-    "notes": "Accesses the next row.\n\n## Problem\n\nDisplay the next month's sales.\n\n```sql\nSELECT *,\nLEAD(sales_amount) OVER(ORDER BY sale_month) AS result\nFROM sales;\n```\n\n![LEAD() — result 1](/study-notes/sql/lead/fig-1.png)",
+    "notes": "## Source data — Pattern 10: Window Functions\n\nAll queries run against the shared employees table (see schema.sql). This pattern introduces a sales table to demonstrate window functions including ranking, navigation, running totals, moving averages and window aggregates.\n\n![LEAD() — source table 1](/study-notes/sql/row-number/fig-1.png)\n\n![LEAD() — source table 2](/study-notes/sql/row-number/fig-2.png)\n\n---\n\nAccesses the next row.\n\n## Problem\n\nDisplay the next month's sales.\n\n```sql\nSELECT *,\nLEAD(sales_amount) OVER(ORDER BY sale_month) AS result\nFROM sales;\n```\n\n![LEAD() — result 1](/study-notes/sql/lead/fig-1.png)",
     "example": null,
-    "figures": 1
+    "figures": 3
   },
   {
     "subject": "SQL",
@@ -715,9 +715,9 @@
     "slug": "lag",
     "title": "LAG()",
     "summary": "Accesses the previous row.",
-    "notes": "Accesses the previous row.\n\n## Problem\n\nDisplay the previous month's sales.\n\n```sql\nSELECT *,\nLAG(sales_amount) OVER(ORDER BY sale_month) AS result\nFROM sales;\n```\n\n![LAG() — result 1](/study-notes/sql/lag/fig-1.png)",
+    "notes": "## Source data — Pattern 10: Window Functions\n\nAll queries run against the shared employees table (see schema.sql). This pattern introduces a sales table to demonstrate window functions including ranking, navigation, running totals, moving averages and window aggregates.\n\n![LAG() — source table 1](/study-notes/sql/row-number/fig-1.png)\n\n![LAG() — source table 2](/study-notes/sql/row-number/fig-2.png)\n\n---\n\nAccesses the previous row.\n\n## Problem\n\nDisplay the previous month's sales.\n\n```sql\nSELECT *,\nLAG(sales_amount) OVER(ORDER BY sale_month) AS result\nFROM sales;\n```\n\n![LAG() — result 1](/study-notes/sql/lag/fig-1.png)",
     "example": null,
-    "figures": 1
+    "figures": 3
   },
   {
     "subject": "SQL",
@@ -727,9 +727,9 @@
     "slug": "first-value",
     "title": "FIRST_VALUE()",
     "summary": "Returns first value in a window.",
-    "notes": "Returns first value in a window.\n\n## Problem\n\nDisplay the first sale in each department.\n\n```sql\nSELECT *,\nFIRST_VALUE(sales_amount) OVER(PARTITION BY department_id ORDER BY\nsale_month) AS result\nFROM sales;\n```\n\n![FIRST_VALUE() — result 1](/study-notes/sql/first-value/fig-1.png)",
+    "notes": "## Source data — Pattern 10: Window Functions\n\nAll queries run against the shared employees table (see schema.sql). This pattern introduces a sales table to demonstrate window functions including ranking, navigation, running totals, moving averages and window aggregates.\n\n![FIRST_VALUE() — source table 1](/study-notes/sql/row-number/fig-1.png)\n\n![FIRST_VALUE() — source table 2](/study-notes/sql/row-number/fig-2.png)\n\n---\n\nReturns first value in a window.\n\n## Problem\n\nDisplay the first sale in each department.\n\n```sql\nSELECT *,\nFIRST_VALUE(sales_amount) OVER(PARTITION BY department_id ORDER BY\nsale_month) AS result\nFROM sales;\n```\n\n![FIRST_VALUE() — result 1](/study-notes/sql/first-value/fig-1.png)",
     "example": null,
-    "figures": 1
+    "figures": 3
   },
   {
     "subject": "SQL",
@@ -739,9 +739,9 @@
     "slug": "last-value",
     "title": "LAST_VALUE()",
     "summary": "Returns last value in a window.",
-    "notes": "Returns last value in a window.\n\n## Problem\n\nDisplay the last sale in each department.\n\n```sql\nSELECT *,\nLAST_VALUE(sales_amount) OVER(PARTITION BY department_id ORDER BY sale_month\nROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS result\nFROM sales;\n```\n\n![LAST_VALUE() — result 1](/study-notes/sql/last-value/fig-1.png)",
+    "notes": "## Source data — Pattern 10: Window Functions\n\nAll queries run against the shared employees table (see schema.sql). This pattern introduces a sales table to demonstrate window functions including ranking, navigation, running totals, moving averages and window aggregates.\n\n![LAST_VALUE() — source table 1](/study-notes/sql/row-number/fig-1.png)\n\n![LAST_VALUE() — source table 2](/study-notes/sql/row-number/fig-2.png)\n\n---\n\nReturns last value in a window.\n\n## Problem\n\nDisplay the last sale in each department.\n\n```sql\nSELECT *,\nLAST_VALUE(sales_amount) OVER(PARTITION BY department_id ORDER BY sale_month\nROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS result\nFROM sales;\n```\n\n![LAST_VALUE() — result 1](/study-notes/sql/last-value/fig-1.png)",
     "example": null,
-    "figures": 1
+    "figures": 3
   },
   {
     "subject": "SQL",
@@ -751,9 +751,9 @@
     "slug": "running-total",
     "title": "Running Total",
     "summary": "Calculates cumulative totals.",
-    "notes": "Calculates cumulative totals.\n\n## Problem\n\nCalculate cumulative sales.\n\n```sql\nSELECT *,\nSUM(sales_amount) OVER(ORDER BY sale_month) AS result\nFROM sales;\n```\n\n![Running Total — result 1](/study-notes/sql/running-total/fig-1.png)",
+    "notes": "## Source data — Pattern 10: Window Functions\n\nAll queries run against the shared employees table (see schema.sql). This pattern introduces a sales table to demonstrate window functions including ranking, navigation, running totals, moving averages and window aggregates.\n\n![Running Total — source table 1](/study-notes/sql/row-number/fig-1.png)\n\n![Running Total — source table 2](/study-notes/sql/row-number/fig-2.png)\n\n---\n\nCalculates cumulative totals.\n\n## Problem\n\nCalculate cumulative sales.\n\n```sql\nSELECT *,\nSUM(sales_amount) OVER(ORDER BY sale_month) AS result\nFROM sales;\n```\n\n![Running Total — result 1](/study-notes/sql/running-total/fig-1.png)",
     "example": null,
-    "figures": 1
+    "figures": 3
   },
   {
     "subject": "SQL",
@@ -763,9 +763,9 @@
     "slug": "moving-average",
     "title": "Moving Average",
     "summary": "Calculates average over a moving window.",
-    "notes": "Calculates average over a moving window.\n\n## Problem\n\nCalculate a 3-month moving average.\n\n```sql\nSELECT *,\nAVG(sales_amount) OVER(ORDER BY sale_month ROWS BETWEEN 2 PRECEDING AND\nCURRENT ROW) AS result\nFROM sales;\n```\n\n![Moving Average — result 1](/study-notes/sql/moving-average/fig-1.png)",
+    "notes": "## Source data — Pattern 10: Window Functions\n\nAll queries run against the shared employees table (see schema.sql). This pattern introduces a sales table to demonstrate window functions including ranking, navigation, running totals, moving averages and window aggregates.\n\n![Moving Average — source table 1](/study-notes/sql/row-number/fig-1.png)\n\n![Moving Average — source table 2](/study-notes/sql/row-number/fig-2.png)\n\n---\n\nCalculates average over a moving window.\n\n## Problem\n\nCalculate a 3-month moving average.\n\n```sql\nSELECT *,\nAVG(sales_amount) OVER(ORDER BY sale_month ROWS BETWEEN 2 PRECEDING AND\nCURRENT ROW) AS result\nFROM sales;\n```\n\n![Moving Average — result 1](/study-notes/sql/moving-average/fig-1.png)",
     "example": null,
-    "figures": 1
+    "figures": 3
   },
   {
     "subject": "SQL",
@@ -775,9 +775,9 @@
     "slug": "window-aggregate",
     "title": "Window Aggregate",
     "summary": "Performs aggregate calculations without GROUP BY.",
-    "notes": "Performs aggregate calculations without GROUP BY.\n\n## Problem\n\nCalculate department-wise average salary without grouping.\n\n```sql\nSELECT first_name,salary,\nAVG(salary) OVER(PARTITION BY department_id) AS result\nFROM employees;\n```\n\n![Window Aggregate — result 1](/study-notes/sql/window-aggregate/fig-1.png)",
+    "notes": "## Source data — Pattern 10: Window Functions\n\nAll queries run against the shared employees table (see schema.sql). This pattern introduces a sales table to demonstrate window functions including ranking, navigation, running totals, moving averages and window aggregates.\n\n![Window Aggregate — source table 1](/study-notes/sql/row-number/fig-1.png)\n\n![Window Aggregate — source table 2](/study-notes/sql/row-number/fig-2.png)\n\n---\n\nPerforms aggregate calculations without GROUP BY.\n\n## Problem\n\nCalculate department-wise average salary without grouping.\n\n```sql\nSELECT first_name,salary,\nAVG(salary) OVER(PARTITION BY department_id) AS result\nFROM employees;\n```\n\n![Window Aggregate — result 1](/study-notes/sql/window-aggregate/fig-1.png)",
     "example": null,
-    "figures": 1
+    "figures": 3
   },
   {
     "subject": "SQL",
@@ -799,9 +799,9 @@
     "slug": "nth-highest-salary",
     "title": "Nth Highest Salary",
     "summary": "Uses DENSE_RANK() to retrieve the nth highest salary.",
-    "notes": "Uses DENSE_RANK() to retrieve the nth highest salary.\n\n## Problem\n\nFind the nth highest salary.\n\n```sql\nSELECT *\nFROM (\n  SELECT first_name,salary,DENSE_RANK() OVER(ORDER BY salary DESC) rnk\n  FROM employees\n) t\nWHERE rnk = :N;\n```\n\n![Nth Highest Salary — result 1](/study-notes/sql/nth-highest-salary/fig-1.png)",
+    "notes": "## Source data — Pattern 11: Interview SQL Patterns\n\nAll queries run against the shared employees table (see schema.sql). Topics 71 and 72 introduce an orders table to solve consecutive records and gaps-and-islands problems. Topics 73 and 74 introduce a monthly_sales table to demonstrate PIVOT and UNPIVOT operations.\n\n![Nth Highest Salary — source table 1](/study-notes/sql/second-highest-salary/fig-1.png)\n\n![Nth Highest Salary — source table 2](/study-notes/sql/second-highest-salary/fig-2.png)\n\n![Nth Highest Salary — source table 3](/study-notes/sql/second-highest-salary/fig-3.png)\n\n![Nth Highest Salary — source table 4](/study-notes/sql/second-highest-salary/fig-4.png)\n\n---\n\nUses DENSE_RANK() to retrieve the nth highest salary.\n\n## Problem\n\nFind the nth highest salary.\n\n```sql\nSELECT *\nFROM (\n  SELECT first_name,salary,DENSE_RANK() OVER(ORDER BY salary DESC) rnk\n  FROM employees\n) t\nWHERE rnk = :N;\n```\n\n![Nth Highest Salary — result 1](/study-notes/sql/nth-highest-salary/fig-1.png)",
     "example": null,
-    "figures": 1
+    "figures": 5
   },
   {
     "subject": "SQL",
@@ -811,9 +811,9 @@
     "slug": "top-n-per-group",
     "title": "Top N Per Group",
     "summary": "Uses window functions to return the top records within each group.",
-    "notes": "Uses window functions to return the top records within each group.\n\n## Problem\n\nFind the highest-paid employee in each department.\n\n```sql\nSELECT *\nFROM (\n  SELECT *,ROW_NUMBER() OVER(PARTITION BY department_id ORDER BY salary DESC) rn\n  FROM employees\n) t\nWHERE rn=1;\n```\n\n![Top N Per Group — result 1](/study-notes/sql/top-n-per-group/fig-1.png)",
+    "notes": "## Source data — Pattern 11: Interview SQL Patterns\n\nAll queries run against the shared employees table (see schema.sql). Topics 71 and 72 introduce an orders table to solve consecutive records and gaps-and-islands problems. Topics 73 and 74 introduce a monthly_sales table to demonstrate PIVOT and UNPIVOT operations.\n\n![Top N Per Group — source table 1](/study-notes/sql/second-highest-salary/fig-1.png)\n\n![Top N Per Group — source table 2](/study-notes/sql/second-highest-salary/fig-2.png)\n\n![Top N Per Group — source table 3](/study-notes/sql/second-highest-salary/fig-3.png)\n\n![Top N Per Group — source table 4](/study-notes/sql/second-highest-salary/fig-4.png)\n\n---\n\nUses window functions to return the top records within each group.\n\n## Problem\n\nFind the highest-paid employee in each department.\n\n```sql\nSELECT *\nFROM (\n  SELECT *,ROW_NUMBER() OVER(PARTITION BY department_id ORDER BY salary DESC) rn\n  FROM employees\n) t\nWHERE rn=1;\n```\n\n![Top N Per Group — result 1](/study-notes/sql/top-n-per-group/fig-1.png)",
     "example": null,
-    "figures": 1
+    "figures": 5
   },
   {
     "subject": "SQL",
@@ -823,9 +823,9 @@
     "slug": "duplicate-records",
     "title": "Duplicate Records",
     "summary": "Groups rows to identify duplicate values.",
-    "notes": "Groups rows to identify duplicate values.\n\n## Problem\n\nFind duplicate email addresses.\n\n```sql\nSELECT email,COUNT(*)\nFROM employees\nGROUP BY email\nHAVING COUNT(*)>1;\n```\n\n![Duplicate Records — result 1](/study-notes/sql/duplicate-records/fig-1.png)",
+    "notes": "## Source data — Pattern 11: Interview SQL Patterns\n\nAll queries run against the shared employees table (see schema.sql). Topics 71 and 72 introduce an orders table to solve consecutive records and gaps-and-islands problems. Topics 73 and 74 introduce a monthly_sales table to demonstrate PIVOT and UNPIVOT operations.\n\n![Duplicate Records — source table 1](/study-notes/sql/second-highest-salary/fig-1.png)\n\n![Duplicate Records — source table 2](/study-notes/sql/second-highest-salary/fig-2.png)\n\n![Duplicate Records — source table 3](/study-notes/sql/second-highest-salary/fig-3.png)\n\n![Duplicate Records — source table 4](/study-notes/sql/second-highest-salary/fig-4.png)\n\n---\n\nGroups rows to identify duplicate values.\n\n## Problem\n\nFind duplicate email addresses.\n\n```sql\nSELECT email,COUNT(*)\nFROM employees\nGROUP BY email\nHAVING COUNT(*)>1;\n```\n\n![Duplicate Records — result 1](/study-notes/sql/duplicate-records/fig-1.png)",
     "example": null,
-    "figures": 1
+    "figures": 5
   },
   {
     "subject": "SQL",
@@ -835,9 +835,9 @@
     "slug": "remove-duplicates",
     "title": "Remove Duplicates",
     "summary": "Deletes duplicate rows while keeping one record.",
-    "notes": "Deletes duplicate rows while keeping one record.\n\n## Problem\n\nDelete duplicate employee records.\n\n```sql\nDELETE FROM employees\nWHERE employee_id NOT IN (\n  SELECT MIN(employee_id)\n  FROM employees\n  GROUP BY email\n);\n```\n\n![Remove Duplicates — result 1](/study-notes/sql/remove-duplicates/fig-1.png)",
+    "notes": "## Source data — Pattern 11: Interview SQL Patterns\n\nAll queries run against the shared employees table (see schema.sql). Topics 71 and 72 introduce an orders table to solve consecutive records and gaps-and-islands problems. Topics 73 and 74 introduce a monthly_sales table to demonstrate PIVOT and UNPIVOT operations.\n\n![Remove Duplicates — source table 1](/study-notes/sql/second-highest-salary/fig-1.png)\n\n![Remove Duplicates — source table 2](/study-notes/sql/second-highest-salary/fig-2.png)\n\n![Remove Duplicates — source table 3](/study-notes/sql/second-highest-salary/fig-3.png)\n\n![Remove Duplicates — source table 4](/study-notes/sql/second-highest-salary/fig-4.png)\n\n---\n\nDeletes duplicate rows while keeping one record.\n\n## Problem\n\nDelete duplicate employee records.\n\n```sql\nDELETE FROM employees\nWHERE employee_id NOT IN (\n  SELECT MIN(employee_id)\n  FROM employees\n  GROUP BY email\n);\n```\n\n![Remove Duplicates — result 1](/study-notes/sql/remove-duplicates/fig-1.png)",
     "example": null,
-    "figures": 1
+    "figures": 5
   },
   {
     "subject": "SQL",
@@ -847,9 +847,9 @@
     "slug": "consecutive-records",
     "title": "Consecutive Records",
     "summary": "Uses LAG() to compare consecutive rows.",
-    "notes": "Uses LAG() to compare consecutive rows.\n\n## Problem\n\nFind customers who placed orders on consecutive days.\n\n```sql\nSELECT customer_id,order_date\nFROM orders;\n```\n\n![Consecutive Records — result 1](/study-notes/sql/consecutive-records/fig-1.png)",
+    "notes": "## Source data — Pattern 11: Interview SQL Patterns\n\nAll queries run against the shared employees table (see schema.sql). Topics 71 and 72 introduce an orders table to solve consecutive records and gaps-and-islands problems. Topics 73 and 74 introduce a monthly_sales table to demonstrate PIVOT and UNPIVOT operations.\n\n![Consecutive Records — source table 1](/study-notes/sql/second-highest-salary/fig-1.png)\n\n![Consecutive Records — source table 2](/study-notes/sql/second-highest-salary/fig-2.png)\n\n![Consecutive Records — source table 3](/study-notes/sql/second-highest-salary/fig-3.png)\n\n![Consecutive Records — source table 4](/study-notes/sql/second-highest-salary/fig-4.png)\n\n---\n\nUses LAG() to compare consecutive rows.\n\n## Problem\n\nFind customers who placed orders on consecutive days.\n\n```sql\nSELECT customer_id,order_date\nFROM orders;\n```\n\n![Consecutive Records — result 1](/study-notes/sql/consecutive-records/fig-1.png)",
     "example": null,
-    "figures": 1
+    "figures": 5
   },
   {
     "subject": "SQL",
@@ -859,9 +859,9 @@
     "slug": "gaps-and-islands",
     "title": "Gaps and Islands",
     "summary": "Identifies continuous sequences in ordered data.",
-    "notes": "Identifies continuous sequences in ordered data.\n\n## Problem\n\nFind the longest employee attendance streak.\n\n```sql\n-- Gaps and Islands solution using ROW_NUMBER()\nSELECT * FROM attendance;\n```\n\n![Gaps and Islands — result 1](/study-notes/sql/gaps-and-islands/fig-1.png)",
+    "notes": "## Source data — Pattern 11: Interview SQL Patterns\n\nAll queries run against the shared employees table (see schema.sql). Topics 71 and 72 introduce an orders table to solve consecutive records and gaps-and-islands problems. Topics 73 and 74 introduce a monthly_sales table to demonstrate PIVOT and UNPIVOT operations.\n\n![Gaps and Islands — source table 1](/study-notes/sql/second-highest-salary/fig-1.png)\n\n![Gaps and Islands — source table 2](/study-notes/sql/second-highest-salary/fig-2.png)\n\n![Gaps and Islands — source table 3](/study-notes/sql/second-highest-salary/fig-3.png)\n\n![Gaps and Islands — source table 4](/study-notes/sql/second-highest-salary/fig-4.png)\n\n---\n\nIdentifies continuous sequences in ordered data.\n\n## Problem\n\nFind the longest employee attendance streak.\n\n```sql\n-- Gaps and Islands solution using ROW_NUMBER()\nSELECT * FROM attendance;\n```\n\n![Gaps and Islands — result 1](/study-notes/sql/gaps-and-islands/fig-1.png)",
     "example": null,
-    "figures": 1
+    "figures": 5
   },
   {
     "subject": "SQL",
@@ -871,9 +871,9 @@
     "slug": "pivot",
     "title": "Pivot",
     "summary": "Converts row values into columns.",
-    "notes": "Converts row values into columns.\n\n## Problem\n\nConvert monthly sales rows into columns.\n\n```sql\nSELECT *\nFROM monthly_sales\nPIVOT(SUM(amount) FOR month IN ('Jan','Feb','Mar'));\n```\n\n![Pivot — result 1](/study-notes/sql/pivot/fig-1.png)",
+    "notes": "## Source data — Pattern 11: Interview SQL Patterns\n\nAll queries run against the shared employees table (see schema.sql). Topics 71 and 72 introduce an orders table to solve consecutive records and gaps-and-islands problems. Topics 73 and 74 introduce a monthly_sales table to demonstrate PIVOT and UNPIVOT operations.\n\n![Pivot — source table 1](/study-notes/sql/second-highest-salary/fig-1.png)\n\n![Pivot — source table 2](/study-notes/sql/second-highest-salary/fig-2.png)\n\n![Pivot — source table 3](/study-notes/sql/second-highest-salary/fig-3.png)\n\n![Pivot — source table 4](/study-notes/sql/second-highest-salary/fig-4.png)\n\n---\n\nConverts row values into columns.\n\n## Problem\n\nConvert monthly sales rows into columns.\n\n```sql\nSELECT *\nFROM monthly_sales\nPIVOT(SUM(amount) FOR month IN ('Jan','Feb','Mar'));\n```\n\n![Pivot — result 1](/study-notes/sql/pivot/fig-1.png)",
     "example": null,
-    "figures": 1
+    "figures": 5
   },
   {
     "subject": "SQL",
@@ -883,9 +883,9 @@
     "slug": "unpivot",
     "title": "Unpivot",
     "summary": "Converts columns back into rows.",
-    "notes": "Converts columns back into rows.\n\n## Problem\n\nConvert monthly sales columns into rows.\n\n```sql\nSELECT *\nFROM monthly_sales\nUNPIVOT(amount FOR month IN (Jan,Feb,Mar));\n```\n\n![Unpivot — result 1](/study-notes/sql/unpivot/fig-1.png)",
+    "notes": "## Source data — Pattern 11: Interview SQL Patterns\n\nAll queries run against the shared employees table (see schema.sql). Topics 71 and 72 introduce an orders table to solve consecutive records and gaps-and-islands problems. Topics 73 and 74 introduce a monthly_sales table to demonstrate PIVOT and UNPIVOT operations.\n\n![Unpivot — source table 1](/study-notes/sql/second-highest-salary/fig-1.png)\n\n![Unpivot — source table 2](/study-notes/sql/second-highest-salary/fig-2.png)\n\n![Unpivot — source table 3](/study-notes/sql/second-highest-salary/fig-3.png)\n\n![Unpivot — source table 4](/study-notes/sql/second-highest-salary/fig-4.png)\n\n---\n\nConverts columns back into rows.\n\n## Problem\n\nConvert monthly sales columns into rows.\n\n```sql\nSELECT *\nFROM monthly_sales\nUNPIVOT(amount FOR month IN (Jan,Feb,Mar));\n```\n\n![Unpivot — result 1](/study-notes/sql/unpivot/fig-1.png)",
     "example": null,
-    "figures": 1
+    "figures": 5
   },
   {
     "subject": "SQL",
@@ -895,9 +895,9 @@
     "slug": "conditional-aggregation",
     "title": "Conditional Aggregation",
     "summary": "Uses CASE inside aggregate functions.",
-    "notes": "Uses CASE inside aggregate functions.\n\n## Problem\n\nCount employees by salary category.\n\n```sql\nSELECT\nCOUNT(CASE WHEN salary<50000 THEN 1 END) AS low_salary,\nCOUNT(CASE WHEN salary BETWEEN 50000 AND 80000 THEN 1 END) AS medium_salary,\nCOUNT(CASE WHEN salary>80000 THEN 1 END) AS high_salary\nFROM employees;\n```\n\n![Conditional Aggregation — result 1](/study-notes/sql/conditional-aggregation/fig-1.png)",
+    "notes": "## Source data — Pattern 11: Interview SQL Patterns\n\nAll queries run against the shared employees table (see schema.sql). Topics 71 and 72 introduce an orders table to solve consecutive records and gaps-and-islands problems. Topics 73 and 74 introduce a monthly_sales table to demonstrate PIVOT and UNPIVOT operations.\n\n![Conditional Aggregation — source table 1](/study-notes/sql/second-highest-salary/fig-1.png)\n\n![Conditional Aggregation — source table 2](/study-notes/sql/second-highest-salary/fig-2.png)\n\n![Conditional Aggregation — source table 3](/study-notes/sql/second-highest-salary/fig-3.png)\n\n![Conditional Aggregation — source table 4](/study-notes/sql/second-highest-salary/fig-4.png)\n\n---\n\nUses CASE inside aggregate functions.\n\n## Problem\n\nCount employees by salary category.\n\n```sql\nSELECT\nCOUNT(CASE WHEN salary<50000 THEN 1 END) AS low_salary,\nCOUNT(CASE WHEN salary BETWEEN 50000 AND 80000 THEN 1 END) AS medium_salary,\nCOUNT(CASE WHEN salary>80000 THEN 1 END) AS high_salary\nFROM employees;\n```\n\n![Conditional Aggregation — result 1](/study-notes/sql/conditional-aggregation/fig-1.png)",
     "example": null,
-    "figures": 1
+    "figures": 5
   },
   {
     "subject": "SQL",
@@ -919,9 +919,9 @@
     "slug": "update",
     "title": "UPDATE",
     "summary": "UPDATE modifies existing rows.",
-    "notes": "UPDATE modifies existing rows.\n\n## Problem\n\nIncrease IT employees' salary by 10%.\n\n```sql\nUPDATE employees\nSET salary=salary*1.10\nWHERE department_id=(SELECT department_id FROM departments WHERE\ndepartment_name='IT');\n```\n\n![UPDATE — result 1](/study-notes/sql/update/fig-1.png)",
+    "notes": "## Source data — Pattern 12: Data Manipulation (DML)\n\nAll queries run against the shared employees table (see schema.sql). This pattern introduces core Data Manipulation Language (DML) statements. Topic 79 introduces an employee_updates table to demonstrate the MERGE / UPSERT operation.\n\n![UPDATE — source table 1](/study-notes/sql/insert/fig-1.png)\n\n![UPDATE — source table 2](/study-notes/sql/insert/fig-2.png)\n\n---\n\nUPDATE modifies existing rows.\n\n## Problem\n\nIncrease IT employees' salary by 10%.\n\n```sql\nUPDATE employees\nSET salary=salary*1.10\nWHERE department_id=(SELECT department_id FROM departments WHERE\ndepartment_name='IT');\n```\n\n![UPDATE — result 1](/study-notes/sql/update/fig-1.png)",
     "example": null,
-    "figures": 1
+    "figures": 3
   },
   {
     "subject": "SQL",
@@ -931,9 +931,9 @@
     "slug": "delete",
     "title": "DELETE",
     "summary": "DELETE removes rows from a table.",
-    "notes": "DELETE removes rows from a table.\n\n## Problem\n\nDelete employees who resigned.\n\n```sql\nDELETE FROM employees\nWHERE status='Resigned';\n```\n\n![DELETE — result 1](/study-notes/sql/delete/fig-1.png)",
+    "notes": "## Source data — Pattern 12: Data Manipulation (DML)\n\nAll queries run against the shared employees table (see schema.sql). This pattern introduces core Data Manipulation Language (DML) statements. Topic 79 introduces an employee_updates table to demonstrate the MERGE / UPSERT operation.\n\n![DELETE — source table 1](/study-notes/sql/insert/fig-1.png)\n\n![DELETE — source table 2](/study-notes/sql/insert/fig-2.png)\n\n---\n\nDELETE removes rows from a table.\n\n## Problem\n\nDelete employees who resigned.\n\n```sql\nDELETE FROM employees\nWHERE status='Resigned';\n```\n\n![DELETE — result 1](/study-notes/sql/delete/fig-1.png)",
     "example": null,
-    "figures": 1
+    "figures": 3
   },
   {
     "subject": "SQL",
@@ -943,9 +943,9 @@
     "slug": "merge-upsert",
     "title": "MERGE / UPSERT",
     "summary": "MERGE inserts new rows or updates existing rows in a single statement.",
-    "notes": "MERGE inserts new rows or updates existing rows in a single statement.\n\n## Problem\n\nInsert or update employee records.\n\n```sql\nMERGE INTO employees e\nUSING employee_updates u\nON(e.employee_id=u.employee_id)\nWHEN MATCHED THEN UPDATE SET e.salary=u.salary\nWHEN NOT MATCHED THEN INSERT(employee_id,first_name,salary)\nVALUES(u.employee_id,u.first_name,u.salary);\n```\n\n![MERGE / UPSERT — result 1](/study-notes/sql/merge-upsert/fig-1.png)",
+    "notes": "## Source data — Pattern 12: Data Manipulation (DML)\n\nAll queries run against the shared employees table (see schema.sql). This pattern introduces core Data Manipulation Language (DML) statements. Topic 79 introduces an employee_updates table to demonstrate the MERGE / UPSERT operation.\n\n![MERGE / UPSERT — source table 1](/study-notes/sql/insert/fig-1.png)\n\n![MERGE / UPSERT — source table 2](/study-notes/sql/insert/fig-2.png)\n\n---\n\nMERGE inserts new rows or updates existing rows in a single statement.\n\n## Problem\n\nInsert or update employee records.\n\n```sql\nMERGE INTO employees e\nUSING employee_updates u\nON(e.employee_id=u.employee_id)\nWHEN MATCHED THEN UPDATE SET e.salary=u.salary\nWHEN NOT MATCHED THEN INSERT(employee_id,first_name,salary)\nVALUES(u.employee_id,u.first_name,u.salary);\n```\n\n![MERGE / UPSERT — result 1](/study-notes/sql/merge-upsert/fig-1.png)",
     "example": null,
-    "figures": 1
+    "figures": 3
   },
   {
     "subject": "SQL",
@@ -967,9 +967,9 @@
     "slug": "stored-procedures",
     "title": "Stored Procedures",
     "summary": "A stored procedure is a precompiled collection of SQL statements that can be executed repeatedly with input parameters.",
-    "notes": "A stored procedure is a precompiled collection of SQL statements that can be executed repeatedly with input parameters.\n\n## Problem\n\nCreate a procedure to fetch employees by department.\n\n```sql\nCREATE PROCEDURE GetEmployeesByDepartment\n  @DeptId INT\nAS\nBEGIN\nSELECT *\nFROM employees\nWHERE department_id = @DeptId;\nEND;\n```\n\n![Stored Procedures — result 1](/study-notes/sql/stored-procedures/fig-1.png)",
+    "notes": "## Source data — Pattern 13: Database Objects\n\nAll queries run against the shared employees table (see schema.sql). This pattern introduces commonly used database objects including views, stored procedures, user-defined functions, and triggers. All examples are built using the existing employees table.\n\n![Stored Procedures — source table 1](/study-notes/sql/views/fig-1.png)\n\n![Stored Procedures — source table 2](/study-notes/sql/views/fig-2.png)\n\n---\n\nA stored procedure is a precompiled collection of SQL statements that can be executed repeatedly with input parameters.\n\n## Problem\n\nCreate a procedure to fetch employees by department.\n\n```sql\nCREATE PROCEDURE GetEmployeesByDepartment\n  @DeptId INT\nAS\nBEGIN\nSELECT *\nFROM employees\nWHERE department_id = @DeptId;\nEND;\n```\n\n![Stored Procedures — result 1](/study-notes/sql/stored-procedures/fig-1.png)",
     "example": null,
-    "figures": 1
+    "figures": 3
   },
   {
     "subject": "SQL",
@@ -979,9 +979,9 @@
     "slug": "user-defined-functions",
     "title": "User-Defined Functions",
     "summary": "A user-defined function (UDF) accepts input parameters and returns a value or table that can be reused in SQL queries.",
-    "notes": "A user-defined function (UDF) accepts input parameters and returns a value or table that can be reused in SQL queries.\n\n## Problem\n\nCreate a function to calculate annual salary.\n\n```sql\nCREATE FUNCTION CalculateAnnualSalary(@MonthlySalary DECIMAL(10,2))\nRETURNS DECIMAL(10,2)\nAS\nBEGIN\nRETURN @MonthlySalary * 12;\nEND;\n```\n\n![User-Defined Functions — result 1](/study-notes/sql/user-defined-functions/fig-1.png)",
+    "notes": "## Source data — Pattern 13: Database Objects\n\nAll queries run against the shared employees table (see schema.sql). This pattern introduces commonly used database objects including views, stored procedures, user-defined functions, and triggers. All examples are built using the existing employees table.\n\n![User-Defined Functions — source table 1](/study-notes/sql/views/fig-1.png)\n\n![User-Defined Functions — source table 2](/study-notes/sql/views/fig-2.png)\n\n---\n\nA user-defined function (UDF) accepts input parameters and returns a value or table that can be reused in SQL queries.\n\n## Problem\n\nCreate a function to calculate annual salary.\n\n```sql\nCREATE FUNCTION CalculateAnnualSalary(@MonthlySalary DECIMAL(10,2))\nRETURNS DECIMAL(10,2)\nAS\nBEGIN\nRETURN @MonthlySalary * 12;\nEND;\n```\n\n![User-Defined Functions — result 1](/study-notes/sql/user-defined-functions/fig-1.png)",
     "example": null,
-    "figures": 1
+    "figures": 3
   },
   {
     "subject": "SQL",
@@ -991,9 +991,9 @@
     "slug": "triggers",
     "title": "Triggers",
     "summary": "A trigger is a special type of stored program that automatically executes when INSERT, UPDATE, or DELETE operations occur.",
-    "notes": "A trigger is a special type of stored program that automatically executes when INSERT, UPDATE, or DELETE operations occur.\n\n## Problem\n\nLog salary updates automatically.\n\n```sql\nCREATE TRIGGER trg_salary_update\nON employees\nAFTER UPDATE\nAS\nBEGIN\nINSERT INTO salary_log(employee_id,old_salary,new_salary)\nSELECT d.employee_id,d.salary,i.salary\nFROM deleted d\nJOIN inserted i\nON d.employee_id=i.employee_id;\nEND;\n```\n\n![Triggers — result 1](/study-notes/sql/triggers/fig-1.png)",
+    "notes": "## Source data — Pattern 13: Database Objects\n\nAll queries run against the shared employees table (see schema.sql). This pattern introduces commonly used database objects including views, stored procedures, user-defined functions, and triggers. All examples are built using the existing employees table.\n\n![Triggers — source table 1](/study-notes/sql/views/fig-1.png)\n\n![Triggers — source table 2](/study-notes/sql/views/fig-2.png)\n\n---\n\nA trigger is a special type of stored program that automatically executes when INSERT, UPDATE, or DELETE operations occur.\n\n## Problem\n\nLog salary updates automatically.\n\n```sql\nCREATE TRIGGER trg_salary_update\nON employees\nAFTER UPDATE\nAS\nBEGIN\nINSERT INTO salary_log(employee_id,old_salary,new_salary)\nSELECT d.employee_id,d.salary,i.salary\nFROM deleted d\nJOIN inserted i\nON d.employee_id=i.employee_id;\nEND;\n```\n\n![Triggers — result 1](/study-notes/sql/triggers/fig-1.png)",
     "example": null,
-    "figures": 1
+    "figures": 3
   },
   {
     "subject": "SQL",
@@ -1015,8 +1015,8 @@
     "slug": "transactions-commit-rollback",
     "title": "Transactions (COMMIT / ROLLBACK)",
     "summary": "A transaction is a sequence of SQL statements executed as a single unit.",
-    "notes": "A transaction is a sequence of SQL statements executed as a single unit. COMMIT permanently saves changes, while ROLLBACK undoes them if an error occurs.\n\n## Problem\n\nTransfer salary between accounts using a transaction.\n\n```sql\nBEGIN TRANSACTION;\nUPDATE accounts\nSET balance = balance - 5000\nWHERE account_id = 101;\nUPDATE accounts\nSET balance = balance + 5000\nWHERE account_id = 102;\nCOMMIT;\n-- Use ROLLBACK instead of COMMIT if an error occurs.\n```\n\n![Transactions (COMMIT / ROLLBACK) — result 1](/study-notes/sql/transactions-commit-rollback/fig-1.png)",
+    "notes": "## Source data — Pattern 14: Database Design & Performance\n\nAll queries run against the shared employees table (see schema.sql). This pattern introduces performance optimization and transaction management. Topic 85 introduces an accounts table to demonstrate COMMIT and ROLLBACK using a money transfer transaction.\n\n![Transactions (COMMIT / ROLLBACK) — source table 1](/study-notes/sql/indexes/fig-1.png)\n\n![Transactions (COMMIT / ROLLBACK) — source table 2](/study-notes/sql/indexes/fig-2.png)\n\n---\n\nA transaction is a sequence of SQL statements executed as a single unit. COMMIT permanently saves changes, while ROLLBACK undoes them if an error occurs.\n\n## Problem\n\nTransfer salary between accounts using a transaction.\n\n```sql\nBEGIN TRANSACTION;\nUPDATE accounts\nSET balance = balance - 5000\nWHERE account_id = 101;\nUPDATE accounts\nSET balance = balance + 5000\nWHERE account_id = 102;\nCOMMIT;\n-- Use ROLLBACK instead of COMMIT if an error occurs.\n```\n\n![Transactions (COMMIT / ROLLBACK) — result 1](/study-notes/sql/transactions-commit-rollback/fig-1.png)",
     "example": null,
-    "figures": 1
+    "figures": 3
   }
 ]

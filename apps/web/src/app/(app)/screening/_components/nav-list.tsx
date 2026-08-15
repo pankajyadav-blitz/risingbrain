@@ -58,18 +58,15 @@ export function NavList({ categories }: { categories: AptIndexCategory[] }) {
   if (!active) return null;
 
   return (
-    // No top padding: the category header sits flush against the panel's top
-    // edge, so nothing shows above it and it clips cleanly to the rounded corner.
-    <div className="px-3 pb-3">
+    // No padding around the list: the column is a plain bordered index, not a
+    // card, so rows sit flush to the page edge (their own `px-3` is the only
+    // inset) and the category header sits flush against the top.
+    <div className="pb-3">
       {/* Sticky within the index's own scrollport, so the category stays labelled
-          while you scroll its topics. Pulled to the panel's full width so nothing
-          shows through beside it.
-
-          Solid `surface-2`, NOT a translucent + `backdrop-blur` band: a child with
-          `backdrop-filter` is not clipped by an ancestor's border radius in
-          Chromium, so a blurred bar renders square over the panel's rounded top
-          corner. It also has to be opaque anyway — rows scroll under it. */}
-      <div className="sticky top-0 z-10 -mx-3 mb-1.5 flex items-baseline justify-between gap-2 border-b border-border/70 bg-surface-2 px-6 py-2">
+          while you scroll its topics. Opaque (`surface-2`, not a translucent blur
+          band) because rows scroll under it; shares the rows' `px-3` so the
+          category name and the titles line up. */}
+      <div className="sticky top-0 z-10 mb-1.5 flex items-baseline justify-between gap-2 border-b border-border/70 bg-surface-2 px-3 py-2">
         <p className="truncate text-[11px] font-semibold uppercase tracking-wider text-accent">
           {active.name}
         </p>
@@ -95,7 +92,10 @@ export function NavList({ categories }: { categories: AptIndexCategory[] }) {
                 aria-current={isActive ? "page" : undefined}
                 // `scroll-mt-10` clears the sticky category header, so the
                 // keep-active-in-view scroll never parks a topic under it.
-                className={`flex w-full scroll-mt-10 items-center gap-2 rounded-xl px-3 py-2 text-left text-sm transition-colors ${
+                // Tight horizontal padding — enough to keep the title/count (and
+                // the active row's highlight) off the column edges without
+                // spending the narrow index's width on empty space.
+                className={`flex w-full scroll-mt-10 items-center gap-2 rounded-lg px-3 py-2 text-left text-sm transition-colors ${
                   isActive
                     ? "bg-rb-green-500/15 font-semibold text-brand ring-1 ring-rb-green-500/30"
                     : "text-muted hover:bg-surface-2 hover:text-foreground"

@@ -40,9 +40,10 @@ export function Paper({ paper }: { paper: AptPaper }) {
   );
 
   return (
-    // Plain content, no card: the surrounding pane in `workspace.tsx` IS the card
-    // (see the note there on why only one box may carry the radius).
-    <div className="p-6 sm:p-8">
+    // Plain content, no card and no frame inset: horizontal gutters come from the
+    // page <Container>, the scrollbar gutter from the pane in `workspace.tsx`. Only
+    // a bottom gutter is ours, so the SubmitBar isn't flush to the scroll end.
+    <div className="pb-10">
       {/* Whole paper shares one attempt so the header's Retake button can react
           to submission state alongside the questions and bottom SubmitBar. */}
       <PaperAttemptProvider

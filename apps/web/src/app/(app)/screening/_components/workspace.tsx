@@ -63,15 +63,26 @@ export async function AptitudeWorkspace({
               Nesting puts the bar inside the parent's clip. And the card lives on
               the pane, never also on the child — two rounded boxes never line up
               once the scrollbar takes width off the inner one. */}
-          <div className="lg:flex lg:min-h-0 lg:flex-1 lg:gap-3 lg:overflow-hidden">
-            {/* LEFT (@nav slot): the selected category's topics, scrolls independently */}
-            <aside className="glass hidden lg:flex lg:h-full lg:w-60 lg:shrink-0 lg:flex-col lg:overflow-hidden lg:rounded-3xl xl:w-64">
+          <div className="lg:flex lg:min-h-0 lg:flex-1 lg:gap-6 lg:overflow-hidden">
+            {/* LEFT (@nav slot): the selected category's topics, scrolls
+                independently. Deliberately NOT a card — no glass fill, no radius,
+                no shadow — just a divider rule against the paper, so the index
+                reads as part of the page rather than a second floating panel. One
+                FIXED width at every breakpoint, not growing at xl: any extra width
+                belongs to the paper. Long titles clip, and `useTruncationTooltip`
+                reveals the full name on hover/focus. `pr-2` sits outside the
+                scroller, so it is a real gutter between the rows and the divider
+                rule (the scrollbar rides inside it). */}
+            <aside className="hidden lg:flex lg:h-full lg:w-[228px] lg:shrink-0 lg:flex-col lg:overflow-hidden lg:border-r lg:border-border lg:pr-2">
               <div className="pane-scroll min-h-0 flex-1 overflow-y-auto">{nav}</div>
             </aside>
 
-            {/* MAIN ([topicId] paper): lazy per-topic, scrolls independently */}
-            <section className="glass min-w-0 rounded-3xl lg:h-full lg:flex-1 lg:overflow-hidden">
-              <div className="pane-scroll lg:h-full lg:overflow-y-auto">{children}</div>
+            {/* MAIN ([topicId] paper): lazy per-topic, scrolls independently. No
+                card either — the paper reads directly on the page, so the full
+                column width goes to the questions instead of a frame + its inset.
+                `pr-3` is the only inset: it keeps content off the scrollbar. */}
+            <section className="min-w-0 lg:h-full lg:flex-1 lg:overflow-hidden">
+              <div className="pane-scroll lg:h-full lg:overflow-y-auto lg:pr-3">{children}</div>
             </section>
           </div>
         </div>
