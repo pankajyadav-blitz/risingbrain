@@ -16,9 +16,17 @@ import { refreshStreakBadge } from "@/lib/streak-client";
 /**
  * Owns ONE topic paper's attempt. Each QuestionCard reads/writes its slice here
  * instead of holding private state, so the end-of-paper Submit bar can grade the
- * whole paper at once. Answering a question calls `/api/screening/check` for the
- * green/red color (boolean only — the correct option is never revealed mid-test);
- * opening a hint BEFORE answering forfeits that question's mark.
+ * whole paper at once.
+ *
+ * NOTHING is graded while the paper is open. Picking an option only records the
+ * choice locally — answers can be changed freely and no verdict (or colour)
+ * appears until Submit. That is what makes it a paper rather than a quiz show:
+ * you answer, you hand it in, then you find out.
+ *
+ * Opening a hint at any point before submitting forfeits that question's mark.
+ * (It used to be "before answering", which only meant anything while answers
+ * locked on selection; now that they don't, opening a hint always leaves room to
+ * change the answer, so it always costs the mark.)
  *
  * A topic that the learner already submitted (per the global progress seed)
  * starts in review mode. After a fresh submit we flip to review mode and push
@@ -26,20 +34,14 @@ import { refreshStreakBadge } from "@/lib/streak-client";
  */
 export type QState = {
   selectedKey: string | null;
-  correct: boolean | null;
-  hintUsed: boolean; // opened a hint before answering → no mark
+  hintUsed: boolean; // opened a hint before submitting → no mark
   hintOpen: boolean; // hint is currently revealed
-  locked: boolean; // answered (one shot)
-  checking: boolean; // /check in flight
 };
 
 const EMPTY: QState = {
   selectedKey: null,
-  correct: null,
   hintUsed: false,
   hintOpen: false,
-  locked: false,
-  checking: false,
 };
 
 type AttemptValue = {
@@ -96,28 +98,12 @@ export function PaperAttemptProvider({
     }));
   }, []);
 
+  // Purely local: no request, no verdict. Re-picking simply replaces the choice.
   const select = useCallback(
     (questionId: string, key: string) => {
       if (!progress?.signedIn) { redirectToLogin(); return; }
-      const cur = statesRef.current[questionId] ?? EMPTY;
-      if (submitted || cur.locked || cur.checking) return;
-      patch(questionId, { selectedKey: key, checking: true });
-      void (async () => {
-        try {
-          const res = await fetch("/api/screening/check", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ questionId, selectedKey: key }),
-          });
-          if (!res.ok) throw new Error("check failed");
-          const data = (await res.json()) as { correct: boolean };
-          patch(questionId, { correct: data.correct, locked: true, checking: false });
-        } catch {
-          // Roll back the selection so the learner can retry.
-          patch(questionId, { selectedKey: null, checking: false });
-          setError("Couldn't check that answer. Try again.");
-        }
-      })();
+      if (submitted) return;
+      patch(questionId, { selectedKey: key });
     },
     [submitted, patch, progress?.signedIn]
   );
@@ -127,8 +113,9 @@ export function PaperAttemptProvider({
       if (!progress?.signedIn) { redirectToLogin(); return; }
       const cur = statesRef.current[questionId] ?? EMPTY;
       const opening = !cur.hintOpen;
-      // Penalize only if revealing a hint before the question is answered.
-      const hintUsed = cur.hintUsed || (opening && !cur.locked && !submitted);
+      // Penalize the first reveal made while the paper is still open — after
+      // submitting, hints are just part of the review and cost nothing.
+      const hintUsed = cur.hintUsed || (opening && !submitted);
       patch(questionId, { hintOpen: opening, hintUsed });
     },
     [submitted, patch, progress?.signedIn]

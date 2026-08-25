@@ -9,7 +9,6 @@ import {
   NotebookPen,
   GraduationCap,
   MessagesSquare,
-  Trophy,
   Shield,
   LayoutDashboard,
   LogIn,
@@ -31,7 +30,6 @@ const ICONS: Record<string, LucideIcon> = {
   Screening: NotebookPen,
   Courses: GraduationCap,
   Interview: MessagesSquare,
-  Contests: Trophy,
   Admin: Shield,
 };
 

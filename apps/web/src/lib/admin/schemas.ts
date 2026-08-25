@@ -80,7 +80,6 @@ export const domainTopicCreate = z.object({
   groupOrder: orderField,
   summary: optionalText,
   notes: requiredText, // markdown body — required by the model
-  example: optionalText,
   order: orderField,
   isPublished: z.boolean().optional(),
 });

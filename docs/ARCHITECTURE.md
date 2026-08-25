@@ -186,7 +186,35 @@ QuizCategory  kind ∈ {APTITUDE, LOGICAL_REASONING, PUZZLE}   (slug, order)
 Syllogism/“statements + conclusions” questions store their full prompt as
 markdown in `prompt`; options stay the uniform `{key,label}` array.
 
-### 3.4 Courses (`/courses`) — designed now, fillable later
+### 3.4 Domain (`/domain`) — core-CS subjects with their own practice sets
+
+```
+DomainTopic  subject ∈ {SQL, DBMS, OS, CN, OOPS}, slug, title,
+             groupLabel + groupOrder  (left-nav section, e.g. "Module 6 — Transactions & Concurrency"),
+             summary?, notes (markdown), order, isPublished
+  └─ DomainQuestion  prompt, options (Json [{key,label}]), answerKey,
+                     explanation?, difficulty?, order
+```
+
+A topic is one markdown body: theory, extracted diagrams (`/study-notes/<subject>/<slug>/fig-N.png`)
+and worked code examples all in `notes`. The topic view is a **Notes | Practice**
+switch — the same shape as Screening's Notes | Practice paper.
+
+`DomainQuestion` is deliberately a **separate instance** from `QuizQuestion`
+rather than a `kind` on it: Screening drills topics that exist only to be
+practised, while a domain question hangs off a study topic whose main content is
+its notes, and a learner's aptitude score is not their domain score. Domain
+questions also carry no `hint` (the source explains each answer after grading
+instead), so a mark is simply a correct answer — where a screening mark is
+forfeited by opening a hint.
+
+Per-user state mirrors the screening pair, in its own tables:
+`UserDomainQuizProgress` (one row per user+question, non-destructive
+re-attempts via `isActive`) and `UserDomainTopicScore` (the stored mark per
+user+topic). Both cascade with the topic, so a content reseed clears the answers
+recorded against the questions it replaces.
+
+### 3.5 Courses (`/courses`) — designed now, fillable later
 
 The schema is ready so we can ship the Courses tab without a migration when the
 content is authored.
@@ -206,7 +234,7 @@ Enrollment   userId × courseId (unique), status, progressPercent, enrolledAt, c
 A "course schema update" (new modules/lessons, new pricing, new course types) is
 additive — new rows or a new `CourseTag`/`LessonType` enum value.
 
-### 3.5 Interview experiences (`/interview`)
+### 3.6 Interview experiences (`/interview`)
 
 ```
 InterviewExperience  authorId, company, role, verdict ∈ {SELECTED,REJECTED,PENDING},
@@ -240,12 +268,15 @@ quiz via an added column without touching progress.
 Two layers:
 
 - **`Submission`** (append-only log): every task the user "submits/completes" —
-  `type ∈ {DSA_PROBLEM, SQL_PROBLEM, MCQ, COURSE_LESSON}`, `referenceId`,
-  `createdAt`. The audit trail.
-- **`ActivityDay`** (aggregate for the heatmap): `(userId, day)` unique, `count`,
-  `breakdown(Json)` e.g. `{dsa:3, sql:1, mcq:2}`. Incremented atomically on each
-  submission. The profile heatmap is a single indexed range scan over
-  `ActivityDay`, never an aggregation over the raw log.
+  `type ∈ {DSA_PROBLEM, MCQ, COURSE_LESSON}`, `referenceId`, `createdAt`. The
+  audit trail. Reading a domain topic's notes has no completion state and
+  produces nothing; submitting its practice set logs each newly-answered
+  question as an `MCQ`, the same kind a screening answer produces.
+- **`ActivityDay`** (aggregate for the heatmap): `(userId, day)` unique, `count`
+  plus one column per kind (`dsaCount`, `mcqCount`, `courseCount`) — explicit
+  columns rather than a Json blob so each can be incremented atomically. The
+  profile heatmap is a single indexed range scan over `ActivityDay`, never an
+  aggregation over the raw log.
 
 `User.currentStreak / longestStreak / lastActiveOn` are updated alongside
 `ActivityDay` (IST day boundaries), so the streak badge needs no computation at

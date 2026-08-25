@@ -3,7 +3,6 @@
 import {
   CheckCircle2,
   Lightbulb,
-  Loader2,
   Sparkles,
   XCircle,
   type LucideIcon,
@@ -74,11 +73,11 @@ const DIFFICULTY_STYLE: Record<string, string> = {
 
 /**
  * A single MCQ in the graded test flow. While the test is open it ships the
- * prompt, options and hint only — never the answer. Selecting an option calls
- * `/api/screening/check`, which colors the chosen option green/red but does NOT
- * reveal the correct one. Opening the hint (top-right) before answering forfeits
- * the mark. Once the paper is submitted the card flips to review mode: the
- * correct answer, the explanation and the hint are all revealed.
+ * prompt, options and hint only — never the answer — and picking an option just
+ * marks it as chosen: no verdict, no colour, and the choice can be changed as
+ * often as the learner likes. Opening the hint (top-right) before submitting
+ * forfeits that question's mark. Once the paper is submitted the card flips to
+ * review mode: the correct answer, the explanation and the hint are all revealed.
  */
 export function QuestionCard({ question, index }: { question: AptQuestion; index: number }) {
   const { id, options, difficulty, hint } = question;
@@ -93,11 +92,13 @@ export function QuestionCard({ question, index }: { question: AptQuestion; index
   const answeredInReview = reviewMode && review;
 
   // ---- per-question status dot ---------------------------------------------
-  let dot: "correct" | "awarded" | "wrong" | "none" = "none";
+  // Before submit the dot only says "answered / not answered" — it must not leak
+  // whether the choice was right.
+  let dot: "correct" | "awarded" | "wrong" | "answered" | "none" = "none";
   if (reviewMode) {
     if (review) dot = review.awarded ? "awarded" : review.isCorrect ? "correct" : "wrong";
-  } else if (st.locked) {
-    dot = st.correct ? "correct" : "wrong";
+  } else if (st.selectedKey) {
+    dot = "answered";
   }
 
   function optionClass(key: string) {
@@ -109,18 +110,10 @@ export function QuestionCard({ question, index }: { question: AptQuestion; index
         return "border-rose-500/60 bg-rose-500/12 text-foreground ring-1 ring-rose-500/40";
       return "border-border bg-surface-2 text-muted opacity-60";
     }
-    // attempt mode
-    if (!st.locked) {
-      return st.selectedKey === key
-        ? "border-rb-green-500/60 bg-rb-green-500/10 text-foreground ring-1 ring-rb-green-500/40"
-        : "border-border bg-surface-2 text-muted hover:border-rb-green-500/40 hover:text-foreground cursor-pointer";
-    }
-    // locked — color only the chosen option; never reveal the correct one
-    if (key === st.selectedKey)
-      return st.correct
-        ? "border-emerald-500/60 bg-emerald-500/12 text-foreground ring-1 ring-emerald-500/40"
-        : "border-rose-500/60 bg-rose-500/12 text-foreground ring-1 ring-rose-500/40";
-    return "border-border bg-surface-2 text-muted opacity-60";
+    // attempt mode — "chosen", never "right" or "wrong"
+    return st.selectedKey === key
+      ? "border-rb-green-500/60 bg-rb-green-500/10 text-foreground ring-1 ring-rb-green-500/40"
+      : "border-border bg-surface-2 text-muted hover:border-rb-green-500/40 hover:text-foreground cursor-pointer";
   }
 
   function optionIcon(key: string): LucideIcon | null {
@@ -129,13 +122,9 @@ export function QuestionCard({ question, index }: { question: AptQuestion; index
       if (key === review.selectedKey) return XCircle;
       return null;
     }
-    if (!reviewMode && st.locked && key === st.selectedKey) {
-      return st.correct ? CheckCircle2 : XCircle;
-    }
     return null;
   }
 
-  const fieldsetDisabled = reviewMode || st.locked || st.checking;
   const showHint = hint && (reviewMode || st.hintOpen);
 
   return (
@@ -162,7 +151,7 @@ export function QuestionCard({ question, index }: { question: AptQuestion; index
                   type="button"
                   onClick={() => attempt.toggleHint(id)}
                   aria-pressed={st.hintOpen}
-                  title={st.locked ? "Show hint" : "Show hint (forfeits the mark)"}
+                  title="Show hint (forfeits the mark)"
                   className={`grid h-7 w-7 place-items-center rounded-full ring-1 transition-colors ${
                     st.hintOpen || st.hintUsed
                       ? "bg-amber-500/15 text-amber-500 ring-amber-500/30"
@@ -177,10 +166,7 @@ export function QuestionCard({ question, index }: { question: AptQuestion; index
           </div>
 
           {/* Options */}
-          <fieldset
-            className="mt-3 grid gap-2 sm:grid-cols-2"
-            disabled={fieldsetDisabled}
-          >
+          <fieldset className="mt-3 grid gap-2 sm:grid-cols-2" disabled={reviewMode}>
             <legend className="sr-only">Choose an answer</legend>
             {options.map((o) => {
               const Icon = optionIcon(o.key);
@@ -205,9 +191,7 @@ export function QuestionCard({ question, index }: { question: AptQuestion; index
                     {o.key}
                   </span>
                   <span className="flex-1 leading-relaxed">{o.label}</span>
-                  {st.checking && st.selectedKey === o.key ? (
-                    <Loader2 className="mt-0.5 h-4 w-4 shrink-0 animate-spin text-muted" />
-                  ) : Icon ? (
+                  {Icon ? (
                     <Icon
                       className={`mt-0.5 h-4 w-4 shrink-0 ${
                         Icon === CheckCircle2 ? "text-emerald-500" : "text-rose-500"
@@ -252,12 +236,17 @@ export function QuestionCard({ question, index }: { question: AptQuestion; index
 
 /**
  * Per-question status indicator:
- *  - filled green tick  → correct & mark awarded
- *  - amber tick         → correct but no mark (hint used)
- *  - filled rose dot    → incorrect
+ *  - filled green tick  → correct & mark awarded   (review only)
+ *  - amber tick         → correct but no mark (hint used, review only)
+ *  - filled rose dot    → incorrect                (review only)
+ *  - filled accent dot  → answered, not yet submitted — no verdict implied
  *  - blank outlined dot → not yet answered / skipped
  */
-function StatusDot({ status }: { status: "correct" | "awarded" | "wrong" | "none" }) {
+function StatusDot({
+  status,
+}: {
+  status: "correct" | "awarded" | "wrong" | "answered" | "none";
+}) {
   if (status === "awarded" || status === "correct") {
     return (
       <span
@@ -272,6 +261,13 @@ function StatusDot({ status }: { status: "correct" | "awarded" | "wrong" | "none
     return (
       <span title="Incorrect" className="grid h-5 w-5 place-items-center" aria-label="Incorrect">
         <span className="h-3 w-3 rounded-full bg-rose-500" />
+      </span>
+    );
+  }
+  if (status === "answered") {
+    return (
+      <span title="Answered" className="grid h-5 w-5 place-items-center" aria-label="Answered">
+        <span className="h-3 w-3 rounded-full bg-rb-green-500/70" />
       </span>
     );
   }

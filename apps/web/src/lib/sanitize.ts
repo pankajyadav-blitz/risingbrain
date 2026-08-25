@@ -21,6 +21,9 @@ const OPTIONS: sanitizeHtml.IOptions = {
     "p", "br", "b", "strong", "i", "em", "u", "s", "strike",
     "h1", "h2", "h3", "h4",
     "ul", "ol", "li",
+    // contentEditable wraps each new line in a <div>; dropping the tag would
+    // run every line of a post together into one paragraph.
+    "div",
     "blockquote", "pre", "code",
     "a", "span", "hr",
   ],

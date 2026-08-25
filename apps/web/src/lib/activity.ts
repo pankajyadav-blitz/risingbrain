@@ -2,7 +2,7 @@
  * Activity logging — the write side of the streak/heatmap system.
  *
  * Every meaningful "task done" (a first DSA solve, a newly-answered aptitude
- * question, later SQL/course completions) is recorded here so the heatmap and
+ * question, later course completions) is recorded here so the heatmap and
  * streak can be read from the pre-aggregated `ActivityDay` table (one row per
  * user per IST day) instead of re-scanning the raw progress tables on every
  * navbar render. It appends an audit `Submission` per event and bumps the day's
@@ -15,23 +15,20 @@
 import { prisma, SubmissionType } from "@/lib/db";
 import { istToday } from "@/lib/ist";
 
-export type ActivityKind = "dsa" | "sql" | "mcq" | "course";
+export type ActivityKind = "dsa" | "mcq" | "course";
 
 const SUBMISSION_TYPE: Record<ActivityKind, SubmissionType> = {
   dsa: SubmissionType.DSA_PROBLEM,
-  sql: SubmissionType.SQL_PROBLEM,
   mcq: SubmissionType.MCQ,
   course: SubmissionType.COURSE_LESSON,
 };
 
-const COUNT_COLUMN: Record<ActivityKind, "dsaCount" | "sqlCount" | "mcqCount" | "courseCount"> = {
+const COUNT_COLUMN: Record<ActivityKind, "dsaCount" | "mcqCount" | "courseCount"> = {
   dsa: "dsaCount",
-  sql: "sqlCount",
   mcq: "mcqCount",
   course: "courseCount",
 };
 
-/** True for a Prisma unique-constraint violation (P2002). */
 function isConflict(e: unknown): boolean {
   return (
     typeof e === "object" &&
@@ -84,7 +81,6 @@ export async function recordActivity(params: {
             day,
             count: n,
             dsaCount: kind === "dsa" ? n : 0,
-            sqlCount: kind === "sql" ? n : 0,
             mcqCount: kind === "mcq" ? n : 0,
             courseCount: kind === "course" ? n : 0,
           },

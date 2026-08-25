@@ -12187,6 +12187,8 @@
               "id": "subtopic_sbc_01",
               "name": "Two-Pointer",
               "order": 0,
+              "strategy": "Use two indices that move towards or away from each other to reduce redundant comparisons.",
+              "identification": "Problem involves pairs, sorted arrays, triplets, or opposite-end traversal.",
               "problems": [
                 {
                   "id": "problem_sbc_0001",
@@ -12276,6 +12278,8 @@
               "id": "subtopic_sbc_02",
               "name": "Sliding Window",
               "order": 1,
+              "strategy": "Maintain a window of fixed size or expand/shrink it to satisfy a condition.",
+              "identification": "Problem uses words like “window of size k”, “longest”, “shortest”, or “at most K”.",
               "problems": [
                 {
                   "id": "problem_sbc_0010",
@@ -12313,6 +12317,8 @@
               "id": "subtopic_sbc_03",
               "name": "Prefix Sum",
               "order": 2,
+              "strategy": "Precompute cumulative sums so any subarray or range sum can be answered in O(1).",
+              "identification": "Problem talks about range sum, subarray sum, cumulative sum, or prefix-based queries.",
               "problems": [
                 {
                   "id": "problem_sbc_0014",
@@ -12326,6 +12332,8 @@
               "id": "subtopic_sbc_04",
               "name": "Kadane's Algorithm",
               "order": 3,
+              "strategy": "Track the best subarray sum ending at each index and update the global maximum.",
+              "identification": "Problem asks for maximum/minimum sum or product of a contiguous subarray.",
               "problems": [
                 {
                   "id": "problem_sbc_0015",
@@ -12356,6 +12364,8 @@
               "id": "subtopic_sbc_05",
               "name": "Array — General / Math",
               "order": 4,
+              "strategy": "Work out the traversal order or recurrence by hand first, then translate it into index arithmetic with explicit boundary checks.",
+              "identification": "Problem is a direct simulation or formula — Pascal’s triangle rows, spiral order, leaders — with no reusable pattern behind it.",
               "problems": [
                 {
                   "id": "problem_sbc_0017",
@@ -12408,6 +12418,8 @@
               "id": "subtopic_sbc_06",
               "name": "Two-Pointer (Palindrome)",
               "order": 0,
+              "strategy": "Compare characters from both ends and move inward until the condition fails.",
+              "identification": "Problem talks about palindrome checks, symmetric comparison, or reversing from both ends.",
               "problems": [
                 {
                   "id": "problem_sbc_0020",
@@ -12438,6 +12450,8 @@
               "id": "subtopic_sbc_07",
               "name": "Sliding Window (String)",
               "order": 1,
+              "strategy": "Maintain a moving window and adjust its size to satisfy character constraints.",
+              "identification": "Problem uses words like longest, shortest, substring, at most K, exactly K.",
               "problems": [
                 {
                   "id": "problem_sbc_0023",
@@ -12463,6 +12477,8 @@
               "id": "subtopic_sbc_08",
               "name": "Strings — General",
               "order": 2,
+              "strategy": "Scan the string once and handle signs, overflow, and malformed input explicitly — these are graded on edge cases, not on complexity.",
+              "identification": "Problem is straight string parsing — common prefix, Roman numerals, atoi, run-length encoding — rather than a windowing pattern.",
               "problems": [
                 {
                   "id": "problem_sbc_0026",
@@ -12507,6 +12523,8 @@
               "id": "subtopic_sbc_09",
               "name": "Classic Binary Search",
               "order": 0,
+              "strategy": "Divide-and-conquer → narrow search space in sorted array.",
+              "identification": "Problem mentions a sorted array or “find element efficiently.”",
               "problems": [
                 {
                   "id": "problem_sbc_0030",
@@ -12579,6 +12597,8 @@
               "id": "subtopic_sbc_10",
               "name": "Lower / Upper Bound",
               "order": 1,
+              "strategy": "Find first/last occurrence or smallest/largest index satisfying a condition.",
+              "identification": "Problem mentions first/last occurrence, bounds, or constraints on index.",
               "problems": [
                 {
                   "id": "problem_sbc_0036",
@@ -12604,6 +12624,8 @@
               "id": "subtopic_sbc_11",
               "name": "Binary Search on Answers",
               "order": 2,
+              "strategy": "Treat answer space as sorted → binary search to find minimum/maximum feasible value.",
+              "identification": "Problem mentions minimum/maximum feasible value or optimization over a range.",
               "problems": [
                 {
                   "id": "problem_sbc_0038",
@@ -12623,6 +12645,8 @@
               "id": "subtopic_sbc_12",
               "name": "Search in 2D Matrix",
               "order": 3,
+              "strategy": "Apply binary search row-wise / column-wise or flattened array.",
+              "identification": "Problem mentions 2D matrix, row/column sorted, or kth smallest element.",
               "problems": [
                 {
                   "id": "problem_sbc_0040",
@@ -12653,6 +12677,8 @@
               "id": "subtopic_sbc_13",
               "name": "Basic Operations",
               "order": 0,
+              "strategy": "Directly manipulate pointers to insert, delete, traverse, and get length.",
+              "identification": "Problem mentions insertion, deletion at head/tail/Nth node or traversal.",
               "problems": [
                 {
                   "id": "problem_sbc_0041",
@@ -12666,6 +12692,8 @@
               "id": "subtopic_sbc_14",
               "name": "Fast and Slow Pointers",
               "order": 1,
+              "strategy": "Use two pointers at different speeds to detect cycles, middle node, or duplicates.",
+              "identification": "Problem involves loops, cycle detection, or middle node operations.",
               "problems": [
                 {
                   "id": "problem_sbc_0042",
@@ -12700,6 +12728,8 @@
               "id": "subtopic_sbc_15",
               "name": "Reversal Pattern",
               "order": 2,
+              "strategy": "Reverse entire list, partial list, or groups to reorder nodes.",
+              "identification": "Problem mentions reversing nodes or rearranging linked list order.",
               "problems": [
                 {
                   "id": "problem_sbc_0045",
@@ -12745,6 +12775,8 @@
               "id": "subtopic_sbc_16",
               "name": "Merge / Sort",
               "order": 3,
+              "strategy": "Merge sorted lists, sort list using merge sort, or reorder using middle + reverse + merge.",
+              "identification": "Problem mentions merging, sorting, or reordering linked lists.",
               "problems": [
                 {
                   "id": "problem_sbc_0049",
@@ -12764,6 +12796,8 @@
               "id": "subtopic_sbc_17",
               "name": "LinkedList with Stack / HashMap",
               "order": 4,
+              "strategy": "Use a stack to handle backward traversal, carry logic, or next greater node.",
+              "identification": "Problem mentions reverse order processing or “next greater” style operations.",
               "problems": [
                 {
                   "id": "problem_sbc_0050",
@@ -12794,6 +12828,8 @@
               "id": "subtopic_sbc_18",
               "name": "Basic DLL Operations",
               "order": 0,
+              "strategy": "Maintain prev and next pointers carefully for insert, delete, traversal; use DLL + HashMap for O(1) cache operations.",
+              "identification": "Problem mentions insertion/deletion in DLL, printing forwards/backwards, or caching (LRU/MRU/frequency-based).",
               "problems": [
                 {
                   "id": "problem_sbc_0051",
@@ -12824,6 +12860,8 @@
               "id": "subtopic_sbc_19",
               "name": "Frequency Map / Counting",
               "order": 0,
+              "strategy": "Count elements to find majority, top-k frequent, or sort by frequency.",
+              "identification": "Problem mentions frequency, duplicates, top-k, or counting occurrences.",
               "problems": [
                 {
                   "id": "problem_sbc_0052",
@@ -12888,6 +12926,8 @@
               "id": "subtopic_sbc_20",
               "name": "Prefix-Sum with Map",
               "order": 1,
+              "strategy": "Track cumulative sums; map stores first occurrence → solve subarray sum problems.",
+              "identification": "Problem involves subarray sums, cumulative sums, or “sum equals K”.",
               "problems": [
                 {
                   "id": "problem_sbc_0059",
@@ -12901,6 +12941,8 @@
               "id": "subtopic_sbc_21",
               "name": "HashMap Design (implementation)",
               "order": 2,
+              "strategy": "Back the structure with a bucket array plus chaining, then implement hash, put, get, and remove on top of it.",
+              "identification": "Problem says “design” or “implement” a map/set without using the language’s built-in one.",
               "problems": [
                 {
                   "id": "problem_sbc_0060",
@@ -12946,6 +12988,8 @@
               "id": "subtopic_sbc_22",
               "name": "Monotonic Stack",
               "order": 0,
+              "strategy": "Maintain a monotonic increasing/decreasing stack to find next/prev greater/smaller, histogram ranges, or collisions.",
+              "identification": "Problem mentions “next greater/smaller element,” spans, or trapping area.",
               "problems": [
                 {
                   "id": "problem_sbc_0062",
@@ -12970,6 +13014,8 @@
               "id": "subtopic_sbc_23",
               "name": "Expression Evaluation",
               "order": 1,
+              "strategy": "Use two stacks or postfix evaluation to handle numbers and operators efficiently.",
+              "identification": "Problem involves evaluating arithmetic expressions, parentheses, or decoding strings.",
               "problems": [
                 {
                   "id": "problem_sbc_0065",
@@ -12982,6 +13028,8 @@
               "id": "subtopic_sbc_24",
               "name": "Stack Simulation / Undo Operation",
               "order": 2,
+              "strategy": "Simulate operations using a stack → pop on undo, remove adjacent duplicates, collapse characters.",
+              "identification": "Problem mentions “undo,” “remove duplicates,” or “backspace string” operations.",
               "problems": [
                 {
                   "id": "problem_sbc_0066",
@@ -12995,6 +13043,8 @@
               "id": "subtopic_sbc_25",
               "name": "Parenthesis & Scoring",
               "order": 3,
+              "strategy": "Push opening symbols and validate closing ones; sometimes track count or score.",
+              "identification": "Problem mentions parentheses, balanced brackets, scoring, or generation.",
               "problems": [
                 {
                   "id": "problem_sbc_0067",
@@ -13008,6 +13058,8 @@
               "id": "subtopic_sbc_26",
               "name": "Stack-Based Design",
               "order": 4,
+              "strategy": "Use two stacks to implement another data structure or maintain extra info.",
+              "identification": "Problem mentions designing stack/queue systems or custom operations.",
               "problems": [
                 {
                   "id": "problem_sbc_0068",
@@ -13046,6 +13098,8 @@
               "id": "subtopic_sbc_27",
               "name": "Linear Recursion",
               "order": 0,
+              "strategy": "Solve problems by reducing them to a simpler instance of the same problem.",
+              "identification": "Problems requiring repetitive smaller tasks without splitting into multiple branches.",
               "problems": [
                 {
                   "id": "problem_sbc_0071",
@@ -13066,6 +13120,8 @@
               "id": "subtopic_sbc_28",
               "name": "DFS Traversals",
               "order": 0,
+              "strategy": "Standard DFS → used for max depth, path sums, subtree calculations.",
+              "identification": "Problem mentions “visit all nodes recursively, max depth/path/subtree sum.”",
               "problems": [
                 {
                   "id": "problem_sbc_0072",
@@ -13097,6 +13153,8 @@
               "id": "subtopic_sbc_29",
               "name": "BFS / Level-Order",
               "order": 1,
+              "strategy": "Use queue → traverse level by level → calculate sums, averages, or side views.",
+              "identification": "Problem mentions “level-order, breadth-first, zigzag, right-side view, or level sum/average.”",
               "problems": [
                 {
                   "id": "problem_sbc_0075",
@@ -13128,6 +13186,8 @@
               "id": "subtopic_sbc_30",
               "name": "Lowest Common Ancestor",
               "order": 2,
+              "strategy": "DFS recursion or parent-pointer mapping → find common ancestor efficiently.",
+              "identification": "Problem mentions “find common ancestor, distance between nodes, or lowest node covering two nodes.”",
               "problems": [
                 {
                   "id": "problem_sbc_0079",
@@ -13148,6 +13208,8 @@
               "id": "subtopic_sbc_31",
               "name": "BST Operations",
               "order": 0,
+              "strategy": "Leverage BST property (left < root < right) for search, insertion, deletion, and range queries.",
+              "identification": "Problem mentions “BST operations, validate BST, insert/delete nodes, or sum/range queries.”",
               "problems": [
                 {
                   "id": "problem_sbc_0080",
@@ -13198,6 +13260,8 @@
               "id": "subtopic_sbc_32",
               "name": "BFS (Unweighted Path)",
               "order": 0,
+              "strategy": "Standard BFS → track distance/levels → queue-based traversal → multi-source if needed.",
+              "identification": "Problem mentions “shortest path, level-order traversal, or unweighted distance”.",
               "problems": [
                 {
                   "id": "problem_sbc_0085",
@@ -13248,6 +13312,8 @@
               "id": "subtopic_sbc_33",
               "name": "DFS (Connectivity)",
               "order": 1,
+              "strategy": "DFS recursion or stack → track visited → identify connected components or detect cycles.",
+              "identification": "Problem mentions “connected components, islands, cycles, safe states, bipartite check, bridges, articulation points, or connectivity check”.",
               "problems": [
                 {
                   "id": "problem_sbc_0089",
@@ -13279,6 +13345,8 @@
               "id": "subtopic_sbc_34",
               "name": "Topological Sort",
               "order": 2,
+              "strategy": "DFS postorder or BFS (Kahn’s algorithm) → order nodes respecting dependencies.",
+              "identification": "Problem mentions “ordering tasks, course prerequisites, dependency chains, build order, or cycle in directed graph”.",
               "problems": [
                 {
                   "id": "problem_sbc_0092",
@@ -13307,6 +13375,8 @@
               "id": "subtopic_sbc_35",
               "name": "MST / Union-Find",
               "order": 3,
+              "strategy": "Use Kruskal’s / Prim’s algorithm or Union-Find → find MST, minimum cost connections, or detect cycles.",
+              "identification": "Problem mentions “minimum cost to connect all nodes, redundant connections, union-find required”.",
               "problems": [
                 {
                   "id": "problem_sbc_0094",
@@ -13333,6 +13403,8 @@
               "id": "subtopic_sbc_36",
               "name": "Top-K Elements",
               "order": 0,
+              "strategy": "Use min-heap for top-k largest, max-heap for top-k smallest → maintain heap of size k.",
+              "identification": "Problem mentions top k, kth largest/smallest, median, or maintaining running extremes.",
               "problems": [
                 {
                   "id": "problem_sbc_0095",
@@ -13384,6 +13456,8 @@
               "id": "subtopic_sbc_37",
               "name": "Merge K Sorted",
               "order": 1,
+              "strategy": "Use min-heap to merge multiple sorted arrays/lists efficiently.",
+              "identification": "Problem mentions merging sorted arrays/lists or finding K smallest/largest pairs across arrays.",
               "problems": [
                 {
                   "id": "problem_sbc_0099",
@@ -13397,6 +13471,8 @@
               "id": "subtopic_sbc_38",
               "name": "Implementation of Heap",
               "order": 2,
+              "strategy": "Build the heap yourself with sift-up/sift-down over an array, or hold two heaps — max-heap for the lower half, min-heap for the upper — and rebalance after every insert.",
+              "identification": "Problem asks you to design a priority queue, or to keep a running median or order statistic over a stream.",
               "problems": [
                 {
                   "id": "problem_sbc_0100",
@@ -13417,6 +13493,8 @@
               "id": "subtopic_sbc_39",
               "name": "Choice-Based Backtracking",
               "order": 0,
+              "strategy": "At each level pick an unused candidate, recurse, then undo the pick; prune as soon as the partial answer overshoots the target.",
+              "identification": "Problem asks for all permutations or combinations reaching a target, where order or reuse of elements matters.",
               "problems": [
                 {
                   "id": "problem_sbc_0101",
@@ -13450,6 +13528,8 @@
               "id": "subtopic_sbc_40",
               "name": "Constraint-Based Backtracking",
               "order": 1,
+              "strategy": "Recurse on the index with two branches — include the element or exclude it — and record the path at each leaf.",
+              "identification": "Problem asks to generate every subset or selection where each element is simply taken or skipped.",
               "problems": [
                 {
                   "id": "problem_sbc_0103",
@@ -13463,6 +13543,8 @@
               "id": "subtopic_sbc_41",
               "name": "Grid / Path Backtracking",
               "order": 2,
+              "strategy": "Move in grid recursively → explore all valid paths → backtrack after each move.",
+              "identification": "Problem mentions “maze, grid, pathfinding, sudoku, word search in grid, Hamiltonian path, or max path gold.”",
               "problems": [
                 {
                   "id": "problem_sbc_0104",
@@ -13482,6 +13564,8 @@
               "id": "subtopic_sbc_42",
               "name": "Decision Tree / Sequence Generation",
               "order": 3,
+              "strategy": "Generate sequences or strings recursively by making a choice at each step.",
+              "identification": "Problems where you recursively build sequences, combinations of digits/letters, or expressions.",
               "problems": [
                 {
                   "id": "problem_sbc_0106",
@@ -13502,6 +13586,8 @@
               "id": "subtopic_sbc_43",
               "name": "Intervals & Reach",
               "order": 0,
+              "strategy": "Sort intervals or extend reach as far as possible from current position → maximize tasks done / minimize steps.",
+              "identification": "Problem mentions “maximum non-overlapping intervals, tasks, meetings, jump to end, minimum steps, or cover intervals”.",
               "problems": [
                 {
                   "id": "problem_sbc_0107",
@@ -13539,6 +13625,8 @@
               "id": "subtopic_sbc_44",
               "name": "Sorting / Local Choice",
               "order": 1,
+              "strategy": "Sort array or select elements → make locally optimal choice → achieve global optimum.",
+              "identification": "Problem mentions “maximize/minimize sum, select elements optimally, assign/distribute resources, or custom order”.",
               "problems": [
                 {
                   "id": "problem_sbc_0112",
@@ -13584,6 +13672,8 @@
               "id": "subtopic_sbc_45",
               "name": "1D / Linear DP",
               "order": 0,
+              "strategy": "Track optimal solution using a 1D array → sequences, sums, or counts.",
+              "identification": "Problem mentions “subarrays, sequences, max/min sum/product, or linear decisions”.",
               "problems": [
                 {
                   "id": "problem_sbc_0115",
@@ -13638,6 +13728,8 @@
               "id": "subtopic_sbc_46",
               "name": "2D / Grid DP",
               "order": 1,
+              "strategy": "Use 2D array → track states for row/column → movement or path constraints.",
+              "identification": "Problem mentions “grids, movement from start to end, paths, or matrix-based sums”.",
               "problems": [
                 {
                   "id": "problem_sbc_0118",
@@ -13661,6 +13753,8 @@
               "id": "subtopic_sbc_47",
               "name": "DP on Strings",
               "order": 2,
+              "strategy": "Use 2D DP → index i,j represent substrings/subsequences → solve LCS, palindrome, or edit distance.",
+              "identification": "Problem mentions “subsequence, substring, longest common, palindrome, or string edit operations”.",
               "problems": [
                 {
                   "id": "problem_sbc_0119",
@@ -13696,6 +13790,8 @@
               "id": "subtopic_sbc_48",
               "name": "Knapsack / Subset Sum",
               "order": 3,
+              "strategy": "Track states based on weight/value → classic 0-1 / bounded / unbounded variants.",
+              "identification": "Problem mentions “choose subset under constraints, maximize value, target sum, or weight limit”.",
               "problems": [
                 {
                   "id": "problem_sbc_0121",
@@ -13723,6 +13819,8 @@
               "id": "subtopic_sbc_49",
               "name": "DP on Stocks",
               "order": 4,
+              "strategy": "State machine DP to track whether you are holding a stock or not.",
+              "identification": "Problems involving buying and selling stocks to maximize profit with varying constraints.",
               "problems": [
                 {
                   "id": "problem_sbc_0122",
@@ -13743,6 +13841,8 @@
               "id": "subtopic_sbc_50",
               "name": "Basic Trie Operations",
               "order": 0,
+              "strategy": "Build Trie → insert words → search full word or prefix efficiently → collect suggestions in lexicographic order.",
+              "identification": "Problem mentions “dictionary, prefix search, word lookup, autocomplete, or predictive text”.",
               "problems": [
                 {
                   "id": "problem_sbc_0123",
@@ -13756,6 +13856,8 @@
               "id": "subtopic_sbc_51",
               "name": "Word Break / Segmentation",
               "order": 1,
+              "strategy": "Use Trie for fast lookup → combine with DP or backtracking for word segmentation and concatenation.",
+              "identification": "Problem mentions “word segmentation, dictionary words, concatenated words, or string break”.",
               "problems": [
                 {
                   "id": "problem_sbc_0124",
@@ -13786,6 +13888,8 @@
               "id": "subtopic_sbc_52",
               "name": "Basic Bit Operations",
               "order": 0,
+              "strategy": "Use XOR / AND / OR / shift operations → detect single/missing numbers or count bits efficiently.",
+              "identification": "Problem mentions “unique element, missing number, or bit counting”.",
               "problems": [
                 {
                   "id": "problem_sbc_0125",
@@ -13844,6 +13948,8 @@
               "id": "subtopic_sbc_53",
               "name": "General / Math",
               "order": 0,
+              "strategy": "Work digit by digit with / and %, and guard against overflow, zero, and negative inputs.",
+              "identification": "Problem is pure number manipulation — digit extraction, reversal, divisibility — with no data structure involved.",
               "problems": [
                 {
                   "id": "problem_sbc_0128",

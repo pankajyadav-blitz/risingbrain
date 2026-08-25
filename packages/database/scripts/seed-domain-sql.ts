@@ -22,8 +22,11 @@ const prisma = new PrismaClient({ adapter });
 
 async function main() {
   console.log("🌱 Seeding Domain topics for SQL…");
-  const { topics, withExample } = await seedDomainSubject(prisma, "SQL");
-  console.log(`✅ SQL domain seed complete: ${topics} topics (${withExample} with a code example).`);
+  const { topics, withExample, questions } = await seedDomainSubject(prisma, "SQL");
+  console.log(
+    `✅ SQL domain seed complete: ${topics} topics (${withExample} with a code example), ` +
+      `${questions} practice questions.`
+  );
 }
 
 main()

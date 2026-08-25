@@ -182,8 +182,8 @@ async function main() {
     await withRetry(
       () => prisma.$executeRaw`
         INSERT INTO activity_days
-          (id, "userId", day, count, "dsaCount", "sqlCount", "mcqCount", "courseCount", "createdAt", "updatedAt")
-        SELECT gen_random_uuid()::text, t.u, t.d, t.dsa + t.mcq, t.dsa, 0, t.mcq, 0, now(), now()
+          (id, "userId", day, count, "dsaCount", "mcqCount", "courseCount", "createdAt", "updatedAt")
+        SELECT gen_random_uuid()::text, t.u, t.d, t.dsa + t.mcq, t.dsa, t.mcq, 0, now(), now()
         FROM unnest(
           ${part.map((r) => r.userId)}::text[],
           ${part.map((r) => r.day)}::date[],
@@ -194,7 +194,6 @@ async function main() {
           count         = EXCLUDED.count,
           "dsaCount"    = EXCLUDED."dsaCount",
           "mcqCount"    = EXCLUDED."mcqCount",
-          "sqlCount"    = 0,
           "courseCount" = 0,
           "updatedAt"   = now()`
     );

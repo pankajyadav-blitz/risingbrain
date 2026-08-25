@@ -17,7 +17,10 @@ import type { SheetActivity } from "../_data";
 
 const WEEKDAYS = ["S", "M", "T", "W", "T", "F", "S"];
 
-// Icon fill color per activity level (rb-green-500 = #35a45c).
+// Tile color per activity level (rb-green-500 = #35a45c). A solved day is drawn as
+// the logo tile filling the whole cell, so this is the tile's own fill and it is the
+// only thing carrying the day's intensity — hence the ramp runs on alpha, letting the
+// cell beneath show through on a quiet day and going fully saturated on a heavy one.
 const BRAIN_COLOR = [
   "",
   "rgba(53,164,92,0.50)",
@@ -26,71 +29,47 @@ const BRAIN_COLOR = [
   "#35a45c",
 ] as const;
 
-// Depth cast under the icon, deepening with the day's activity level so a
-// heavier day reads as physically heavier. Two stacked drop-shadows per level:
-// a tight contact shadow for definition plus a wider ambient one for depth.
-//
-// The color comes from the `--brain-shadow` theme token, NOT a hardcoded black:
-// on light surfaces it resolves to a deep green-black, and on dark surfaces to
-// green — because a dark shadow on a dark background is invisible, so there the
-// same ramp reads as an intensifying glow. Same progression either way.
-const BRAIN_SHADOW = [
-  "",
-  "drop-shadow(0 0.5px 0.5px rgb(var(--brain-shadow) / 0.25))",
-  "drop-shadow(0 1px 1px rgb(var(--brain-shadow) / 0.40)) drop-shadow(0 1px 2px rgb(var(--brain-shadow) / 0.20))",
-  "drop-shadow(0 1px 1.5px rgb(var(--brain-shadow) / 0.55)) drop-shadow(0 2px 4px rgb(var(--brain-shadow) / 0.30))",
-  "drop-shadow(0 1.5px 2px rgb(var(--brain-shadow) / 0.70)) drop-shadow(0 3px 6px rgb(var(--brain-shadow) / 0.45))",
-] as const;
-
-// Glow filling the whole day cell, spreading inward from its edges and
-// deepening with the level — so a busy day reads as a "hotter" square, not just
-// a darker icon. Same `--brain-shadow` token as the icon, so it stays a shadow
-// on light surfaces and a glow on dark ones.
-const CELL_GLOW = [
-  "",
-  "inset 0 0 6px 0 rgb(var(--brain-shadow) / 0.10)",
-  "inset 0 0 10px 0 rgb(var(--brain-shadow) / 0.17)",
-  "inset 0 0 14px 1px rgb(var(--brain-shadow) / 0.26)",
-  "inset 0 0 18px 2px rgb(var(--brain-shadow) / 0.36)",
-] as const;
-
 /**
- * The RisingBrain mark (lucide `Brain`, same icon the nav bar uses) with the
- * central fissure turned into an upward arrow — a "growth" brain for days the
- * user solved something.
+ * The RisingBrain logo — the whole mark, tile included — for a day the user solved
+ * something. It fills the day cell edge to edge, so the block IS the logo.
  *
- * Every lobe path is lucide's `brain` verbatim, so this stays visually identical
- * to the nav-bar logo. The only change: lucide's rounded middle chevron
- * (`M15 13a4.17 4.17 0 0 1-3-4 4.17 4.17 0 0 1-3 4`) is swapped for a straight
- * arrowhead, which turns the existing `M12 18V5` stem into the arrow's shaft.
- * The arrow is drawn — not filled — so it reads as hollow, and its tip lands at
- * the brain's visual center.
+ * This is `src/app/icon.svg` verbatim: the same 32x32 tile, the same `rx="7"` corner,
+ * the same nine paths translated by (4,4), the same 2.4 stroke with round caps and
+ * joins. Nothing is redrawn or simplified, so the calendar shows the actual logo
+ * rather than a lookalike. (Note `<Brain />` from lucide-react is a DIFFERENT, newer
+ * drawing with open lobes — it is not the brand mark, and it is what used to be here.)
  *
- * Stroked with `currentColor`, so callers tint it via `style={{ color }}` exactly
- * like the `<Brain />` it replaces.
+ * The one substitution: the tile's `fill="#35a45c"` becomes `currentColor`, so callers
+ * tint it via `style={{ color }}` and the BRAIN_COLOR ramp carries the solve count. The
+ * brain itself stays black, exactly as the logo draws it on every other surface.
+ *
+ * Because the cell is square and this viewBox is square, `rx="7"` resolves to 21.875%
+ * of the cell — which is why the cell is given `rounded-[21.875%]` rather than the
+ * `rounded-lg` the other day states use. Matching them keeps the corners flush, with
+ * no cell background showing past the tile.
  */
-function BrainGrowthIcon(props: SVGProps<SVGSVGElement>) {
+function BrainMarkIcon(props: SVGProps<SVGSVGElement>) {
   return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={2}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden
-      {...props}
-    >
-      {/* lucide `brain` lobes — unmodified */}
-      <path d="M17.598 6.5A3 3 0 1 0 12 5a3 3 0 1 0-5.598 1.5" />
-      <path d="M17.997 5.125a4 4 0 0 1 2.526 5.77" />
-      <path d="M18 18a4 4 0 0 0 2-7.464" />
-      <path d="M19.967 17.483A4 4 0 1 1 12 18a4 4 0 1 1-7.967-.517" />
-      <path d="M6 18a4 4 0 0 1-2-7.464" />
-      <path d="M6.003 5.125a4 4 0 0 0-2.526 5.77" />
-      {/* arrow: lucide's central stem as the shaft + a straight head at center */}
-      <path d="M12 18V9.5" />
-      <path d="M8.4 13.1 12 9.5l3.6 3.6" />
+    <svg viewBox="0 0 32 32" aria-hidden {...props}>
+      <rect width="32" height="32" rx="7" fill="currentColor" />
+      <g
+        transform="translate(4 4)"
+        fill="none"
+        stroke="#000000"
+        strokeWidth={2.4}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z" />
+        <path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z" />
+        <path d="M15 13a4.5 4.5 0 0 1-3-4 4.5 4.5 0 0 1-3 4" />
+        <path d="M17.599 6.5a3 3 0 0 0 .399-1.375" />
+        <path d="M6.003 5.125A3 3 0 0 0 6.401 6.5" />
+        <path d="M3.477 10.896a4 4 0 0 1 .585-.396" />
+        <path d="M19.938 10.5a4 4 0 0 1 .585.396" />
+        <path d="M6 18a4 4 0 0 1-1.967-.516" />
+        <path d="M19.967 17.484A4 4 0 0 1 18 18" />
+      </g>
     </svg>
   );
 }
@@ -236,58 +215,54 @@ export function SheetCalendar({
         {Array.from({ length: month.leading }).map((_, i) => (
           <div key={`pad-${i}`} aria-hidden />
         ))}
-        {cells.map((c) => (
-          <div
-            key={c.key}
-            title={
-              c.future
-                ? prettyDate(c.key)
-                : c.count === 0
-                  ? `No solves on ${prettyDate(c.key)}`
-                  : `${c.count} solved on ${prettyDate(c.key)}`
-            }
-            className={`relative aspect-square rounded-lg p-[2px] transition-all ${
-              c.future
-                ? "opacity-25"
-                : `bg-surface-2/50 ring-1 ring-inset ring-border/30 hover:scale-[1.08] ${
-                    c.isToday ? "ring-2 ring-rb-green-300" : ""
-                  }`
-            }`}
-          >
-            {/* Cell glow: an inset shadow filling the whole day box, deepening
-                with the level. Lives on its own overlay rather than the cell's
-                `style` because Tailwind's `ring-*` is itself a box-shadow — an
-                inline boxShadow on the cell would replace the ring outright. */}
-            {!c.future && c.level > 0 ? (
-              <div
-                aria-hidden
-                className="pointer-events-none absolute inset-0 rounded-lg"
-                style={{ boxShadow: CELL_GLOW[c.level] }}
-              />
-            ) : null}
-            {c.future ? (
-              /* future days: show the date number so the calendar remains navigable */
-              <div className="flex h-full items-center justify-center">
-                <span className="text-[10px] font-semibold tabular-nums text-muted">{c.day}</span>
-              </div>
-            ) : c.count > 0 ? (
-              <div className="flex h-full w-full items-center justify-center">
-                <BrainGrowthIcon
-                  className="h-[76%] w-[76%]"
-                  style={{ color: BRAIN_COLOR[c.level], filter: BRAIN_SHADOW[c.level] }}
-                />
-              </div>
-            ) : c.key >= activity.joinedKey ? (
-              /* past day with no solves, but account existed — show regret face
-                 (sized to match the Brain icon so it doesn't overpower the cell) */
-              <div className="flex h-full w-full items-center justify-center">
-                <div className="h-[70%] w-[70%]">
-                  <RegretFace />
+        {cells.map((c) => {
+          // A solved day is the logo tile, edge to edge — so it drops the inset
+          // padding and takes the mark's own corner radius instead of `rounded-lg`.
+          // Every other state stays an inset chip inside a rounded cell, which is
+          // what makes an active day read as solid and a missed one as empty.
+          const solved = !c.future && c.count > 0;
+          return (
+            <div
+              key={c.key}
+              title={
+                c.future
+                  ? prettyDate(c.key)
+                  : c.count === 0
+                    ? `No solves on ${prettyDate(c.key)}`
+                    : `${c.count} solved on ${prettyDate(c.key)}`
+              }
+              className={`relative aspect-square transition-all ${
+                solved ? "rounded-[21.875%]" : "rounded-lg p-[2px]"
+              } ${
+                c.future
+                  ? "opacity-25"
+                  : `bg-surface-2/50 ring-1 ring-inset ring-border/30 hover:scale-[1.08] ${
+                      c.isToday ? "ring-2 ring-rb-green-300" : ""
+                    }`
+              }`}
+            >
+              {c.future ? (
+                /* future days: show the date number so the calendar remains navigable */
+                <div className="flex h-full items-center justify-center">
+                  <span className="text-[10px] font-semibold tabular-nums text-muted">{c.day}</span>
                 </div>
-              </div>
-            ) : null /* day before account was created — show nothing */}
-          </div>
-        ))}
+              ) : solved ? (
+                <BrainMarkIcon
+                  className="h-full w-full"
+                  style={{ color: BRAIN_COLOR[c.level] }}
+                />
+              ) : c.key >= activity.joinedKey ? (
+                /* past day with no solves, but account existed — show regret face,
+                   inset so it reads as an empty day next to the solid logo tiles */
+                <div className="flex h-full w-full items-center justify-center">
+                  <div className="h-[70%] w-[70%]">
+                    <RegretFace />
+                  </div>
+                </div>
+              ) : null /* day before account was created — show nothing */}
+            </div>
+          );
+        })}
       </div>
 
       {/* Footer: summary + brain-colour intensity legend */}
@@ -301,9 +276,11 @@ export function SheetCalendar({
           <span>Less</span>
           <div className="flex items-center gap-1">
             {([1, 2, 3, 4] as const).map((level) => (
+              /* Squares, matching the logo tile's corner — the legend shows the same
+                 shape the grid does. */
               <span
                 key={level}
-                className="h-3 w-3 rounded-full ring-1 ring-inset ring-border/30"
+                className="h-3 w-3 rounded-[21.875%] ring-1 ring-inset ring-border/30"
                 style={{ background: BRAIN_COLOR[level] }}
               />
             ))}

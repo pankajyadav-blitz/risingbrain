@@ -6,9 +6,16 @@
  * Data sources:
  *   - seed/domain-*.json        — topics + markdown notes per subject
  *   - seed/domain-examples.json — authored, copy-ready code per topic slug
+ *   - seed/domain-*-quiz.json   — the practice MCQs, keyed by topic slug
+ *
+ * The code examples used to live in their own `DomainTopic.example` column behind
+ * a second tab; that column is gone, so an authored example is APPENDED to its
+ * topic's notes as a final "## Example" section — the content survives, the topic
+ * just reads top to bottom now.
  *
  * Clears `domain_topics` and reloads it; safe to run repeatedly. `seedDomainSubject()`
- * narrows that to a single subject.
+ * narrows that to a single subject. Questions cascade with their topic, so
+ * deleting the topics clears the old questions too.
  */
 import type { PrismaClient, DomainSubject } from "../generated/prisma/client";
 import oopsData from "../seed/domain-oops.json";
@@ -17,10 +24,15 @@ import osData from "../seed/domain-os.json";
 import cnData from "../seed/domain-cn.json";
 import sqlData from "../seed/domain-sql.json";
 import exampleData from "../seed/domain-examples.json";
+import dbmsQuiz from "../seed/domain-dbms-quiz.json";
 
 // One entry per subject file. Add a subject by dropping its seed JSON in and
 // listing it here — the loader, index and UI are all data-driven from this.
 const SUBJECT_FILES = [oopsData, dbmsData, osData, cnData, sqlData];
+
+// Practice questions, one file per subject that has them. A subject without a
+// quiz file simply shows its notes with no Practice tab.
+const QUIZ_FILES = [dbmsQuiz];
 
 type DomainTopicJson = {
   subject: string;
@@ -40,6 +52,18 @@ type DomainTopicJson = {
   example?: string | null;
   /** Figure count, informational — the figure paths live inline in `notes`. */
   figures?: number;
+};
+
+type DomainQuestionJson = {
+  subject: string;
+  /** `DomainTopic.slug` this question belongs to. */
+  topicSlug: string;
+  order: number;
+  prompt: string;
+  options: Array<{ key: string; label: string }>;
+  answerKey: string;
+  explanation?: string | null;
+  difficulty?: string | null;
 };
 
 const examples = exampleData as Record<string, string>;
@@ -67,8 +91,14 @@ async function withRetry<T>(fn: () => Promise<T>, label: string, tries = 6): Pro
   throw new Error(`${label} failed after ${tries} attempts: ${String(lastErr)}`);
 }
 
-/** Map one seed-JSON topic onto a `domain_topics` row. */
+/**
+ * Map one seed-JSON topic onto a `domain_topics` row, folding its code example
+ * into the notes (see the file header — there is no `example` column any more).
+ */
 function toRow(t: DomainTopicJson) {
+  // An inline example wins; otherwise fall back to the authored examples file.
+  const example = t.example ?? exampleFor(t.slug);
+  const notes = example ? `${t.notes.trimEnd()}\n\n## Example\n\n${example.trim()}\n` : t.notes;
   return {
     subject: t.subject as DomainSubject,
     slug: t.slug,
@@ -76,11 +106,14 @@ function toRow(t: DomainTopicJson) {
     groupLabel: t.groupLabel,
     groupOrder: t.groupOrder ?? t.phase ?? 0,
     summary: t.summary ?? null,
-    notes: t.notes,
-    // An inline example wins; otherwise fall back to the authored examples file.
-    example: t.example ?? exampleFor(t.slug),
+    notes,
     order: t.order,
   };
+}
+
+/** Does this topic ship a code example (inline or authored)? Reporting only. */
+function hasExample(t: DomainTopicJson): boolean {
+  return Boolean(t.example ?? exampleFor(t.slug));
 }
 
 /** Insert in small batches so a single dropped connection retries cheaply. */
@@ -91,9 +124,57 @@ async function insertRows(prisma: PrismaClient, data: ReturnType<typeof toRow>[]
   }
 }
 
+/**
+ * Load the practice questions for the topics just inserted. Resolves each
+ * question's `topicSlug` against the rows in the DB, so a question whose topic
+ * was renamed or dropped is reported rather than silently lost.
+ */
+async function insertQuestions(
+  prisma: PrismaClient,
+  subjects: DomainSubject[]
+): Promise<number> {
+  const questions = (QUIZ_FILES.flat() as DomainQuestionJson[]).filter((q) =>
+    subjects.includes(q.subject as DomainSubject)
+  );
+  if (questions.length === 0) return 0;
+
+  const topics = await withRetry(
+    () => prisma.domainTopic.findMany({ where: { subject: { in: subjects } }, select: { id: true, slug: true } }),
+    "load topic ids"
+  );
+  const idBySlug = new Map(topics.map((t) => [t.slug, t.id]));
+
+  const rows = [];
+  for (const q of questions) {
+    const topicId = idBySlug.get(q.topicSlug);
+    if (!topicId) {
+      console.warn(`⚠️  question for unknown topic slug "${q.topicSlug}" — skipped`);
+      continue;
+    }
+    rows.push({
+      topicId,
+      prompt: q.prompt,
+      options: q.options,
+      answerKey: q.answerKey,
+      explanation: q.explanation ?? null,
+      difficulty: (q.difficulty ?? null) as never,
+      order: q.order,
+    });
+  }
+
+  for (let i = 0; i < rows.length; i += 20) {
+    const batch = rows.slice(i, i + 20);
+    await withRetry(
+      () => prisma.domainQuestion.createMany({ data: batch }),
+      `insert questions @${i}`
+    );
+  }
+  return rows.length;
+}
+
 export async function seedDomain(
   prisma: PrismaClient
-): Promise<{ topics: number; withExample: number }> {
+): Promise<{ topics: number; withExample: number; questions: number }> {
   const topics = SUBJECT_FILES.flat() as DomainTopicJson[];
 
   // Warm the connection (cold-start safe) before mutating.
@@ -102,7 +183,9 @@ export async function seedDomain(
 
   const data = topics.map(toRow);
   await insertRows(prisma, data);
-  return { topics: topics.length, withExample: data.filter((d) => d.example).length };
+  const subjects = [...new Set(data.map((d) => d.subject))];
+  const questions = await insertQuestions(prisma, subjects);
+  return { topics: topics.length, withExample: topics.filter(hasExample).length, questions };
 }
 
 /**
@@ -113,11 +196,14 @@ export async function seedDomain(
 export async function seedDomainSubject(
   prisma: PrismaClient,
   subject: DomainSubject
-): Promise<{ topics: number; withExample: number }> {
+): Promise<{ topics: number; withExample: number; questions: number }> {
   const topics = (SUBJECT_FILES.flat() as DomainTopicJson[]).filter((t) => t.subject === subject);
   if (topics.length === 0) throw new Error(`No seed topics found for subject ${subject}`);
 
   await withRetry(() => prisma.domainTopic.count(), "warm-up");
+  // Questions cascade with their topic, so this clears the subject's old
+  // practice sets as well. A learner's answers cascade too — the questions they
+  // referred to no longer exist after a content reseed.
   await withRetry(
     () => prisma.domainTopic.deleteMany({ where: { subject } }),
     `clear domain_topics (${subject})`
@@ -125,5 +211,6 @@ export async function seedDomainSubject(
 
   const data = topics.map(toRow);
   await insertRows(prisma, data);
-  return { topics: topics.length, withExample: data.filter((d) => d.example).length };
+  const questions = await insertQuestions(prisma, [subject]);
+  return { topics: topics.length, withExample: topics.filter(hasExample).length, questions };
 }

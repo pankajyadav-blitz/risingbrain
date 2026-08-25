@@ -140,7 +140,6 @@ function TopicEditor({
     groupOrder: node.groupOrder,
     summary: node.summary ?? "",
     notes: node.notes,
-    example: node.example ?? "",
     order: node.order,
     isPublished: node.isPublished,
   };
@@ -216,11 +215,8 @@ function TopicEditor({
         </Section>
 
         <Section title="Content" description="Markdown — rendered on the public topic page.">
-          <Field label="Notes" required hint="theory, diagrams, code">
+          <Field label="Notes" required hint="theory, diagrams, code examples">
             <TextArea value={form.notes} onChange={(e) => set("notes", e.target.value)} className="min-h-[320px]" />
-          </Field>
-          <Field label="Example" hint="clean copy-ready code">
-            <TextArea value={form.example} onChange={(e) => set("example", e.target.value)} className="min-h-[180px]" />
           </Field>
         </Section>
 

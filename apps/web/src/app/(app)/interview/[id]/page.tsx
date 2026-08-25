@@ -4,7 +4,6 @@ import { notFound } from "next/navigation";
 import { ArrowLeft, Layers, MessageCircle } from "lucide-react";
 import { getCurrentUser } from "@/lib/auth/current-user";
 import { prisma } from "@/lib/db";
-import { sanitizeRichText } from "@/lib/sanitize";
 import { JsonLd } from "@/components/structured-data";
 import { SITE_NAME, absoluteUrl } from "@/lib/seo";
 import { Container } from "@/components/marketing/primitives";
@@ -17,6 +16,7 @@ import {
 } from "../_lib/format";
 import { LikeButton } from "../_components/like-button";
 import { Comments } from "../_components/comments";
+import { ExperienceBody } from "../_components/experience-body";
 import type { CommentItem } from "../_lib/types";
 
 async function getExperience(id: string) {
@@ -197,10 +197,7 @@ export default async function InterviewDetailPage({
           </header>
 
           {/* Body */}
-          <div
-            className="prose-doc mt-8 space-y-3 leading-relaxed text-foreground/90 [&_a]:text-accent [&_a]:underline [&_blockquote]:border-l-2 [&_blockquote]:border-rb-green-500/40 [&_blockquote]:pl-3 [&_blockquote]:italic [&_blockquote]:text-muted [&_h3]:mt-6 [&_h3]:text-lg [&_h3]:font-semibold [&_h3]:text-foreground [&_ol]:list-decimal [&_ol]:space-y-1 [&_ol]:pl-5 [&_p]:leading-relaxed [&_pre]:overflow-x-auto [&_pre]:rounded-lg [&_pre]:bg-surface-2 [&_pre]:p-3 [&_pre]:font-mono [&_pre]:text-sm [&_ul]:list-disc [&_ul]:space-y-1 [&_ul]:pl-5"
-            dangerouslySetInnerHTML={{ __html: bodyHtml(exp.body) }}
-          />
+          <ExperienceBody body={exp.body} />
 
           {/* Like bar */}
           <div className="mt-8 flex items-center gap-3 border-t border-border pt-6">
@@ -227,23 +224,4 @@ export default async function InterviewDetailPage({
       </Container>
     </main>
   );
-}
-
-/**
- * Render the stored body. Composer bodies are HTML; legacy/plain-text bodies
- * carry no tags, so wrap them in a paragraph with line breaks preserved.
- */
-function bodyHtml(body: string): string {
-  const looksHtml = /<[a-z][\s\S]*>/i.test(body);
-  // Rich-text branch: sanitize before it reaches dangerouslySetInnerHTML so a
-  // malicious author's HTML (onerror handlers, javascript: links, <script>)
-  // can't run in a viewer's session — this also protects any rows stored before
-  // write-time sanitization existed.
-  if (looksHtml) return sanitizeRichText(body);
-  const escaped = body
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/\n/g, "<br/>");
-  return `<p>${escaped}</p>`;
 }

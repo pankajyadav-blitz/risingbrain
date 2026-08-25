@@ -1,9 +1,10 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { Check, Loader2 } from "lucide-react";
 import { DifficultyBadge } from "./difficulty-badge";
 import { NoteModal } from "./note-modal";
+import { useCelebrate } from "./celebration";
 import { useReportSolved, useSheetBookmarkReport, useSheetSignedIn } from "./sheet-progress";
 import { redirectToLogin } from "@/lib/auth/redirect";
 import { persistJSON } from "@/lib/persist";
@@ -191,6 +192,9 @@ export function ProblemRow({
   const reportSolved = useReportSolved();
   const reportBookmark = useSheetBookmarkReport();
   const signedIn = useSheetSignedIn();
+  const celebrate = useCelebrate();
+  // Measured on solve so the confetti can radiate from the toggle itself.
+  const toggleRef = useRef<HTMLButtonElement>(null);
 
   async function toggleBookmark() {
     if (!signedIn) { redirectToLogin(); return; }
@@ -223,7 +227,15 @@ export function ProblemRow({
     // Optimistic: flip the single source of truth so the checkmark AND every
     // derived count (pattern/topic/sheet/difficulty/streak) move as one.
     reportSolved(problem.id, nextSolved);
-    if (nextSolved) setPop(true); // springy pop only when completing
+    if (nextSolved) {
+      setPop(true); // springy pop only when completing
+      // Fire the flecks from the middle of the toggle. Measured here rather than in
+      // an effect so it uses the button's position at the moment of the click, before
+      // the row's own state change can reflow anything under it. If the toggle has
+      // somehow unmounted, skip the burst rather than firing it from the corner.
+      const box = toggleRef.current?.getBoundingClientRect();
+      if (box) celebrate("problem", { x: box.left + box.width / 2, y: box.top + box.height / 2 });
+    }
     setToggling(true);
 
     // One resilient request (retries + keepalive) — the write survives a slow
@@ -251,6 +263,7 @@ export function ProblemRow({
       <div className="flex items-center gap-3 px-3 py-4 sm:px-4 sm:py-5">
         {/* Status toggle — both directions */}
         <button
+          ref={toggleRef}
           type="button"
           onClick={toggleStatus}
           aria-pressed={solved}

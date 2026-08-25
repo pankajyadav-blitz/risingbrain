@@ -85,10 +85,8 @@ export function getNavForRole(role: AppRole | null): NavItem[] {
     { label: "Interview", href: "/interview" },
   ];
 
-  // Contests are a subscriber perk — only surface the tab when allowed.
-  if (hasMinRole(role, "SUBSCRIBER")) {
-    nav.push({ label: "Contests", href: "/contest" });
-  }
+  // Contests aren't built yet — no /contest route exists, so the tab stays out
+  // of the rail. Re-add it here (with the ROUTE_ACCESS rule above) when it ships.
 
   // Admin gets the separate management surface.
   if (role === "ADMIN") {

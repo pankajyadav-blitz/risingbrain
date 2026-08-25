@@ -1,47 +1,50 @@
 /**
  * Per-figure display sizing for the notes content (Domain + Screening).
  *
- * The figures are screenshots extracted from source PDFs at whatever scale the PDF
- * happened to embed them, so their intrinsic widths span 212px → 2048px. That makes a
- * single hardcoded size wrong in both directions: it leaves a small "0 rows deleted"
- * result box looking lost, and lets a 755×2048 portrait diagram run a page tall.
+ * `figure-dimensions.json` carries each figure's DISPLAY size, not its intrinsic pixel
+ * size. The figures come from several tools at several export scales — Mermaid renders,
+ * Carbon code screenshots, designed slides, PDF extractions — so intrinsic width says
+ * nothing about how big a picture should look: a four-box diagram exported at 1827px
+ * wide and a dense timing chart drawn at 1408px are the same box on screen but one has
+ * 52px lettering and the other 6px. `scripts/gen-figure-dimensions.ts` measures the text
+ * inside each figure and scales it so every figure's lettering lands at the same size;
+ * see that file for how the measurement works.
  *
- * So nothing here is a fixed output dimension — the three bounds below are applied to
- * each figure's OWN width and height, and whichever binds first wins:
+ * This module does NOT pick a final width. It resolves each figure's own numbers —
+ * display size and aspect ratio — and hands them to CSS as custom properties. The actual
+ * width is then computed by `.notes-prose img[data-measured]` in globals.css against the
+ * LIVE column width and viewport height, so it re-resolves on resize and rotate with no
+ * JS and no re-render.
  *
- *   1. small figures are nudged up to MIN_WIDTH so they're legible next to a full table,
- *   2. but never enlarged past MAX_UPSCALE, because these are bitmaps and blur,
- *   3. and never so wide that the resulting height exceeds MAX_HEIGHT.
- *
- * The final width is emitted as `min(100%, …px)`, so the content column is still the
- * hard ceiling and everything stays responsive on a narrow viewport.
+ * That split is the point: a width baked in here is a px constant that was correct at
+ * one viewport. Emitting a fixed `min(100%, 360px)` is what made a small result chip
+ * render at 32% of a desktop column but full-bleed (and upscaled, so blurry) on a phone,
+ * and let a tall diagram render taller than the screen it was on. Both bounds belong
+ * where the viewport is known.
  */
 import figureDimensions from "./figure-dimensions.json";
-
-/** Smallest comfortable rendered width; below this a figure reads as an afterthought. */
-const MIN_WIDTH = 360;
-/** Hard cap on enlarging a small capture — past this the upscaling is visible. */
-const MAX_UPSCALE = 1.8;
-/** Tallest a figure may render, so portrait diagrams can't dominate the page. */
-const MAX_HEIGHT = 720;
 
 // Typed as plain arrays, not a tuple: JSON carries no length guarantee, so the
 // pair is validated in `figureSize` instead of asserted here.
 const DIMENSIONS: Record<string, number[]> = figureDimensions;
 
 export interface FigureSize {
-  /** Intrinsic width, for the `width` attribute (aspect-ratio box → no layout shift). */
+  /**
+   * Display width in CSS px — the width at which this figure's own text reads at the
+   * same size as every other figure's. Also the `width` attribute, so the browser gets
+   * an aspect box before the bitmap arrives and the page doesn't shift.
+   */
   width: number;
-  /** Intrinsic height, for the `height` attribute. */
+  /** Display height, at the same scale as `width`. */
   height: number;
-  /** CSS width to render at, already clamped to the column. */
-  cssWidth: string;
+  /** width / height, so CSS can convert a height ceiling into a width ceiling. */
+  aspectRatio: number;
 }
 
 /**
- * Look up a figure by its public path (`/study-notes/…`) and work out how wide it
- * should render. Returns null for an unknown path — the caller then falls back to the
- * plain `.notes-prose img` CSS rules, so an unmeasured figure still renders sensibly.
+ * Look up a figure by its public path (`/study-notes/…`) and resolve its sizing inputs.
+ * Returns null for an unknown path — the caller then omits the custom properties and
+ * `.notes-prose img` (without `[data-measured]`) renders it at intrinsic size instead.
  */
 export function figureSize(src: string): FigureSize | null {
   // Tolerate a query string or hash on the path; the manifest is keyed on the bare URL.
@@ -52,13 +55,7 @@ export function figureSize(src: string): FigureSize | null {
   const [width, height] = dim as [number, number];
   if (!(width > 0) || !(height > 0)) return null;
 
-  const display = Math.round(
-    Math.min(
-      Math.max(width, MIN_WIDTH), // 1. lift small figures to a readable size
-      width * MAX_UPSCALE, // 2. …without visibly upscaling them
-      (MAX_HEIGHT * width) / height // 3. …and keep the rendered height bounded
-    )
-  );
-
-  return { width, height, cssWidth: `min(100%, ${display}px)` };
+  // 4dp is well past what a sub-pixel width can resolve, and keeps the emitted
+  // custom property short.
+  return { width, height, aspectRatio: Number((width / height).toFixed(4)) };
 }

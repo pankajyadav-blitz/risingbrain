@@ -3,6 +3,7 @@ import { prisma, InterviewVerdict, Difficulty } from "@/lib/db";
 import { getCurrentUser } from "@/lib/auth/current-user";
 import { checkWriteLimit } from "@/lib/auth/rate-limit";
 import { sanitizeRichText } from "@/lib/sanitize";
+import { htmlToMarkdown, looksLikeHtml } from "@/lib/html-to-markdown";
 
 const VERDICTS = new Set<string>(Object.values(InterviewVerdict));
 const DIFFICULTIES = new Set<string>(Object.values(Difficulty));
@@ -60,6 +61,17 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Rounds must be a whole number ≥ 1." }, { status: 400 });
   }
 
+  // `InterviewExperience.body` is markdown, but the composer is a
+  // contentEditable surface that submits HTML. Sanitize it while it is still
+  // HTML — that is where scripts, event handlers and `javascript:` URLs live —
+  // then convert, so a user's post is stored in the same format as the seeded
+  // ones. A body that already is markdown is stored untouched: the render path
+  // never enables raw HTML, and turndown would escape markdown's own syntax
+  // (`**bold**` → `\*\*bold\*\*`).
+  const markdownBody = looksLikeHtml(body)
+    ? htmlToMarkdown(sanitizeRichText(body))
+    : body;
+
   // Derive an excerpt from the body when the author left it blank.
   const excerpt =
     excerptRaw.slice(0, 280) ||
@@ -76,8 +88,7 @@ export async function POST(req: Request) {
       roundsCount,
       title: title.slice(0, 180),
       excerpt,
-      // Store sanitized HTML (defense in depth; the render path sanitizes too).
-      body: sanitizeRichText(body),
+      body: markdownBody,
       tags,
       status: "PUBLISHED",
     },

@@ -10,8 +10,9 @@ import type { AptOption } from "./_components/question-card";
  *  - `getAptitudeIndex` — light: category/topic names + question counts only.
  *    Feeds the `@nav` slot and the mobile picker.
  *  - `getAptitudeTopic` — heavy: ONE topic's questions, fetched per-route when a
- *    topic is navigated to (lazy). Still WITHOUT `answerKey`/`explanation` — the
- *    correct answer only ever lives in `/api/screening/check`.
+ *    topic is navigated to (lazy). Still WITHOUT `answerKey`/`explanation` —
+ *    grading happens server-side in `/api/screening/submit`, so a key only ever
+ *    reaches the client in the review payload of a test already submitted.
  *
  * Both are SHARED, seeded, cookie-free content (identical for everyone, changes
  * only on a re-seed), so — like the DSA/SQL catalogs — they use `"use cache"`

@@ -105,9 +105,10 @@ enum PublishStatus {
   ARCHIVED
 }
 
+// Domain (SQL/DBMS/OS/CN/OOPS) topics are read-only notes with no completion
+// state, so they never produce a submission — no member for them here.
 enum SubmissionType {
   DSA_PROBLEM
-  SQL_PROBLEM
   MCQ
   COURSE_LESSON
 }
@@ -133,7 +134,7 @@ model User {
 
   // Set by an admin to disable an account: blocks login / OAuth / refresh and the
   // user's live sessions are revoked. Null = active. See admin users management.
-  disabledAt    DateTime?
+  disabledAt DateTime?
 
   // Denormalized streak/heatmap summary (IST day boundaries; see streak logic).
   currentStreak Int       @default(0)
@@ -149,6 +150,8 @@ model User {
   progress          UserProblemProgress[]
   quizProgress      UserQuizProgress[]
   quizScores        UserQuizTopicScore[]
+  domainProgress    UserDomainQuizProgress[]
+  domainScores      UserDomainTopicScore[]
   notes             UserProblemNote[]
   submissions       Submission[]
   activityDays      ActivityDay[]
@@ -330,30 +333,114 @@ enum DomainSubject {
   OOPS
 }
 
-// One study topic inside a subject. Content is two markdown fields — `notes`
-// (theory + inline diagrams/code screenshots) and optional `example` (clean,
-// copy-ready code) — mirroring the Screening "Notes / Practice" split. Topics are
-// bucketed into the left-nav sections by `groupLabel` (e.g. a phase / unit).
-// Shared, seeded, cookie-free content: cached cross-request and tagged for
-// revalidation (CACHE_TAGS.domainCatalog), never merged with per-user state.
+// One study topic inside a subject. The content is a single markdown field,
+// `notes` — theory, inline diagrams and copy-ready code examples all in the one
+// body (there used to be a separate `example` column behind a second tab; the
+// examples were folded into the notes so a topic reads top to bottom). Topics
+// are bucketed into the left-nav sections by `groupLabel` (e.g. a phase / unit /
+// module). Shared, seeded, cookie-free content: cached cross-request and tagged
+// for revalidation (CACHE_TAGS.domainCatalog), never merged with per-user state.
+//
+// `questions` is the topic's own MCQ set, shown in the "Practice" tab beside the
+// notes — see DomainQuestion.
 model DomainTopic {
   id          String        @id @default(cuid())
   subject     DomainSubject
   slug        String
   title       String
-  groupLabel  String // left-nav section header, e.g. "Phase 3 — The Four Pillars"
+  groupLabel  String // left-nav section header, e.g. "Module 6 — Transactions & Concurrency"
   groupOrder  Int           @default(0)
   summary     String? // one-line subtitle
-  notes       String // markdown: theory + inline diagrams/code screenshots
-  example     String? // markdown: clean, copy-ready code example
+  notes       String // markdown: theory + inline diagrams + code examples
   order       Int           @default(0)
   isPublished Boolean       @default(true)
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
 
+  questions DomainQuestion[]
+  scores    UserDomainTopicScore[]
+
   @@unique([subject, slug])
   @@index([subject])
   @@map("domain_topics")
+}
+
+// ============================================================================
+// DOMAIN PRACTICE  — the Domain section's own MCQ instance
+// ============================================================================
+//
+// Deliberately SEPARATE from the Screening quiz models (QuizQuestion /
+// UserQuizProgress / UserQuizTopicScore) rather than a nullable branch off
+// them. The two are different products: Screening drills aptitude topics that
+// exist only to be practised, while Domain questions hang off a study topic
+// whose main content is its notes. Sharing one table would mean every screening
+// query filtering on "which kind is this" forever, and a learner's Screening
+// score is not their Domain score.
+//
+// The difference in shape is real too: screening questions carry a `hint` and
+// forfeit the mark when it is opened. Domain questions have no hints — the
+// source material puts its explanation after the answer instead — so a mark is
+// simply a correct answer.
+
+model DomainQuestion {
+  id          String      @id @default(cuid())
+  topicId     String
+  prompt      String // markdown
+  // options: Json array of { "key": "a", "label": "..." }
+  options     Json
+  answerKey   String // matches one option key, e.g. "a"
+  explanation String? // revealed only in post-submit review
+  difficulty  Difficulty?
+  order       Int         @default(0)
+
+  topic    DomainTopic              @relation(fields: [topicId], references: [id], onDelete: Cascade)
+  progress UserDomainQuizProgress[]
+
+  @@index([topicId])
+  @@map("domain_questions")
+}
+
+// Per-user, per-question outcome — written ONLY when a topic's practice set is
+// submitted (not per answer). One row per (user, question); re-attempting
+// replaces it. Mirrors UserQuizProgress including its non-destructive
+// re-attempt rule: a new attempt upserts the answered rows and flips any
+// previously-answered-but-now-skipped rows inactive instead of deleting them.
+model UserDomainQuizProgress {
+  id          String   @id @default(cuid())
+  userId      String
+  questionId  String
+  selectedKey String
+  isCorrect   Boolean
+  isActive    Boolean  @default(true)
+  answeredAt  DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user     User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  question DomainQuestion @relation(fields: [questionId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, questionId])
+  @@index([userId])
+  @@map("user_domain_quiz_progress")
+}
+
+// The stored "mark" for a topic's practice set — one row per (user, topic),
+// replaced on re-attempt. `score` = correct answers at last submit, `total` =
+// question count at that time.
+model UserDomainTopicScore {
+  id          String   @id @default(cuid())
+  userId      String
+  topicId     String
+  score       Int
+  total       Int
+  submittedAt DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user  User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  topic DomainTopic @relation(fields: [topicId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, topicId])
+  @@index([userId])
+  @@map("user_domain_topic_scores")
 }
 
 // ============================================================================
@@ -372,14 +459,14 @@ model QuizCategory {
 }
 
 model QuizTopic {
-  id         String         @id @default(cuid())
+  id         String               @id @default(cuid())
   categoryId String
   name       String
   slug       String
   theory     String? // optional topic theory / notes
   formula    String? // optional key formulae
-  order      Int            @default(0)
-  category   QuizCategory   @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  order      Int                  @default(0)
+  category   QuizCategory         @relation(fields: [categoryId], references: [id], onDelete: Cascade)
   questions  QuizQuestion[]
   scores     UserQuizTopicScore[]
 
@@ -389,7 +476,7 @@ model QuizTopic {
 }
 
 model QuizQuestion {
-  id          String      @id @default(cuid())
+  id          String             @id @default(cuid())
   topicId     String
   prompt      String // markdown; holds syllogism statements/conclusions too
   // options: Json array of { "key": "a", "label": "..." }
@@ -398,8 +485,8 @@ model QuizQuestion {
   explanation String? // revealed only in post-submit review
   hint        String? // method nudge, shippable to the client (never the answer)
   difficulty  Difficulty?
-  order       Int         @default(0)
-  topic       QuizTopic   @relation(fields: [topicId], references: [id], onDelete: Cascade)
+  order       Int                @default(0)
+  topic       QuizTopic          @relation(fields: [topicId], references: [id], onDelete: Cascade)
   progress    UserQuizProgress[]
 
   @@index([topicId])
@@ -694,19 +781,18 @@ model Submission {
 // (user, day); incremented atomically on each submission. The profile heatmap is
 // a single indexed range scan over this table.
 model ActivityDay {
-  id        String   @id @default(cuid())
-  userId    String
-  day       DateTime @db.Date // IST calendar day
-  count     Int      @default(0) // total contributions that day (sum of the columns below)
+  id          String   @id @default(cuid())
+  userId      String
+  day         DateTime @db.Date // IST calendar day
+  count       Int      @default(0) // total contributions that day (sum of the columns below)
   // Per-kind counts as explicit columns (not a Json blob) so each can be
   // incremented atomically via Prisma `{ increment }` — a Json field would
   // require read-modify-write and lose updates under concurrent same-day writes.
-  dsaCount    Int    @default(0)
-  sqlCount    Int    @default(0)
-  mcqCount    Int    @default(0)
-  courseCount Int    @default(0)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  dsaCount    Int      @default(0)
+  mcqCount    Int      @default(0)
+  courseCount Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 

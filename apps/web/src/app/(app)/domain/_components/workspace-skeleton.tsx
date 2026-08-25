@@ -20,7 +20,7 @@ export function TopicSkeleton() {
         <Skeleton className="mt-2.5 h-5 w-3/4" />
       </div>
 
-      {/* Notes | Example tab bar */}
+      {/* Notes | Practice tab bar */}
       <Skeleton className="mb-6 h-9 w-48 rounded-xl" />
 
       {/* Prose */}

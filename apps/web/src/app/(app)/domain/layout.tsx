@@ -1,13 +1,14 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import { Container } from "@/components/marketing/primitives";
+import { getCurrentUser } from "@/lib/auth/current-user";
 import { DomainWorkspace } from "./_components/workspace";
 import { DomainWorkspaceSkeleton } from "./_components/workspace-skeleton";
 
 export const metadata: Metadata = {
   title: "Domain",
   description:
-    "Core-CS interview prep — OOP, SQL, DBMS, Operating Systems and Computer Networks — each topic with focused notes and a clean, copy-ready example.",
+    "Core-CS interview prep — OOP, SQL, DBMS, Operating Systems and Computer Networks — each topic with focused notes, worked examples and MCQ practice.",
 };
 
 /**
@@ -16,9 +17,11 @@ export const metadata: Metadata = {
  * independently. This layout persists across topic navigations, so the subject
  * tabs + search live here and only the per-topic content reloads lazily.
  *
- * Publicly accessible — all notes/examples are readable by guests. There is no
- * per-user state on this route, so nothing cookie-bound is awaited here; the whole
- * workspace streams behind one <Suspense> (a pure skeleton, never half-real).
+ * Publicly accessible — all notes are readable by guests, and so are the practice
+ * questions; the interactive parts (answering, submitting) redirect to /login via
+ * practice-attempt.tsx. Only the (fast) session lookup is awaited here so the
+ * graded seed can be loaded; the whole workspace still streams behind one
+ * <Suspense> (a pure skeleton, never half-real).
  *
  * The navbar + footer come from the parent (app) layout.
  *
@@ -29,15 +32,20 @@ export const metadata: Metadata = {
  * the shared page-enter wrapper sizes to content and both panes lose their
  * height, collapsing back to one page-level scroll.
  */
-export default function DomainLayout({
+export default async function DomainLayout({
   children,
   nav,
 }: {
   children: React.ReactNode;
   nav: React.ReactNode;
 }) {
+  const user = await getCurrentUser();
+
   return (
-    <main data-fills-scrollport className="flex-1 lg:flex lg:min-h-0 lg:flex-col">
+    <main
+      data-fills-scrollport
+      className="flex-1 lg:flex lg:min-h-0 lg:flex-col"
+    >
       {/* On desktop the panes fill the shell, so a full `py-8` bottom gutter is
           just dead space under them — trim it and give the rows the height. */}
       <Container
@@ -45,7 +53,9 @@ export default function DomainLayout({
         className="py-6 sm:py-8 lg:flex lg:min-h-0 lg:flex-1 lg:flex-col lg:pt-5 lg:pb-3"
       >
         <Suspense fallback={<DomainWorkspaceSkeleton />}>
-          <DomainWorkspace nav={nav}>{children}</DomainWorkspace>
+          <DomainWorkspace profileId={user?.id ?? null} nav={nav}>
+            {children}
+          </DomainWorkspace>
         </Suspense>
       </Container>
     </main>

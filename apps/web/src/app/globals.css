@@ -86,10 +86,11 @@ body::before {
 }
 
 /* ==========================================================================
-   Topic-notes prose — styles the markdown rendered by NotesMarkdown
-   (react-markdown + remark-gfm + KaTeX) in the screening "Notes" tab. No
-   typography plugin is used; these element rules give the note bodies a clean,
-   theme-aware reading surface without leaking into the rest of the app.
+   Markdown prose — styles the markdown rendered by NotesMarkdown
+   (react-markdown + remark-gfm + KaTeX) in the screening "Notes" tab, and the
+   interview experience bodies rendered by ExperienceBody. No typography plugin
+   is used; these element rules give a body of markdown a clean, theme-aware
+   reading surface without leaking into the rest of the app.
    ========================================================================== */
 .notes-prose {
   color: var(--foreground);
@@ -268,27 +269,58 @@ body::before {
 }
 .notes-prose img {
   display: block;
-  /* Figures are PDF-extracted screenshots whose intrinsic widths run 212px →
-     2048px, so their rendered width is computed PER FIGURE from its own
-     dimensions in `lib/figure-size.ts` and arrives as an inline
-     `width: min(100%, Npx)`. That keeps a tiny result box from looking lost and a
-     portrait diagram from running a page tall, without picking one size for all.
 
-     The declarations here are the frame plus the fallback for any figure missing
-     from the manifest: `width: auto` renders it at intrinsic size and `max-height`
-     bounds it if it's tall. `object-fit: contain` matters once an inline width IS
-     set — on a narrow viewport `min(100%, …)` can produce a height above the cap,
-     and without it the image would stretch instead of scaling down. */
+  /* Figures come from several tools at several export scales, so no single size is
+     right for all of them — and no single size is right across screens either.
+     `lib/figure-size.ts` publishes each figure's own numbers as `--fig-nat` (its
+     DISPLAY width, normalised so the text inside every figure reads at the same size)
+     and `--fig-ar`; the width is resolved HERE, against the live column and viewport,
+     by the [data-measured] rule below. These declarations are the frame, the shared
+     ceilings, and the fallback for any figure missing from the manifest
+     (`width: auto` → intrinsic size). */
+
+  /* The width math works on the picture, then adds the frame back, so the `--fig-*`
+     properties stay pure image pixels. Keep in sync with the padding + border below. */
+  --fig-frame: calc(1.5rem + 2px);
+  /* Tallest a figure may render. 45rem is what binds on a desktop window and keeps a
+     portrait diagram from running a page tall; 82svh is what binds on a phone, where
+     45rem is taller than the screen itself. `svh` (not `dvh`) so the cap doesn't
+     resize as mobile browser chrome collapses on scroll. */
+  --fig-h-max: min(45rem, 82svh);
+
   width: auto;
   max-width: min(100%, 72rem);
-  max-height: 50rem;
+  max-height: var(--fig-h-max);
   height: auto;
+  /* Only reachable for unmeasured figures, and for sub-pixel rounding at the cap:
+     without it an image whose box got height-capped would stretch, not scale down. */
   object-fit: contain;
   margin: 1.25rem auto;
   border-radius: 0.75rem;
   background: var(--surface-2);
   padding: 0.75rem;
   border: 1px solid var(--border);
+}
+/* A figure we have measured. Three ceilings, smallest wins — the first two relative to
+   the column (`%`) or the viewport (`svh`), never a fixed px width:
+
+   1. the column itself;
+   2. the height cap, converted to a width through the aspect ratio, so a tall diagram
+      SCALES DOWN to fit the screen instead of letterboxing inside an over-tall box;
+   3. `--fig-nat`, the figure's own display width.
+
+   Ceiling 3 is what stops a content-sparse figure from filling the column just because
+   it was exported at a high scale: a four-box flowchart drawn at 1827px carries 52px
+   lettering, so it asks for ~530px and gets it, while a dense diagram asks for more
+   than the column and is held at ceiling 1. Both then read at the same text size. A
+   figure never renders wider than it asks for, so it is never upscaled here — the
+   generator already caps how far it may be enlarged past its own pixels. */
+.notes-prose img[data-measured] {
+  width: min(
+    100%,
+    calc((var(--fig-h-max) - var(--fig-frame)) * var(--fig-ar) + var(--fig-frame)),
+    calc(var(--fig-nat) + var(--fig-frame))
+  );
 }
 /* KaTeX: let long display equations scroll instead of overflowing the card. */
 .notes-prose .katex-display {

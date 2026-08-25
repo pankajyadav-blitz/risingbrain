@@ -3,9 +3,9 @@ import remarkGfm from "remark-gfm";
 import { NotesFigure } from "@/components/notes-figure";
 
 /**
- * Renders a Domain topic's markdown — the `notes` (theory + diagrams / code
- * screenshots) and `example` (clean, copy-ready code) fields — into the topic
- * view. Server Component: no client JS is shipped for the content.
+ * Renders a Domain topic's `notes` markdown — theory, diagrams and worked code
+ * examples, all in the one body — into the topic view. Server Component: no
+ * client JS is shipped for the content.
  *
  * - `remark-gfm` → GitHub tables / strikethrough / task-lists.
  * - Diagram `<img>`s point at `/study-notes/<subject>/<topic-slug>/fig-N.png`

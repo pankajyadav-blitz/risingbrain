@@ -1,9 +1,8 @@
-import { Code2, Database, Brain } from "lucide-react";
+import { Code2, Brain } from "lucide-react";
 import type { SectionStat } from "../_data";
 
 const ICONS = {
   dsa: Code2,
-  sql: Database,
   aptitude: Brain,
 } as const;
 
@@ -110,7 +109,7 @@ function SectionCard({ section }: { section: SectionStat }) {
 
 export function SectionStats({ sections }: { sections: SectionStat[] }) {
   return (
-    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+    <div className="grid gap-4 sm:grid-cols-2">
       {sections.map((s) => (
         <SectionCard key={s.key} section={s} />
       ))}

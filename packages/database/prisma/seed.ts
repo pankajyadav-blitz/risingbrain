@@ -471,7 +471,10 @@ async function main() {
   ]);
 
   console.log(`   dsa problems: ${problems}`);
-  console.log(`   domain topics: ${domain.topics} (${domain.withExample} with example)`);
+  console.log(
+    `   domain topics: ${domain.topics} (${domain.withExample} with an example), ` +
+      `${domain.questions} domain practice questions`
+  );
   console.log(`   quiz questions: ${questions}`);
   console.log(`   interview experiences: ${interviews}`);
 

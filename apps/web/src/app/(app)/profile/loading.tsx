@@ -35,8 +35,9 @@ export default function ProfileLoading() {
         <section>
           <Skeleton className="h-5 w-36" />
           <Skeleton className="mt-2 h-3 w-72 max-w-full" />
-          <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {Array.from({ length: 3 }).map((_, i) => (
+          <div className="mt-4 grid gap-4 sm:grid-cols-2">
+            {/* Two cards: DSA Sheets and Screening (Domain has no per-user progress). */}
+            {Array.from({ length: 2 }).map((_, i) => (
               <div key={i} className="glass rounded-3xl p-5 sm:p-6">
                 <div className="flex items-center gap-4">
                   <Skeleton className="h-11 w-11 shrink-0 rounded-2xl" />

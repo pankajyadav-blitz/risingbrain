@@ -9,8 +9,8 @@
  *   bun run db:seed-interviews
  *
  * DESTRUCTIVE within its scope: every InterviewExperience is deleted (along
- * with its likes and comments, via cascade) before the 27 posts in
- * seed/interview.json are re-inserted. User-authored posts are NOT spared.
+ * with its likes and comments, via cascade) before every post in
+ * seed/interview.json is re-inserted. User-authored posts are NOT spared.
  *
  * Posts are inserted in a random order that never places two posts from the
  * same company back to back, and `createdAt` is spaced out so the feed's
@@ -32,6 +32,18 @@ const prisma = new PrismaClient({ adapter });
 
 /** Minutes between consecutive posts' createdAt, newest first. */
 const SPACING_MINUTES = 47;
+
+/** createMany in chunks, so one oversized statement can't blow the parameter limit. */
+async function insertMany<T>(
+  create: (rows: T[]) => Promise<unknown>,
+  rows: T[],
+  chunk = 5000,
+): Promise<number> {
+  for (let i = 0; i < rows.length; i += chunk) {
+    await create(rows.slice(i, i + chunk));
+  }
+  return rows.length;
+}
 
 function slugify(s: string): string {
   return s
@@ -65,17 +77,51 @@ type InterviewPostJson = {
 };
 
 /**
+ * Draw the entries in random order, each company's odds proportional to how
+ * many posts it still has unplaced. Sampling without replacement, so the return
+ * value is a full permutation of `entries` — callers walk it until one is
+ * usable rather than re-drawing.
+ */
+function weightedShuffle(
+  entries: Array<[string, InterviewPostJson[]]>,
+): Array<[string, InterviewPostJson[]]> {
+  const pool = [...entries];
+  const order: Array<[string, InterviewPostJson[]]> = [];
+
+  while (pool.length > 0) {
+    const total = pool.reduce((sum, [, bucket]) => sum + bucket.length, 0);
+    let ticket = Math.random() * total;
+    let i = 0;
+    // Guarded on length as well, so float rounding can't walk off the end.
+    while (i < pool.length - 1 && ticket >= pool[i]![1].length) {
+      ticket -= pool[i]![1].length;
+      i++;
+    }
+    order.push(pool.splice(i, 1)[0]!);
+  }
+
+  return order;
+}
+
+/**
  * Spread posts so no two neighbours share a company.
  *
- * Greedy "reorganize string": at each step take the company with the most
- * posts still unplaced, excluding whichever one we just placed. Always
- * draining the largest bucket is what keeps a dominant company (here Microsoft,
- * 9 of 27) from piling up at the tail with nothing left to separate it. Ties
- * are broken randomly, and each company's own posts are shuffled, so the order
- * differs on every run.
+ * At each step, pick the next company at random *weighted by how many posts it
+ * still has unplaced* (excluding whichever company we just placed), then keep
+ * that pick only if what remains can still be arranged. Weighting by remaining
+ * count drains a dominant company steadily across the whole feed. Always taking
+ * the largest bucket — the obvious greedy — instead produced a rigid
+ * "Microsoft → Amazon → Microsoft → Amazon …" head with every small company
+ * stranded in the tail, which reads as sorted rather than shuffled.
  *
- * Only possible when no company holds more than ceil(n/2) posts; if the data
- * ever crosses that line we throw rather than silently emitting a run.
+ * The feasibility guard is what lets the choice stay random. After placing `c`,
+ * `m` posts remain and none of them may lead with `c`, so `c` can only occupy
+ * the m/2 non-leading slots (positions 1, 3, 5, …) — floor(m/2) of them —
+ * while any other company can hold up to ceil(m/2). A candidate that would
+ * break either cap paints us into a corner, so we skip to the next draw.
+ *
+ * Only possible at all when no company holds more than ceil(n/2) posts; if the
+ * data ever crosses that line we throw rather than silently emitting a run.
  */
 function shuffleAvoidingAdjacentCompanies(
   posts: InterviewPostJson[],
@@ -109,15 +155,26 @@ function shuffleAvoidingAdjacentCompanies(
     const candidates = [...buckets.entries()].filter(
       ([company, bucket]) => bucket.length > 0 && company !== previous,
     );
-    if (candidates.length === 0) {
-      // Unreachable given the ceil(n/2) check above.
+
+    // Posts still unplaced once we've taken this one.
+    const remaining = posts.length - out.length - 1;
+    const capForPicked = Math.floor(remaining / 2);
+    const capForOthers = Math.ceil(remaining / 2);
+
+    const pick = weightedShuffle(candidates).find(([company]) =>
+      [...buckets.entries()].every(([other, bucket]) =>
+        other === company
+          ? bucket.length - 1 <= capForPicked
+          : bucket.length <= capForOthers,
+      ),
+    );
+    if (!pick) {
+      // Unreachable: the ceil(n/2) check above holds, and the caps below are
+      // exactly what keeps it holding for every state we step into.
       throw new Error("Ran out of companies to interleave.");
     }
 
-    const most = Math.max(...candidates.map(([, b]) => b.length));
-    const tied = candidates.filter(([, b]) => b.length === most);
-    const [company, bucket] = tied[Math.floor(Math.random() * tied.length)]!;
-
+    const [company, bucket] = pick;
     out.push(bucket.pop()!);
     previous = company;
   }
@@ -132,34 +189,52 @@ async function main() {
   const deleted = await prisma.interviewExperience.deleteMany();
   console.log(`🗑️  Deleted ${deleted.count} existing interview experiences.`);
 
-  const now = Date.now();
+  const emailFor = (name: string) => `${slugify(name)}@example.com`;
 
-  for (const [index, post] of ordered.entries()) {
-    const email = `${slugify(post.authorName)}@example.com`;
-    const author = await prisma.user.upsert({
-      where: { email },
-      update: {},
-      create: { email, name: post.authorName, role: Role.NORMAL },
-    });
-
-    await prisma.interviewExperience.create({
-      data: {
-        authorId: author.id,
-        company: post.company,
-        role: post.role,
-        verdict: post.verdict as InterviewVerdict,
-        difficulty: toDifficulty(post.difficulty),
-        roundsCount: post.roundsCount,
-        title: post.title,
-        excerpt: post.excerpt,
-        body: post.body,
-        tags: post.tags,
-        likeCount: post.likeCount,
-        // Index 0 is newest, so the feed's createdAt DESC sort mirrors `ordered`.
-        createdAt: new Date(now - index * SPACING_MINUTES * 60_000),
-      },
-    });
+  // Bulk-create the unique authors first (skipDuplicates keeps existing users),
+  // then resolve their ids in one query and bulk-insert the experiences —
+  // matching how prisma/seed.ts does it. Every post is "Anonymous" today, so
+  // this collapses one upsert per post into a single round trip.
+  const authorRows = new Map<
+    string,
+    { email: string; name: string; role: Role }
+  >();
+  for (const post of ordered) {
+    const email = emailFor(post.authorName);
+    if (!authorRows.has(email))
+      authorRows.set(email, { email, name: post.authorName, role: Role.NORMAL });
   }
+  await insertMany(
+    (r) => prisma.user.createMany({ data: r, skipDuplicates: true }),
+    [...authorRows.values()],
+  );
+
+  const authors = await prisma.user.findMany({
+    where: { email: { in: [...authorRows.keys()] } },
+    select: { id: true, email: true },
+  });
+  const authorId = new Map(authors.map((a) => [a.email, a.id]));
+
+  const now = Date.now();
+  const experienceRows = ordered.map((post, index) => ({
+    authorId: authorId.get(emailFor(post.authorName))!,
+    company: post.company,
+    role: post.role,
+    verdict: post.verdict as InterviewVerdict,
+    difficulty: toDifficulty(post.difficulty),
+    roundsCount: post.roundsCount,
+    title: post.title,
+    excerpt: post.excerpt,
+    body: post.body,
+    tags: post.tags,
+    likeCount: post.likeCount,
+    // Index 0 is newest, so the feed's createdAt DESC sort mirrors `ordered`.
+    createdAt: new Date(now - index * SPACING_MINUTES * 60_000),
+  }));
+  await insertMany(
+    (r) => prisma.interviewExperience.createMany({ data: r }),
+    experienceRows,
+  );
 
   console.log(`✅ Inserted ${ordered.length} interview experiences.`);
   console.log(`   order: ${ordered.map((p) => p.company).join(" → ")}`);

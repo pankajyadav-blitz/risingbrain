@@ -5,19 +5,32 @@ import Link, { useLinkStatus } from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { Loader2 } from "lucide-react";
 import { useTruncationTooltip } from "@/components/shell/truncation-tooltip";
+import { useDomainProgress } from "./progress-provider";
 import { useSelectedSubject } from "./selected-subject";
 import type { DomainSubjectIndex } from "../_data";
 
 /**
- * Trailing slot of a topic link. While THIS link's navigation is in flight,
- * `useLinkStatus` flips `pending` true, so we swap in a spinner — instant feedback
- * the moment a topic is clicked, before its content streams in.
+ * Trailing slot of a topic link: the practice mark once the topic's set has been
+ * submitted, otherwise nothing (a topic is notes first — the question count is on
+ * the tab, not here). While THIS link's navigation is in flight, `useLinkStatus`
+ * flips `pending` true, so we swap in a spinner — instant feedback the moment a
+ * topic is clicked, before its content streams in.
  */
-function NavTrailing() {
+function NavTrailing({ label }: { label: string | null }) {
   const { pending } = useLinkStatus();
-  if (!pending) return null;
+  if (pending) {
+    return (
+      <Loader2
+        className="h-3.5 w-3.5 shrink-0 animate-spin text-accent"
+        aria-label="Loading"
+      />
+    );
+  }
+  if (!label) return null;
   return (
-    <Loader2 className="h-3.5 w-3.5 shrink-0 animate-spin text-accent" aria-label="Loading" />
+    <span className="shrink-0 text-[11px] tabular-nums text-accent">
+      {label}
+    </span>
   );
 }
 
@@ -32,6 +45,8 @@ export function NavList({ subjects }: { subjects: DomainSubjectIndex[] }) {
   const pathname = usePathname();
   const router = useRouter();
   const ctx = useSelectedSubject();
+  const progress = useDomainProgress();
+  const signedIn = progress?.signedIn ?? false;
   const activeId = pathname.split("/")[2] ?? "";
 
   const selected = ctx?.selected || subjects[0]?.subject || "";
@@ -71,6 +86,9 @@ export function NavList({ subjects }: { subjects: DomainSubjectIndex[] }) {
           <ul className="space-y-0.5">
             {group.topics.map((t) => {
               const isActive = t.id === activeId;
+              const score = signedIn
+                ? progress?.getTopicScore(t.id)
+                : undefined;
               const href = `/domain/${t.id}`;
               return (
                 <li key={t.id}>
@@ -96,7 +114,9 @@ export function NavList({ subjects }: { subjects: DomainSubjectIndex[] }) {
                     <span data-truncate className="min-w-0 flex-1 truncate">
                       {t.title}
                     </span>
-                    <NavTrailing />
+                    <NavTrailing
+                      label={score ? `${score.score}/${score.total}` : null}
+                    />
                   </Link>
                 </li>
               );

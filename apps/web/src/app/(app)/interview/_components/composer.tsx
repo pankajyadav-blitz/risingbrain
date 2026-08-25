@@ -14,17 +14,20 @@ import {
   Loader2,
   PenLine,
   Quote,
-  Underline,
   X,
 } from "lucide-react";
 import { InterviewVerdict, Difficulty } from "@risingbrain/database/enums";
 
 type Tool = [icon: React.ElementType, label: string, command: string, value?: string];
 
+/**
+ * No underline tool: the body is converted to markdown on save (see
+ * `POST /api/interview`), and markdown has no underline — offering the button
+ * would silently drop the styling once the post is published.
+ */
 const TOOLS: Tool[] = [
   [Bold, "Bold", "bold"],
   [Italic, "Italic", "italic"],
-  [Underline, "Underline", "underline"],
   [Heading, "Heading", "formatBlock", "<h3>"],
   [List, "Bulleted list", "insertUnorderedList"],
   [ListOrdered, "Numbered list", "insertOrderedList"],
@@ -50,7 +53,9 @@ const inputCls =
 /**
  * Portal modal that lets a signed-in user publish an interview experience.
  * The body is a Word-like contentEditable surface driven by execCommand
- * (ported from the sheet note editor); its innerHTML is submitted as `body`.
+ * (ported from the sheet note editor); its innerHTML is submitted as `body`,
+ * and the API converts that HTML to markdown before storing it, so published
+ * posts share one format with the seeded ones.
  */
 export function Composer({ onClose }: { onClose: () => void }) {
   const router = useRouter();

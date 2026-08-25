@@ -6,7 +6,9 @@ import { DAY_MS, addDays, istToday, keyOf } from "@/lib/ist";
  *  - a month-divided activity heatmap for a SELECTED calendar year (Jan–Dec),
  *    read from the pre-aggregated `ActivityDay` table (DSA + aptitude counts)
  *    bucketed by IST calendar day. A year switcher lets the user view past years.
- *  - per-section solved/total counts (DSA, SQL, Aptitude) split by difficulty.
+ *  - per-section solved/total counts (DSA, Screening) split by difficulty. Domain
+ *    is deliberately absent: its topics are read-only notes with no per-user
+ *    completion state, so there is nothing to report.
  *  - current/longest streaks derived from recent activity (the denormalised User
  *    columns are not maintained yet).
  */
@@ -35,7 +37,7 @@ export type MonthBlock = {
 };
 
 export type SectionStat = {
-  key: "dsa" | "sql" | "aptitude";
+  key: "dsa" | "aptitude";
   label: string;
   solved: number;
   total: number;
@@ -87,7 +89,6 @@ export async function getProfileData(userId: string, year?: number) {
     windowRows,
     streakRows,
     dsaTotalsRows,
-    domainTopicTotal,
     dsaSolvedRows,
     quizTotal,
     quizSolved,
@@ -104,7 +105,6 @@ export async function getProfileData(userId: string, year?: number) {
       select: { day: true },
     }),
     prisma.dsaProblem.groupBy({ by: ["difficulty"], _count: { _all: true } }),
-    prisma.domainTopic.count({ where: { isPublished: true } }),
     prisma.userProblemProgress.findMany({
       where: { userId, status: ProblemStatus.SOLVED },
       select: { problem: { select: { difficulty: true } } },
@@ -214,13 +214,6 @@ export async function getProfileData(userId: string, year?: number) {
         { label: "Medium", solved: dsaSolved.MEDIUM!, total: dsaTotal.MEDIUM! },
         { label: "Hard", solved: dsaSolved.HARD!, total: dsaTotal.HARD! },
       ],
-    },
-    {
-      key: "sql",
-      label: "Domain",
-      solved: 0, // no per-user domain progress tracking yet
-      total: domainTopicTotal,
-      byDifficulty: null,
     },
     {
       key: "aptitude",
