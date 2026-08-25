@@ -70,11 +70,44 @@ export function htmlToMarkdown(html: string): string {
 }
 
 /**
- * Does this body carry HTML? Markdown bodies contain no tags, so anything with
- * one came from the composer or from a row stored before write-time conversion
- * existed. Both the write path (what to convert) and the read path (how to
- * render) key off this, so they stay in agreement.
+ * The two callers of "is this HTML?" want OPPOSITE things, and answering both
+ * with one predicate is what corrupted posts containing generics.
+ *
+ * The write path asks "is there any markup to sanitize?" and is safe erring
+ * TOWARDS yes — the worst case is a markdown body getting escaped by turndown.
+ * The read path asks "is this whole body legacy HTML?" and is safe erring
+ * TOWARDS no — the worst case is a legacy post rendering with visible tags,
+ * whereas a false yes runs the body through `sanitize-html`, which deletes
+ * anything tag-shaped. `vector<int> v;` inside a fenced block became `vector v;`,
+ * the fences rendered as literal backticks, and the paragraph breaks collapsed.
+ *
+ * They also disagree legitimately: the write path sees the composer's raw HTML,
+ * the read path sees the markdown that was stored from it. One function applied
+ * to two different strings could never have been consistent.
  */
-export function looksLikeHtml(body: string): boolean {
+
+/** Loose — "does this contain markup worth sanitizing?". Write path only. */
+export function containsHtmlMarkup(body: string): boolean {
   return /<[a-z][\s\S]*>/i.test(body);
+}
+
+/** Fenced blocks and inline spans — code, where angle brackets are just text. */
+const CODE_SPANS = /```[\s\S]*?```|~~~[\s\S]*?~~~|`[^`\n]*`/g;
+
+/**
+ * Tags we accept as evidence of a legacy HTML body, spelled strictly: a known
+ * tag name followed by whitespace, `/` or `>`, so `Map<String, Integer>` and
+ * `if (a<b) x>y` don't qualify (`String` isn't a tag name; `<b)` isn't a tag).
+ */
+const HTML_TAG =
+  /<\/?(?:p|div|span|br|hr|ul|ol|li|h[1-6]|pre|code|strong|em|b|i|u|s|del|strike|a|img|blockquote|table|thead|tbody|tr|td|th|figure|figcaption)(?:\s[^<>]*)?\/?>/i;
+
+/**
+ * Strict — "was this row stored as HTML?". Read path only.
+ *
+ * Code is stripped before testing, so a markdown post whose snippets are full of
+ * angle brackets can never be mistaken for markup no matter what it contains.
+ */
+export function isHtmlBody(body: string): boolean {
+  return HTML_TAG.test(body.replace(CODE_SPANS, ""));
 }

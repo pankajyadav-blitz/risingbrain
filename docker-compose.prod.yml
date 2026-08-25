@@ -34,7 +34,7 @@ services:
 
       # Managed Postgres (Neon). Use the POOLED endpoint + sslmode=require, and
       # drop channel_binding (node-postgres pools don't negotiate it).
-      DATABASE_URL: "postgresql://neondb_owner:npg_qJDHrZLBu9N4@ep-holy-feather-atde6vmv-pooler.c-9.us-east-1.aws.neon.tech/neondb?sslmode=require"
+      DATABASE_URL: "postgresql://neondb_owner:npg_pH7LtsSFGv2R@ep-holy-feather-atde6vmv-pooler.c-9.us-east-1.aws.neon.tech/neondb?sslmode=require"
 
       # Redis runs in the container below; host = the service name "redis"
       # (NOT localhost). Password must match the `redis` service command.

@@ -1,7 +1,7 @@
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { sanitizeRichText } from "@/lib/sanitize";
-import { looksLikeHtml } from "@/lib/html-to-markdown";
+import { isHtmlBody } from "@/lib/html-to-markdown";
 
 /**
  * Renders an interview experience body, which arrives in one of two formats:
@@ -26,7 +26,7 @@ import { looksLikeHtml } from "@/lib/html-to-markdown";
 export function ExperienceBody({ body }: { body: string }) {
   // Posts published before write-time markdown conversion existed are still
   // HTML, so they take the sanitized branch.
-  if (looksLikeHtml(body)) {
+  if (isHtmlBody(body)) {
     return (
       <div
         className="notes-prose mt-8"

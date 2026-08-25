@@ -74,7 +74,9 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Something went wrong" }, { status: 500 });
   }
 
-  // Log the first solve to the heatmap/streak (best-effort, never blocks).
+  // Log the first solve to the heatmap/streak. Best-effort in the sense that
+  // recordActivity swallows its own failures — but it IS awaited, so it sits on
+  // the response path rather than being fire-and-forget.
   if (firstSolve) {
     await recordActivity({ userId: user.id, kind: "dsa", referenceIds: [problemId] });
   }

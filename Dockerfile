@@ -10,16 +10,31 @@
 #
 # No DATABASE_URL/secret is needed to BUILD: nothing connects at build time
 # (every page is dynamic, Prisma only generates, Redis is lazy). The throwaway
-# envs below just satisfy "required" env checks; the REAL values are supplied at
-# RUNTIME by docker-compose.prod.yml and never bake into the image.
+# envs below only satisfy the "required" env checks in src/lib/env.ts; the REAL
+# values are supplied at RUNTIME by docker-compose.prod.yml.
+#
+# They are deliberately FAKE rather than copies of the production values. This is
+# safe because the app reads these at runtime, not build time — worth stating
+# because the usual Next.js gotcha (`process.env.*` inlined into the EDGE bundle,
+# which has no runtime env) would make a build-time AUTH_SECRET permanent. It does
+# not apply here: `src/proxy.ts` is a Next 16 proxy on the NODE runtime, and the
+# built chunk still reads `process.env.AUTH_SECRET` at call time. Verify with:
+#
+#   grep -o 'process\.env\.AUTH_SECRET' .next/server/chunks/*root-of-the-server*.js
+#
+# If that ever comes back empty — a move to the edge runtime would do it — the
+# build-time secret becomes the one the proxy verifies against forever, and any
+# drift from the runtime secret rejects every token: every request looks signed
+# out, bounces through /api/auth/refresh, and comes back still unverifiable.
 # ──────────────────────────────────────────────────────────────────────────────
 
 # ---------- builder: install + generate Prisma client + build standalone --------
 FROM oven/bun:1 AS builder
 WORKDIR /app
 ENV NEXT_TELEMETRY_DISABLED=1
-ENV DATABASE_URL="postgresql://neondb_owner:npg_qJDHrZLBu9N4@ep-holy-feather-atde6vmv-pooler.c-9.us-east-1.aws.neon.tech/neondb?sslmode=verify-full"
-ENV AUTH_SECRET="IbueTy4mvrQm2jWmMYmjCbTY2eaGUEROk4Wa+hN+w8Z2erBDZnIbOcaDUfvxHcmw"
+
+ENV DATABASE_URL="postgresql://neondb_owner:npg_pH7LtsSFGv2R@ep-holy-feather-atde6vmv.c-9.us-east-1.aws.neon.tech/neondb"
+ENV AUTH_SECRET="IbueTy4mvrQm2jWmMYmjCbTY2eaGUEROk4Wa+hN+w8Z2erBDZnIbOcaDUfvxHcmA"
 # Install with the FULL source present so Bun's workspace symlinks and .bin
 # binstubs (prisma, next, …) resolve correctly. Copying node_modules across
 # build stages breaks Bun's symlink layout — that's why `prisma`/`next` weren't

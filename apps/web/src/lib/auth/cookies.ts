@@ -36,6 +36,11 @@ export async function setAuthCookies(tokens: IssuedTokens): Promise<void> {
     ...(tokens.persistent ? { maxAge: ACCESS_TTL_SECONDS } : {}),
   });
 
+  // `null` means a concurrent request already rotated this session and its cookie
+  // is in flight to the same browser — writing a competing one here is what makes
+  // a burst of refreshes end in a logout. Leave the jar alone. See IssuedTokens.
+  if (tokens.refreshToken === null) return;
+
   // `lax`, not `strict`: a strict cookie is withheld on off-site top-level
   // navigations, so arriving from an email/search/WhatsApp link would look like a
   // logout. See REFRESH_COOKIE_PATH in ./constants for the full rationale.
@@ -54,12 +59,6 @@ export async function clearAuthCookies(): Promise<void> {
   jar.set(COOKIES.REFRESH, "", { httpOnly: true, path: REFRESH_COOKIE_PATH, maxAge: 0 });
   // Drop the proxy's in-flight marker too, so the next real login isn't shadowed
   // by a stale attempt cookie.
-  jar.set(REFRESH_ATTEMPT_COOKIE, "", { httpOnly: true, path: "/", maxAge: 0 });
-}
-
-/** Clear only the proxy's one-shot refresh marker (called after a successful rotate). */
-export async function clearRefreshAttemptCookie(): Promise<void> {
-  const jar = await cookies();
   jar.set(REFRESH_ATTEMPT_COOKIE, "", { httpOnly: true, path: "/", maxAge: 0 });
 }
 

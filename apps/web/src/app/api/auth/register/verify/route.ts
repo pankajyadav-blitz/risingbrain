@@ -36,6 +36,13 @@ export async function POST(req: Request) {
 
   const result = await verifyOtp({ purpose: "signup", email, code });
   if (!result.ok) {
+    // Store unreachable — not a verdict on the code the user typed.
+    if (result.reason === "unavailable") {
+      return NextResponse.json(
+        { error: "Verification is temporarily unavailable. Please try again in a moment." },
+        { status: 503 }
+      );
+    }
     return NextResponse.json(
       { error: OTP_ERRORS[result.reason] ?? "Verification failed" },
       { status: 400 }

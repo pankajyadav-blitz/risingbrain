@@ -1,9 +1,10 @@
-import { Code2, Brain } from "lucide-react";
+import { Code2, Brain, Database } from "lucide-react";
 import type { SectionStat } from "../_data";
 
 const ICONS = {
   dsa: Code2,
   aptitude: Brain,
+  domain: Database,
 } as const;
 
 // Per-difficulty bar accent.

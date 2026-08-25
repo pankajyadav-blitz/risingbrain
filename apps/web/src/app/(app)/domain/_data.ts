@@ -30,8 +30,6 @@ export type DomainNavTopic = {
   slug: string;
   title: string;
   summary: string | null;
-  /** Practice questions on this topic — drives the nav count and the tab badge. */
-  quizCount: number;
 };
 export type DomainNavGroup = { label: string; order: number; topics: DomainNavTopic[] };
 export type DomainSubjectIndex = {
@@ -59,7 +57,6 @@ export async function getDomainIndex(): Promise<{ subjects: DomainSubjectIndex[]
       subject: true,
       groupLabel: true,
       groupOrder: true,
-      _count: { select: { questions: true } },
     },
   });
 
@@ -81,7 +78,6 @@ export async function getDomainIndex(): Promise<{ subjects: DomainSubjectIndex[]
       slug: r.slug,
       title: r.title,
       summary: r.summary,
-      quizCount: r._count.questions,
     });
   }
 

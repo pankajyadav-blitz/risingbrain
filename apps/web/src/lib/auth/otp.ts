@@ -9,8 +9,17 @@
  *    after the email is proven, never before.
  *  - Password reset. On success a separate one-time reset token is minted so the
  *    new-password step doesn't have to re-send the code.
+ *
+ * Redis is the ONLY store for these records — a short-lived pending signup has no
+ * business in Postgres — so unlike sessions there is nothing to fall back to. What
+ * that must NOT mean is an unhandled rejection: every call here used to hit
+ * `redis.*` bare, so with Redis unreachable `verifyOtp` threw straight out of the
+ * route handler and signup, email verification and password reset all answered 500.
+ * Instead each operation reports `unavailable` distinctly from `expired`, so the
+ * routes can say "try again in a moment" (503) rather than either crashing or
+ * telling a user their correct code is wrong.
  */
-import { redis } from "./redis";
+import { redis, redisAttempt } from "./redis";
 import { sha256, randomId } from "./crypto";
 import { sendOtpEmail } from "../mail/mailer";
 
@@ -37,6 +46,18 @@ interface OtpRecord {
 const otpKey = (purpose: Purpose, email: string) => `otp:${purpose}:${email}`;
 const resetTokenKey = (token: string) => `pwreset:${token}`;
 
+/**
+ * The OTP store couldn't be reached. Distinct from "no such code" — the caller
+ * should answer 503 and invite a retry, not fail the user's input.
+ */
+export class OtpStoreUnavailableError extends Error {
+  constructor(cause?: unknown) {
+    super("Verification store temporarily unavailable");
+    this.name = "OtpStoreUnavailableError";
+    this.cause = cause;
+  }
+}
+
 /** Cryptographically-random 6-digit code, zero-padded. */
 function generateCode(): string {
   const n = crypto.getRandomValues(new Uint32Array(1))[0]! % 1_000_000;
@@ -47,6 +68,10 @@ function generateCode(): string {
  * Create (or replace) an OTP for an email+purpose and send it. Re-requesting
  * overwrites any existing code and resets the attempt counter, so a user who
  * asks for a new code can always use the latest one.
+ *
+ * Throws `OtpStoreUnavailableError` if the code can't be stored. Deliberately
+ * BEFORE the email goes out: mailing someone a code we can't verify would be
+ * worse than not mailing at all.
  */
 export async function issueOtp(params: {
   purpose: Purpose;
@@ -60,7 +85,11 @@ export async function issueOtp(params: {
     attempts: 0,
     ...(signup ? { signup } : {}),
   };
-  await redis.set(otpKey(purpose, email), JSON.stringify(record), "EX", CODE_TTL_SECONDS);
+  const stored = await redisAttempt(() =>
+    redis.set(otpKey(purpose, email), JSON.stringify(record), "EX", CODE_TTL_SECONDS)
+  );
+  if (!stored.ok) throw new OtpStoreUnavailableError(stored.error);
+
   await sendOtpEmail({
     to: email,
     code,
@@ -69,9 +98,9 @@ export async function issueOtp(params: {
   });
 }
 
-type VerifyResult =
+export type VerifyResult =
   | { ok: true; signup?: SignupPayload }
-  | { ok: false; reason: "expired" | "invalid" | "too_many" };
+  | { ok: false; reason: "expired" | "invalid" | "too_many" | "unavailable" };
 
 /**
  * Check a submitted code. On success the record is consumed (deleted) and any
@@ -85,12 +114,14 @@ export async function verifyOtp(params: {
 }): Promise<VerifyResult> {
   const { purpose, email, code } = params;
   const key = otpKey(purpose, email);
-  const raw = await redis.get(key);
-  if (!raw) return { ok: false, reason: "expired" };
 
-  const record = JSON.parse(raw) as OtpRecord;
+  const read = await redisAttempt(() => redis.get(key));
+  if (!read.ok) return { ok: false, reason: "unavailable" };
+  if (!read.value) return { ok: false, reason: "expired" };
+
+  const record = JSON.parse(read.value) as OtpRecord;
   if (record.attempts >= MAX_ATTEMPTS) {
-    await redis.del(key);
+    await redisAttempt(() => redis.del(key));
     return { ok: false, reason: "too_many" };
   }
 
@@ -98,31 +129,56 @@ export async function verifyOtp(params: {
   if (presented !== record.codeHash) {
     record.attempts += 1;
     if (record.attempts >= MAX_ATTEMPTS) {
-      await redis.del(key);
+      await redisAttempt(() => redis.del(key));
       return { ok: false, reason: "too_many" };
     }
     // Preserve the remaining TTL on the record while bumping the attempt count.
-    const ttl = await redis.ttl(key);
-    await redis.set(key, JSON.stringify(record), "EX", ttl > 0 ? ttl : CODE_TTL_SECONDS);
+    // Best-effort: losing the increment costs an extra guess, which is a far
+    // smaller problem than rejecting the flow outright.
+    const ttl = await redisAttempt(() => redis.ttl(key));
+    const remaining = ttl.ok && ttl.value > 0 ? ttl.value : CODE_TTL_SECONDS;
+    await redisAttempt(() => redis.set(key, JSON.stringify(record), "EX", remaining));
     return { ok: false, reason: "invalid" };
   }
 
-  await redis.del(key);
+  // The code is right. Consuming it is what makes it one-time, so a failed delete
+  // must not be reported as success — the record would stay live and replayable.
+  const consumed = await redisAttempt(() => redis.del(key));
+  if (!consumed.ok) return { ok: false, reason: "unavailable" };
+
   return { ok: true, signup: record.signup };
 }
 
-/** Mint a single-use token (after a verified reset OTP) gating the new-password step. */
+/**
+ * Mint a single-use token (after a verified reset OTP) gating the new-password
+ * step. Throws `OtpStoreUnavailableError` rather than handing back a token the
+ * reset step would then reject.
+ */
 export async function issueResetToken(email: string): Promise<string> {
   const token = randomId(32);
-  await redis.set(resetTokenKey(token), email, "EX", RESET_TOKEN_TTL_SECONDS);
+  const stored = await redisAttempt(() =>
+    redis.set(resetTokenKey(token), email, "EX", RESET_TOKEN_TTL_SECONDS)
+  );
+  if (!stored.ok) throw new OtpStoreUnavailableError(stored.error);
   return token;
 }
 
-/** Consume a reset token, returning the email it was issued for (or null). */
+/**
+ * Consume a reset token, returning the email it was issued for. `null` means the
+ * token is unknown or spent; throws `OtpStoreUnavailableError` when the store
+ * couldn't be reached, so a blip isn't reported to the user as an invalid link.
+ */
 export async function consumeResetToken(token: string): Promise<string | null> {
   const key = resetTokenKey(token);
-  const email = await redis.get(key);
-  if (!email) return null;
-  await redis.del(key);
-  return email;
+
+  const read = await redisAttempt(() => redis.get(key));
+  if (!read.ok) throw new OtpStoreUnavailableError(read.error);
+  if (!read.value) return null;
+
+  // Same one-time guarantee as verifyOtp: don't authorise the password change
+  // unless the token is definitely gone.
+  const consumed = await redisAttempt(() => redis.del(key));
+  if (!consumed.ok) throw new OtpStoreUnavailableError(consumed.error);
+
+  return read.value;
 }

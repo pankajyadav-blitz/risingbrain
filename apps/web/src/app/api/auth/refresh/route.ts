@@ -1,11 +1,6 @@
 import { NextResponse } from "next/server";
 import { rotateSession, SessionUnavailableError } from "@/lib/auth/session";
-import {
-  setAuthCookies,
-  clearAuthCookies,
-  readRefreshCookie,
-  clearRefreshAttemptCookie,
-} from "@/lib/auth/cookies";
+import { setAuthCookies, clearAuthCookies, readRefreshCookie } from "@/lib/auth/cookies";
 
 /**
  * Exchanges a valid refresh token for a fresh access token (and rotates the
@@ -39,7 +34,6 @@ export async function POST(req: Request) {
   }
 
   await setAuthCookies(tokens);
-  await clearRefreshAttemptCookie();
   return NextResponse.json({ ok: true });
 }
 
@@ -96,6 +90,11 @@ export async function GET(req: Request) {
   }
 
   await setAuthCookies(tokens);
-  await clearRefreshAttemptCookie();
+  // The proxy's one-shot marker is deliberately NOT cleared here. It is the only
+  // thing standing between us and an infinite redirect loop when a rotate succeeds
+  // but its cookie never sticks (Secure cookies over plain http, a proxy stripping
+  // Set-Cookie): the marker has to still be there on the way back for the proxy to
+  // notice and render signed-out instead of bouncing again. It expires on its own
+  // in 10s, and a valid access token makes it irrelevant long before that.
   return NextResponse.redirect(new URL(target, url.origin));
 }

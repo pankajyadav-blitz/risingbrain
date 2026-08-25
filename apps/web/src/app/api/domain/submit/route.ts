@@ -16,8 +16,9 @@ import { recordActivity } from "@/lib/activity";
  *    `isActive: false` (non-destructive — rows are never deleted),
  *  - a single `UserDomainTopicScore` (the stored "mark", upserted/replaced).
  *
- * It returns the full review payload (answer keys, explanations, per-question
- * outcomes) so the panel can flip into review mode.
+ * It returns the review payload (answer keys, explanations, per-question outcomes)
+ * so the panel can flip into review mode — for the ANSWERED questions only. A key
+ * the learner did not play for is a key they have not earned the right to see.
  *
  * Scoring is simply "correct answers": unlike Screening there are no hints to
  * forfeit a mark, because the source material explains each answer instead of
@@ -69,7 +70,10 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Topic not found." }, { status: 404 });
   }
 
-  const review = questions.map((q) => {
+  // Graded over every question in the topic, because the SCORE is out of the
+  // whole set — a skipped question is a question worth zero, not one that isn't
+  // on the paper. What goes back over the wire is narrowed below.
+  const graded = questions.map((q) => {
     const selectedKey = incoming.get(q.id)?.selectedKey ?? null;
     return {
       questionId: q.id,
@@ -80,18 +84,34 @@ export async function POST(request: Request) {
     };
   });
 
+  // A key is only ever disclosed for a question this learner actually answered.
+  // Returning the full set leaked the entire topic's answer key to anyone who
+  // POSTed `{ topicId, answers: [] }` — and, less obviously, let someone answer
+  // one question of twenty and read the other nineteen keys out of DevTools. The
+  // client already discards the unanswered entries (practice-attempt.tsx), so
+  // this changes nothing it can see.
+  const review = graded.filter((r) => r.selectedKey !== null);
+
+  // Nothing answered (or nothing that belongs to this topic). The submit button is
+  // disabled at zero, so this is never a real attempt — and recording it would
+  // overwrite a learner's stored mark with 0/total.
+  if (review.length === 0) {
+    return NextResponse.json(
+      { error: "Answer at least one question before submitting." },
+      { status: 400 }
+    );
+  }
+
   const total = questions.length;
-  const score = review.reduce((s, r) => s + (r.isCorrect ? 1 : 0), 0);
+  const score = graded.reduce((s, r) => s + (r.isCorrect ? 1 : 0), 0);
 
   // Rows only for answered questions (skips don't pollute the heatmap/streak).
-  const answeredRows = review
-    .filter((r) => r.selectedKey !== null)
-    .map((r) => ({
-      userId: user.id,
-      questionId: r.questionId,
-      selectedKey: r.selectedKey as string,
-      isCorrect: r.isCorrect,
-    }));
+  const answeredRows = review.map((r) => ({
+    userId: user.id,
+    questionId: r.questionId,
+    selectedKey: r.selectedKey as string,
+    isCorrect: r.isCorrect,
+  }));
 
   const topicQuestionIds = questions.map((q) => q.id);
   const answeredIds = answeredRows.map((r) => r.questionId);
@@ -136,9 +156,11 @@ export async function POST(request: Request) {
     }),
   ]);
 
-  // Log fresh answers to the heatmap/streak (best-effort, never blocks the
-  // response). A domain question is an MCQ like a screening one, so it lands in
-  // the same `mcqCount` column rather than inventing a fourth activity kind.
+  // Log fresh answers to the heatmap/streak. Best-effort in the sense that
+  // recordActivity swallows its own failures — but it IS awaited, so it sits on
+  // the response path rather than being fire-and-forget. A domain question is an
+  // MCQ like a screening one, so it lands in the same `mcqCount` column rather
+  // than inventing a fourth activity kind.
   await recordActivity({ userId: user.id, kind: "mcq", referenceIds: newlyAnsweredIds });
 
   return NextResponse.json({ score, total, review });

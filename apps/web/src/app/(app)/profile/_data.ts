@@ -6,9 +6,11 @@ import { DAY_MS, addDays, istToday, keyOf } from "@/lib/ist";
  *  - a month-divided activity heatmap for a SELECTED calendar year (Jan–Dec),
  *    read from the pre-aggregated `ActivityDay` table (DSA + aptitude counts)
  *    bucketed by IST calendar day. A year switcher lets the user view past years.
- *  - per-section solved/total counts (DSA, Screening) split by difficulty. Domain
- *    is deliberately absent: its topics are read-only notes with no per-user
- *    completion state, so there is nothing to report.
+ *  - per-section solved/total counts (DSA, Screening, Domain) split by difficulty
+ *    where the section has one. Domain used to be absent because its topics were
+ *    read-only notes; it now carries graded practice sets (`UserDomainQuizProgress`)
+ *    that feed the same heatmap, so leaving it out meant a learner could answer
+ *    domain questions all week and see no domain progress anywhere.
  *  - current/longest streaks derived from recent activity (the denormalised User
  *    columns are not maintained yet).
  */
@@ -37,7 +39,7 @@ export type MonthBlock = {
 };
 
 export type SectionStat = {
-  key: "dsa" | "aptitude";
+  key: "dsa" | "aptitude" | "domain";
   label: string;
   solved: number;
   total: number;
@@ -92,6 +94,8 @@ export async function getProfileData(userId: string, year?: number) {
     dsaSolvedRows,
     quizTotal,
     quizSolved,
+    domainTotal,
+    domainSolved,
     firstActivity,
   ] = await Promise.all([
     // Heatmap cells for the selected window (DSA + aptitude, pre-aggregated).
@@ -114,6 +118,10 @@ export async function getProfileData(userId: string, year?: number) {
     // submitted tests. Mirrors the per-question `awarded` flag. Excludes rows
     // deactivated by a later re-attempt.
     prisma.userQuizProgress.count({ where: { userId, awarded: true, isActive: true } }),
+    // Domain practice. Counted against the CURRENT attempt only (`isActive`),
+    // matching how Screening and the domain submit route treat re-attempts.
+    prisma.domainQuestion.count(),
+    prisma.userDomainQuizProgress.count({ where: { userId, isCorrect: true, isActive: true } }),
     // Earliest recorded activity day — drives the year switcher's lower bound.
     prisma.activityDay.findFirst({
       where: { userId, count: { gt: 0 } },
@@ -220,6 +228,13 @@ export async function getProfileData(userId: string, year?: number) {
       label: "Screening",
       solved: quizSolved,
       total: quizTotal,
+      byDifficulty: null,
+    },
+    {
+      key: "domain",
+      label: "Domain",
+      solved: domainSolved,
+      total: domainTotal,
       byDifficulty: null,
     },
   ];

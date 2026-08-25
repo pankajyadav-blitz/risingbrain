@@ -22,11 +22,21 @@ type ProgressValue = {
   getTopicScore: (topicId: string) => TopicScore | undefined;
   /** The graded review for a question, or undefined if its set isn't submitted. */
   getReview: (questionId: string) => DomainReviewEntry | undefined;
-  /** Called after a successful submit to update the score + review live. */
+  /**
+   * Called after a successful submit to update the score + review live.
+   *
+   * `questionIds` is every question in the topic, not just the graded ones: a
+   * re-attempt that answers FEWER questions than the last one must clear the
+   * verdicts it no longer covers. Merging alone left them behind, so a learner who
+   * answered Q1+Q2, retook, then answered only Q1 saw Q2 still wearing its old
+   * green/red badge next to a score bar reading 1/2 — until a reload, which reads
+   * the seed and filters on `isActive`, silently "fixed" it.
+   */
   applySubmission: (
     topicId: string,
     score: TopicScore,
-    reviews: Record<string, DomainReviewEntry>
+    reviews: Record<string, DomainReviewEntry>,
+    questionIds: string[]
   ) => void;
 };
 
@@ -51,9 +61,21 @@ export function DomainProgressProvider({
   }));
 
   const applySubmission = useCallback(
-    (topicId: string, score: TopicScore, reviewEntries: Record<string, DomainReviewEntry>) => {
+    (
+      topicId: string,
+      score: TopicScore,
+      reviewEntries: Record<string, DomainReviewEntry>,
+      questionIds: string[]
+    ) => {
       setScores((prev) => ({ ...prev, [topicId]: score }));
-      setReviews((prev) => ({ ...prev, ...reviewEntries }));
+      setReviews((prev) => {
+        // Drop this topic's whole slice before re-adding, so questions left
+        // unanswered on a re-attempt lose their stale verdict instead of
+        // surviving the merge. Other topics are untouched.
+        const next = { ...prev };
+        for (const id of questionIds) delete next[id];
+        return { ...next, ...reviewEntries };
+      });
     },
     []
   );

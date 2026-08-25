@@ -139,16 +139,28 @@ async function insertQuestions(
   if (questions.length === 0) return 0;
 
   const topics = await withRetry(
-    () => prisma.domainTopic.findMany({ where: { subject: { in: subjects } }, select: { id: true, slug: true } }),
+    () =>
+      prisma.domainTopic.findMany({
+        where: { subject: { in: subjects } },
+        select: { id: true, slug: true, subject: true },
+      }),
     "load topic ids"
   );
-  const idBySlug = new Map(topics.map((t) => [t.slug, t.id]));
+  // Keyed by subject AND slug, matching `DomainTopic`'s `@@unique([subject, slug])`.
+  // Slugs are only unique WITHIN a subject — "views" already exists under both SQL
+  // and DBMS — so a slug-only map silently kept whichever row came last and
+  // attached questions to the wrong subject's topic, without tripping the
+  // unknown-slug warning below.
+  const topicKey = (subject: string, slug: string) => `${subject}\u0000${slug}`;
+  const idByKey = new Map(topics.map((t) => [topicKey(t.subject, t.slug), t.id]));
 
   const rows = [];
   for (const q of questions) {
-    const topicId = idBySlug.get(q.topicSlug);
+    const topicId = idByKey.get(topicKey(q.subject, q.topicSlug));
     if (!topicId) {
-      console.warn(`⚠️  question for unknown topic slug "${q.topicSlug}" — skipped`);
+      console.warn(
+        `⚠️  question for unknown topic "${q.subject}/${q.topicSlug}" — skipped`
+      );
       continue;
     }
     rows.push({

@@ -124,7 +124,12 @@ export function PracticeAttemptProvider({
             explanation: r.explanation ?? null,
           };
         }
-        progress?.applySubmission(topicId, { score: data.score, total: data.total }, reviewMap);
+        progress?.applySubmission(
+          topicId,
+          { score: data.score, total: data.total },
+          reviewMap,
+          questionIds
+        );
         setResult({ score: data.score, total: data.total });
         setSubmitted(true);
         // Submitting can extend the streak (today became active) — refresh the

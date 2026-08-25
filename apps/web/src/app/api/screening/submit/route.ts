@@ -66,7 +66,10 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Topic not found." }, { status: 404 });
   }
 
-  const review = questions.map((q) => {
+  // Graded over every question in the paper, because the SCORE is out of the
+  // whole set — a skipped question is a question worth zero, not one that isn't
+  // on the paper. What goes back over the wire is narrowed below.
+  const graded = questions.map((q) => {
     const ans = incoming.get(q.id);
     const selectedKey = ans?.selectedKey ?? null;
     const hintUsed = ans?.hintUsed ?? false;
@@ -84,20 +87,35 @@ export async function POST(request: Request) {
     };
   });
 
+  // A key (and its hint) is only ever disclosed for a question this learner
+  // actually answered. Returning the full set leaked the entire paper's answer key
+  // to anyone who POSTed `{ topicId, answers: [] }`, and let someone answer one
+  // question and read the rest of the keys out of DevTools. The client already
+  // discards the unanswered entries (paper-attempt.tsx), so nothing visible changes.
+  const review = graded.filter((r) => r.selectedKey !== null);
+
+  // Nothing answered (or nothing that belongs to this paper). The submit button is
+  // disabled at zero, so this is never a real attempt — and recording it would
+  // overwrite a learner's stored mark with 0/total.
+  if (review.length === 0) {
+    return NextResponse.json(
+      { error: "Answer at least one question before submitting." },
+      { status: 400 }
+    );
+  }
+
   const total = questions.length;
-  const score = review.reduce((s, r) => s + (r.awarded ? 1 : 0), 0);
+  const score = graded.reduce((s, r) => s + (r.awarded ? 1 : 0), 0);
 
   // Rows only for answered questions (skips don't pollute the heatmap/streak).
-  const answeredRows = review
-    .filter((r) => r.selectedKey !== null)
-    .map((r) => ({
-      userId: user.id,
-      questionId: r.questionId,
-      selectedKey: r.selectedKey as string,
-      isCorrect: r.isCorrect,
-      hintUsed: r.hintUsed,
-      awarded: r.awarded,
-    }));
+  const answeredRows = review.map((r) => ({
+    userId: user.id,
+    questionId: r.questionId,
+    selectedKey: r.selectedKey as string,
+    isCorrect: r.isCorrect,
+    hintUsed: r.hintUsed,
+    awarded: r.awarded,
+  }));
 
   const topicQuestionIds = questions.map((q) => q.id);
   const answeredIds = answeredRows.map((r) => r.questionId);
@@ -148,7 +166,9 @@ export async function POST(request: Request) {
     }),
   ]);
 
-  // Log fresh answers to the heatmap/streak (best-effort, never blocks the response).
+  // Log fresh answers to the heatmap/streak. Best-effort in the sense that
+  // recordActivity swallows its own failures — but it IS awaited, so it sits on
+  // the response path rather than being fire-and-forget.
   await recordActivity({ userId: user.id, kind: "mcq", referenceIds: newlyAnsweredIds });
 
   return NextResponse.json({ score, total, review });

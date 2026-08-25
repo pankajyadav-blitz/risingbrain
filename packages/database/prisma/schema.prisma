@@ -105,8 +105,10 @@ enum PublishStatus {
   ARCHIVED
 }
 
-// Domain (SQL/DBMS/OS/CN/OOPS) topics are read-only notes with no completion
-// state, so they never produce a submission — no member for them here.
+// No DOMAIN member: a Domain practice question is an MCQ like a Screening one, so
+// `/api/domain/submit` logs it as MCQ rather than splitting the same kind of event
+// across two enum values (and two heatmap columns). Domain topics DO produce
+// submissions — they stopped being read-only notes when practice sets landed.
 enum SubmissionType {
   DSA_PROBLEM
   MCQ
@@ -187,6 +189,17 @@ model Session {
   userId      String
   // sha256 of the current (rotating) refresh token. Never store the raw token.
   refreshHash String    @unique
+  // sha256 of the refresh token this row's current one REPLACED, honoured until
+  // `prevRefreshExpiresAt`. Rotation-on-every-use races with itself — two tabs, or
+  // the edge proxy's refresh bounce landing next to a SessionKeepAlive ping, can
+  // present the same token within a few hundred ms. Without a grace window the
+  // loser resolves to "unknown token" and is hard logged out.
+  //
+  // This USED to live only in Redis (`rtprev:{hash}`), which meant a Redis outage
+  // silently removed the protection and turned every refresh race into a logout.
+  // Keeping it on the authoritative row makes the grace window survive the outage.
+  prevRefreshHash      String?   @unique
+  prevRefreshExpiresAt DateTime?
   userAgent   String?
   ip          String?
   createdAt   DateTime  @default(now())

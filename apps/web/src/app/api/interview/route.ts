@@ -3,7 +3,7 @@ import { prisma, InterviewVerdict, Difficulty } from "@/lib/db";
 import { getCurrentUser } from "@/lib/auth/current-user";
 import { checkWriteLimit } from "@/lib/auth/rate-limit";
 import { sanitizeRichText } from "@/lib/sanitize";
-import { htmlToMarkdown, looksLikeHtml } from "@/lib/html-to-markdown";
+import { htmlToMarkdown, containsHtmlMarkup } from "@/lib/html-to-markdown";
 
 const VERDICTS = new Set<string>(Object.values(InterviewVerdict));
 const DIFFICULTIES = new Set<string>(Object.values(Difficulty));
@@ -68,7 +68,7 @@ export async function POST(req: Request) {
   // ones. A body that already is markdown is stored untouched: the render path
   // never enables raw HTML, and turndown would escape markdown's own syntax
   // (`**bold**` → `\*\*bold\*\*`).
-  const markdownBody = looksLikeHtml(body)
+  const markdownBody = containsHtmlMarkup(body)
     ? htmlToMarkdown(sanitizeRichText(body))
     : body;
 

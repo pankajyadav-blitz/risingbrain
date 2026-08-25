@@ -11,8 +11,27 @@ function fail(reason: string) {
   return NextResponse.redirect(new URL(`/login?error=${reason}`, env.APP_URL));
 }
 
-/** OAuth redirect target: validate state, resolve the user, start a session. */
+/**
+ * OAuth redirect target: validate state, resolve the user, start a session.
+ *
+ * The whole body is guarded. Everything after the provider handshake talks to
+ * Postgres — resolving the user, linking the identity, creating the session — and
+ * none of it was wrapped, so any database problem surfaced as a bare HTTP 500 on
+ * the callback URL, with nothing logged and the user staring at a browser error
+ * page mid-sign-in. That is exactly what a rotated database password produced.
+ * A failure here is now logged (so it is diagnosable at all) and lands the user
+ * back on /login with a reason, like every other failure in this handler.
+ */
 export async function GET(req: Request, ctx: { params: Promise<{ provider: string }> }) {
+  try {
+    return await handleCallback(req, ctx);
+  } catch (err) {
+    console.error("[auth] oauth callback failed:", err);
+    return fail("oauth_failed");
+  }
+}
+
+async function handleCallback(req: Request, ctx: { params: Promise<{ provider: string }> }) {
   const { provider } = await ctx.params;
   if (!PROVIDERS.includes(provider as OAuthProvider)) return fail("unknown_provider");
   const p = provider as OAuthProvider;

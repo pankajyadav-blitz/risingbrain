@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { forgotPasswordSchema } from "@/lib/auth/validation";
-import { issueOtp } from "@/lib/auth/otp";
+import { issueOtp, OtpStoreUnavailableError } from "@/lib/auth/otp";
 import { limitAuth, clientId } from "@/lib/auth/rate-limit";
 
 /**
@@ -39,7 +39,16 @@ export async function POST(req: Request) {
 
   try {
     await issueOtp({ purpose: "reset", email });
-  } catch {
+  } catch (err) {
+    // Two different failures wearing one message before: the verification store
+    // being unreachable is not "the email bounced", and 502 invited the user to
+    // retry a mailer that was working fine.
+    if (err instanceof OtpStoreUnavailableError) {
+      return NextResponse.json(
+        { error: "Verification is temporarily unavailable. Please try again in a moment." },
+        { status: 503 }
+      );
+    }
     return NextResponse.json(
       { error: "Couldn't send the reset email. Please try again." },
       { status: 502 }

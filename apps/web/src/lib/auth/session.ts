@@ -8,7 +8,10 @@
  * best-effort and every read falls back to Postgres, so login/refresh keep working
  * while Redis is down. Reuse detection is delegated to the DB (`refreshHash` is
  * `@unique` and rotates on every use), so degrading to the DB path does not weaken
- * it — a replayed token matches no live row either way.
+ * it — a replayed token matches no live row either way. The rotation grace window
+ * is mirrored onto the row for the same reason (see `rtPrevKey` below): anything
+ * that exists ONLY in Redis is a feature that silently switches off during an
+ * outage, and a grace window that switches off is a mass logout.
  */
 import { prisma } from "@/lib/db";
 import { redis, redisTry } from "./redis";
@@ -22,8 +25,13 @@ const rtKey = (hash: string) => `rt:${hash}`;
 /**
  * Just-rotated refresh hashes, kept for REFRESH_GRACE_SECONDS so two requests that
  * race with the same token both succeed instead of one being treated as a replay.
- * Redis-only: a race *during a Redis outage* still falls through to the strict DB
- * path and forces a re-login, which is rare enough not to warrant a schema column.
+ *
+ * This is the FAST path only. The same window is mirrored onto the session row
+ * (`prevRefreshHash` / `prevRefreshExpiresAt`), because a Redis-only grace window
+ * disappears exactly when it is needed most: with Redis down every refresh race
+ * fell through to the strict DB lookup, found nothing, and hard logged the user
+ * out — and races are guaranteed, since the edge proxy's refresh bounce runs
+ * concurrently with SessionKeepAlive's ping.
  */
 const rtPrevKey = (hash: string) => `rtprev:${hash}`;
 
@@ -37,7 +45,17 @@ interface RedisSession {
 
 export interface IssuedTokens {
   accessToken: string;
-  refreshToken: string;
+  /**
+   * The new refresh token, or `null` for "leave the refresh cookie alone".
+   *
+   * `null` is returned when a refresh lands inside the rotation grace window —
+   * i.e. a concurrent request already rotated this session. That request's token
+   * is the live one and its `Set-Cookie` is in flight to the same browser, so
+   * minting yet another token here would be a race over which one the jar ends up
+   * with. Writing no refresh cookie makes the outcome order-independent: whatever
+   * the winner set is what survives. See `rotateSession`.
+   */
+  refreshToken: string | null;
   sid: string;
   /** Mirrors the session's persistence choice so cookie helpers can honor it. */
   persistent: boolean;
@@ -147,8 +165,120 @@ export async function createSession(params: {
 }
 
 /**
+ * A Postgres read whose FAILURE must never be mistaken for "no such session".
+ *
+ * Everything in `rotateSession` hinges on that distinction: a completed query
+ * returning nothing means the token is dead (clear cookies, sign in again), while
+ * an exception means we simply could not ask. Letting the exception escape raw
+ * turns the refresh endpoint into a 500, and a 500 is what the client and the
+ * proxy read as "broken" rather than "retry shortly".
+ *
+ * This is not hypothetical: a rotated database password meant the running
+ * container could not authenticate at all, and every refresh answered 500 —
+ * indistinguishable, from the outside, from the session being gone.
+ *
+ * One retry first, because a dropped pooled socket (Neon suspends on idle)
+ * usually succeeds immediately on a fresh connection.
+ */
+async function dbRead<T>(op: () => Promise<T>, what: string): Promise<T> {
+  for (let attempt = 1; attempt <= 2; attempt++) {
+    try {
+      return await op();
+    } catch (err) {
+      if (attempt === 2) {
+        console.error(`[auth] session lookup (${what}) failed:`, err);
+        throw new SessionUnavailableError(err);
+      }
+      await new Promise((r) => setTimeout(r, 150));
+    }
+  }
+  throw new SessionUnavailableError(); // unreachable
+}
+
+/**
+ * Was this token rotated away moments ago by a concurrent request? A burst of
+ * refreshes from one navigation legitimately presents the same token more than
+ * once, and those callers must be served rather than logged out.
+ *
+ * Redis first (cheap), then Postgres — the DB copy is what makes this work during
+ * a Redis outage, which is precisely when refresh races are most likely to be fatal.
+ */
+async function resolveGrace(
+  presentedHash: string
+): Promise<{ sid: string; data: RedisSession } | null> {
+  const graceSid = await redisTry(() => redis.get(rtPrevKey(presentedHash)));
+  if (graceSid) {
+    const raw = await redisTry(() => redis.get(sessionKey(graceSid)));
+    if (raw) {
+      const cached = JSON.parse(raw) as RedisSession;
+      return { sid: graceSid, data: { ...cached, persistent: cached.persistent ?? true } };
+    }
+  }
+
+  const now = new Date();
+  const row = await dbRead(
+    () =>
+      prisma.session.findFirst({
+        where: {
+          prevRefreshHash: presentedHash,
+          prevRefreshExpiresAt: { gt: now },
+          revokedAt: null,
+          expiresAt: { gt: now },
+        },
+        select: { id: true, userId: true, refreshHash: true, user: { select: { role: true } } },
+      }),
+    "grace window"
+  );
+  if (!row) return null;
+
+  return {
+    sid: row.id,
+    data: {
+      userId: row.userId,
+      role: row.user.role as AppRole,
+      refreshHash: row.refreshHash,
+      persistent: true,
+    },
+  };
+}
+
+/**
+ * The answer for a caller whose token was already rotated away: a fresh access
+ * token and NO refresh cookie, so the winner's cookie is what the browser keeps.
+ */
+async function serveWithinGrace(
+  sid: string,
+  data: RedisSession
+): Promise<IssuedTokens> {
+  console.warn(`[auth] refresh race on session ${sid} — serving access token within grace window`);
+  // Keep the session's activity timestamp honest without touching the hash.
+  // Best-effort: this is a nicety, and failing it must not fail the refresh.
+  await prisma.session
+    .updateMany({ where: { id: sid, revokedAt: null }, data: { lastUsedAt: new Date() } })
+    .catch(() => undefined);
+  const accessToken = await signAccessToken({ sub: data.userId, role: data.role, sid });
+  return { accessToken, refreshToken: null, sid, persistent: data.persistent };
+}
+
+/**
  * Validate + rotate a refresh token. Returns fresh tokens, or null if the token
  * is invalid / expired / reused (caller should clear cookies and force re-login).
+ *
+ * CONCURRENCY. Refreshes are not occasional — they arrive in bursts. `/domain`
+ * and `/screening` are parallel routes, so ONE navigation with a lapsed access
+ * token sends the page request and the `@nav` slot request through the edge proxy
+ * at the same instant, and both bounce here; SessionKeepAlive can add a third.
+ * Only the first can rotate; the rest land in the grace window, and what they do
+ * there decides whether the session survives:
+ *
+ *   - Re-rotating (what this used to do) makes every burst mint N tokens whose
+ *     `Set-Cookie` headers race. The jar keeps one arbitrary winner and the rest
+ *     are orphaned, so each burst pushes the session another generation along —
+ *     and the grace index only remembers ONE generation. A 3-way burst can leave
+ *     the browser holding a token nothing recognises: a hard logout.
+ *   - Issuing an access token and NOT touching the refresh cookie (what it does
+ *     now) is order-independent. Exactly one token is ever live, whichever
+ *     response lands last, and a burst of any size converges.
  */
 export async function rotateSession(
   rawRefreshToken: string,
@@ -160,21 +290,29 @@ export async function rotateSession(
   let sid: string | null = null;
   let data: RedisSession | null = null;
   let fromRedis = false;
+  /** Resolved through the grace window → a concurrent request already rotated. */
+  let viaGrace = false;
 
   const cachedSid = await redisTry(() => redis.get(rtKey(presentedHash)));
   if (cachedSid) {
     const raw = await redisTry(() => redis.get(sessionKey(cachedSid)));
     if (raw) {
       const cached = JSON.parse(raw) as RedisSession;
-      // Defense in depth: the stored hash must match the presented one.
+      // The cached hash must match the presented one. A mismatch means the cache
+      // is INCONSISTENT (a rotation whose `rt:` retire landed but whose session
+      // write didn't, say) — not proof of token theft, and the cache is not the
+      // authority on that question. Drop the stale pointer and let the Postgres
+      // path below decide; a genuinely replayed token matches no live row there
+      // and is rejected anyway. Revoking here instead used to log a user out over
+      // a half-applied Redis pipeline.
       if (cached.refreshHash !== presentedHash) {
-        await revokeSession(cachedSid);
-        return null;
+        await redisTry(() => redis.del(rtKey(presentedHash)));
+      } else {
+        sid = cachedSid;
+        // Sessions created before "remember me" existed have no flag → persistent.
+        data = { ...cached, persistent: cached.persistent ?? true };
+        fromRedis = true;
       }
-      sid = cachedSid;
-      // Sessions created before "remember me" existed have no flag → persistent.
-      data = { ...cached, persistent: cached.persistent ?? true };
-      fromRedis = true;
     }
   }
 
@@ -182,16 +320,20 @@ export async function rotateSession(
     // Redis missed or was unreachable. The DB row is authoritative, so a cache
     // gap can't log anyone out; a genuinely reused/rotated token still finds no
     // live row here and is correctly rejected below.
-    const row = await prisma.session.findUnique({
-      where: { refreshHash: presentedHash },
-      select: {
-        id: true,
-        userId: true,
-        revokedAt: true,
-        expiresAt: true,
-        user: { select: { role: true } },
-      },
-    });
+    const row = await dbRead(
+      () =>
+        prisma.session.findUnique({
+          where: { refreshHash: presentedHash },
+          select: {
+            id: true,
+            userId: true,
+            revokedAt: true,
+            expiresAt: true,
+            user: { select: { role: true } },
+          },
+        }),
+      "refresh hash"
+    );
     if (row && !row.revokedAt && row.expiresAt > new Date()) {
       sid = row.id;
       data = {
@@ -206,31 +348,35 @@ export async function rotateSession(
   }
 
   if (!data) {
-    // Last chance: was this token rotated away moments ago by a concurrent
-    // request? Two tabs refreshing at once (or a proxy bounce landing next to a
-    // SessionKeepAlive ping) legitimately present the same token. Re-rotate for
-    // that session rather than logging a live user out. The DB row below is still
-    // the authority — a grace hit on a revoked session matches zero rows there.
-    const graceSid = await redisTry(() => redis.get(rtPrevKey(presentedHash)));
-    if (graceSid) {
-      const raw = await redisTry(() => redis.get(sessionKey(graceSid)));
-      if (raw) {
-        const cached = JSON.parse(raw) as RedisSession;
-        console.warn(`[auth] refresh race on session ${graceSid} — re-rotating within grace window`);
-        sid = graceSid;
-        data = { ...cached, persistent: cached.persistent ?? true };
-        fromRedis = true;
-      }
+    const graced = await resolveGrace(presentedHash);
+    if (graced) {
+      sid = graced.sid;
+      data = graced.data;
+      viaGrace = true;
     }
   }
 
   if (!data) return null;
 
+  // --- Grace hit: serve an access token, leave the refresh token alone. -------
+  // Another request already rotated this session microseconds ago and its
+  // `Set-Cookie` is on its way to the same browser. Minting a competing token
+  // here is what turned a harmless burst into a logout (see the header comment).
+  if (viaGrace) return serveWithinGrace(sid!, data);
+
   // --- Rotate: mint a new refresh token, swap the rt index, update the row. ---
   const newRefreshToken = generateRefreshToken();
   const newHash = await sha256(newRefreshToken);
 
-  // `updateMany` with `revokedAt: null` makes the DB the final authority: a
+  // COMPARE-AND-SWAP. `refreshHash: presentedHash` in the WHERE is what makes a
+  // burst safe: Postgres locks the row, so of N concurrent rotations exactly ONE
+  // sees the hash it presented and updates; the rest match zero rows and fall into
+  // the grace path below. Without it, all N read the same hash, all N wrote, and
+  // all N returned a different token — the browser kept one arbitrarily and the
+  // others were orphaned. The row's `prevRefreshHash` then pointed at the ORIGINAL
+  // token, so an orphaned one matched nothing on its next use: the hard logout.
+  //
+  // `revokedAt: null` makes the DB the final authority for the other case: a
   // session revoked while Redis was down (so its cache entry lingered) matches
   // zero rows here and is rejected even on the Redis hit path.
   //
@@ -248,9 +394,14 @@ export async function rotateSession(
   for (let attempt = 1; attempt <= 3; attempt++) {
     try {
       const { count } = await prisma.session.updateMany({
-        where: { id: sid!, revokedAt: null },
+        where: { id: sid!, refreshHash: presentedHash, revokedAt: null },
         data: {
           refreshHash: newHash,
+          // Retire the superseded hash into the DURABLE grace window, mirroring
+          // the Redis `rtprev:` write below. This is the copy that keeps refresh
+          // races survivable while Redis is unreachable.
+          prevRefreshHash: presentedHash,
+          prevRefreshExpiresAt: new Date(Date.now() + REFRESH_GRACE_SECONDS * 1000),
           lastUsedAt: new Date(),
           expiresAt: new Date(Date.now() + REFRESH_TTL_SECONDS * 1000),
           userAgent: meta?.userAgent ?? undefined,
@@ -280,28 +431,30 @@ export async function rotateSession(
     // about the session, so surface it as "unavailable" — the caller keeps the
     // user's cookies and retries, instead of destroying a session that was fine.
     if (dbFailed) throw new SessionUnavailableError(lastErr);
+
+    // Zero rows means one of two very different things: we LOST the compare-and-swap
+    // to a concurrent refresh, or the session is genuinely gone. Ask the grace
+    // window before concluding the latter — losing a race is the common case under
+    // load, and treating it as "session invalid" is the logout this all exists to
+    // prevent.
+    const graced = await resolveGrace(presentedHash);
+    if (graced) return serveWithinGrace(graced.sid, graced.data);
+
     await revokeSession(sid!);
     return null;
   }
 
-  // Retire the superseded hashes into the short grace index instead of deleting
-  // them outright, so a request already in flight with one re-rotates instead of
-  // being logged out.
-  //
-  // BOTH hashes matter. They're identical on the normal path, but when we got here
-  // through the grace window they differ: `presentedHash` is the token this caller
-  // brought, and `data.refreshHash` is the one the request that beat us installed.
-  // Retiring only the former would leave `rt:{data.refreshHash}` pointing at a
-  // session whose stored hash has moved on — and that inconsistency is exactly what
-  // the mismatch branch above treats as token reuse, killing the session.
-  const retired = [...new Set([presentedHash, data.refreshHash])];
-  await redisTry(() => {
-    const pipeline = redis.multi();
-    for (const hash of retired) {
-      pipeline.del(rtKey(hash)).set(rtPrevKey(hash), sid!, "EX", REFRESH_GRACE_SECONDS);
-    }
-    return pipeline.exec();
-  });
+  // Retire the superseded hash into the short grace index instead of deleting it
+  // outright, so requests already in flight with it are served rather than logged
+  // out. Ordered before `writeRedisSession` so there is no instant where the old
+  // hash is gone and the new one isn't yet indexed.
+  await redisTry(() =>
+    redis
+      .multi()
+      .del(rtKey(presentedHash))
+      .set(rtPrevKey(presentedHash), sid!, "EX", REFRESH_GRACE_SECONDS)
+      .exec()
+  );
   await writeRedisSession(sid!, { ...data, refreshHash: newHash });
 
   const accessToken = await signAccessToken({ sub: data.userId, role: data.role, sid: sid! });

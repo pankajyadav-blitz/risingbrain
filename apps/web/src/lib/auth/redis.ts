@@ -37,13 +37,28 @@ export const redis =
     lazyConnect: true,
   });
 
-// ioredis emits 'error' on every failed reconnect. Without a listener Node
-// treats it as an unhandled error event; with one we log quietly and let the
-// retryStrategy keep working.
+// ioredis emits 'error' on EVERY failed reconnect. Without a listener Node treats
+// it as an unhandled error event; with one we log and let the retryStrategy keep
+// working. Throttled, because `retryStrategy` never gives up: an outage of any
+// length would otherwise write a line every few seconds forever, drowning the
+// logs you actually need to read while diagnosing that outage.
+const ERROR_LOG_INTERVAL_MS = 60_000;
+let lastErrorLoggedAt = 0;
+let suppressedErrors = 0;
+
 redis.on("error", (err: Error & { code?: string }) => {
-  if (process.env.NODE_ENV !== "production") {
-    console.warn("[redis] connection error:", err.code ?? err.message);
-  }
+  suppressedErrors += 1;
+  const now = Date.now();
+  if (now - lastErrorLoggedAt < ERROR_LOG_INTERVAL_MS) return;
+  const skipped = suppressedErrors - 1;
+  lastErrorLoggedAt = now;
+  suppressedErrors = 0;
+  // Logged in production too: "Redis is down" is exactly the kind of thing that
+  // must not be invisible just because the app degrades gracefully around it.
+  console.warn(
+    `[redis] connection error: ${err.code ?? err.message}` +
+      (skipped > 0 ? ` (${skipped} similar suppressed in the last minute)` : "")
+  );
 });
 
 if (process.env.NODE_ENV !== "production") {
@@ -60,12 +75,22 @@ const CIRCUIT_COOLDOWN_MS = 5_000;
 let circuitOpenedAt = 0;
 
 /**
- * Run a Redis op that must never take auth down with it. Returns `null` on any
- * failure — unreachable, timed out, or a genuine cache miss. Callers must treat
- * `null` as "no cached answer" and fall back to Postgres.
+ * Outcome of a bounded Redis call. `ok: false` means the STORE failed — it says
+ * nothing about whether the key exists. Keeping the two apart matters wherever
+ * Redis is the only copy of the data (see `otp.ts`): telling a user their correct
+ * verification code is wrong, because the lookup never reached Redis, is a much
+ * worse failure than telling them to try again in a moment.
  */
-export async function redisTry<T>(op: () => Promise<T>): Promise<T | null> {
-  if (circuitOpenedAt && Date.now() - circuitOpenedAt < CIRCUIT_COOLDOWN_MS) return null;
+export type RedisResult<T> = { ok: true; value: T } | { ok: false; error: unknown };
+
+/**
+ * Run a Redis op under the timeout + circuit breaker, reporting whether the store
+ * was reachable. Never throws.
+ */
+export async function redisAttempt<T>(op: () => Promise<T>): Promise<RedisResult<T>> {
+  if (circuitOpenedAt && Date.now() - circuitOpenedAt < CIRCUIT_COOLDOWN_MS) {
+    return { ok: false, error: new Error("redis circuit open") };
+  }
 
   try {
     // `lazyConnect` + `enableOfflineQueue: false` means a command issued before
@@ -82,12 +107,25 @@ export async function redisTry<T>(op: () => Promise<T>): Promise<T | null> {
       ),
     ]);
     circuitOpenedAt = 0; // healthy again
-    return value;
-  } catch (err) {
+    return { ok: true, value };
+  } catch (error) {
     circuitOpenedAt = Date.now();
     if (process.env.NODE_ENV !== "production") {
-      console.warn("[auth] redis unavailable, using database fallback:", (err as Error).message);
+      console.warn("[auth] redis unavailable, using fallback:", (error as Error).message);
     }
-    return null;
+    return { ok: false, error };
   }
+}
+
+/**
+ * Run a Redis op that must never take auth down with it. Returns `null` on any
+ * failure — unreachable, timed out, or a genuine cache miss. Callers must treat
+ * `null` as "no cached answer" and fall back to Postgres.
+ *
+ * Use this where Postgres holds the same data (sessions, rate limits). Where Redis
+ * is the ONLY copy, use `redisAttempt` instead so an outage isn't misread as a miss.
+ */
+export async function redisTry<T>(op: () => Promise<T>): Promise<T | null> {
+  const result = await redisAttempt(op);
+  return result.ok ? result.value : null;
 }

@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { resetPasswordSchema } from "@/lib/auth/validation";
 import { hashPassword } from "@/lib/auth/password";
-import { consumeResetToken } from "@/lib/auth/otp";
+import { consumeResetToken, OtpStoreUnavailableError } from "@/lib/auth/otp";
 import { revokeAllUserSessions } from "@/lib/auth/session";
 import { limitAuth, clientId } from "@/lib/auth/rate-limit";
 
@@ -29,7 +29,20 @@ export async function POST(req: Request) {
   }
   const { email, token, password } = parsed.data;
 
-  const tokenEmail = await consumeResetToken(token);
+  let tokenEmail: string | null;
+  try {
+    tokenEmail = await consumeResetToken(token);
+  } catch (err) {
+    if (err instanceof OtpStoreUnavailableError) {
+      // Couldn't reach the token store. Saying "invalid or expired" would send the
+      // user back to restart a flow that was never broken.
+      return NextResponse.json(
+        { error: "Password reset is temporarily unavailable. Please try again in a moment." },
+        { status: 503 }
+      );
+    }
+    throw err;
+  }
   if (!tokenEmail || tokenEmail !== email) {
     return NextResponse.json(
       { error: "Your reset link is invalid or has expired. Please start again." },
