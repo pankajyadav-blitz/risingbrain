@@ -3,13 +3,14 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, Layers, MessageCircle } from "lucide-react";
 import { getCurrentUser } from "@/lib/auth/current-user";
-import { prisma } from "@/lib/db";
+import { prisma, PublishStatus } from "@/lib/db";
 import { JsonLd } from "@/components/structured-data";
 import { SITE_NAME, absoluteUrl } from "@/lib/seo";
 import { Container } from "@/components/marketing/primitives";
 import { Avatar } from "@/components/marketing/primitives";
 import {
   DIFFICULTY_META,
+  REVIEW_STATUS_META,
   VERDICT_META,
   monogram,
   timeAgo,
@@ -20,9 +21,14 @@ import { ExperienceBody } from "../_components/experience-body";
 import { OwnerActions } from "../_components/owner-actions";
 import type { CommentItem } from "../_lib/types";
 
+/**
+ * The post, whatever state it is in — who may SEE it is decided by the caller.
+ * A post sitting in the review queue still needs a page: its author has to be
+ * able to read back what they submitted, and act on a moderator's note.
+ */
 async function getExperience(id: string) {
-  return prisma.interviewExperience.findFirst({
-    where: { id, status: "PUBLISHED" },
+  return prisma.interviewExperience.findUnique({
+    where: { id },
     include: {
       // `authorId` rides along on the row already; it is what decides whether the
       // edit/delete controls render.
@@ -46,11 +52,16 @@ export async function generateMetadata({
   params: Promise<{ id: string }>;
 }): Promise<Metadata> {
   const { id } = await params;
-  const exp = await prisma.interviewExperience.findFirst({
-    where: { id, status: "PUBLISHED" },
-    select: { title: true, company: true, role: true, excerpt: true, tags: true, createdAt: true, updatedAt: true },
+  const exp = await prisma.interviewExperience.findUnique({
+    where: { id },
+    select: { title: true, company: true, role: true, excerpt: true, tags: true, status: true, createdAt: true, updatedAt: true },
   });
-  if (!exp) return { title: "Interview experience" };
+  // Unreviewed, rejected and removed posts get a bare, `noindex` head: the page
+  // exists for its author, not for search engines, and describing it in metadata
+  // would leak an unapproved title into link previews.
+  if (!exp || exp.status !== PublishStatus.PUBLISHED) {
+    return { title: "Interview experience", robots: { index: false, follow: false } };
+  }
   const description = exp.excerpt ?? `${exp.company} · ${exp.role} interview experience.`;
   const url = `/interview/${id}`;
   return {
@@ -84,10 +95,20 @@ export default async function InterviewDetailPage({
 
   if (!exp) notFound();
 
-  const signedIn = Boolean(current);
   const isAuthor = current?.id === exp.authorId;
+  const isAdmin = current?.role === "ADMIN";
+  const published = exp.status === PublishStatus.PUBLISHED;
+  // The moderation gate. A post that has not been approved is readable only by
+  // the person who wrote it and by the moderators who rule on it; to everyone
+  // else it does not exist — the same 404 an unknown id gets, so the URL can't
+  // be used to confirm that a queued post is there.
+  if (!published && !isAuthor && !isAdmin) notFound();
+
+  const signedIn = Boolean(current);
+  const review = REVIEW_STATUS_META[exp.status];
+  const ReviewIcon = review.icon;
   let liked = false;
-  if (current) {
+  if (current && published) {
     const like = await prisma.interviewLike.findUnique({
       where: {
         userId_experienceId: { userId: current.id, experienceId: exp.id },
@@ -124,7 +145,9 @@ export default async function InterviewDetailPage({
 
   return (
     <main className="flex-1">
-      <JsonLd data={articleLd} />
+      {/* Structured data describes public content — a post nobody outside this
+          page can read has none to describe. */}
+      {published && <JsonLd data={articleLd} />}
       <Container>
         <article className="mx-auto max-w-3xl py-10 sm:py-14">
           <Link
@@ -133,6 +156,29 @@ export default async function InterviewDetailPage({
           >
             <ArrowLeft className="h-4 w-4" /> All experiences
           </Link>
+
+          {/* Moderation banner — only ever rendered for the author or an admin,
+              since nobody else can reach a non-published post. It explains where
+              the write-up stands and, on a rejection, what to fix. */}
+          {!published && (
+            <div className="glass animate-in mb-5 rounded-3xl p-5">
+              <div className="flex flex-wrap items-center gap-3">
+                <span
+                  className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold ${review.pill}`}
+                >
+                  <ReviewIcon className="h-4 w-4" />
+                  {review.label}
+                </span>
+                <p className="min-w-0 flex-1 text-sm leading-relaxed text-muted">{review.blurb}</p>
+              </div>
+              {exp.reviewNote && (
+                <p className="mt-3 rounded-2xl bg-surface-2/60 px-4 py-3 text-sm leading-relaxed text-foreground">
+                  <span className="font-medium text-muted">Moderator note: </span>
+                  “{exp.reviewNote}”
+                </p>
+              )}
+            </div>
+          )}
 
           {/* Header */}
           <header className="glass animate-in rounded-3xl p-6 sm:p-8">
@@ -213,27 +259,33 @@ export default async function InterviewDetailPage({
           {/* Body */}
           <ExperienceBody body={exp.body} />
 
-          {/* Like bar */}
-          <div className="mt-8 flex items-center gap-3 border-t border-border pt-6">
-            <LikeButton
-              experienceId={exp.id}
-              initialLiked={liked}
-              initialCount={exp.likeCount}
-              signedIn={signedIn}
-              size="lg"
-            />
-            <span className="glass-pill inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-sm text-muted">
-              <MessageCircle className="h-4 w-4" />
-              <span className="tabular-nums">{comments.length}</span>
-              {comments.length === 1 ? "comment" : "comments"}
-            </span>
-          </div>
+          {/* Like bar + replies. Both endpoints 404 on an unpublished post (a
+              queued write-up has no public audience yet), so the controls stay
+              out of the author's preview rather than sitting there dead. */}
+          {published && (
+            <>
+              <div className="mt-8 flex items-center gap-3 border-t border-border pt-6">
+                <LikeButton
+                  experienceId={exp.id}
+                  initialLiked={liked}
+                  initialCount={exp.likeCount}
+                  signedIn={signedIn}
+                  size="lg"
+                />
+                <span className="glass-pill inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-sm text-muted">
+                  <MessageCircle className="h-4 w-4" />
+                  <span className="tabular-nums">{comments.length}</span>
+                  {comments.length === 1 ? "comment" : "comments"}
+                </span>
+              </div>
 
-          <Comments
-            experienceId={exp.id}
-            initialComments={comments}
-            signedIn={signedIn}
-          />
+              <Comments
+                experienceId={exp.id}
+                initialComments={comments}
+                signedIn={signedIn}
+              />
+            </>
+          )}
         </article>
       </Container>
     </main>

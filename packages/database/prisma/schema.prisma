@@ -99,9 +99,20 @@ enum InterviewVerdict {
   PENDING
 }
 
+// The moderation lifecycle of a user-authored post. Only PUBLISHED is publicly
+// readable; everything else is visible to its author and to admins.
+//
+//   DRAFT          reserved (nothing writes it yet)
+//   PENDING_REVIEW submitted, waiting in the admin approval queue  ← default
+//   PUBLISHED      approved by an admin; live on the feed
+//   REJECTED       turned down; the author sees `reviewNote` and can resubmit
+//   ARCHIVED       removed (author-deleted or admin-archived); a tombstone that
+//                  keeps other people's replies instead of cascading them away
 enum PublishStatus {
   DRAFT
+  PENDING_REVIEW
   PUBLISHED
+  REJECTED
   ARCHIVED
 }
 
@@ -158,7 +169,10 @@ model User {
   submissions       Submission[]
   activityDays      ActivityDay[]
   enrollments       Enrollment[]
-  interviews        InterviewExperience[]
+  interviews        InterviewExperience[] @relation("InterviewAuthor")
+  // Posts this user moderated. Only ever non-empty for admins; it exists so a
+  // decision on the approval queue is attributable to whoever made it.
+  interviewReviews  InterviewExperience[] @relation("InterviewReviewer")
   interviewLikes    InterviewLike[]
   interviewComments InterviewComment[]
 
@@ -677,14 +691,30 @@ model InterviewExperience {
   excerpt     String?
   body        String // markdown
   tags        String[]
-  status      PublishStatus    @default(PUBLISHED)
+  // Submissions land in the approval queue, NOT on the feed: anyone with an
+  // account can post here, so every write-up is admin-reviewed before it is
+  // publicly readable. An edit sends the row back to PENDING_REVIEW (see
+  // `PATCH /api/interview/[id]`) — otherwise "get approved, then swap the body"
+  // would be a trivial way around the review.
+  status      PublishStatus    @default(PENDING_REVIEW)
   likeCount   Int              @default(0) // denormalized; InterviewLike is truth
+
+  // --- moderation trail (null until an admin has ruled on the row) ---
+  reviewedAt   DateTime?
+  reviewedById String?
+  // Why it was rejected. Shown to the AUTHOR on their own post, so it is written
+  // as feedback ("add the round-by-round questions"), not an internal note.
+  reviewNote   String?
+
   createdAt   DateTime         @default(now())
   updatedAt   DateTime         @updatedAt
 
-  author   User               @relation(fields: [authorId], references: [id], onDelete: Cascade)
-  likes    InterviewLike[]
-  comments InterviewComment[]
+  author     User               @relation("InterviewAuthor", fields: [authorId], references: [id], onDelete: Cascade)
+  // SetNull, not Cascade: deleting an admin account must not delete the posts
+  // they once approved.
+  reviewedBy User?              @relation("InterviewReviewer", fields: [reviewedById], references: [id], onDelete: SetNull)
+  likes      InterviewLike[]
+  comments   InterviewComment[]
 
   // Browse/feed access paths. The list is always filtered by `status` and then
   // sorted, so each index is a (status, …filter, …sortkey) composite that lets
@@ -694,7 +724,10 @@ model InterviewExperience {
   @@index([status, likeCount(sort: Desc), createdAt(sort: Desc)]) // "Top" sort
   @@index([status, verdict, createdAt(sort: Desc)]) // verdict tab + Newest
   @@index([tags], type: Gin) // tag membership search (`tags has …`)
-  @@index([authorId])
+  // The admin queue reads one status oldest-first; the (status, createdAt) index
+  // above serves it by scanning the same range forwards.
+  @@index([authorId, status]) // "my submissions" strip on /interview
+  @@index([reviewedById])
   @@index([company])
   @@map("interview_experiences")
 }

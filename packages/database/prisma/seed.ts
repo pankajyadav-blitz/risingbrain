@@ -14,6 +14,7 @@ import {
   Difficulty,
   QuizKind,
   InterviewVerdict,
+  PublishStatus,
   Role,
 } from "../generated/prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
@@ -447,6 +448,9 @@ async function seedInterviews() {
     body: post.body,
     tags: post.tags,
     likeCount: post.likeCount,
+    // Editorial seed content, so it is published outright — the column defaults
+    // to PENDING_REVIEW because *user* submissions must be approved first.
+    status: PublishStatus.PUBLISHED,
   }));
   await insertMany((r) => prisma.interviewExperience.createMany({ data: r }), experienceRows);
   return posts.length;

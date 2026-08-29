@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { prisma } from "@/lib/db";
+import { prisma, PublishStatus } from "@/lib/db";
 import { getCurrentUser } from "@/lib/auth/current-user";
 import { checkWriteLimit } from "@/lib/auth/rate-limit";
 import { timeAgo } from "@/app/(app)/interview/_lib/format";
@@ -8,10 +8,19 @@ import type { CommentItem } from "@/app/(app)/interview/_lib/types";
 /**
  * GET /api/interview/[id]/comments  (public)
  *
- * Lists the comments on an experience, oldest first, with author identity.
+ * Lists the comments on a PUBLISHED experience, oldest first, with author
+ * identity. The parent's status is checked first: a post sitting in the review
+ * queue, or one that was rejected/removed, must not expose its thread to anyone
+ * who guesses the id — the same 404 the detail page gives.
  */
 export async function GET(_req: Request, { params }: { params: Promise<{ id: string }> }) {
   const { id: experienceId } = await params;
+
+  const experience = await prisma.interviewExperience.findFirst({
+    where: { id: experienceId, status: PublishStatus.PUBLISHED },
+    select: { id: true },
+  });
+  if (!experience) return NextResponse.json({ error: "Not found" }, { status: 404 });
 
   const rows = await prisma.interviewComment.findMany({
     where: { experienceId },
@@ -61,7 +70,7 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
   if (!body) return NextResponse.json({ error: "Comment cannot be empty." }, { status: 400 });
 
   const experience = await prisma.interviewExperience.findFirst({
-    where: { id: experienceId, status: "PUBLISHED" },
+    where: { id: experienceId, status: PublishStatus.PUBLISHED },
     select: { id: true },
   });
   if (!experience) return NextResponse.json({ error: "Not found" }, { status: 404 });

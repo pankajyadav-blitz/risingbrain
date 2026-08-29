@@ -1,4 +1,4 @@
-import { prisma } from "@/lib/db";
+import { prisma, PublishStatus } from "@/lib/db";
 import type { Prisma } from "@/lib/db";
 import { InterviewVerdict, Difficulty } from "@risingbrain/database/enums";
 import type { FeedExperience } from "./_lib/types";
@@ -59,7 +59,7 @@ export async function getInterviewFeed(
   params: FeedParams,
   userId: string | null
 ): Promise<FeedResult> {
-  const where: Prisma.InterviewExperienceWhereInput = { status: "PUBLISHED" };
+  const where: Prisma.InterviewExperienceWhereInput = { status: PublishStatus.PUBLISHED };
   if (params.verdict) where.verdict = params.verdict;
   if (params.difficulty) where.difficulty = params.difficulty;
   if (params.q) {
@@ -77,7 +77,7 @@ export async function getInterviewFeed(
       : [{ createdAt: "desc" }];
 
   // Counts + global stats in parallel; they don't depend on the page slice.
-  const publishedWhere: Prisma.InterviewExperienceWhereInput = { status: "PUBLISHED" };
+  const publishedWhere: Prisma.InterviewExperienceWhereInput = { status: PublishStatus.PUBLISHED };
   const [filteredTotal, globalTotal, selected, companyGroups] = await Promise.all([
     prisma.interviewExperience.count({ where }),
     prisma.interviewExperience.count({ where: publishedWhere }),
@@ -137,4 +137,54 @@ export async function getInterviewFeed(
     totalPages,
     stats: { companies: companyGroups.length, selected },
   };
+}
+
+/** One of the signed-in author's own posts that the public feed cannot show. */
+export interface MySubmission {
+  id: string;
+  title: string;
+  company: string;
+  role: string;
+  status: PublishStatus;
+  reviewNote: string | null;
+  createdAtLabel: string;
+}
+
+/**
+ * The current user's submissions that are NOT live — waiting on review, or sent
+ * back with a note.
+ *
+ * Without this, submitting a write-up would look like it vanished: the feed only
+ * renders PUBLISHED rows, so the author would have no way to tell "still in the
+ * queue" from "quietly rejected", and a moderator's feedback would reach nobody.
+ * ARCHIVED is left out on purpose — the author deleted those themselves.
+ */
+export async function getMySubmissions(userId: string): Promise<MySubmission[]> {
+  const rows = await prisma.interviewExperience.findMany({
+    where: {
+      authorId: userId,
+      status: { in: [PublishStatus.PENDING_REVIEW, PublishStatus.REJECTED] },
+    },
+    orderBy: { createdAt: "desc" },
+    take: 5,
+    select: {
+      id: true,
+      title: true,
+      company: true,
+      role: true,
+      status: true,
+      reviewNote: true,
+      createdAt: true,
+    },
+  });
+
+  return rows.map((r) => ({
+    id: r.id,
+    title: r.title,
+    company: r.company,
+    role: r.role,
+    status: r.status,
+    reviewNote: r.reviewNote,
+    createdAtLabel: timeAgo(r.createdAt),
+  }));
 }

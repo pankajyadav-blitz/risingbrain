@@ -1,5 +1,13 @@
-import { CircleCheck, CircleX, Clock3, type LucideIcon } from "lucide-react";
-import { InterviewVerdict, Difficulty } from "@risingbrain/database/enums";
+import {
+  Archive,
+  CircleCheck,
+  CircleX,
+  Clock3,
+  FileText,
+  Hourglass,
+  type LucideIcon,
+} from "lucide-react";
+import { InterviewVerdict, Difficulty, PublishStatus } from "@risingbrain/database/enums";
 
 /** A subtle pill style for each interview verdict (light/dark aware). */
 export const VERDICT_META: Record<
@@ -82,3 +90,47 @@ export function monogram(name: string): string {
       .toUpperCase() || "?"
   );
 }
+
+/**
+ * How a post's MODERATION state is presented. Distinct from `VERDICT_META`,
+ * which describes the interview's outcome — a write-up can be "Selected"
+ * (verdict) and still be "Pending review" (status). Only the author and admins
+ * ever see anything but PUBLISHED, so these labels are written for them.
+ */
+export const REVIEW_STATUS_META: Record<
+  PublishStatus,
+  { label: string; icon: LucideIcon; pill: string; blurb: string }
+> = {
+  [PublishStatus.PENDING_REVIEW]: {
+    label: "Pending review",
+    icon: Hourglass,
+    pill: "bg-amber-500/15 text-amber-600 ring-1 ring-amber-500/20 dark:text-amber-300",
+    blurb:
+      "Waiting on a moderator. It goes live on the feed as soon as it is approved — you can keep editing it until then.",
+  },
+  [PublishStatus.PUBLISHED]: {
+    label: "Published",
+    icon: CircleCheck,
+    pill: "bg-emerald-500/15 text-emerald-600 ring-1 ring-emerald-500/20 dark:text-emerald-300",
+    blurb: "Live on the interview feed.",
+  },
+  [PublishStatus.REJECTED]: {
+    label: "Needs changes",
+    icon: CircleX,
+    pill: "bg-rose-500/15 text-rose-600 ring-1 ring-rose-500/20 dark:text-rose-300",
+    blurb:
+      "A moderator turned this down. Edit it to address the note below and it goes back into the review queue.",
+  },
+  [PublishStatus.ARCHIVED]: {
+    label: "Removed",
+    icon: Archive,
+    pill: "bg-surface-2 text-muted ring-1 ring-border",
+    blurb: "This write-up has been removed from the feed.",
+  },
+  [PublishStatus.DRAFT]: {
+    label: "Draft",
+    icon: FileText,
+    pill: "bg-surface-2 text-muted ring-1 ring-border",
+    blurb: "Not submitted yet.",
+  },
+};

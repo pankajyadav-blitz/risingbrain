@@ -5,7 +5,8 @@ import { Container, Eyebrow } from "@/components/marketing/primitives";
 import { CountUp } from "@/components/motion/count-up";
 import { Reveal } from "@/components/motion/reveal";
 import { InterviewFeed } from "./_components/interview-feed";
-import { getInterviewFeed, parseFeedParams } from "./_data";
+import { MySubmissions } from "./_components/my-submissions";
+import { getInterviewFeed, getMySubmissions, parseFeedParams } from "./_data";
 
 export const metadata: Metadata = {
   title: "Interview Experiences",
@@ -22,7 +23,12 @@ export default async function InterviewPage({
   const current = await getCurrentUser();
   const signedIn = Boolean(current);
 
-  const feed = await getInterviewFeed(params, current?.id ?? null);
+  // Only a signed-in author can have submissions of their own to chase up, so
+  // the second query is skipped entirely for everyone else.
+  const [feed, mySubmissions] = await Promise.all([
+    getInterviewFeed(params, current?.id ?? null),
+    current ? getMySubmissions(current.id) : Promise.resolve([]),
+  ]);
 
   const stats: { icon: typeof Building2; label: string; value: number }[] = [
     { icon: MessageSquareQuote, label: "experiences", value: feed.globalTotal },
@@ -74,6 +80,8 @@ export default async function InterviewPage({
               </div>
             )}
           </div>
+
+          <MySubmissions submissions={mySubmissions} />
 
           <Reveal>
             <InterviewFeed

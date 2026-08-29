@@ -239,13 +239,51 @@ additive — new rows or a new `CourseTag`/`LessonType` enum value.
 ```
 InterviewExperience  authorId, company, role, verdict ∈ {SELECTED,REJECTED,PENDING},
                      difficulty, roundsCount, title, excerpt, body(markdown),
-                     tags[], status ∈ {DRAFT,PUBLISHED,ARCHIVED}, likeCount(denorm)
+                     tags[], likeCount(denorm),
+                     status ∈ {DRAFT,PENDING_REVIEW,PUBLISHED,REJECTED,ARCHIVED},
+                     reviewedById → User, reviewedAt, reviewNote
   ├─ InterviewLike     userId × experienceId (unique)  ← source of truth for likeCount
   └─ InterviewComment  authorId, body, createdAt
 ```
 
 `likeCount` is denormalized for cheap list rendering; `InterviewLike` rows are the
 truth and reconcile it.
+
+#### Moderation gate
+
+`/interview` takes a write-up from **anyone with an account**, so nothing posted
+there is publicly readable until an admin approves it. `status` is the gate, and
+the whole feature is arranged around one invariant: **every public read path
+filters `status = PUBLISHED`** — feed, detail page, likes, comments, sitemap.
+
+```
+author submits ──▶ PENDING_REVIEW ──▶ (admin) ──▶ PUBLISHED   live on the feed
+                        ▲                     └──▶ REJECTED    + reviewNote → author
+                        │                     └──▶ ARCHIVED    removed, replies kept
+                        └──── author edits ───────┘            (also: hard DELETE)
+```
+
+- **Submission** (`POST /api/interview`) writes `PENDING_REVIEW`. The composer
+  shows a "sent for review" receipt rather than navigating to a post that is not
+  public yet.
+- **Edits re-enter the queue.** `PATCH /api/interview/[id]` forces the row back to
+  `PENDING_REVIEW` and clears the review trail. An approval applies to the words a
+  moderator actually read; without this, "post something innocuous, wait for the
+  approval, then swap in the payload" walks straight past the review.
+- **Rulings** are admin-only, at `POST /admin/interview` → `PATCH|DELETE
+  /api/admin/interview`: publish · reject (with a note the author sees) ·
+  unpublish · archive · **block author** (disables the account, revokes its live
+  sessions and rejects everything they have queued) · hard delete (cascades the
+  likes and replies — for content that must not merely leave the feed).
+  `reviewedById`/`reviewedAt` attribute each decision to a person.
+- **Visibility of a non-published post** is limited to its author and admins; to
+  everyone else the detail page 404s (so a URL can't confirm a queued post exists)
+  and its head is `noindex`. The author sees the status banner, the moderator's
+  note, and their outstanding submissions listed on `/interview` itself — a queue
+  that swallows posts without a trace reads as data loss.
+
+Seeded interview content sets `status: PUBLISHED` explicitly: it is editorial, not
+a user submission, and the column defaults to `PENDING_REVIEW`.
 
 ---
 

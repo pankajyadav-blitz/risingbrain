@@ -1,6 +1,7 @@
 import Link from "next/link";
-import { ListTodo, Database, NotebookPen, Users, ArrowRight } from "lucide-react";
+import { ListTodo, Database, NotebookPen, ShieldCheck, Users, ArrowRight } from "lucide-react";
 import { prisma } from "@/lib/db";
+import { countPendingInterviews } from "./interview/_data";
 import { RevalidateButton } from "./_components/revalidate-button";
 
 /**
@@ -9,19 +10,33 @@ import { RevalidateButton } from "./_components/revalidate-button";
  * write; this is a belt-and-braces button, e.g. after a re-seed).
  */
 export default async function AdminOverviewPage() {
-  const [sheets, topics, patterns, problems, companies, domainTopics, quizCats, quizTopics, quizQuestions, users] =
-    await Promise.all([
-      prisma.dsaSheet.count(),
-      prisma.dsaTopic.count(),
-      prisma.dsaPattern.count(),
-      prisma.dsaProblem.count(),
-      prisma.company.count(),
-      prisma.domainTopic.count(),
-      prisma.quizCategory.count(),
-      prisma.quizTopic.count(),
-      prisma.quizQuestion.count(),
-      prisma.user.count(),
-    ]);
+  const [
+    sheets,
+    topics,
+    patterns,
+    problems,
+    companies,
+    domainTopics,
+    quizCats,
+    quizTopics,
+    quizQuestions,
+    users,
+    pendingInterviews,
+    publishedInterviews,
+  ] = await Promise.all([
+    prisma.dsaSheet.count(),
+    prisma.dsaTopic.count(),
+    prisma.dsaPattern.count(),
+    prisma.dsaProblem.count(),
+    prisma.company.count(),
+    prisma.domainTopic.count(),
+    prisma.quizCategory.count(),
+    prisma.quizTopic.count(),
+    prisma.quizQuestion.count(),
+    prisma.user.count(),
+    countPendingInterviews(),
+    prisma.interviewExperience.count({ where: { status: "PUBLISHED" } }),
+  ]);
 
   /**
    * Each section leads with ONE headline count — the unit that actually measures
@@ -64,6 +79,18 @@ export default async function AdminOverviewPage() {
       ] as const,
     },
     {
+      href: "/admin/interview",
+      icon: ShieldCheck,
+      title: "Interviews",
+      blurb: "Approve, reject or remove submitted experiences.",
+      // The headline figure is the WORK WAITING, not the total: this is the one
+      // section whose number is a queue an admin has to clear, and burying it
+      // under "142 published" would hide exactly the thing that needs looking at.
+      primary: { label: "Awaiting review", value: pendingInterviews },
+      secondary: [["published", publishedInterviews]] as const,
+      urgent: pendingInterviews > 0,
+    },
+    {
       href: "/admin/users",
       icon: Users,
       title: "Users",
@@ -87,9 +114,11 @@ export default async function AdminOverviewPage() {
         <RevalidateButton />
       </div>
 
-      {/* Exactly four sections, so a 2×2 grid stays balanced at every width — a
-          three-column track would strand the fourth card alone on its own row. */}
-      <div className="grid gap-4 sm:grid-cols-2">
+      {/* Five sections: a 2-col track would strand the last card on its own row,
+          so the layout widens to three from `lg` (3 + 2) and keeps two columns
+          below that (2 + 2 + 1, with the odd card at the bottom where it reads
+          as the end of the list rather than a gap). */}
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {sections.map((s) => {
           const Icon = s.icon;
           return (
@@ -114,7 +143,11 @@ export default async function AdminOverviewPage() {
                   across cards whose blurbs run to different lengths. */}
               <div className="mt-auto pt-5">
                 <div className="flex items-baseline gap-2 border-t border-border/70 pt-4">
-                  <span className="text-3xl font-bold leading-none tabular-nums text-foreground">
+                  <span
+                    className={`text-3xl font-bold leading-none tabular-nums ${
+                      "urgent" in s && s.urgent ? "text-amber-500" : "text-foreground"
+                    }`}
+                  >
                     {s.primary.value}
                   </span>
                   <span className="text-[11px] font-medium uppercase tracking-[0.08em] text-muted">

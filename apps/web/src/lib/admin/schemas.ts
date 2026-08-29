@@ -9,7 +9,7 @@
  * import from client components too.
  */
 import { z } from "zod";
-import { Difficulty, DomainSubject, QuizKind, Role } from "@risingbrain/database/enums";
+import { Difficulty, DomainSubject, PublishStatus, QuizKind, Role } from "@risingbrain/database/enums";
 
 /** Trim a string; treat "" as "not provided" for optional fields. */
 const optionalText = z.preprocess(
@@ -149,6 +149,53 @@ export const userUpdate = z
   .refine((d) => d.role !== undefined || d.disabled !== undefined, {
     message: "Nothing to update",
   });
+
+// ---------------------------------------------------------------------------
+// Interview moderation — the approval queue behind user-submitted experiences
+// ---------------------------------------------------------------------------
+
+/**
+ * The rulings an admin can make on one submitted experience.
+ *
+ *   publish       PENDING_REVIEW/REJECTED → PUBLISHED (live on the feed)
+ *   reject        → REJECTED, with `note` shown to the author as feedback
+ *   unpublish     PUBLISHED → PENDING_REVIEW (pull it back for a second look)
+ *   archive       → ARCHIVED (remove it, keep the row and its replies)
+ *   block_author  disable the author's account + reject their open submissions
+ *
+ * `delete` is NOT here — a hard delete is its own DELETE verb so it can never be
+ * reached by a typo'd action string.
+ */
+export const INTERVIEW_REVIEW_ACTIONS = [
+  "publish",
+  "reject",
+  "unpublish",
+  "archive",
+  "block_author",
+] as const;
+
+export type InterviewReviewAction = (typeof INTERVIEW_REVIEW_ACTIONS)[number];
+
+export const interviewReview = z
+  .object({
+    id,
+    action: z.enum(INTERVIEW_REVIEW_ACTIONS),
+    /** Feedback for the author. Required on `reject` — a rejection with no
+     *  reason gives the author nothing to act on. */
+    note: z.string().trim().max(1000, "Keep the note under 1000 characters").optional(),
+  })
+  .refine((d) => d.action !== "reject" || (d.note && d.note.length > 0), {
+    message: "Tell the author what needs to change.",
+    path: ["note"],
+  });
+
+/** Statuses the moderation queue can be filtered by (one tab each). */
+export const interviewQueueStatus = z.enum([
+  PublishStatus.PENDING_REVIEW,
+  PublishStatus.PUBLISHED,
+  PublishStatus.REJECTED,
+  PublishStatus.ARCHIVED,
+]);
 
 /** Move a row up/down: swap `order` between two siblings of one `entity`. */
 export const reorderPayload = z.object({

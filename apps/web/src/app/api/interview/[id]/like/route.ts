@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { prisma } from "@/lib/db";
+import { prisma, PublishStatus } from "@/lib/db";
 import { getCurrentUser } from "@/lib/auth/current-user";
 import { checkWriteLimit } from "@/lib/auth/rate-limit";
 
@@ -24,7 +24,7 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
   const { id: experienceId } = await params;
 
   const experience = await prisma.interviewExperience.findFirst({
-    where: { id: experienceId, status: "PUBLISHED" },
+    where: { id: experienceId, status: PublishStatus.PUBLISHED },
     select: { id: true },
   });
   if (!experience) return NextResponse.json({ error: "Not found" }, { status: 404 });

@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { useRouter } from "next/navigation";
-import { Building2, Loader2, PenLine, Save, X } from "lucide-react";
+import { Building2, Hourglass, Loader2, PenLine, Save, X } from "lucide-react";
 import { InterviewVerdict, Difficulty } from "@risingbrain/database/enums";
 import {
   RichTextEditor,
@@ -43,10 +43,14 @@ export interface ExperienceDraft {
 }
 
 /**
- * Portal modal for writing an interview experience — used both to publish a new
+ * Portal modal for writing an interview experience — used both to submit a new
  * one and, when `initial` is supplied, to edit an existing one. The two share a
  * component because they are the same form over the same fields; splitting them
  * would mean maintaining two copies of it.
+ *
+ * Submitting does NOT publish: `POST /api/interview` queues the write-up for
+ * moderator approval, so a successful save swaps the form for a "waiting on
+ * review" confirmation instead of navigating to a post that isn't public yet.
  *
  * The body is a TipTap surface (see `RichTextEditor`); its HTML is submitted as
  * `body`, and the API converts that to markdown before storing it, so published
@@ -83,6 +87,8 @@ export function Composer({
 
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  /** Set once the submission is in the queue — swaps the form for the receipt. */
+  const [submitted, setSubmitted] = useState(false);
 
   useEffect(() => setMounted(true), []);
 
@@ -138,20 +144,25 @@ export function Composer({
         router.push("/login");
         return;
       }
-      const data = (await res.json()) as { id?: string; error?: string };
+      const data = (await res.json()) as { id?: string; status?: string; error?: string };
       if (!res.ok || !data.id) {
         setError(data.error ?? "Something went wrong. Please try again.");
         setSaving(false);
         return;
       }
-      onClose();
       if (editing) {
         // Already on the post — pull the updated server render rather than
-        // navigating to the page we are standing on.
+        // navigating to the page we are standing on. The edit put the post back
+        // in the review queue, so what refreshes in is the pending banner.
+        onClose();
         onSaved?.();
         router.refresh();
       } else {
-        router.push(`/interview/${data.id}`);
+        // Nothing to navigate to: the new post is queued, not live. Show the
+        // receipt, and refresh underneath so "Your submissions" picks it up.
+        setSubmitted(true);
+        setSaving(false);
+        router.refresh();
       }
     } catch {
       setError("Network error. Please try again.");
@@ -174,170 +185,210 @@ export function Composer({
         onClick={(e) => e.stopPropagation()}
         className="glass flex max-h-[94vh] w-full max-w-2xl flex-col overflow-hidden rounded-t-3xl sm:rounded-3xl"
       >
-        {/* Header */}
-        <div className="flex items-start justify-between gap-3 border-b border-border px-5 py-4">
-          <div className="flex items-center gap-3">
-            <span className="grid h-10 w-10 place-items-center rounded-2xl bg-rb-green-500/15 text-accent ring-1 ring-rb-green-500/20">
-              <PenLine className="h-5 w-5" />
-            </span>
-            <div>
-              <p className="text-[11px] font-medium uppercase tracking-wide text-accent">
-                {editing ? "Edit experience" : "New experience"}
-              </p>
-              <h3 className="text-base font-semibold text-foreground">
-                {editing ? "Update your experience" : "Share your interview experience"}
-              </h3>
-            </div>
-          </div>
-          <button
-            type="button"
-            onClick={() => !saving && onClose()}
-            aria-label="Close"
-            className="glass-pill grid h-8 w-8 shrink-0 place-items-center rounded-lg text-muted transition-colors hover:text-foreground"
-          >
-            <X className="h-4 w-4" />
-          </button>
-        </div>
-
-        {/* Scrollable form */}
-        <div className="flex-1 space-y-5 overflow-y-auto bg-surface/30 px-5 py-5 sm:px-6">
-          <div className="grid gap-3 sm:grid-cols-2">
-            <Field label="Company" required>
-              <div className="relative">
-                <Building2 className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted" />
-                <input
-                  value={company}
-                  onChange={(e) => setCompany(e.target.value)}
-                  placeholder="e.g. Google"
-                  className={`${inputCls} pl-9`}
-                />
+        {submitted ? (
+          <SubmittedReceipt onClose={onClose} />
+        ) : (
+          <>
+          {/* Header */}
+          <div className="flex items-start justify-between gap-3 border-b border-border px-5 py-4">
+            <div className="flex items-center gap-3">
+              <span className="grid h-10 w-10 place-items-center rounded-2xl bg-rb-green-500/15 text-accent ring-1 ring-rb-green-500/20">
+                <PenLine className="h-5 w-5" />
+              </span>
+              <div>
+                <p className="text-[11px] font-medium uppercase tracking-wide text-accent">
+                  {editing ? "Edit experience" : "New experience"}
+                </p>
+                <h3 className="text-base font-semibold text-foreground">
+                  {editing ? "Update your experience" : "Share your interview experience"}
+                </h3>
               </div>
-            </Field>
-            <Field label="Role" required>
-              <input
-                value={role}
-                onChange={(e) => setRole(e.target.value)}
-                placeholder="e.g. SDE-1"
-                className={inputCls}
-              />
-            </Field>
-          </div>
-
-          <div className="grid gap-3 sm:grid-cols-2">
-            <Field label="Verdict">
-              <Segmented
-                options={VERDICTS}
-                value={verdict}
-                onChange={(v) => setVerdict(v as InterviewVerdict)}
-              />
-            </Field>
-            <Field label="Difficulty">
-              <Segmented
-                options={DIFFICULTIES}
-                value={difficulty}
-                onChange={(v) => setDifficulty(v as Difficulty)}
-              />
-            </Field>
-          </div>
-
-          <div className="grid gap-3 sm:grid-cols-[160px_1fr]">
-            <Field label="Rounds">
-              <input
-                type="number"
-                min={1}
-                max={30}
-                value={rounds}
-                onChange={(e) => setRounds(Math.max(1, Number(e.target.value) || 1))}
-                className={inputCls}
-              />
-            </Field>
-            <Field label="Tags" hint="comma separated">
-              <input
-                value={tags}
-                onChange={(e) => setTags(e.target.value)}
-                placeholder="DSA, System Design, Behavioral"
-                className={inputCls}
-              />
-            </Field>
-          </div>
-
-          <Field label="Title" required>
-            <input
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              placeholder="My Google SDE-1 interview — 5 rounds, lots of DP"
-              className={inputCls}
-            />
-          </Field>
-
-          <Field label="Short summary" hint="optional">
-            <input
-              value={excerpt}
-              onChange={(e) => setExcerpt(e.target.value)}
-              placeholder="One line that previews your story on the feed."
-              className={inputCls}
-            />
-          </Field>
-
-          {/* Body — shared TipTap editor. No underline tool: the body becomes
-              markdown on save, and markdown has no underline, so offering it
-              would silently drop the styling the moment the post is published. */}
-          <Field label="Your experience" required>
-            <RichTextEditor
-              ref={editorRef}
-              initialHTML={initial?.bodyHtml ?? ""}
-              ariaLabel="Experience body"
-              placeholder="Walk through each round: questions asked, what worked, what you'd do differently, and tips for the next candidate…"
-              minHeightClass="min-h-[220px]"
-            />
-          </Field>
-
-          {error && (
-            <p className="rounded-xl bg-rose-500/10 px-3.5 py-2.5 text-sm text-rose-600 ring-1 ring-rose-500/20 dark:text-rose-300">
-              {error}
-            </p>
-          )}
-        </div>
-
-        {/* Footer */}
-        <div className="flex items-center justify-between gap-3 border-t border-border px-5 py-3.5">
-          <span className="hidden text-xs text-muted sm:block">
-            {editing ? "Your edit goes live immediately." : "Published to the community feed."}
-          </span>
-          <div className="flex items-center gap-2">
+            </div>
             <button
               type="button"
               onClick={() => !saving && onClose()}
-              className="glass-pill rounded-full px-4 py-2 text-sm text-muted transition-colors hover:text-foreground"
+              aria-label="Close"
+              className="glass-pill grid h-8 w-8 shrink-0 place-items-center rounded-lg text-muted transition-colors hover:text-foreground"
             >
-              Cancel
-            </button>
-            <button
-              type="button"
-              onClick={() => void submit()}
-              disabled={saving}
-              className="btn-glow inline-flex items-center gap-1.5 rounded-full bg-rb-green-500 px-5 py-2 text-sm font-semibold text-black transition-opacity disabled:opacity-70"
-            >
-              {saving ? (
-                <>
-                  <Loader2 className="h-4 w-4 animate-spin" />{" "}
-                  {editing ? "Saving…" : "Publishing…"}
-                </>
-              ) : editing ? (
-                <>
-                  <Save className="h-4 w-4" /> Save changes
-                </>
-              ) : (
-                <>
-                  <PenLine className="h-4 w-4" /> Publish
-                </>
-              )}
+              <X className="h-4 w-4" />
             </button>
           </div>
-        </div>
+
+          {/* Scrollable form */}
+          <div className="flex-1 space-y-5 overflow-y-auto bg-surface/30 px-5 py-5 sm:px-6">
+            <div className="grid gap-3 sm:grid-cols-2">
+              <Field label="Company" required>
+                <div className="relative">
+                  <Building2 className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted" />
+                  <input
+                    value={company}
+                    onChange={(e) => setCompany(e.target.value)}
+                    placeholder="e.g. Google"
+                    className={`${inputCls} pl-9`}
+                  />
+                </div>
+              </Field>
+              <Field label="Role" required>
+                <input
+                  value={role}
+                  onChange={(e) => setRole(e.target.value)}
+                  placeholder="e.g. SDE-1"
+                  className={inputCls}
+                />
+              </Field>
+            </div>
+
+            <div className="grid gap-3 sm:grid-cols-2">
+              <Field label="Verdict">
+                <Segmented
+                  options={VERDICTS}
+                  value={verdict}
+                  onChange={(v) => setVerdict(v as InterviewVerdict)}
+                />
+              </Field>
+              <Field label="Difficulty">
+                <Segmented
+                  options={DIFFICULTIES}
+                  value={difficulty}
+                  onChange={(v) => setDifficulty(v as Difficulty)}
+                />
+              </Field>
+            </div>
+
+            <div className="grid gap-3 sm:grid-cols-[160px_1fr]">
+              <Field label="Rounds">
+                <input
+                  type="number"
+                  min={1}
+                  max={30}
+                  value={rounds}
+                  onChange={(e) => setRounds(Math.max(1, Number(e.target.value) || 1))}
+                  className={inputCls}
+                />
+              </Field>
+              <Field label="Tags" hint="comma separated">
+                <input
+                  value={tags}
+                  onChange={(e) => setTags(e.target.value)}
+                  placeholder="DSA, System Design, Behavioral"
+                  className={inputCls}
+                />
+              </Field>
+            </div>
+
+            <Field label="Title" required>
+              <input
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                placeholder="My Google SDE-1 interview — 5 rounds, lots of DP"
+                className={inputCls}
+              />
+            </Field>
+
+            <Field label="Short summary" hint="optional">
+              <input
+                value={excerpt}
+                onChange={(e) => setExcerpt(e.target.value)}
+                placeholder="One line that previews your story on the feed."
+                className={inputCls}
+              />
+            </Field>
+
+            {/* Body — shared TipTap editor. No underline tool: the body becomes
+                markdown on save, and markdown has no underline, so offering it
+                would silently drop the styling the moment the post is published. */}
+            <Field label="Your experience" required>
+              <RichTextEditor
+                ref={editorRef}
+                initialHTML={initial?.bodyHtml ?? ""}
+                ariaLabel="Experience body"
+                placeholder="Walk through each round: questions asked, what worked, what you'd do differently, and tips for the next candidate…"
+                minHeightClass="min-h-[220px]"
+              />
+            </Field>
+
+            {error && (
+              <p className="rounded-xl bg-rose-500/10 px-3.5 py-2.5 text-sm text-rose-600 ring-1 ring-rose-500/20 dark:text-rose-300">
+                {error}
+              </p>
+            )}
+          </div>
+
+          {/* Footer */}
+          <div className="flex items-center justify-between gap-3 border-t border-border px-5 py-3.5">
+            <span className="hidden text-xs text-muted sm:block">
+              {editing
+                ? "Edits go back through review before they're live again."
+                : "Reviewed by a moderator before it reaches the feed."}
+            </span>
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={() => !saving && onClose()}
+                className="glass-pill rounded-full px-4 py-2 text-sm text-muted transition-colors hover:text-foreground"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={() => void submit()}
+                disabled={saving}
+                className="btn-glow inline-flex items-center gap-1.5 rounded-full bg-rb-green-500 px-5 py-2 text-sm font-semibold text-black transition-opacity disabled:opacity-70"
+              >
+                {saving ? (
+                  <>
+                    <Loader2 className="h-4 w-4 animate-spin" />{" "}
+                    {editing ? "Saving…" : "Submitting…"}
+                  </>
+                ) : editing ? (
+                  <>
+                    <Save className="h-4 w-4" /> Save changes
+                  </>
+                ) : (
+                  <>
+                    <PenLine className="h-4 w-4" /> Submit for review
+                  </>
+                )}
+              </button>
+            </div>
+          </div>
+          </>
+        )}
       </div>
     </div>,
     document.body
+  );
+}
+
+/**
+ * What the author sees the moment their write-up is queued. It replaces the
+ * form rather than closing the modal outright: "the dialog vanished" is
+ * indistinguishable from "the save failed", and the one thing this screen has to
+ * get across is that the post is safe but not yet public.
+ */
+function SubmittedReceipt({ onClose }: { onClose: () => void }) {
+  return (
+    <div className="px-6 py-10 text-center sm:px-10">
+      <span className="mx-auto grid h-16 w-16 place-items-center rounded-2xl bg-amber-500/15 text-amber-500 ring-1 ring-amber-500/20">
+        <Hourglass className="h-7 w-7" />
+      </span>
+      <h3 className="mt-6 text-xl font-bold tracking-tight text-foreground">
+        Sent for review
+      </h3>
+      <p className="mx-auto mt-2 max-w-sm text-sm leading-relaxed text-muted">
+        Thanks for writing this up. A moderator reads every experience before it
+        reaches the feed — yours appears there once it is approved. You&rsquo;ll
+        find it under <span className="text-foreground">Your submissions</span> in
+        the meantime, and you can keep editing it until then.
+      </p>
+      <button
+        type="button"
+        onClick={onClose}
+        className="btn-glow mt-7 inline-flex items-center gap-2 rounded-full bg-rb-green-500 px-6 py-2.5 text-sm font-semibold text-black"
+      >
+        Done
+      </button>
+    </div>
   );
 }
 

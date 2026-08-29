@@ -2,7 +2,14 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, ListTodo, Database, NotebookPen, Users } from "lucide-react";
+import {
+  LayoutDashboard,
+  ListTodo,
+  Database,
+  NotebookPen,
+  ShieldCheck,
+  Users,
+} from "lucide-react";
 import { cn } from "@risingbrain/ui/cn";
 
 const TABS = [
@@ -10,6 +17,7 @@ const TABS = [
   { href: "/admin/sheets", label: "Sheets", icon: ListTodo },
   { href: "/admin/domain", label: "Domain", icon: Database },
   { href: "/admin/screening", label: "Screening", icon: NotebookPen },
+  { href: "/admin/interview", label: "Interviews", icon: ShieldCheck },
   { href: "/admin/users", label: "Users", icon: Users },
 ];
 

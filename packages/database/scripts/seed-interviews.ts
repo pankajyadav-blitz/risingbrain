@@ -21,6 +21,7 @@ import {
   PrismaClient,
   Difficulty,
   InterviewVerdict,
+  PublishStatus,
   Role,
 } from "../generated/prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
@@ -228,6 +229,10 @@ async function main() {
     body: post.body,
     tags: post.tags,
     likeCount: post.likeCount,
+    // Seeded posts bypass the approval queue: they are editorial content, not
+    // user submissions, and the column defaults to PENDING_REVIEW so leaving it
+    // out would seed an empty feed and a review queue nobody asked for.
+    status: PublishStatus.PUBLISHED,
     // Index 0 is newest, so the feed's createdAt DESC sort mirrors `ordered`.
     createdAt: new Date(now - index * SPACING_MINUTES * 60_000),
   }));

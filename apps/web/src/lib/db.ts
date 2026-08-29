@@ -52,6 +52,7 @@ export {
   Difficulty,
   InterviewVerdict,
   ProblemStatus,
+  PublishStatus,
   QuizKind,
   SubmissionType,
 } from "@risingbrain/database/client";

@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { prisma } from "@/lib/db";
+import { prisma, PublishStatus } from "@/lib/db";
 import { getCurrentUser } from "@/lib/auth/current-user";
 import { checkWriteLimit } from "@/lib/auth/rate-limit";
 import { markdownToHtml } from "@/lib/html-to-markdown";
@@ -9,7 +9,7 @@ import { parseExperiencePayload } from "../_payload";
  * Owner-only operations on one interview experience.
  *
  *   GET    -> the editable representation (body converted back to HTML)
- *   PATCH  -> update it
+ *   PATCH  -> update it (and send it back through review)
  *   DELETE -> archive it
  *
  * Authorship is re-checked against the database on every call. The UI only shows
@@ -38,7 +38,10 @@ async function loadOwned(id: string, userId: string) {
       tags: true,
     },
   });
-  if (!exp || exp.authorId !== userId || exp.status === "ARCHIVED") return null;
+  // ARCHIVED is the one state the author can no longer touch — it is the
+  // tombstone left by a delete. PENDING_REVIEW and REJECTED are editable on
+  // purpose: that is how an author answers a moderator's note and resubmits.
+  if (!exp || exp.authorId !== userId || exp.status === PublishStatus.ARCHIVED) return null;
   return exp;
 }
 
@@ -94,14 +97,25 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
     return NextResponse.json({ error: parsed.error }, { status: parsed.status });
   }
 
-  // `authorId` and `status` are deliberately not writable here — an edit must not
-  // be able to reassign a post or resurrect an archived one.
+  // `authorId` is not writable — an edit must not be able to reassign a post.
+  // `status` IS written, but only ever back to PENDING_REVIEW: an approval
+  // applies to the words a moderator actually read, so re-writing the body puts
+  // the post back in the queue. Without this, "submit something innocuous, wait
+  // for the approval, then swap in the real payload" would walk straight past
+  // the review layer. The old review note is cleared with it so the author is
+  // not left reading feedback about a version that no longer exists.
   await prisma.interviewExperience.update({
     where: { id: exp.id },
-    data: parsed.data,
+    data: {
+      ...parsed.data,
+      status: PublishStatus.PENDING_REVIEW,
+      reviewedAt: null,
+      reviewedById: null,
+      reviewNote: null,
+    },
   });
 
-  return NextResponse.json({ id: exp.id });
+  return NextResponse.json({ id: exp.id, status: PublishStatus.PENDING_REVIEW });
 }
 
 export async function DELETE(req: Request, { params }: { params: Promise<{ id: string }> }) {
@@ -122,7 +136,7 @@ export async function DELETE(req: Request, { params }: { params: Promise<{ id: s
   // It also means an accidental removal is recoverable.
   await prisma.interviewExperience.update({
     where: { id: exp.id },
-    data: { status: "ARCHIVED" },
+    data: { status: PublishStatus.ARCHIVED },
   });
 
   return NextResponse.json({ ok: true });
