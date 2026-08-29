@@ -17,12 +17,15 @@ import {
 import { LikeButton } from "../_components/like-button";
 import { Comments } from "../_components/comments";
 import { ExperienceBody } from "../_components/experience-body";
+import { OwnerActions } from "../_components/owner-actions";
 import type { CommentItem } from "../_lib/types";
 
 async function getExperience(id: string) {
   return prisma.interviewExperience.findFirst({
     where: { id, status: "PUBLISHED" },
     include: {
+      // `authorId` rides along on the row already; it is what decides whether the
+      // edit/delete controls render.
       author: { select: { name: true, image: true } },
       comments: {
         orderBy: { createdAt: "asc" },
@@ -82,6 +85,7 @@ export default async function InterviewDetailPage({
   if (!exp) notFound();
 
   const signedIn = Boolean(current);
+  const isAuthor = current?.id === exp.authorId;
   let liked = false;
   if (current) {
     const like = await prisma.interviewLike.findUnique({
@@ -168,7 +172,7 @@ export default async function InterviewDetailPage({
               {exp.title}
             </h1>
 
-            <div className="mt-5 flex items-center gap-3 border-t border-border pt-5">
+            <div className="mt-5 flex flex-wrap items-center gap-3 border-t border-border pt-5">
               <Avatar
                 name={authorName}
                 src={exp.author.image ?? undefined}
@@ -178,8 +182,18 @@ export default async function InterviewDetailPage({
                 <p className="text-sm font-medium text-foreground">
                   {authorName}
                 </p>
-                <p className="text-xs text-muted">{timeAgo(exp.createdAt)}</p>
+                <p className="text-xs text-muted">
+                  {timeAgo(exp.createdAt)}
+                  {exp.updatedAt.getTime() - exp.createdAt.getTime() > 60_000 && (
+                    <> · edited</>
+                  )}
+                </p>
               </div>
+              {isAuthor && (
+                <div className="ml-auto">
+                  <OwnerActions experienceId={exp.id} />
+                </div>
+              )}
             </div>
 
             {exp.tags.length > 0 && (

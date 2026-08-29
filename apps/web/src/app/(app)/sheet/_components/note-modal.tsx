@@ -2,44 +2,27 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
+import { Check, Loader2, X } from "lucide-react";
 import {
-  Bold,
-  Check,
-  Code2,
-  Heading,
-  Italic,
-  List,
-  ListOrdered,
-  Loader2,
-  Quote,
-  Underline,
-  X,
-} from "lucide-react";
-
-type Tool = [icon: React.ElementType, label: string, command: string, value?: string];
-
-const TOOLS: Tool[] = [
-  [Bold, "Bold", "bold"],
-  [Italic, "Italic", "italic"],
-  [Underline, "Underline", "underline"],
-  [Heading, "Heading", "formatBlock", "<h3>"],
-  [List, "Bulleted list", "insertUnorderedList"],
-  [ListOrdered, "Numbered list", "insertOrderedList"],
-  [Quote, "Quote", "formatBlock", "<blockquote>"],
-  [Code2, "Code block", "formatBlock", "<pre>"],
-];
+  RichTextEditor,
+  type RichTextEditorHandle,
+} from "@/components/editor/rich-text-editor";
 
 type SaveStatus = "idle" | "unsaved" | "saving" | "saved";
 
 const AUTOSAVE_MS = 2000;
 
 /**
- * Floating, glass-themed WYSIWYG note editor. A Word-like contentEditable
- * surface driven by document.execCommand (no markdown markers, no deps). The
- * editor's innerHTML is persisted as the note `content` via GET/PUT.
+ * Floating, glass-themed note editor built on the shared `RichTextEditor` — the
+ * same surface the interview composer uses, so formatting behaves identically in
+ * both places. The editor's HTML is persisted as the note `content` via GET/PUT.
+ *
+ * Underline IS offered here, unlike in the composer: a note is stored as HTML and
+ * read back as HTML, so the styling survives. An interview body is converted to
+ * markdown, which has no underline.
  *
  * Auto-saves 2s after the user stops typing — but only once they've actually
- * edited (opening a note never writes a row), and an emptied note deletes the
+ * edited (opening a note never writes a row), and an emptied note deactivates the
  * row rather than storing an empty entry. Pending edits are flushed on close.
  */
 export function NoteModal({
@@ -53,7 +36,7 @@ export function NoteModal({
   onClose: () => void;
   onSaved: (hasNote: boolean) => void;
 }) {
-  const bodyRef = useRef<HTMLDivElement>(null);
+  const editorRef = useRef<RichTextEditorHandle>(null);
   const [initialHtml, setInitialHtml] = useState<string | null>(null);
   const [mounted, setMounted] = useState(false);
   const [words, setWords] = useState(0);
@@ -64,25 +47,27 @@ export function NoteModal({
   const dirtyRef = useRef(false);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // Loading is derived from the fetched content so the editor surface mounts in
-  // the SAME render that content arrives — letting the seed effect below find
-  // bodyRef.current and apply innerHTML.
+  // Loading is derived from the fetched content so the editor mounts in the SAME
+  // render the content arrives in — it takes its initial value as a prop, and
+  // mounting it empty first would leave it empty.
   const loading = initialHtml === null;
 
   useEffect(() => setMounted(true), []);
 
   const countWords = useCallback(() => {
-    const text = bodyRef.current?.innerText.trim() ?? "";
+    const text = editorRef.current?.getText().trim() ?? "";
     setWords(text ? text.split(/\s+/).length : 0);
   }, []);
 
   // Persist the current editor content. An empty/whitespace-only note sends ""
   // so the API deletes the row instead of storing an empty entry.
   const persist = useCallback(async () => {
-    const el = bodyRef.current;
-    if (!el) return;
-    const text = el.innerText.trim();
-    const content = text ? el.innerHTML : "";
+    const editor = editorRef.current;
+    if (!editor) return;
+    // An editor holding only empty paragraphs still reports HTML, so the text is
+    // what decides whether there is a note — otherwise clearing one would store
+    // "<p></p>" forever instead of deactivating the row.
+    const content = editor.getText().trim() ? editor.getHTML() : "";
     setStatus("saving");
     try {
       const res = await fetch(`/api/sheet/notes/${problemId}`, {
@@ -145,13 +130,11 @@ export function NoteModal({
     };
   }, [problemId]);
 
-  // Seed the editor's innerHTML once content has loaded and the surface exists.
-  // (Programmatic innerHTML does NOT fire `input`, so this never arms autosave.)
+  // The editor is mounted with `initialHTML` once the fetch resolves, so there is
+  // nothing to seed by hand. Seeding via `content` also means TipTap never emits
+  // an update for it, so loading a note can't arm autosave.
   useEffect(() => {
-    if (initialHtml === null || !bodyRef.current) return;
-    bodyRef.current.innerHTML = initialHtml;
-    countWords();
-    requestAnimationFrame(() => bodyRef.current?.focus());
+    if (initialHtml !== null) countWords();
   }, [initialHtml, countWords]);
 
   // Esc closes (flushing first) + lock body scroll. Clear any pending timer on
@@ -169,15 +152,6 @@ export function NoteModal({
       if (timerRef.current) clearTimeout(timerRef.current);
     };
   }, [handleClose]);
-
-  const cmd = useCallback(
-    (command: string, value?: string) => {
-      bodyRef.current?.focus();
-      document.execCommand(command, false, value);
-      handleInput();
-    },
-    [handleInput]
-  );
 
   if (!mounted) return null;
 
@@ -210,29 +184,8 @@ export function NoteModal({
           </button>
         </div>
 
-        {/* Formatting toolbar */}
-        <div className="flex flex-wrap items-center gap-1 border-b border-border bg-surface-2/50 px-3 py-2">
-          {TOOLS.map(([Icon, label, command, value], i) => (
-            <button
-              key={i}
-              type="button"
-              onMouseDown={(e) => e.preventDefault()}
-              onClick={() => cmd(command, value)}
-              aria-label={label}
-              title={label}
-              className="grid h-8 w-8 place-items-center rounded-lg text-muted transition-colors hover:bg-rb-green-500/15 hover:text-accent"
-            >
-              <Icon className="h-4 w-4" />
-            </button>
-          ))}
-          <span className="mx-2 hidden h-5 w-px bg-border sm:block" />
-          <span className="hidden text-xs text-muted sm:block">
-            Select text, then format — just like a doc.
-          </span>
-        </div>
-
-        {/* The "page" — a Word-like writing surface */}
-        <div className="flex-1 overflow-y-auto bg-surface/40 px-4 py-5 sm:px-8">
+        {/* The "page" — the shared writing surface */}
+        <div className="flex-1 overflow-y-auto bg-surface/40 p-4 sm:p-5">
           {loading ? (
             <div className="mx-auto max-w-3xl">
               <div className="flex items-center justify-center gap-2 py-6 text-sm text-muted">
@@ -247,17 +200,19 @@ export function NoteModal({
               </div>
             </div>
           ) : (
-            <div
-              ref={bodyRef}
-              onInput={handleInput}
-              role="textbox"
-              aria-multiline="true"
-              aria-label="Note body"
-              className="mx-auto min-h-[240px] max-w-3xl space-y-2 leading-relaxed text-foreground outline-none empty:before:text-muted empty:before:content-[attr(data-ph)] sm:min-h-[320px] [&_a]:text-accent [&_a]:underline [&_blockquote]:border-l-2 [&_blockquote]:border-rb-green-500/40 [&_blockquote]:pl-3 [&_blockquote]:italic [&_blockquote]:text-muted [&_h3]:text-lg [&_h3]:font-semibold [&_h3]:text-foreground [&_ol]:list-decimal [&_ol]:pl-5 [&_pre]:rounded-lg [&_pre]:bg-surface-2 [&_pre]:p-3 [&_pre]:font-mono [&_pre]:text-sm [&_ul]:list-disc [&_ul]:pl-5"
-              contentEditable
-              suppressContentEditableWarning
-              data-ph="Jot your approach, edge cases, complexity, and gotchas…"
-            />
+            <div className="mx-auto max-w-3xl">
+              <RichTextEditor
+                ref={editorRef}
+                initialHTML={initialHtml ?? ""}
+                onUpdate={handleInput}
+                ariaLabel="Note body"
+                placeholder="Jot your approach, edge cases, complexity, and gotchas…"
+                // Notes are stored and read back as HTML, so underline survives.
+                allowUnderline
+                minHeightClass="min-h-[240px] sm:min-h-[320px]"
+                autoFocus
+              />
+            </div>
           )}
         </div>
 

@@ -441,3 +441,46 @@ body::before {
     height: 100%;
   }
 }
+
+/* ==========================================================================
+   Rich-text editor (TipTap) — see components/editor/rich-text-editor.tsx.
+
+   The writing surface reuses `.notes-prose` above so the editor shows the same
+   type, rhythm and colours the published post will, rather than an approximation
+   the author has to mentally translate. Only the rules below are editor-specific:
+   things a reader never needs (a placeholder, a caret, a focus ring).
+   ========================================================================== */
+
+/* TipTap's Placeholder extension tags the first node while the doc is empty.
+   This replaces the old `:empty::before` trick, which stopped working the moment
+   contentEditable left a stray <br> behind — so the hint vanished after the
+   author typed and deleted a character, which is exactly when it is wanted. */
+.notes-prose p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  color: var(--muted);
+  float: left;
+  height: 0;
+  pointer-events: none;
+}
+
+/* The editor pane owns its own scrolling; the surrounding modal must not also
+   grow, or long posts push the toolbar and footer off-screen. */
+.ProseMirror {
+  outline: none;
+}
+.ProseMirror-focused {
+  outline: none;
+}
+
+/* A code block is the one place the prose measure is wrong — code should scroll
+   rather than wrap mid-token. */
+.notes-prose pre {
+  overflow-x: auto;
+}
+
+/* Selection inside the editor needs to stay visible while the toolbar has focus,
+   which the browser's default (hiding it on blur) does not do. */
+.ProseMirror .ProseMirror-selectednode {
+  outline: 2px solid var(--accent);
+  border-radius: 0.5rem;
+}

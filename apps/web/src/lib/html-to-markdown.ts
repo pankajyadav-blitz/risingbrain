@@ -111,3 +111,35 @@ const HTML_TAG =
 export function isHtmlBody(body: string): boolean {
   return HTML_TAG.test(body.replace(CODE_SPANS, ""));
 }
+
+/**
+ * Markdown → HTML, for loading a stored post back into the editor.
+ *
+ * `InterviewExperience.body` is markdown, but the editor works in HTML, so
+ * editing needs the inverse of `htmlToMarkdown`. Rather than introduce a second
+ * markdown implementation that could disagree with the reader, this renders
+ * through the EXACT pipeline `ExperienceBody` uses — react-markdown with
+ * remark-gfm — and serialises the result. Whatever the author sees while editing
+ * is therefore what a reader saw, including how the renderer resolved anything
+ * ambiguous in the source.
+ *
+ * Server-only, like the rest of this module: it pulls in the React DOM server
+ * renderer and the remark pipeline, neither of which belongs in a client bundle.
+ */
+export async function markdownToHtml(markdown: string): Promise<string> {
+  if (!markdown.trim()) return "";
+  // Imported lazily so the (much more common) write path doesn't pay to load the
+  // server renderer and the whole remark stack just to convert HTML → markdown.
+  const [{ createElement }, { renderToStaticMarkup }, { default: Markdown }, { default: remarkGfm }] =
+    await Promise.all([
+      import("react"),
+      import("react-dom/server"),
+      import("react-markdown"),
+      import("remark-gfm"),
+    ]);
+  // `createElement`, not `Markdown({...})` — react-markdown is a component and
+  // may use hooks, which only work when React renders it.
+  return renderToStaticMarkup(
+    createElement(Markdown, { remarkPlugins: [remarkGfm] }, markdown)
+  );
+}

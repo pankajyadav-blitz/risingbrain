@@ -1,39 +1,14 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { useRouter } from "next/navigation";
-import {
-  Bold,
-  Building2,
-  Code2,
-  Heading,
-  Italic,
-  List,
-  ListOrdered,
-  Loader2,
-  PenLine,
-  Quote,
-  X,
-} from "lucide-react";
+import { Building2, Loader2, PenLine, Save, X } from "lucide-react";
 import { InterviewVerdict, Difficulty } from "@risingbrain/database/enums";
-
-type Tool = [icon: React.ElementType, label: string, command: string, value?: string];
-
-/**
- * No underline tool: the body is converted to markdown on save (see
- * `POST /api/interview`), and markdown has no underline — offering the button
- * would silently drop the styling once the post is published.
- */
-const TOOLS: Tool[] = [
-  [Bold, "Bold", "bold"],
-  [Italic, "Italic", "italic"],
-  [Heading, "Heading", "formatBlock", "<h3>"],
-  [List, "Bulleted list", "insertUnorderedList"],
-  [ListOrdered, "Numbered list", "insertOrderedList"],
-  [Quote, "Quote", "formatBlock", "<blockquote>"],
-  [Code2, "Code block", "formatBlock", "<pre>"],
-];
+import {
+  RichTextEditor,
+  type RichTextEditorHandle,
+} from "@/components/editor/rich-text-editor";
 
 const VERDICTS: { value: InterviewVerdict; label: string }[] = [
   { value: InterviewVerdict.SELECTED, label: "Selected" },
@@ -51,25 +26,60 @@ const inputCls =
   "w-full rounded-xl border border-border bg-surface/60 px-3.5 py-2.5 text-sm text-foreground outline-none transition-colors placeholder:text-muted focus:border-rb-green-500/50 focus:ring-2 focus:ring-rb-green-500/20";
 
 /**
- * Portal modal that lets a signed-in user publish an interview experience.
- * The body is a Word-like contentEditable surface driven by execCommand
- * (ported from the sheet note editor); its innerHTML is submitted as `body`,
- * and the API converts that HTML to markdown before storing it, so published
+ * The draft an existing experience is loaded into for editing. Fetched from
+ * `GET /api/interview/[id]`, which converts the stored markdown back to HTML.
+ */
+export interface ExperienceDraft {
+  id: string;
+  company: string;
+  role: string;
+  verdict: InterviewVerdict;
+  difficulty: Difficulty;
+  roundsCount: number;
+  title: string;
+  excerpt: string;
+  tags: string[];
+  bodyHtml: string;
+}
+
+/**
+ * Portal modal for writing an interview experience — used both to publish a new
+ * one and, when `initial` is supplied, to edit an existing one. The two share a
+ * component because they are the same form over the same fields; splitting them
+ * would mean maintaining two copies of it.
+ *
+ * The body is a TipTap surface (see `RichTextEditor`); its HTML is submitted as
+ * `body`, and the API converts that to markdown before storing it, so published
  * posts share one format with the seeded ones.
  */
-export function Composer({ onClose }: { onClose: () => void }) {
+export function Composer({
+  onClose,
+  initial,
+  onSaved,
+}: {
+  onClose: () => void;
+  /** Present = edit mode. Absent = publish a new experience. */
+  initial?: ExperienceDraft;
+  /** Called after a successful edit, so the page can refresh in place. */
+  onSaved?: () => void;
+}) {
   const router = useRouter();
-  const bodyRef = useRef<HTMLDivElement>(null);
+  const editorRef = useRef<RichTextEditorHandle>(null);
   const [mounted, setMounted] = useState(false);
+  const editing = Boolean(initial);
 
-  const [company, setCompany] = useState("");
-  const [role, setRole] = useState("");
-  const [verdict, setVerdict] = useState<InterviewVerdict>(InterviewVerdict.PENDING);
-  const [difficulty, setDifficulty] = useState<Difficulty>(Difficulty.MEDIUM);
-  const [rounds, setRounds] = useState(3);
-  const [title, setTitle] = useState("");
-  const [tags, setTags] = useState("");
-  const [excerpt, setExcerpt] = useState("");
+  const [company, setCompany] = useState(initial?.company ?? "");
+  const [role, setRole] = useState(initial?.role ?? "");
+  const [verdict, setVerdict] = useState<InterviewVerdict>(
+    initial?.verdict ?? InterviewVerdict.PENDING
+  );
+  const [difficulty, setDifficulty] = useState<Difficulty>(
+    initial?.difficulty ?? Difficulty.MEDIUM
+  );
+  const [rounds, setRounds] = useState(initial?.roundsCount ?? 3);
+  const [title, setTitle] = useState(initial?.title ?? "");
+  const [tags, setTags] = useState(initial?.tags.join(", ") ?? "");
+  const [excerpt, setExcerpt] = useState(initial?.excerpt ?? "");
 
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -90,16 +100,11 @@ export function Composer({ onClose }: { onClose: () => void }) {
     };
   }, [onClose, saving]);
 
-  const cmd = useCallback((command: string, value?: string) => {
-    bodyRef.current?.focus();
-    document.execCommand(command, false, value);
-  }, []);
-
   async function submit() {
     setError(null);
-    const el = bodyRef.current;
-    const html = el?.innerHTML ?? "";
-    const bodyText = (el?.innerText ?? "").trim();
+    const editor = editorRef.current;
+    const html = editor?.getHTML() ?? "";
+    const bodyText = (editor?.getText() ?? "").trim();
 
     if (!company.trim() || !role.trim() || !title.trim() || !bodyText) {
       setError("Company, role, title and the experience body are all required.");
@@ -108,8 +113,10 @@ export function Composer({ onClose }: { onClose: () => void }) {
 
     setSaving(true);
     try {
-      const res = await fetch("/api/interview", {
-        method: "POST",
+      const res = await fetch(
+        editing ? `/api/interview/${initial!.id}` : "/api/interview",
+        {
+        method: editing ? "PATCH" : "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           company: company.trim(),
@@ -125,7 +132,8 @@ export function Composer({ onClose }: { onClose: () => void }) {
             .filter(Boolean),
           body: html,
         }),
-      });
+      }
+      );
       if (res.status === 401) {
         router.push("/login");
         return;
@@ -137,7 +145,14 @@ export function Composer({ onClose }: { onClose: () => void }) {
         return;
       }
       onClose();
-      router.push(`/interview/${data.id}`);
+      if (editing) {
+        // Already on the post — pull the updated server render rather than
+        // navigating to the page we are standing on.
+        onSaved?.();
+        router.refresh();
+      } else {
+        router.push(`/interview/${data.id}`);
+      }
     } catch {
       setError("Network error. Please try again.");
       setSaving(false);
@@ -155,7 +170,7 @@ export function Composer({ onClose }: { onClose: () => void }) {
       <div
         role="dialog"
         aria-modal="true"
-        aria-label="Share your interview experience"
+        aria-label={editing ? "Edit your interview experience" : "Share your interview experience"}
         onClick={(e) => e.stopPropagation()}
         className="glass flex max-h-[94vh] w-full max-w-2xl flex-col overflow-hidden rounded-t-3xl sm:rounded-3xl"
       >
@@ -167,10 +182,10 @@ export function Composer({ onClose }: { onClose: () => void }) {
             </span>
             <div>
               <p className="text-[11px] font-medium uppercase tracking-wide text-accent">
-                New experience
+                {editing ? "Edit experience" : "New experience"}
               </p>
               <h3 className="text-base font-semibold text-foreground">
-                Share your interview experience
+                {editing ? "Update your experience" : "Share your interview experience"}
               </h3>
             </div>
           </div>
@@ -264,38 +279,17 @@ export function Composer({ onClose }: { onClose: () => void }) {
             />
           </Field>
 
-          {/* Body — WYSIWYG editor */}
+          {/* Body — shared TipTap editor. No underline tool: the body becomes
+              markdown on save, and markdown has no underline, so offering it
+              would silently drop the styling the moment the post is published. */}
           <Field label="Your experience" required>
-            <div className="overflow-hidden rounded-xl border border-border">
-              <div className="flex flex-wrap items-center gap-1 border-b border-border bg-surface-2/50 px-2 py-1.5">
-                {TOOLS.map(([Icon, label, command, value], i) => (
-                  <button
-                    key={i}
-                    type="button"
-                    onMouseDown={(e) => e.preventDefault()}
-                    onClick={() => cmd(command, value)}
-                    aria-label={label}
-                    title={label}
-                    className="grid h-8 w-8 place-items-center rounded-lg text-muted transition-colors hover:bg-rb-green-500/15 hover:text-accent"
-                  >
-                    <Icon className="h-4 w-4" />
-                  </button>
-                ))}
-                <span className="ml-1 hidden text-xs text-muted sm:block">
-                  Select text, then format — just like a doc.
-                </span>
-              </div>
-              <div
-                ref={bodyRef}
-                role="textbox"
-                aria-multiline="true"
-                aria-label="Experience body"
-                contentEditable
-                suppressContentEditableWarning
-                data-ph="Walk through each round: questions asked, what worked, what you'd do differently, and tips for the next candidate…"
-                className="min-h-[200px] space-y-2 overflow-y-auto bg-surface/40 px-4 py-3.5 text-sm leading-relaxed text-foreground outline-none empty:before:text-muted empty:before:content-[attr(data-ph)] [&_a]:text-accent [&_a]:underline [&_blockquote]:border-l-2 [&_blockquote]:border-rb-green-500/40 [&_blockquote]:pl-3 [&_blockquote]:italic [&_blockquote]:text-muted [&_h3]:text-base [&_h3]:font-semibold [&_h3]:text-foreground [&_ol]:list-decimal [&_ol]:pl-5 [&_pre]:rounded-lg [&_pre]:bg-surface-2 [&_pre]:p-3 [&_pre]:font-mono [&_pre]:text-xs [&_ul]:list-disc [&_ul]:pl-5"
-              />
-            </div>
+            <RichTextEditor
+              ref={editorRef}
+              initialHTML={initial?.bodyHtml ?? ""}
+              ariaLabel="Experience body"
+              placeholder="Walk through each round: questions asked, what worked, what you'd do differently, and tips for the next candidate…"
+              minHeightClass="min-h-[220px]"
+            />
           </Field>
 
           {error && (
@@ -308,7 +302,7 @@ export function Composer({ onClose }: { onClose: () => void }) {
         {/* Footer */}
         <div className="flex items-center justify-between gap-3 border-t border-border px-5 py-3.5">
           <span className="hidden text-xs text-muted sm:block">
-            Published to the community feed.
+            {editing ? "Your edit goes live immediately." : "Published to the community feed."}
           </span>
           <div className="flex items-center gap-2">
             <button
@@ -326,7 +320,12 @@ export function Composer({ onClose }: { onClose: () => void }) {
             >
               {saving ? (
                 <>
-                  <Loader2 className="h-4 w-4 animate-spin" /> Publishing…
+                  <Loader2 className="h-4 w-4 animate-spin" />{" "}
+                  {editing ? "Saving…" : "Publishing…"}
+                </>
+              ) : editing ? (
+                <>
+                  <Save className="h-4 w-4" /> Save changes
                 </>
               ) : (
                 <>
