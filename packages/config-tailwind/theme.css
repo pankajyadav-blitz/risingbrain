@@ -45,10 +45,40 @@
   --foreground: #14181b;
   --surface: #f1f3ee;
   --surface-2: #dfe3dc;
-  --muted: #57606a;
+  --muted: #555e68;
   --border: rgba(15, 18, 22, 0.1);
   --highlight: rgba(15, 18, 22, 0.03);
   --ring: var(--rb-green-500);
+
+  /* ---------- Long-form reading (see `.notes-prose` / `.reading-surface`) ----
+     Study notes are read for minutes at a time, not glanced at, so the surface
+     they sit on and the ink they are set in are their own decision rather than
+     a reuse of the app chrome's.
+
+     `--reading` is a near-white sheet lifted off the sage page behind it: the
+     page backdrop is deliberately soft, and text set directly on it has to work
+     against a tinted ground for every one of those minutes. `--reading-foreground`
+     is a touch lighter than `--foreground`, because near-black on near-white at
+     18px is more contrast than sustained reading wants (it is the glare people
+     describe as "harsh" and answer by turning brightness down). Both still clear
+     WCAG AA comfortably. */
+  --reading: #fbfcf9;
+  --reading-foreground: #1b2126;
+  --reading-border: rgba(15, 18, 22, 0.09);
+  /* Code wants to read as a different material from prose, in both themes. */
+  --code-bg: #f0f2ec;
+  --code-border: rgba(15, 18, 22, 0.11);
+
+  /* Callout accents — one hue per intent, each used as a tinted wash + a rule.
+     Blockquotes in the notes carry asides, gotchas and exam tips; giving them a
+     shape the eye can skip to (or stop at) is what turns a wall of prose into
+     something scannable. */
+  --note-info: #2563a8;
+  --note-info-bg: rgba(37, 99, 168, 0.08);
+  --note-tip: var(--rb-green-700);
+  --note-tip-bg: rgba(27, 98, 64, 0.09);
+  --note-warn: #a1620a;
+  --note-warn-bg: rgba(161, 98, 10, 0.09);
 
   /* On light surfaces a deeper green keeps text/buttons legible. */
   --brand: var(--rb-green-700);
@@ -69,14 +99,38 @@
 
 /* ---------- Dark theme ---------- */
 .dark {
-  --background: #0f1216;
+  --background: #0e1114;
   --foreground: #e8ecef;
-  --surface: #181b1f;
-  --surface-2: #1d2126;
+  /* The elevation ladder is spaced so each rung is actually VISIBLE against the
+     one below it. `--surface-2` used to sit ~2% lightness above `--surface`,
+     which on a dark theme is under the perceptual threshold — table headers,
+     code blocks and the segmented controls all read as flat with the surface
+     they were meant to sit on. */
+  --surface: #171b20;
+  --surface-2: #21262d;
   --muted: #9aa1a8;
-  --border: rgba(255, 255, 255, 0.08);
+  --border: rgba(255, 255, 255, 0.09);
   --highlight: rgba(255, 255, 255, 0.04);
   --ring: var(--rb-green-500);
+
+  /* ---------- Long-form reading (mirrors the light block above) ----------
+     On dark, the reading sheet is a rung ABOVE the page rather than below it, so
+     the content column still reads as the thing in front. `--reading-foreground`
+     is pulled back from pure `#e8ecef`: at 18px over a long body of text, a
+     near-white on near-black is the halation people feel as eye strain, and
+     dialling it to ~88% white keeps 13:1 contrast while losing the glare. */
+  --reading: #14181c;
+  --reading-foreground: #dbe2e7;
+  --reading-border: rgba(255, 255, 255, 0.07);
+  --code-bg: #0d1114;
+  --code-border: rgba(255, 255, 255, 0.09);
+
+  --note-info: #7cb1e8;
+  --note-info-bg: rgba(124, 177, 232, 0.1);
+  --note-tip: var(--rb-green-300);
+  --note-tip-bg: rgba(127, 207, 156, 0.09);
+  --note-warn: #e3b062;
+  --note-warn-bg: rgba(227, 176, 98, 0.1);
 
   /* On dark surfaces the mid/bright greens pop without glare. */
   --brand: var(--rb-green-500);
@@ -118,6 +172,10 @@
   --color-rb-green-400: var(--rb-green-400);
   --color-rb-green-300: var(--rb-green-300);
 
+  --color-reading: var(--reading);
+  --color-reading-foreground: var(--reading-foreground);
+  --color-reading-border: var(--reading-border);
+
   --color-glass: var(--glass-bg);
   --color-glass-2: var(--glass-bg-2);
   --color-glass-border: var(--glass-border);
@@ -156,6 +214,17 @@
     background: var(--glass-bg-2);
     border-color: color-mix(in srgb, var(--rb-green-500) 35%, transparent);
     box-shadow: var(--shadow-card-hover);
+  }
+
+  /* The sheet long-form study content is set on. A quiet, large-radius panel
+     rather than a `glass` card: the notes are read for minutes at a time, and a
+     translucent blur under a body of small text costs contrast for a decoration
+     nobody looks at. Pairs with `.notes-prose`, which supplies the type. */
+  .reading-surface {
+    background: var(--reading);
+    border: 1px solid var(--reading-border);
+    border-radius: 1.25rem;
+    box-shadow: var(--shadow-card);
   }
 
   /* Emphasis text: a single, restrained brand green — no gradient. */

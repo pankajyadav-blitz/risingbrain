@@ -22,7 +22,8 @@
     "db:backfill-activity": "bun run scripts/backfill-activity.ts",
     "lint": "eslint . --max-warnings 0",
     "check-types": "tsc --noEmit",
-    "db:migrate-legacy": "bun run scripts/migrate-legacy.ts"
+    "db:migrate-legacy": "bun run scripts/migrate-legacy.ts",
+    "db:repair-domain": "bun run scripts/repair-domain-notes.ts"
   },
   "dependencies": {
     "@prisma/adapter-pg": "^7.8.0",

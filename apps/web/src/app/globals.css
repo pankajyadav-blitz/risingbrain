@@ -86,97 +86,195 @@ body::before {
 }
 
 /* ==========================================================================
-   Markdown prose — styles the markdown rendered by NotesMarkdown
-   (react-markdown + remark-gfm + KaTeX) in the screening "Notes" tab, and the
-   interview experience bodies rendered by ExperienceBody. No typography plugin
-   is used; these element rules give a body of markdown a clean, theme-aware
-   reading surface without leaking into the rest of the app.
+   Markdown prose — the app's shared READING SURFACE.
+
+   Styles every body of long-form markdown: Domain topic notes (NotesMarkdown),
+   the Screening "Notes" tab, interview experience bodies (ExperienceBody) and
+   the TipTap editor's writing surface, so an author composes in the same type
+   the reader gets. No typography plugin — these element rules are the whole
+   system, which keeps them theme-aware and stops them leaking into app chrome.
+
+   Two ideas run through the block:
+
+   ① A MEASURE. Text is capped at a readable line length; blocks that are read
+     two-dimensionally rather than line-by-line (tables, code, diagrams) opt out
+     and use the width the cap frees up.
+   ② A SCALE. Sizes, weights and the space above each heading come from one
+     ratio, so the document's structure is legible before a word is read.
    ========================================================================== */
 .notes-prose {
-  color: var(--foreground);
-  /* Sized for sustained reading, not for fitting into a sidebar: these notes are
-     the primary content of the pane, so they set the page's reading size rather
-     than sitting a step below it. */
-  font-size: 1.0625rem;
-  line-height: 1.78;
+  /* ① The measure: how wide TEXT is allowed to run.
+
+     Set to fill the column. The reading-research answer is a cap — ~66-85
+     characters, because past roughly 90 the eye's return sweep stops reliably
+     finding the next line — and this was 38-44rem for exactly that reason. It is
+     a product decision to fill instead: the sheet spans the pane, and a capped
+     paragraph inside a full-width card leaves an empty right-hand third that
+     reads as a layout bug rather than as a margin.
+
+     This is the ONE value that trades those off. Put a length back here to
+     restore the cap (`clamp(38rem, 40vw, 44rem)` was the measured setting: 38rem
+     ≈ 72 characters at 18px, 44rem ≈ 84). Nothing else needs to change — every
+     text block below reads its width from this. */
+  --prose-measure: 100%;
+  /* ② Wide blocks — tables, code, diagrams — are read across rather than along,
+     so they were never capped even when the prose was. They stay at full column
+     width; the variable is kept because the rules below reference it, and it is
+     where a future cap for wide blocks alone would go. */
+  --prose-wide: 100%;
+
+  color: var(--reading-foreground);
+  /* Fluid within one step: 16px where the column is narrow, 18px once there is
+     room for it. Sustained reading wants the larger end; a phone cannot afford
+     it without shredding the measure. */
+  font-size: clamp(1rem, 0.94rem + 0.3vw, 1.125rem);
+  line-height: 1.72;
+  font-kerning: normal;
   overflow-wrap: break-word;
 }
 .notes-prose > :first-child {
   margin-top: 0;
 }
-/* No measure cap here by design: the notes are reference material read at a
-   desk, and the content pane is meant to USE its width rather than strand a
-   column of empty space beside the text. */
+.notes-prose > :last-child {
+  margin-bottom: 0;
+}
+
+/* --- ① The measure, applied ---------------------------------------------
+   Capped blocks stay flush LEFT, sharing the left edge of the page header and
+   the tab bar above them; wide blocks simply run further right. Centring the
+   prose instead was tried and is wrong here: the column it centres in belongs to
+   the whole topic page, so a centred body of text starts a couple of hundred
+   pixels right of the title that introduces it and reads as a stray indent. One
+   left edge for everything is what makes the page look set rather than stacked.
+
+   The element rules below use `margin-block`, never the `margin` shorthand,
+   so nothing here can be reset by a later declaration. */
+.notes-prose > p,
+.notes-prose > ul,
+.notes-prose > ol,
+.notes-prose > dl,
+.notes-prose > blockquote,
+.notes-prose > h1,
+.notes-prose > h3,
+.notes-prose > h4,
+.notes-prose > h5,
+.notes-prose > h6 {
+  max-width: var(--prose-measure);
+}
+/* `h2` is deliberately NOT capped. It carries the section rule, and a divider
+   that stops two-thirds of the way across the column reads as a mis-set
+   underline rather than the start of a section — especially where the section
+   opens with a full-width table. The headings at this level are short ("Common
+   confusion", "Interview angle"), so letting them span costs no line length;
+   `text-wrap: balance` handles the rare long one. */
+
+/* Read across, not along — these get the wider bound. */
+.notes-prose > pre,
+.notes-prose > .table-wrap {
+  max-width: var(--prose-wide);
+}
+
+/* --- ② The type scale ----------------------------------------------------
+   A ~1.22 ratio off the body size. The old scale put `h4` BELOW the paragraph
+   size it introduced, which inverts the hierarchy: a heading that is smaller
+   than its own body text reads as an aside. Here the smallest heading holds the
+   body size and separates itself by weight, colour and tracking instead. */
 .notes-prose h1,
 .notes-prose h2,
 .notes-prose h3,
-.notes-prose h4 {
+.notes-prose h4,
+.notes-prose h5,
+.notes-prose h6 {
   font-weight: 700;
   line-height: 1.25;
   letter-spacing: -0.015em;
   text-wrap: balance;
-  /* The notes scroll in their OWN pane now, so an anchored heading only has to
-     clear its own top edge — the old page-level offset dropped it a long way
-     down the pane. */
-  scroll-margin-top: 1.25rem;
+  color: var(--foreground);
+  /* The notes scroll in their OWN pane, so an anchored heading only has to clear
+     its own top edge. */
+  scroll-margin-top: 1.5rem;
 }
-/* Heading rhythm: the space ABOVE a heading is what groups it with the section
-   it introduces, so each level gets a clearly larger lead-in than the gap it
-   leaves below. That difference is what makes the structure readable at a
-   glance instead of an even wall of text. */
+/* Heading rhythm: the space ABOVE a heading is what binds it to the section it
+   opens, so every level takes a clearly larger lead-in than the gap it leaves
+   below. That asymmetry is what makes structure visible while scrolling past;
+   even spacing above and below produces the undifferentiated wall this content
+   was previously read as. */
 .notes-prose h1 {
-  font-size: 1.8rem;
-  margin: 0 0 1.25rem;
+  font-size: 2em;
+  margin-block: 0 1.1rem;
+  letter-spacing: -0.022em;
 }
 .notes-prose h2 {
-  font-size: 1.4rem;
-  margin: 2.75rem 0 1rem;
-  padding-bottom: 0.5rem;
+  font-size: 1.5em;
+  margin-block: 3rem 1rem;
+  padding-bottom: 0.55rem;
   border-bottom: 1px solid var(--border);
+  letter-spacing: -0.018em;
 }
 .notes-prose h3 {
-  font-size: 1.175rem;
-  margin: 2.15rem 0 0.7rem;
+  font-size: 1.24em;
+  margin-block: 2.3rem 0.65rem;
   color: var(--accent);
 }
-.notes-prose h4 {
-  font-size: 1.03rem;
-  margin: 1.65rem 0 0.5rem;
+/* Smallest heading: body-sized, so it never sinks under the text it labels, and
+   set as a micro-label so it still reads as a heading at that size. */
+.notes-prose h4,
+.notes-prose h5,
+.notes-prose h6 {
+  font-size: 1em;
+  margin-block: 1.9rem 0.5rem;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 700;
 }
-/* A heading straight after another shouldn't inherit the full section lead-in. */
+/* A heading straight after another shouldn't take the full section lead-in. */
 .notes-prose h2 + h3,
-.notes-prose h3 + h4 {
-  margin-top: 1rem;
+.notes-prose h3 + h4,
+.notes-prose h2 + h4 {
+  margin-block-start: 0.9rem;
 }
+
 .notes-prose p {
-  margin: 1.05rem 0;
+  margin-block: 1.15rem;
   text-wrap: pretty;
 }
 .notes-prose strong {
   font-weight: 700;
   color: var(--foreground);
 }
+.notes-prose em {
+  font-style: italic;
+}
 .notes-prose a {
   color: var(--accent);
   text-decoration: underline;
-  text-underline-offset: 2px;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+  text-decoration-color: color-mix(in srgb, var(--accent) 45%, transparent);
+  transition: text-decoration-color var(--dur-fast) ease;
 }
+.notes-prose a:hover {
+  text-decoration-color: currentColor;
+}
+
+/* --- Lists ---------------------------------------------------------------- */
 .notes-prose ul,
 .notes-prose ol {
-  margin: 1.05rem 0;
-  padding-left: 1.5rem;
+  margin-block: 1.15rem;
+  padding-left: 1.4rem;
 }
 .notes-prose li {
-  margin: 0.5rem 0;
+  margin: 0.45rem 0;
   /* Keeps a wrapped line aligned to the first line's text rather than sliding
      back under the marker. */
-  padding-left: 0.2rem;
+  padding-left: 0.25rem;
 }
 /* A nested list belongs to its parent item, so it sits tighter than the gap
    between top-level items. */
 .notes-prose li > ul,
 .notes-prose li > ol {
-  margin: 0.5rem 0;
+  margin: 0.45rem 0;
 }
 /* A list item holding full paragraphs shouldn't double up on spacing. */
 .notes-prose li > p {
@@ -196,54 +294,113 @@ body::before {
 }
 .notes-prose li::marker {
   color: var(--accent);
+  font-weight: 600;
 }
+/* Nested levels step down the marker shapes so depth is readable without
+   counting indents. */
+.notes-prose li > ul {
+  list-style: circle;
+}
+.notes-prose li > ul > li > ul {
+  list-style: square;
+}
+/* GFM task lists: the checkbox replaces the marker, so drop the bullet. */
+.notes-prose li:has(> input[type="checkbox"]) {
+  list-style: none;
+  margin-left: -1.15rem;
+}
+.notes-prose li > input[type="checkbox"] {
+  margin-right: 0.5rem;
+  accent-color: var(--rb-green-500);
+}
+
 .notes-prose hr {
   border: 0;
   border-top: 1px solid var(--border);
-  margin: 2.5rem 0;
+  margin-block: 2.75rem;
+  max-width: var(--prose-wide);
 }
+
+/* --- Callouts ------------------------------------------------------------
+   Blockquotes in study notes are almost never quotations — they carry the
+   aside, the gotcha and the "this is what gets asked" tip. A tinted card with an
+   accent rule gives them a shape the eye can skip TO when scanning and stop AT
+   when reading, which a bare left border on running text does not. */
 .notes-prose blockquote {
-  margin: 1.5rem 0;
-  padding: 0.4rem 0 0.4rem 1.15rem;
-  border-left: 3px solid color-mix(in srgb, var(--rb-green-500) 55%, transparent);
-  color: var(--muted);
+  margin-block: 1.6rem;
+  padding: 0.9rem 1.15rem;
+  border: 1px solid color-mix(in srgb, var(--note-tip) 22%, transparent);
+  border-left: 3px solid var(--note-tip);
+  border-radius: 0.25rem 0.85rem 0.85rem 0.25rem;
+  background: var(--note-tip-bg);
+  color: var(--reading-foreground);
 }
-/* Inline code + fenced blocks (rare in notes, but keep them legible). */
+.notes-prose blockquote > :first-child {
+  margin-top: 0;
+}
+.notes-prose blockquote > :last-child {
+  margin-bottom: 0;
+}
+/* The first strong run is usually the label ("Note", "Remember", "Exam tip"). */
+.notes-prose blockquote > p:first-child > strong:first-child {
+  color: var(--note-tip);
+}
+
+/* --- Code ----------------------------------------------------------------
+   Code is primary content here, not an occasional aside: these are CS notes and
+   most topics carry a worked example. It is set on its own material — a surface
+   distinct from both the page and the reading sheet — so a reader can tell at a
+   glance where prose stops and a listing starts. */
 .notes-prose :not(pre) > code {
   font-family: var(--font-mono);
-  font-size: 0.85em;
-  background: var(--surface-2);
-  padding: 0.12em 0.4em;
+  /* Mono runs optically larger than the body face at the same size, so it is
+     held a step below — far enough to sit in the line, close enough to read. */
+  font-size: 0.875em;
+  background: color-mix(in srgb, var(--accent) 10%, var(--code-bg));
+  color: var(--foreground);
+  padding: 0.15em 0.4em;
   border-radius: 0.35rem;
-  border: 1px solid var(--border);
+  border: 1px solid var(--code-border);
+  overflow-wrap: break-word;
 }
 .notes-prose pre {
-  background: var(--surface-2);
-  border: 1px solid var(--border);
-  border-radius: 0.75rem;
-  padding: 1.15rem 1.25rem;
+  background: var(--code-bg);
+  border: 1px solid var(--code-border);
+  border-radius: 0.85rem;
+  padding: 1.1rem 1.25rem;
   overflow-x: auto;
-  margin: 1.5rem 0;
+  margin-block: 1.6rem;
+  /* Long lines scroll rather than wrap mid-token — a wrapped identifier reads as
+     two identifiers. */
+  white-space: pre;
+  tab-size: 2;
 }
 .notes-prose pre code {
   font-family: var(--font-mono);
-  /* Mono runs visually larger than the body face at the same size, so it's held
-     a step below — and given its own leading, since code lines are read
-     individually rather than as flowing prose. */
-  font-size: 0.85em;
-  line-height: 1.65;
+  font-size: 0.875em;
+  /* Its own leading: code lines are read individually, not as flowing prose. */
+  line-height: 1.7;
+  background: none;
+  border: 0;
+  padding: 0;
+  color: inherit;
 }
-/* Tables — the notes are dense with reference tables (divisibility, codes…). */
+
+/* --- Tables --------------------------------------------------------------
+   The notes are dense with reference grids (comparisons, complexity tables,
+   normal forms), and those are read by comparing a value against its neighbours
+   — which needs banding and a header that stays distinct from the body. */
 .notes-prose .table-wrap {
   overflow-x: auto;
-  margin: 1.5rem 0;
+  margin-block: 1.6rem;
   border: 1px solid var(--border);
-  border-radius: 0.75rem;
+  border-radius: 0.85rem;
+  background: var(--surface);
 }
 .notes-prose table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 0.95rem;
+  font-size: 0.94em;
   line-height: 1.6;
   /* Reference tables compare numbers down a column, so digits get fixed widths. */
   font-variant-numeric: tabular-nums;
@@ -252,17 +409,44 @@ body::before {
   background: var(--surface-2);
   text-align: left;
   font-weight: 600;
-  letter-spacing: 0.01em;
+  font-size: 0.92em;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--muted);
+  /* Deliberately NOT `white-space: nowrap`. It was, briefly, and it broke every
+     comparison table in the set: these headers are phrases ("Provides services
+     to applications"), not labels, so refusing to wrap them pushed the table
+     past its own scrollport and squeezed the body columns down to one word per
+     line. A header that wraps to two lines is fine; a table you have to scroll
+     sideways to read is not. */
+  text-wrap: balance;
 }
 .notes-prose th,
 .notes-prose td {
-  padding: 0.65rem 0.9rem;
+  padding: 0.65rem 0.95rem;
   border-bottom: 1px solid var(--border);
   vertical-align: top;
+}
+/* Column widths are left to the browser's content-based `auto` algorithm, which
+   is right for the two shapes these notes actually contain: a lookup table
+   ("Divisor" / "Rule") wants a narrow key column and a wide value column, and a
+   comparison ("Operating System" / "Kernel") has prose on both sides and splits
+   about evenly on its own. A `fixed` even split was tried and gets the first of
+   those wrong — half the table for a column holding "2", "3", "4". */
+/* Zebra banding: the cheapest way to keep the eye on one row across a wide
+   grid, and it costs no contrast on the text itself. */
+.notes-prose tbody tr:nth-child(even) {
+  background: var(--highlight);
 }
 .notes-prose tbody tr:last-child td {
   border-bottom: 0;
 }
+/* The first column is usually the row's label — anchor it. */
+.notes-prose tbody td:first-child {
+  font-weight: 600;
+  color: var(--foreground);
+}
+
 /* Diagram images extracted from the source PDFs. */
 .notes-prose figure {
   margin: 1.75rem 0;
@@ -322,6 +506,7 @@ body::before {
     calc(var(--fig-nat) + var(--fig-frame))
   );
 }
+
 /* KaTeX: let long display equations scroll instead of overflowing the card. */
 .notes-prose .katex-display {
   overflow-x: auto;

@@ -9,29 +9,41 @@ import { Skeleton } from "@/components/loading/loading-shell";
  *    `loading.tsx`: header + index + content inside the full-height flex chain.
  */
 
-/** Mirrors <TopicView>: header → tab bar → prose blocks + a figure. */
+/** Mirrors <TopicView>: the reading sheet beside the contents rail. */
 export function TopicSkeleton() {
   return (
-    <div className="pb-10">
+    <div className="mb-10 flex items-start gap-8">
+    <div className="reading-surface mb-10 min-w-0 flex-1 px-5 py-6 sm:px-8 sm:py-8 lg:px-10 lg:py-9">
       {/* Header */}
-      <div className="mb-7 border-b border-border pb-6">
+      <div className="mb-8 border-b border-reading-border pb-6">
         <Skeleton className="h-3 w-40" />
-        <Skeleton className="mt-2 h-8 w-1/2" />
-        <Skeleton className="mt-2.5 h-5 w-3/4" />
+        <Skeleton className="mt-2.5 h-9 w-1/2" />
+        <Skeleton className="mt-3 h-4 w-3/4" />
       </div>
 
       {/* Notes | Practice tab bar */}
       <Skeleton className="mb-6 h-9 w-48 rounded-xl" />
 
-      {/* Prose */}
-      <div className="space-y-3">
-        <Skeleton className="h-4 w-1/3" />
+      {/* Prose — the bars stop at the measure the real notes are capped to, so
+          the swap to live content doesn't visibly reflow the column. */}
+      <div className="max-w-[68ch] space-y-3">
+        <Skeleton className="h-5 w-1/3" />
         <Skeleton className="h-3 w-full" />
         <Skeleton className="h-3 w-11/12" />
         <Skeleton className="h-3 w-5/6" />
-        <Skeleton className="my-4 h-48 w-full rounded-xl" />
+        <Skeleton className="my-5 h-48 w-full rounded-xl" />
         <Skeleton className="h-3 w-full" />
         <Skeleton className="h-3 w-4/5" />
+      </div>
+      </div>
+      {/* "On this page" rail */}
+      <div className="sticky top-0 hidden w-56 shrink-0 self-start py-1 xl:block">
+        <Skeleton className="mb-3 h-3 w-24" />
+        <div className="space-y-2 border-l border-border pl-3.5">
+          {Array.from({ length: 5 }).map((_, i) => (
+            <Skeleton key={i} className="h-3 w-4/5" />
+          ))}
+        </div>
       </div>
     </div>
   );

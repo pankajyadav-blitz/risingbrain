@@ -1,9 +1,11 @@
 import { QuestionCard } from "./question-card";
 import { TopicProgressBar } from "./topic-progress-bar";
 import { PaperAttemptProvider } from "./paper-attempt";
-import { SubmitBar, TopRetakeButton } from "./submit-bar";
-import { PaperTabs } from "./paper-tabs";
 import { NotesMarkdown } from "./notes-markdown";
+import { SubmitBar, TopRetakeButton } from "./submit-bar";
+import { ReadingTabs, ReadingTabProvider } from "@/components/notes/reading-tabs";
+import { NotesToc } from "@/components/notes/notes-toc";
+import { extractToc } from "@/lib/markdown-toc";
 import type { AptPaper } from "../_data";
 
 /**
@@ -11,11 +13,22 @@ import type { AptPaper } from "../_data";
  * holds the questions for the topic in the URL (the lazy split). The header bar
  * and per-question dots stay live via the shared progress provider.
  *
- * Inside the header, the body is a Notes | Practice switch (`PaperTabs`): the
+ * Inside the header, the body is a Notes | Practice switch (`ReadingTabs`): the
  * learner lands on the topic's notes (theory + diagrams, rendered from markdown
  * held in `QuizTopic.theory`) and flips to the graded questions when ready.
+ * Puzzles have no theory, so they open straight on Practice and the rail stays
+ * out of the way.
+ *
+ * LAYOUT AND SHEET are shared with the Domain topic view, deliberately — see the
+ * note there. The two sections are the same activity (read the material, answer
+ * on it), and a learner moving between them should not have to re-learn where
+ * the content starts or where the contents list lives.
  */
 export function Paper({ paper }: { paper: AptPaper }) {
+  const hasNotes = Boolean(paper.theory);
+  // Read from the markdown source, so the rail server-renders with the notes.
+  const toc = paper.theory ? extractToc(paper.theory) : [];
+
   const practice = (
     <>
       {/* Questions — paper style */}
@@ -40,41 +53,49 @@ export function Paper({ paper }: { paper: AptPaper }) {
   );
 
   return (
-    // Plain content, no card and no frame inset: horizontal gutters come from the
-    // page <Container>, the scrollbar gutter from the pane in `workspace.tsx`. Only
-    // a bottom gutter is ours, so the SubmitBar isn't flush to the scroll end.
-    <div className="pb-10">
-      {/* Whole paper shares one attempt so the header's Retake button can react
-          to submission state alongside the questions and bottom SubmitBar. */}
-      <PaperAttemptProvider
-        topicId={paper.topicId}
-        questionIds={paper.questions.map((q) => q.id)}
-      >
-        {/* Header */}
-        <div className="mb-7 border-b border-border pb-6">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.08em] text-accent">
-            {paper.categoryName}
-          </p>
-          <div className="mt-1.5 flex flex-wrap items-center justify-between gap-3">
-            <h3 className="text-2xl font-bold tracking-tight text-balance sm:text-[1.75rem]">
-              {paper.topicName}
-            </h3>
-            <div className="flex shrink-0 items-center gap-3">
-              <span className="text-sm text-muted">
-                {paper.questions.length} question{paper.questions.length === 1 ? "" : "s"}
-              </span>
-              <TopRetakeButton />
-            </div>
-          </div>
-          <TopicProgressBar topicId={paper.topicId} total={paper.questions.length} />
-        </div>
+    // Whole paper shares one attempt so the header's Retake button can react to
+    // submission state alongside the questions and bottom SubmitBar.
+    <PaperAttemptProvider
+      topicId={paper.topicId}
+      questionIds={paper.questions.map((q) => q.id)}
+    >
+      <ReadingTabProvider initial={hasNotes ? "notes" : "practice"}>
+        {/* Horizontal gutters come from the page <Container>, the scrollbar
+            gutter from the pane in `workspace.tsx`; only the bottom gutter is
+            ours, so the sheet's last edge isn't flush against the scroll end. */}
+        <div className="mb-10 flex items-start gap-8">
+          <div className="reading-surface min-w-0 flex-1 px-5 py-6 sm:px-8 sm:py-8 lg:px-10 lg:py-9">
+            {/* Header */}
+            <header className="mb-8 border-b border-reading-border pb-6">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.09em] text-accent">
+                {paper.categoryName}
+              </p>
+              <div className="mt-2 flex flex-wrap items-start justify-between gap-3">
+                {/* A step above the notes' own h1, so the paper title still reads
+                    as the page's title once the theory below carries headings. */}
+                <h3 className="max-w-[24ch] text-[1.7rem] font-bold leading-[1.15] tracking-tight text-balance text-foreground sm:text-[2rem]">
+                  {paper.topicName}
+                </h3>
+                <div className="flex shrink-0 items-center gap-3">
+                  <span className="text-sm text-muted">
+                    {paper.questions.length} question{paper.questions.length === 1 ? "" : "s"}
+                  </span>
+                  <TopRetakeButton />
+                </div>
+              </div>
+              <TopicProgressBar topicId={paper.topicId} total={paper.questions.length} />
+            </header>
 
-        <PaperTabs
-          questionCount={paper.questions.length}
-          notes={paper.theory ? <NotesMarkdown source={paper.theory} /> : null}
-          practice={practice}
-        />
-      </PaperAttemptProvider>
-    </div>
+            <ReadingTabs
+              questionCount={paper.questions.length}
+              notes={paper.theory ? <NotesMarkdown source={paper.theory} /> : null}
+              practice={practice}
+            />
+          </div>
+
+          <NotesToc items={toc} />
+        </div>
+      </ReadingTabProvider>
+    </PaperAttemptProvider>
   );
 }

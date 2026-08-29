@@ -34,7 +34,7 @@ const SUBJECT_FILES = [oopsData, dbmsData, osData, cnData, sqlData];
 // quiz file simply shows its notes with no Practice tab.
 const QUIZ_FILES = [dbmsQuiz];
 
-type DomainTopicJson = {
+export type DomainTopicJson = {
   subject: string;
   groupLabel: string;
   phase?: number;
@@ -92,13 +92,23 @@ async function withRetry<T>(fn: () => Promise<T>, label: string, tries = 6): Pro
 }
 
 /**
- * Map one seed-JSON topic onto a `domain_topics` row, folding its code example
- * into the notes (see the file header — there is no `example` column any more).
+ * The `notes` a topic's ROW carries, which is not the same string as the one in
+ * the seed file: an authored code example is appended as a final "## Example"
+ * section (see the file header — there is no `example` column any more).
+ *
+ * Exported because anything that writes `domain_topics.notes` from the seed has
+ * to apply this same fold, or it silently drops the example. `repair-domain-notes.ts`
+ * is the other such writer.
  */
-function toRow(t: DomainTopicJson) {
+export function notesForTopic(t: DomainTopicJson): string {
   // An inline example wins; otherwise fall back to the authored examples file.
   const example = t.example ?? exampleFor(t.slug);
-  const notes = example ? `${t.notes.trimEnd()}\n\n## Example\n\n${example.trim()}\n` : t.notes;
+  return example ? `${t.notes.trimEnd()}\n\n## Example\n\n${example.trim()}\n` : t.notes;
+}
+
+/** Map one seed-JSON topic onto a `domain_topics` row. */
+function toRow(t: DomainTopicJson) {
+  const notes = notesForTopic(t);
   return {
     subject: t.subject as DomainSubject,
     slug: t.slug,

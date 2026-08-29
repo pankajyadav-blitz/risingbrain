@@ -15,12 +15,13 @@ import { Skeleton } from "@/components/loading/loading-shell";
 /** Mirrors <Paper>: header → theory/formula notes → MCQ list. */
 export function PaperSkeleton() {
   return (
-    <div className="pb-10">
+    <div className="mb-10 flex items-start gap-8">
+    <div className="reading-surface min-w-0 flex-1 px-5 py-6 sm:px-8 sm:py-8 lg:px-10 lg:py-9">
       {/* Header */}
-      <div className="mb-7 border-b border-border pb-6">
+      <div className="mb-8 border-b border-reading-border pb-6">
         <Skeleton className="h-3 w-24" />
-        <div className="mt-1.5 flex items-center justify-between gap-3">
-          <Skeleton className="h-8 w-2/5" />
+        <div className="mt-2 flex items-center justify-between gap-3">
+          <Skeleton className="h-9 w-2/5" />
           <Skeleton className="h-4 w-20 shrink-0" />
         </div>
         {/* Topic progress bar */}
@@ -78,6 +79,16 @@ export function PaperSkeleton() {
           </li>
         ))}
       </ol>
+    </div>
+      {/* "On this page" rail */}
+      <div className="sticky top-0 hidden w-56 shrink-0 self-start py-1 xl:block">
+        <Skeleton className="mb-3 h-3 w-24" />
+        <div className="space-y-2 border-l border-border pl-3.5">
+          {Array.from({ length: 5 }).map((_, i) => (
+            <Skeleton key={i} className="h-3 w-4/5" />
+          ))}
+        </div>
+      </div>
     </div>
   );
 }
