@@ -12,6 +12,7 @@ import { useProgress } from "./progress-provider";
 import type { AptReviewEntry } from "../_data";
 import { redirectToLogin } from "@/lib/auth/redirect";
 import { refreshStreakBadge } from "@/lib/streak-client";
+import { useAttemptDraft } from "@/lib/attempt-draft";
 
 /**
  * Owns ONE topic paper's attempt. Each QuestionCard reads/writes its slice here
@@ -27,6 +28,16 @@ import { refreshStreakBadge } from "@/lib/streak-client";
  * (It used to be "before answering", which only meant anything while answers
  * locked on selection; now that they don't, opening a hint always leaves room to
  * change the answer, so it always costs the mark.)
+ *
+ * Submit is gated on a COMPLETE paper. Handing in a half-finished one scores the
+ * blanks as zero, which is almost never what the learner meant — they lost their
+ * place, not their nerve. `submit()` refuses below `total`, and the bar offers a
+ * jump to the first gap rather than a disabled button with no explanation.
+ *
+ * Answers survive the tab closing: `useAttemptDraft` mirrors the in-progress
+ * state to localStorage and clears it the moment the paper is graded. Hint
+ * flags ride along in the same state, so a restored draft keeps the forfeits it
+ * had already incurred — reloading is not a way to un-open a hint.
  *
  * A topic that the learner already submitted (per the global progress seed)
  * starts in review mode. After a fresh submit we flip to review mode and push
@@ -48,6 +59,10 @@ type AttemptValue = {
   topicId: string;
   total: number;
   answeredCount: number;
+  /** First question with no answer yet — drives "jump to it". Null when complete. */
+  firstUnansweredId: string | null;
+  /** Every question answered, so Submit is allowed. */
+  complete: boolean;
   submitted: boolean;
   result: { score: number; total: number } | null;
   submitting: boolean;
@@ -91,6 +106,17 @@ export function PaperAttemptProvider({
     [states]
   );
 
+  // In-progress answers (and hint flags) are mirrored to localStorage while the
+  // paper is open, and dropped once it is graded — see `useAttemptDraft`.
+  const { clearDraft } = useAttemptDraft<QState>({
+    scope: "screening",
+    topicId,
+    states,
+    questionIds,
+    onRestore: setStates,
+    enabled: !submitted,
+  });
+
   const patch = useCallback((questionId: string, next: Partial<QState>) => {
     setStates((prev) => ({
       ...prev,
@@ -124,6 +150,11 @@ export function PaperAttemptProvider({
   const submit = useCallback(() => {
     if (!progress?.signedIn) { redirectToLogin(); return; }
     if (submitting || submitted) return;
+    // The real gate. The button is disabled too, but that is presentation — a
+    // keyboard activation or a stale render must not be able to hand in a
+    // partial paper, because the blanks would be graded as wrong.
+    const answered = questionIds.filter((id) => statesRef.current[id]?.selectedKey).length;
+    if (answered < questionIds.length) return;
     setSubmitting(true);
     setError(null);
     const answers = questionIds
@@ -169,6 +200,8 @@ export function PaperAttemptProvider({
         );
         setResult({ score: data.score, total: data.total });
         setSubmitted(true);
+        // Graded now, so the draft can only contradict the stored result.
+        clearDraft();
         // Submitting a test can extend the streak (today became active) — refresh
         // the navbar flame in place from the authoritative value, no reload.
         void refreshStreakBadge();
@@ -178,7 +211,7 @@ export function PaperAttemptProvider({
         setSubmitting(false);
       }
     })();
-  }, [submitting, submitted, questionIds, topicId, progress]);
+  }, [submitting, submitted, questionIds, topicId, progress, clearDraft]);
 
   // Start a fresh attempt — clears local answers and re-opens the test. The
   // stored mark stays until the next submit replaces it.
@@ -187,18 +220,27 @@ export function PaperAttemptProvider({
     setSubmitted(false);
     setResult(null);
     setError(null);
-  }, []);
+    // The cleared paper is the new draft; drop whatever the last attempt left.
+    clearDraft();
+  }, [clearDraft]);
 
   const answeredCount = useMemo(
     () => questionIds.reduce((n, id) => n + (states[id]?.selectedKey ? 1 : 0), 0),
     [questionIds, states]
   );
+  const firstUnansweredId = useMemo(
+    () => questionIds.find((id) => !states[id]?.selectedKey) ?? null,
+    [questionIds, states]
+  );
+  const complete = questionIds.length > 0 && answeredCount === questionIds.length;
 
   const value = useMemo<AttemptValue>(
     () => ({
       topicId,
       total: questionIds.length,
       answeredCount,
+      firstUnansweredId,
+      complete,
       submitted,
       result,
       submitting,
@@ -209,7 +251,7 @@ export function PaperAttemptProvider({
       submit,
       retake,
     }),
-    [topicId, questionIds.length, answeredCount, submitted, result, submitting, error, getState, select, toggleHint, submit, retake]
+    [topicId, questionIds.length, answeredCount, firstUnansweredId, complete, submitted, result, submitting, error, getState, select, toggleHint, submit, retake]
   );
 
   return <AttemptContext.Provider value={value}>{children}</AttemptContext.Provider>;

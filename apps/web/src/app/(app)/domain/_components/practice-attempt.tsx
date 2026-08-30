@@ -5,6 +5,7 @@ import { useDomainProgress } from "./progress-provider";
 import type { DomainReviewEntry } from "../_data";
 import { redirectToLogin } from "@/lib/auth/redirect";
 import { refreshStreakBadge } from "@/lib/streak-client";
+import { useAttemptDraft } from "@/lib/attempt-draft";
 
 /**
  * Owns ONE topic's practice attempt. Each question card reads/writes its slice
@@ -15,6 +16,14 @@ import { refreshStreakBadge } from "@/lib/streak-client";
  * locally — the learner can change any answer as many times as they like, and no
  * verdict (and no colour) appears until they press Submit. That is the whole
  * point of a paper: you answer, you hand it in, then you find out.
+ *
+ * Submit is gated on a COMPLETE set. A half-finished paper handed in scores the
+ * blanks as zero, which is almost never what the learner meant — they lost their
+ * place, not their nerve. `submit()` refuses below `total`, and the bar offers a
+ * jump to the first gap instead of a disabled button with no explanation.
+ *
+ * Answers survive the tab closing: `useAttemptDraft` mirrors the in-progress
+ * state to localStorage and clears it the moment the set is graded.
  *
  * A topic the learner already submitted (per the progress seed) starts in review
  * mode. After a fresh submit we flip to review mode and push the graded result
@@ -33,6 +42,10 @@ type AttemptValue = {
   topicId: string;
   total: number;
   answeredCount: number;
+  /** First question with no answer yet — drives "jump to it". Null when complete. */
+  firstUnansweredId: string | null;
+  /** Every question answered, so Submit is allowed. */
+  complete: boolean;
   submitted: boolean;
   result: { score: number; total: number } | null;
   submitting: boolean;
@@ -72,6 +85,17 @@ export function PracticeAttemptProvider({
 
   const getState = useCallback((questionId: string) => states[questionId] ?? EMPTY, [states]);
 
+  // In-progress answers are mirrored to localStorage while the set is open, and
+  // dropped once it is graded — see `useAttemptDraft`.
+  const { clearDraft } = useAttemptDraft<QState>({
+    scope: "domain",
+    topicId,
+    states,
+    questionIds,
+    onRestore: setStates,
+    enabled: !submitted,
+  });
+
   const patch = useCallback((questionId: string, next: Partial<QState>) => {
     setStates((prev) => ({ ...prev, [questionId]: { ...EMPTY, ...prev[questionId], ...next } }));
   }, []);
@@ -95,6 +119,11 @@ export function PracticeAttemptProvider({
       return;
     }
     if (submitting || submitted) return;
+    // The real gate. The button is disabled too, but that is presentation — a
+    // keyboard activation or a stale render must not be able to hand in a
+    // partial set, because the blanks would be graded as wrong.
+    const answered = questionIds.filter((id) => statesRef.current[id]?.selectedKey).length;
+    if (answered < questionIds.length) return;
     setSubmitting(true);
     setError(null);
     const answers = questionIds
@@ -132,6 +161,8 @@ export function PracticeAttemptProvider({
         );
         setResult({ score: data.score, total: data.total });
         setSubmitted(true);
+        // Graded now, so the draft can only contradict the stored result.
+        clearDraft();
         // Submitting can extend the streak (today became active) — refresh the
         // navbar flame in place from the authoritative value, no reload.
         void refreshStreakBadge();
@@ -141,7 +172,7 @@ export function PracticeAttemptProvider({
         setSubmitting(false);
       }
     })();
-  }, [submitting, submitted, questionIds, topicId, progress]);
+  }, [submitting, submitted, questionIds, topicId, progress, clearDraft]);
 
   // Start a fresh attempt — clears local answers and re-opens the set. The
   // stored mark stays until the next submit replaces it.
@@ -150,18 +181,27 @@ export function PracticeAttemptProvider({
     setSubmitted(false);
     setResult(null);
     setError(null);
-  }, []);
+    // The cleared set is the new draft; drop whatever the last attempt left.
+    clearDraft();
+  }, [clearDraft]);
 
   const answeredCount = useMemo(
     () => questionIds.reduce((n, id) => n + (states[id]?.selectedKey ? 1 : 0), 0),
     [questionIds, states]
   );
+  const firstUnansweredId = useMemo(
+    () => questionIds.find((id) => !states[id]?.selectedKey) ?? null,
+    [questionIds, states]
+  );
+  const complete = questionIds.length > 0 && answeredCount === questionIds.length;
 
   const value = useMemo<AttemptValue>(
     () => ({
       topicId,
       total: questionIds.length,
       answeredCount,
+      firstUnansweredId,
+      complete,
       submitted,
       result,
       submitting,
@@ -175,6 +215,8 @@ export function PracticeAttemptProvider({
       topicId,
       questionIds.length,
       answeredCount,
+      firstUnansweredId,
+      complete,
       submitted,
       result,
       submitting,

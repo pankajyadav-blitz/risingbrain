@@ -1,7 +1,8 @@
 "use client";
 
-import { CheckCircle2, Loader2, RotateCcw, Send } from "lucide-react";
+import { ArrowDown, CheckCircle2, Loader2, RotateCcw, Send } from "lucide-react";
 import { usePracticeAttempt } from "./practice-attempt";
+import { scrollToQuestion } from "@/lib/attempt-draft";
 
 /**
  * Compact Retake button for the topic header — mirrors the one in the bottom
@@ -30,13 +31,19 @@ export function TopRetakeButton() {
  * and a single Submit that grades everything. After submit it shows the score
  * and a Retake button. Sticky to the bottom of the scrolling pane so it's always
  * reachable.
+ *
+ * Submit stays disabled until every question is answered — a blank is graded as
+ * wrong, so handing in a partial set costs marks the learner did not mean to
+ * lose. Because a disabled control with no explanation is a dead end, the count
+ * beside it doubles as a link to the first unanswered question.
  */
 export function SubmitBar() {
   const attempt = usePracticeAttempt();
   // NOTE ON THE STICKY BARS BELOW: solid `bg-surface`, not a translucent +
   // `backdrop-blur` band — a child with `backdrop-filter` is not clipped by an
   // ancestor's border radius in Chromium, and questions scroll under it anyway.
-  const { total, answeredCount, submitted, result, submitting, error } = attempt;
+  const { total, answeredCount, firstUnansweredId, complete, submitted, result, submitting, error } =
+    attempt;
 
   if (submitted && result) {
     const pct = result.total > 0 ? Math.round((result.score / result.total) * 100) : 0;
@@ -74,20 +81,35 @@ export function SubmitBar() {
   return (
     <div className="sticky bottom-0 z-10 mt-6 border-t border-border bg-surface/80 py-4 backdrop-blur-md">
       <div className="flex flex-col gap-3 rounded-2xl bg-surface-2/40 px-5 py-3.5 ring-1 ring-border sm:flex-row sm:items-center sm:justify-between">
-        <div className="text-sm">
+        <div className="min-w-0 text-sm">
           <span className="font-semibold tabular-nums text-foreground">
             {answeredCount}/{total}
           </span>{" "}
           <span className="text-muted">answered</span>
+          {/* A disabled button with no reason is a dead end, so the count is
+              followed by what is missing and a way to get there. */}
           {unanswered > 0 ? (
-            <span className="ml-2 text-xs text-muted">· {unanswered} unanswered will score 0</span>
+            <button
+              type="button"
+              onClick={() => firstUnansweredId && scrollToQuestion(firstUnansweredId)}
+              className="ml-2 inline-flex items-center gap-1 rounded-full px-1.5 text-xs font-medium text-accent hover:underline"
+            >
+              <ArrowDown className="h-3 w-3" />
+              {unanswered} left — go to the first
+            </button>
           ) : null}
           {error ? <span className="ml-2 text-xs text-rose-500">{error}</span> : null}
+          {/* Reassurance that leaving does not cost the work. Shown only once
+              there is work to lose. */}
+          {answeredCount > 0 && unanswered > 0 ? (
+            <p className="mt-1 text-[11px] text-muted">Your answers are saved on this device.</p>
+          ) : null}
         </div>
         <button
           type="button"
           onClick={attempt.submit}
-          disabled={submitting || answeredCount === 0}
+          disabled={submitting || !complete}
+          title={complete ? undefined : `Answer all ${total} questions to submit`}
           className="btn-glow inline-flex shrink-0 items-center justify-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold disabled:cursor-not-allowed disabled:opacity-40"
         >
           {submitting ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}

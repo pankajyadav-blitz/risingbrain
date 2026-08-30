@@ -20,12 +20,14 @@
 
 /* ---------- Brand greens (shared across both themes) ---------- */
 :root {
-  --rb-green-900: #11201a;
-  --rb-green-800: #16432e;
-  --rb-green-700: #1b6240;
-  --rb-green-500: #35a45c;
-  --rb-green-400: #4cb56a;
-  --rb-green-300: #7fcf9c;
+  /* Nudged to the Focus accent so a soft fill (`bg-rb-green-500/15`) and the
+     text on it (`text-accent`) are the same green rather than two near-misses. */
+  --rb-green-900: #06140c;
+  --rb-green-800: #0c4a26;
+  --rb-green-700: #0f7a3d;
+  --rb-green-500: #22c55e;
+  --rb-green-400: #4ade80;
+  --rb-green-300: #86efac;
 
   /* ---------- Motion system (shared, theme-independent) ----------
      One easing + a small duration scale so every animation across the app
@@ -41,13 +43,13 @@
 /* Soft "paper" light mode — a gentle sage off-white instead of glaring pure
    white, so it still reads as a light theme but is easy on the eyes. */
 :root {
-  --background: #e8ebe6;
-  --foreground: #14181b;
-  --surface: #f1f3ee;
-  --surface-2: #dfe3dc;
-  --muted: #555e68;
-  --border: rgba(15, 18, 22, 0.1);
-  --highlight: rgba(15, 18, 22, 0.03);
+  --background: #ffffff;
+  --foreground: #0b0d0f;
+  --surface: #ffffff;
+  --surface-2: #f4f5f6;
+  --muted: #4f555c;
+  --border: rgba(11, 13, 15, 0.15);
+  --highlight: rgba(11, 13, 15, 0.035);
   --ring: var(--rb-green-500);
 
   /* ---------- Long-form reading (see `.notes-prose` / `.reading-surface`) ----
@@ -62,12 +64,12 @@
      18px is more contrast than sustained reading wants (it is the glare people
      describe as "harsh" and answer by turning brightness down). Both still clear
      WCAG AA comfortably. */
-  --reading: #fbfcf9;
-  --reading-foreground: #1b2126;
-  --reading-border: rgba(15, 18, 22, 0.09);
+  --reading: #ffffff;
+  --reading-foreground: #15181b;
+  --reading-border: rgba(11, 13, 15, 0.12);
   /* Code wants to read as a different material from prose, in both themes. */
-  --code-bg: #f0f2ec;
-  --code-border: rgba(15, 18, 22, 0.11);
+  --code-bg: #f6f7f8;
+  --code-border: rgba(11, 13, 15, 0.14);
 
   /* Callout accents — one hue per intent, each used as a tinted wash + a rule.
      Blockquotes in the notes carry asides, gotchas and exam tips; giving them a
@@ -86,31 +88,40 @@
   --brand-muted: var(--rb-green-800); /* hover = darker */
   --accent: var(--rb-green-700);
 
-  --ambient: radial-gradient(55% 38% at 20% -10%, rgba(53, 164, 92, 0.07) 0%, transparent 60%);
-  --shadow-card: 0 6px 20px rgba(15, 18, 22, 0.07);
-  --shadow-card-hover: 0 12px 28px rgba(15, 18, 22, 0.11);
+  /* Focus keeps the ambient wash, but faint — the page is a reading surface,
+     not a landing hero, and a visible tint under body text is a distraction. */
+  /* Focus removes the ambient wash and the drop shadows entirely. Depth is
+     carried by borders and by the surface ladder, nothing else — that is the
+     whole idea of the theme, and leaving a soft shadow on every card is what
+     made the first attempt at it look like the old theme with new numbers. */
+  --ambient: none;
+  --shadow-card: none;
+  --shadow-card-hover: none;
 
   /* Frosted-glass surfaces — translucent fill + blur. */
-  --glass-bg: rgba(241, 243, 238, 0.66);
-  --glass-bg-2: rgba(241, 243, 238, 0.82);
-  --glass-border: rgba(15, 18, 22, 0.09);
-  --glass-blur: 14px;
+  /* A card is a border, not a fill: glass sits at the surface colour with a
+     visible edge instead of a translucent lift. The blur is kept low so a
+     sticky bar still separates from what scrolls under it. */
+  --glass-bg: rgba(255, 255, 255, 0.86);
+  --glass-bg-2: rgba(255, 255, 255, 0.96);
+  --glass-border: rgba(11, 13, 15, 0.15);
+  --glass-blur: 8px;
 }
 
 /* ---------- Dark theme ---------- */
 .dark {
-  --background: #0e1114;
-  --foreground: #e8ecef;
+  --background: #08090a;
+  --foreground: #f5f7fa;
   /* The elevation ladder is spaced so each rung is actually VISIBLE against the
      one below it. `--surface-2` used to sit ~2% lightness above `--surface`,
      which on a dark theme is under the perceptual threshold — table headers,
      code blocks and the segmented controls all read as flat with the surface
      they were meant to sit on. */
-  --surface: #171b20;
-  --surface-2: #21262d;
-  --muted: #9aa1a8;
-  --border: rgba(255, 255, 255, 0.09);
-  --highlight: rgba(255, 255, 255, 0.04);
+  --surface: #0f1011;
+  --surface-2: #1a1c1e;
+  --muted: #a2a8b0;
+  --border: rgba(255, 255, 255, 0.13);
+  --highlight: rgba(255, 255, 255, 0.045);
   --ring: var(--rb-green-500);
 
   /* ---------- Long-form reading (mirrors the light block above) ----------
@@ -119,11 +130,11 @@
      is pulled back from pure `#e8ecef`: at 18px over a long body of text, a
      near-white on near-black is the halation people feel as eye strain, and
      dialling it to ~88% white keeps 13:1 contrast while losing the glare. */
-  --reading: #14181c;
-  --reading-foreground: #dbe2e7;
-  --reading-border: rgba(255, 255, 255, 0.07);
-  --code-bg: #0d1114;
-  --code-border: rgba(255, 255, 255, 0.09);
+  --reading: #0c0d0e;
+  --reading-foreground: #e7eaee;
+  --reading-border: rgba(255, 255, 255, 0.11);
+  --code-bg: #000000;
+  --code-border: rgba(255, 255, 255, 0.13);
 
   --note-info: #7cb1e8;
   --note-info-bg: rgba(124, 177, 232, 0.1);
@@ -138,15 +149,15 @@
   --brand-muted: var(--rb-green-400); /* hover = lighter */
   --accent: var(--rb-green-500); /* mid green — legible on dark surfaces */
 
-  --ambient: radial-gradient(55% 38% at 20% -10%, rgba(53, 164, 92, 0.05) 0%, transparent 60%);
-  --shadow-card: 0 6px 20px rgba(0, 0, 0, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.03);
-  --shadow-card-hover: 0 12px 28px rgba(0, 0, 0, 0.38), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  --ambient: none;
+  --shadow-card: none;
+  --shadow-card-hover: none;
 
   /* Frosted-glass surfaces — translucent fill + blur. */
-  --glass-bg: rgba(24, 27, 31, 0.55);
-  --glass-bg-2: rgba(29, 33, 38, 0.72);
-  --glass-border: rgba(255, 255, 255, 0.08);
-  --glass-blur: 14px;
+  --glass-bg: rgba(15, 16, 17, 0.82);
+  --glass-bg-2: rgba(26, 28, 30, 0.94);
+  --glass-border: rgba(255, 255, 255, 0.13);
+  --glass-blur: 8px;
 }
 
 /* ---------- Expose tokens as Tailwind utilities ---------- */
@@ -210,10 +221,9 @@
       background-color 0.25s ease;
   }
   .glass-hover:hover {
-    transform: translateY(-2px);
+    /* No lift and no glow — Focus states are a change of edge, not of altitude. */
     background: var(--glass-bg-2);
-    border-color: color-mix(in srgb, var(--rb-green-500) 35%, transparent);
-    box-shadow: var(--shadow-card-hover);
+    border-color: color-mix(in srgb, var(--rb-green-500) 55%, transparent);
   }
 
   /* The sheet long-form study content is set on. A quiet, large-radius panel
@@ -224,7 +234,11 @@
     background: var(--reading);
     border: 1px solid var(--reading-border);
     border-radius: 1.25rem;
-    box-shadow: var(--shadow-card);
+    /* No shadow, deliberately — this is the Focus rule: a card is defined by its
+       border, not by a lift. A drop shadow under a full-width reading sheet
+       reads as a floating panel, and the sheet is meant to read as the page.
+       Cards that DO float (marketing, glass) keep `--shadow-card`. */
+    box-shadow: none;
   }
 
   /* Emphasis text: a single, restrained brand green — no gradient. */
@@ -243,8 +257,6 @@
   }
   .btn-glow:hover {
     background: var(--brand-muted);
-    transform: translateY(-2px);
-    box-shadow: 0 10px 30px -8px color-mix(in srgb, var(--rb-green-500) 55%, transparent);
   }
   .btn-glow:active {
     transform: translateY(0) scale(0.98);
