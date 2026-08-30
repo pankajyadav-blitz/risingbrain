@@ -167,7 +167,7 @@ export default async function SheetPage() {
               <div className="animate-in lg:flex lg:items-end lg:justify-between lg:gap-8">
                 <div className="max-w-2xl">
                   <h2 className="text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">
-                    Learn the pattern,
+                    Learn patterns,
                     <span className="block text-gradient">not the problem</span>
                   </h2>
                   <p className="mt-3 text-muted">

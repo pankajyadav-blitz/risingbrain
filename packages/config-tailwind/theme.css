@@ -47,7 +47,10 @@
   --foreground: #0b0d0f;
   --surface: #ffffff;
   --surface-2: #f4f5f6;
-  --muted: #4f555c;
+  /* Secondary text. Kept a clear step below `--foreground` so the hierarchy
+     survives, but dark enough that 11-13px labels on white and on the light
+     glass surfaces stay comfortably readable (~11.5:1 on `--background`). */
+  --muted: #33393f;
   --border: rgba(11, 13, 15, 0.15);
   --highlight: rgba(11, 13, 15, 0.035);
   --ring: var(--rb-green-500);

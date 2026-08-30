@@ -53,20 +53,20 @@ export function Founder() {
             <div className="grid gap-0 lg:grid-cols-[0.85fr_1.15fr]">
               {/* Portrait — full-bleed, with the identity block scrimmed over
                   the base so the photo isn't competing with a caption below it. */}
-              <div className="relative min-h-[24rem] lg:min-h-full">
+              <div className="relative min-h-[26rem] sm:min-h-[30rem] lg:min-h-full">
                 <Image
                   src="/team/anjali-kumari.jpg"
                   alt="Anjali Kumari, founder of RisingBrain"
                   fill
                   sizes="(min-width: 1024px) 42vw, 100vw"
-                  className="object-cover object-top"
+                  className="object-cover object-[center_30%]"
                   priority
                 />
                 {/* Scrim: opaque at the base, clear by mid-frame, so the text
                     stays legible without greying out the whole portrait. */}
                 <div
                   aria-hidden
-                  className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/35 to-transparent"
+                  className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/45 via-45% to-transparent"
                 />
                 <div className="absolute inset-x-0 bottom-0 p-6 sm:p-8">
                   <div className="text-xl font-bold text-white">Anjali Kumari</div>
