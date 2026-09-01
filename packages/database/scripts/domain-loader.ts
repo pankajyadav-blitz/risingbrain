@@ -25,6 +25,8 @@ import cnData from "../seed/domain-cn.json";
 import sqlData from "../seed/domain-sql.json";
 import exampleData from "../seed/domain-examples.json";
 import dbmsQuiz from "../seed/domain-dbms-quiz.json";
+import cnQuiz from "../seed/domain-cn-quiz.json";
+import osQuiz from "../seed/domain-os-quiz.json";
 
 // One entry per subject file. Add a subject by dropping its seed JSON in and
 // listing it here — the loader, index and UI are all data-driven from this.
@@ -32,7 +34,7 @@ const SUBJECT_FILES = [oopsData, dbmsData, osData, cnData, sqlData];
 
 // Practice questions, one file per subject that has them. A subject without a
 // quiz file simply shows its notes with no Practice tab.
-const QUIZ_FILES = [dbmsQuiz];
+const QUIZ_FILES = [dbmsQuiz, cnQuiz, osQuiz];
 
 export type DomainTopicJson = {
   subject: string;

@@ -13,6 +13,13 @@ export interface OAuthProfile {
   provider: OAuthProvider;
   providerAccountId: string;
   email: string;
+  /**
+   * Whether the PROVIDER has verified this address. Anything that matches an
+   * existing RisingBrain account by email depends on this being true — an
+   * unverified address is a claim the provider never checked, and any user can
+   * type someone else's into their own account settings.
+   */
+  emailVerified: boolean;
   name: string | null;
   image: string | null;
 }
@@ -71,6 +78,9 @@ export async function fetchProfile(
       provider,
       providerAccountId: claims.sub as string,
       email: (claims.email as string).toLowerCase(),
+      // Google sets this false for e.g. unverified Workspace aliases; it is not
+      // safe to assume every Google identity carries a proven address.
+      emailVerified: claims.email_verified === true,
       name: (claims.name as string) ?? null,
       image: (claims.picture as string) ?? null,
     };
@@ -92,19 +102,25 @@ export async function fetchProfile(
     email: string | null;
   };
 
-  let email = user.email;
-  if (!email) {
-    const emails = (await (
-      await fetch("https://api.github.com/user/emails", { headers })
-    ).json()) as { email: string; primary: boolean; verified: boolean }[];
-    email = emails.find((e) => e.primary && e.verified)?.email ?? emails[0]?.email ?? null;
-  }
-  if (!email) throw new Error("GitHub account has no accessible email");
+  // ALWAYS resolve the address from /user/emails, never from the profile's public
+  // `email` field: that one carries no verification status. The old code also fell
+  // back to `emails[0]` regardless of its `verified` flag, so adding (but never
+  // confirming) a victim's address to your own GitHub account was enough to be
+  // handed their RisingBrain session.
+  const emailsBody: unknown = await (
+    await fetch("https://api.github.com/user/emails", { headers })
+  ).json();
+  const emails = Array.isArray(emailsBody)
+    ? (emailsBody as { email: string; primary: boolean; verified: boolean }[])
+    : [];
+  const chosen = emails.find((e) => e.primary && e.verified) ?? emails.find((e) => e.verified);
+  if (!chosen) throw new Error("GitHub account has no verified email");
 
   return {
     provider,
     providerAccountId: String(user.id),
-    email: email.toLowerCase(),
+    email: chosen.email.toLowerCase(),
+    emailVerified: true,
     name: user.name ?? user.login,
     image: user.avatar_url,
   };

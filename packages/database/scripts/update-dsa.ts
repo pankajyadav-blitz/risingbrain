@@ -558,7 +558,7 @@ async function updateDsa(companyIds: Map<string, string>) {
   );
 
   if (!PRUNE) {
-    console.log("   prune: skipped (--no-prune)");
+    console.log("  prune: skipped (--no-prune)");
     return;
   }
 

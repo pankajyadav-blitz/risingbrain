@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { BookOpen, Layers, ListChecks } from "lucide-react";
-import { getCurrentUser, getCurrentUserProfile } from "@/lib/auth/current-user";
+import { getCurrentUser, getCurrentUserProfileForChrome } from "@/lib/auth/current-user";
 import { Container } from "@/components/marketing/primitives";
 import { CountUp } from "@/components/motion/count-up";
 import { prisma } from "@/lib/db";
@@ -51,7 +51,9 @@ export default async function SheetPage() {
   const [sheetsRaw, activity, profile] = await Promise.all([
     getDsaCatalog(),
     user ? getSheetActivity(user.id) : (null as SheetActivity | null),
-    user ? getCurrentUserProfile() : null,
+    // Chrome variant: this profile only supplies the greeting's first name, so a
+    // transient DB error should cost the greeting, not the whole page.
+    user ? getCurrentUserProfileForChrome() : null,
   ]);
 
   // Collect every problem ID so we can fetch user data in one batch.

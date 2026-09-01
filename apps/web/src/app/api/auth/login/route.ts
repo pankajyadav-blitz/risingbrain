@@ -4,16 +4,11 @@ import { loginSchema } from "@/lib/auth/validation";
 import { verifyPassword } from "@/lib/auth/password";
 import { createSession } from "@/lib/auth/session";
 import { setAuthCookies } from "@/lib/auth/cookies";
-import { limitAuth, clientId } from "@/lib/auth/rate-limit";
+import { checkAuthLimit, checkAccountLimit } from "@/lib/auth/rate-limit";
 
 export async function POST(req: Request) {
-  const rl = await limitAuth(clientId(req));
-  if (!rl.ok) {
-    return NextResponse.json(
-      { error: "Too many attempts. Try again later." },
-      { status: 429, headers: { "Retry-After": String(rl.retryAfterSeconds ?? 900) } }
-    );
-  }
+  const ipLimited = await checkAuthLimit(req);
+  if (ipLimited) return ipLimited;
 
   const parsed = loginSchema.safeParse(await req.json().catch(() => null));
   if (!parsed.success) {
@@ -23,6 +18,10 @@ export async function POST(req: Request) {
     );
   }
   const { email, password, remember } = parsed.data;
+  // Second bucket, keyed by the account under attack rather than by a header the
+  // caller controls. See checkAccountLimit.
+  const accountLimited = await checkAccountLimit(email);
+  if (accountLimited) return accountLimited;
 
   const user = await prisma.user.findUnique({ where: { email } });
   // Generic message either way — don't leak which emails exist.

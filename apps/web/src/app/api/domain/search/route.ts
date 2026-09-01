@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
+import { checkWriteLimit } from "@/lib/auth/rate-limit";
 import { SUBJECT_META } from "@/app/(app)/domain/_categories";
 
 /**
@@ -10,6 +11,12 @@ import { SUBJECT_META } from "@/app/(app)/domain/_categories";
  * every subject and returns lightweight suggestions.
  */
 export async function GET(req: Request) {
+  // Unauthenticated and DB-hitting: two unindexed `contains` scans per call, fired
+  // per debounced keystroke. Without a limit, a loop here saturates the small
+  // Postgres pool and takes every other page down with it.
+  const limited = await checkWriteLimit(req);
+  if (limited) return limited;
+
   const q = new URL(req.url).searchParams.get("q")?.trim() ?? "";
   if (q.length < 2) return NextResponse.json({ results: [] });
 

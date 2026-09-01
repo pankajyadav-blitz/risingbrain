@@ -457,7 +457,7 @@ def main():
                         break
                 else:
                     print(f"WORD DRIFT (length {len(wb)} -> {len(wa)}) in {f} :: {r['slug']}")
-                    print("   tail before:", wb[len(wa):len(wa)+8], "| tail after:", wa[len(wb):len(wb)+8])
+                    print("  tail before:", wb[len(wa):len(wa)+8], "| tail after:", wa[len(wb):len(wb)+8])
                 sys.exit(1)
             r['notes'] = after
             stats[f] += 1
@@ -470,7 +470,7 @@ def main():
             json.dump(rows, fh, indent=2, ensure_ascii=False)
             fh.write('\n')
     for k, v in stats.items():
-        print(f"  {k}: {v}")
+        print(f" {k}: {v}")
 
 
 if __name__ == '__main__':

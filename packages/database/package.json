@@ -18,6 +18,8 @@
     "db:seed-domain": "bun run scripts/seed-domain.ts",
     "db:seed-domain-sql": "bun run scripts/seed-domain-sql.ts",
     "db:seed-domain-dbms": "bun run scripts/seed-domain-dbms.ts",
+    "db:seed-domain-cn": "bun run scripts/seed-domain-cn.ts",
+    "db:seed-domain-os": "bun run scripts/seed-domain-os.ts",
     "db:seed-interviews": "bun run scripts/seed-interviews.ts",
     "db:backfill-activity": "bun run scripts/backfill-activity.ts",
     "lint": "eslint . --max-warnings 0",

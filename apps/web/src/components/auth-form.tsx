@@ -21,6 +21,7 @@ import { OtpInput } from "@/components/auth/otp-input";
 import { PasswordChecklist } from "@/components/auth/password-checklist";
 import { LoadingOverlay } from "@/components/loading/loading-overlay";
 import { isStrongPassword } from "@/lib/auth/password-policy";
+import { safeRedirectPath } from "@/lib/auth/safe-redirect";
 
 type Mode = "login" | "signup";
 type View =
@@ -49,7 +50,11 @@ export function AuthForm({ mode, callbackUrl }: { mode: Mode; callbackUrl?: stri
   // the overlay covers the navigation gap (where `loading` has already reset).
   const [redirecting, setRedirecting] = React.useState(false);
 
-  const next = callbackUrl ? `?callbackUrl=${encodeURIComponent(callbackUrl)}` : "";
+  // `callbackUrl` is a query param, so it is attacker-controlled: without this
+  // an attacker's link would land the user on their site the instant a real
+  // sign-in succeeds. Validated once here, used by every success path below.
+  const destination = safeRedirectPath(callbackUrl);
+  const next = callbackUrl ? `?callbackUrl=${encodeURIComponent(destination)}` : "";
 
   function goTo(v: View, opts?: { notice?: string }) {
     setError(null);
@@ -87,7 +92,7 @@ export function AuthForm({ mode, callbackUrl }: { mode: Mode; callbackUrl?: stri
     const { ok } = await post("/api/auth/login", { email, password, remember });
     if (ok) {
       setRedirecting(true);
-      window.location.href = callbackUrl || "/sheet";
+      window.location.href = destination;
     }
   }
 
@@ -110,7 +115,7 @@ export function AuthForm({ mode, callbackUrl }: { mode: Mode; callbackUrl?: stri
     const { ok } = await post("/api/auth/register/verify", { email, code: value });
     if (ok) {
       setRedirecting(true);
-      window.location.href = callbackUrl || "/sheet";
+      window.location.href = destination;
     }
   }
 

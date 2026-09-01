@@ -12,7 +12,9 @@ const USER_SELECT = {
   role: true,
   disabledAt: true,
   createdAt: true,
-  currentStreak: true,
+  // No `currentStreak`: nothing in the app ever WRITES User.currentStreak (the
+  // real streak is derived from ActivityDay by lib/streak.ts), so shipping it
+  // rendered a flame badge that read 0 for every user regardless of activity.
 } as const;
 
 /**

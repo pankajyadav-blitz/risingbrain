@@ -1,5 +1,5 @@
 import { IconRail } from "@/components/shell/icon-rail";
-import { getCurrentUserProfile } from "@/lib/auth/current-user";
+import { getCurrentUser, getCurrentUserProfileForChrome } from "@/lib/auth/current-user";
 import { getCurrentStreak } from "@/lib/streak";
 import { getNavForRole, type AppRole } from "@/lib/rbac";
 
@@ -17,14 +17,24 @@ export default async function AppLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const profile = await getCurrentUserProfile();
+  // Fail-soft, exactly like the marketing shell: `getCurrentUserProfile()` throws
+  // on any DB error, and with a serverless Postgres that suspends when idle a cold
+  // start is routine — so the strict variant sent EVERY signed-in page to the
+  // error boundary over a blip the public landing page shrugs off. The chrome
+  // variant falls back to the verified JWT claims, which need no I/O.
+  const [current, profile] = await Promise.all([
+    getCurrentUser(),
+    getCurrentUserProfileForChrome(),
+  ]);
   const role = (profile?.role ?? null) as AppRole | null;
   const items = getNavForRole(role);
 
   // Streak flame — fetched only for signed-in users (null hides the badge), so
   // the rail matches the marketing navbar. Live-updates via the shared
   // `rb:streak-updated` event after a solve.
-  const streak = profile ? await getCurrentStreak(profile.id) : null;
+  // Id comes from the token, not the profile row — the chrome lookup may have
+  // degraded to claims-only, and `getCurrentStreak` already hides on failure.
+  const streak = current ? await getCurrentStreak(current.id) : null;
 
   return (
     // Dashboard scroll model: on desktop the shell fills the viewport and does

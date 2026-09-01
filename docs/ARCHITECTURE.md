@@ -147,7 +147,7 @@ are fetched per user and merged on the server.
 ### 3.1 DSA sheets (mirrors the live `/sheet`)
 
 ```
-DsaSheet            "Pattern Wise Sheet", "Last Minute 100"  (slug, order)
+DsaSheet            "Pattern Wise Sheet", "Last Minute 100" (slug, order)
   └─ DsaTopic       Array, Graph, DP …                       (per sheet, order)
        └─ DsaPattern  Two-Pointer, Sliding Window …          (strategy, identification, order)
             └─ DsaProblem  title, reference (LC 167), difficulty,

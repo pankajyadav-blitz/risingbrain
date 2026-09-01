@@ -306,13 +306,13 @@ async function main() {
         await prisma.$executeRaw`
           UPDATE users AS u SET
             name            = COALESCE(t.name, u.name),
-            "phoneNumber"   = COALESCE(t.phone, u."phoneNumber"),
+            "phoneNumber"  = COALESCE(t.phone, u."phoneNumber"),
             image           = COALESCE(t.image, u.image),
             "emailVerified" = COALESCE(t.ev, u."emailVerified"),
             "currentStreak" = t.cs,
             "longestStreak" = t.ls,
-            "lastActiveOn"  = COALESCE(t.lao, u."lastActiveOn"),
-            "updatedAt"     = now()
+            "lastActiveOn" = COALESCE(t.lao, u."lastActiveOn"),
+            "updatedAt"    = now()
           FROM unnest(
             ${r.map((x) => x.email)}::text[],
             ${r.map((x) => x.name ?? null)}::text[],
@@ -455,8 +455,8 @@ async function main() {
         ON CONFLICT ("userId", "problemId") DO UPDATE SET
           status         = EXCLUDED.status,
           "isBookmarked" = EXCLUDED."isBookmarked",
-          "solvedAt"     = EXCLUDED."solvedAt",
-          "updatedAt"    = now()`;
+          "solvedAt"    = EXCLUDED."solvedAt",
+          "updatedAt"   = now()`;
 
       const withNotes = rows.filter((r) => r.notes && r.notes.trim());
       if (withNotes.length) {
@@ -472,7 +472,7 @@ async function main() {
           ) AS t(u, p, c, ca)
           ON CONFLICT ("userId", "problemId") DO UPDATE SET
             content     = EXCLUDED.content,
-            "isActive"  = true,
+            "isActive" = true,
             "updatedAt" = now()`;
       }
     }
@@ -550,7 +550,7 @@ async function main() {
   log("\n──────── summary ────────");
   log(`users seen:            ${stats.usersSeen}`);
   log(`  created / updated:   ${stats.usersCreated} / ${stats.usersUpdated}`);
-  log(`  passwords carried:   ${stats.passwordsCarried}${PASSWORD_MODE === "skip" ? "  (mode=skip → users must reset)" : ""}`);
+  log(`  passwords carried:   ${stats.passwordsCarried}${PASSWORD_MODE === "skip" ? " (mode=skip → users must reset)" : ""}`);
   log(`oauth accounts linked: ${stats.oauthLinked}`);
   log(`progress rows seen:    ${stats.progressSeen}`);
   log(`  written:             ${stats.progressWritten}${stats.progressMirrored ? `  (incl. ${stats.progressMirrored} mirrored to a second sheet placement)` : ""}`);
@@ -566,7 +566,7 @@ async function main() {
   if (stats.unmappedProblemIds.size) {
     const total = [...stats.unmappedProblemIds.values()].reduce((a, b) => a + b, 0);
     log(`\n⚠ ${stats.unmappedProblemIds.size} legacy problem ids did not exist in the new dataset (${total} rows skipped).`);
-    log("  These are problems removed between datasets; their progress has nowhere to go:");
+    log(" These are problems removed between datasets; their progress has nowhere to go:");
     for (const [id, n] of [...stats.unmappedProblemIds.entries()].sort((a, b) => b[1] - a[1]).slice(0, 20)) {
       log(`    ${id}  (${n} rows)`);
     }

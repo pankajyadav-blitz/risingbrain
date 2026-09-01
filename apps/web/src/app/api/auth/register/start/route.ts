@@ -4,7 +4,7 @@ import { registerSchema } from "@/lib/auth/validation";
 import { hashPassword } from "@/lib/auth/password";
 import { issueOtp, OtpStoreUnavailableError } from "@/lib/auth/otp";
 import { isMailConfigured } from "@/lib/mail/mailer";
-import { limitAuth, clientId } from "@/lib/auth/rate-limit";
+import { checkAuthLimit, checkAccountLimit } from "@/lib/auth/rate-limit";
 
 /**
  * Signup step 1: validate the details, ensure the email is free, hash the
@@ -12,13 +12,8 @@ import { limitAuth, clientId } from "@/lib/auth/rate-limit";
  * account lives in Redis until the code is verified at /register/verify.
  */
 export async function POST(req: Request) {
-  const rl = await limitAuth(clientId(req));
-  if (!rl.ok) {
-    return NextResponse.json(
-      { error: "Too many attempts. Try again later." },
-      { status: 429, headers: { "Retry-After": String(rl.retryAfterSeconds ?? 900) } }
-    );
-  }
+  const ipLimited = await checkAuthLimit(req);
+  if (ipLimited) return ipLimited;
 
   if (!isMailConfigured()) {
     return NextResponse.json(
@@ -35,6 +30,10 @@ export async function POST(req: Request) {
     );
   }
   const { name, email, password } = parsed.data;
+  // Second bucket, keyed by the account under attack rather than by a header the
+  // caller controls. See checkAccountLimit.
+  const accountLimited = await checkAccountLimit(email);
+  if (accountLimited) return accountLimited;
 
   const existing = await prisma.user.findUnique({ where: { email } });
   if (existing?.passwordHash) {

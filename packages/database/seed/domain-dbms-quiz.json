@@ -1,756 +1,678 @@
 [
-  {
-    "subject": "DBMS",
-    "topicSlug": "why-dbms-file-system-problems",
-    "order": 1,
-    "prompt": "The same student's address is stored in four different files. This problem is called",
-    "options": [
-      {
-        "key": "a",
-        "label": "Deadlock"
-      },
-      {
-        "key": "b",
-        "label": "Data redundancy"
-      },
-      {
-        "key": "c",
-        "label": "Normalization"
-      },
-      {
-        "key": "d",
-        "label": "Data independence"
-      }
-    ],
-    "answerKey": "b",
-    "explanation": "The same fact stored more than once. Redundancy is what causes inconsistency later."
-  },
-  {
-    "subject": "DBMS",
-    "topicSlug": "why-dbms-file-system-problems",
-    "order": 2,
-    "prompt": "Two users update the same row at the same time and one update disappears. Which DBMS feature prevents this?",
-    "options": [
-      {
-        "key": "a",
-        "label": "Authorization"
-      },
-      {
-        "key": "b",
-        "label": "Indexing"
-      },
-      {
-        "key": "c",
-        "label": "Concurrency control / locking"
-      },
-      {
-        "key": "d",
-        "label": "Backup"
-      }
-    ],
-    "answerKey": "c",
-    "explanation": "Locking decides who goes first so no update is silently lost."
-  },
-  {
-    "subject": "DBMS",
-    "topicSlug": "why-dbms-file-system-problems",
-    "order": 3,
-    "prompt": "A DBMS is best described as",
-    "options": [
-      {
-        "key": "a",
-        "label": "A file that stores data"
-      },
-      {
-        "key": "b",
-        "label": "A programming language for data"
-      },
-      {
-        "key": "c",
-        "label": "Software that stores data and enforces rules on it"
-      },
-      {
-        "key": "d",
-        "label": "A spreadsheet with more rows"
-      }
-    ],
-    "answerKey": "c",
-    "explanation": "Storage plus enforced rules. (b) describes SQL, not a DBMS."
-  },
-  {
-    "subject": "DBMS",
-    "topicSlug": "cardinality-and-er-notation",
-    "order": 1,
-    "prompt": "One author writes many books, and each book has exactly one author. This is",
-    "options": [
-      {
-        "key": "a",
-        "label": "1:1"
-      },
-      {
-        "key": "b",
-        "label": "1:N"
-      },
-      {
-        "key": "c",
-        "label": "M:N"
-      },
-      {
-        "key": "d",
-        "label": "N:N"
-      }
-    ],
-    "answerKey": "b",
-    "explanation": "Many on the book side, one on the author side."
-  },
-  {
-    "subject": "DBMS",
-    "topicSlug": "cardinality-and-er-notation",
-    "order": 2,
-    "prompt": "Which case forces you to create an extra table?",
-    "options": [
-      {
-        "key": "a",
-        "label": "1:1"
-      },
-      {
-        "key": "b",
-        "label": "1:N"
-      },
-      {
-        "key": "c",
-        "label": "M:N"
-      },
-      {
-        "key": "d",
-        "label": "none of them"
-      }
-    ],
-    "answerKey": "c",
-    "explanation": "M:N needs a junction table, because neither side can store a list of unknown length. Q3 (scenario). A hospital tells you: \"a patient stays in one room at a time, but a room hosts many patients over the year.\" What's the cardinality, and which table stores the pointer? Answer: 1:N from Room to Patient — one room, many patients. The pointer (room_id) goes in the Patient table, which is the \"many\" side. Handy rule: the many side always holds the pointer."
-  },
-  {
-    "subject": "DBMS",
-    "topicSlug": "keys",
-    "order": 1,
-    "prompt": "(roll_no, name) is unique in the Student table. It is",
-    "options": [
-      {
-        "key": "a",
-        "label": "a candidate key"
-      },
-      {
-        "key": "b",
-        "label": "a super key only"
-      },
-      {
-        "key": "c",
-        "label": "a foreign key"
-      },
-      {
-        "key": "d",
-        "label": "not a key at all"
-      }
-    ],
-    "answerKey": "b",
-    "explanation": "It's unique, so it's a super key, but name is unnecessary, so it fails the minimal test for a candidate key."
-  },
-  {
-    "subject": "DBMS",
-    "topicSlug": "keys",
-    "order": 2,
-    "prompt": "How many primary keys can one table have?",
-    "options": [
-      {
-        "key": "a",
-        "label": "exactly one"
-      },
-      {
-        "key": "b",
-        "label": "one per column"
-      },
-      {
-        "key": "c",
-        "label": "as many as it has candidate keys"
-      },
-      {
-        "key": "d",
-        "label": "zero or more"
-      }
-    ],
-    "answerKey": "a",
-    "explanation": "Exactly one, though that one key may be made of multiple columns. Q3 (scenario). In Enrollment(roll_no, course_code, grade), neither roll_no nor course_code is unique on its own — Aisha appears twice, DBMS 101 appears many times. What's the primary key, and what are those two columns also doing? Answer: The primary key is the composite (roll_no, course_code) — together they're unique, since Aisha enrolls in DBMS 101 only once. And each column is separately a foreign key, pointing at Student and Course. So the same columns are doing two jobs at once, which is completely normal in a junction table."
-  },
-  {
-    "subject": "DBMS",
-    "topicSlug": "integrity-constraints",
-    "order": 1,
-    "prompt": "Inserting a student with roll_no = NULL breaks",
-    "options": [
-      {
-        "key": "a",
-        "label": "domain integrity"
-      },
-      {
-        "key": "b",
-        "label": "entity integrity"
-      },
-      {
-        "key": "c",
-        "label": "referential integrity"
-      },
-      {
-        "key": "d",
-        "label": "nothing"
-      }
-    ],
-    "answerKey": "b",
-    "explanation": "A primary key can never be NULL, so the row would have no identity."
-  },
-  {
-    "subject": "DBMS",
-    "topicSlug": "integrity-constraints",
-    "order": 2,
-    "prompt": "You delete a course that enrollments still point at, and the enrollment rows vanish automatically. The rule in force is",
-    "options": [
-      {
-        "key": "a",
-        "label": "RESTRICT"
-      },
-      {
-        "key": "b",
-        "label": "SET NULL"
-      },
-      {
-        "key": "c",
-        "label": "CASCADE"
-      },
-      {
-        "key": "d",
-        "label": "domain integrity"
-      }
-    ],
-    "answerKey": "c",
-    "explanation": "CASCADE passes the delete down to the child rows."
-  },
-  {
-    "subject": "DBMS",
-    "topicSlug": "normal-forms-1nf-2nf-3nf",
-    "order": 1,
-    "prompt": "Enrollment(roll_no, course, grade, course_title) with key (roll_no, course) violates",
-    "options": [
-      {
-        "key": "a",
-        "label": "1NF"
-      },
-      {
-        "key": "b",
-        "label": "2NF"
-      },
-      {
-        "key": "c",
-        "label": "3NF"
-      },
-      {
-        "key": "d",
-        "label": "nothing"
-      }
-    ],
-    "answerKey": "b",
-    "explanation": "Course_title depends on course alone, which is only part of the key. That's a partial dependency."
-  },
-  {
-    "subject": "DBMS",
-    "topicSlug": "normal-forms-1nf-2nf-3nf",
-    "order": 2,
-    "prompt": "Student(roll_no, name, dept_id, dept_name) with key roll_no violates",
-    "options": [
-      {
-        "key": "a",
-        "label": "1NF"
-      },
-      {
-        "key": "b",
-        "label": "2NF"
-      },
-      {
-        "key": "c",
-        "label": "3NF"
-      },
-      {
-        "key": "d",
-        "label": "nothing"
-      }
-    ],
-    "answerKey": "c",
-    "explanation": "Dept_name depends on dept_id, a non-key column. Transitive dependency. It cannot be a 2NF problem, because the key is one column. Q3 (scenario). A table stores (roll_no, hobbies) with Aisha's row reading 101 | chess, painting. Which form does it break, what's the fix, and how many of Aisha's rows exist afterwards? Answer: It breaks 1NF — one cell, two values. The fix is one value per cell, so Aisha gets two rows: 101 | chess and 101 | painting. Note that roll_no alone is no longer unique here — the key becomes (roll_no, hobby)."
-  },
-  {
-    "subject": "DBMS",
-    "topicSlug": "bcnf-and-denormalization",
-    "order": 1,
-    "prompt": "Every table in BCNF is also in",
-    "options": [
-      {
-        "key": "a",
-        "label": "1NF only"
-      },
-      {
-        "key": "b",
-        "label": "2NF only"
-      },
-      {
-        "key": "c",
-        "label": "1NF, 2NF and 3NF"
-      },
-      {
-        "key": "d",
-        "label": "none of these"
-      }
-    ],
-    "answerKey": "c",
-    "explanation": "The forms stack, and BCNF sits above 3NF."
-  },
-  {
-    "subject": "DBMS",
-    "topicSlug": "bcnf-and-denormalization",
-    "order": 2,
-    "prompt": "You copy course_title into a reporting table to avoid a join. This is",
-    "options": [
-      {
-        "key": "a",
-        "label": "a normalization error"
-      },
-      {
-        "key": "b",
-        "label": "deliberate denormalization"
-      },
-      {
-        "key": "c",
-        "label": "a 2NF violation you must fix"
-      },
-      {
-        "key": "d",
-        "label": "a foreign key"
-      }
-    ],
-    "answerKey": "b",
-    "explanation": "A knowing trade of extra repetition for faster reads."
-  },
-  {
-    "subject": "DBMS",
-    "topicSlug": "joins",
-    "order": 1,
-    "prompt": "Student has 5 rows, Enrollment has 3 rows, and only 2 enrollments match a real student. An INNER JOIN returns",
-    "options": [
-      {
-        "key": "a",
-        "label": "5"
-      },
-      {
-        "key": "b",
-        "label": "3"
-      },
-      {
-        "key": "c",
-        "label": "2"
-      },
-      {
-        "key": "d",
-        "label": "15"
-      }
-    ],
-    "answerKey": "c",
-    "explanation": "Only matched pairs survive an inner join."
-  },
-  {
-    "subject": "DBMS",
-    "topicSlug": "joins",
-    "order": 2,
-    "prompt": "In a LEFT JOIN, a NULL in a right-hand column means",
-    "options": [
-      {
-        "key": "a",
-        "label": "the data was deleted"
-      },
-      {
-        "key": "b",
-        "label": "no matching row existed on the right"
-      },
-      {
-        "key": "c",
-        "label": "an error"
-      },
-      {
-        "key": "d",
-        "label": "the value is zero"
-      }
-    ],
-    "answerKey": "b",
-    "explanation": "The left row was kept, but nothing on the right matched it. Q3 (scenario). You write a LEFT JOIN from Student to Enrollment, then add WHERE e.grade = 'A'. Students with no enrollment vanish from the result. Why, and how do you keep them? Answer: Unmatched students get e.grade = NULL, and NULL = 'A' is never true, so WHERE drops them — the LEFT JOIN has effectively become an INNER JOIN. To keep them, move the condition into the join: LEFT JOIN Enrollment e ON s.roll_no = e.roll_no AND e.grade = 'A'."
-  },
-  {
-    "subject": "DBMS",
-    "topicSlug": "aggregate-functions-group-by-and-having",
-    "order": 1,
-    "prompt": "To keep only groups with more than 5 rows, you use",
-    "options": [
-      {
-        "key": "a",
-        "label": "WHERE COUNT() > 5"
-      },
-      {
-        "key": "b",
-        "label": "HAVING COUNT() > 5"
-      },
-      {
-        "key": "c",
-        "label": "SELECT COUNT() > 5"
-      },
-      {
-        "key": "d",
-        "label": "ORDER BY COUNT()"
-      }
-    ],
-    "answerKey": "b",
-    "explanation": "WHERE runs before the count exists."
-  },
-  {
-    "subject": "DBMS",
-    "topicSlug": "aggregate-functions-group-by-and-having",
-    "order": 2,
-    "prompt": "A grade column has 10 rows, 3 of them NULL. COUNT(*) and COUNT(grade) return",
-    "options": [
-      {
-        "key": "a",
-        "label": "10 and 10"
-      },
-      {
-        "key": "b",
-        "label": "10 and 7"
-      },
-      {
-        "key": "c",
-        "label": "7 and 7"
-      },
-      {
-        "key": "d",
-        "label": "7 and 10"
-      }
-    ],
-    "answerKey": "b",
-    "explanation": "COUNT(*) counts rows; COUNT(grade) ignores NULLs."
-  },
-  {
-    "subject": "DBMS",
-    "topicSlug": "subqueries-and-set-operations",
-    "order": 1,
-    "prompt": "A subquery that references a column from the outer query is called",
-    "options": [
-      {
-        "key": "a",
-        "label": "nested"
-      },
-      {
-        "key": "b",
-        "label": "correlated"
-      },
-      {
-        "key": "c",
-        "label": "recursive"
-      },
-      {
-        "key": "d",
-        "label": "inline"
-      }
-    ],
-    "answerKey": "b",
-    "explanation": "Correlated, and it re-runs for each outer row."
-  },
-  {
-    "subject": "DBMS",
-    "topicSlug": "subqueries-and-set-operations",
-    "order": 2,
-    "prompt": "UNION differs from UNION ALL in that it",
-    "options": [
-      {
-        "key": "a",
-        "label": "is faster"
-      },
-      {
-        "key": "b",
-        "label": "allows different column counts"
-      },
-      {
-        "key": "c",
-        "label": "removes duplicate rows"
-      },
-      {
-        "key": "d",
-        "label": "only works on two tables"
-      }
-    ],
-    "answerKey": "c",
-    "explanation": "And removing duplicates is exactly why it's slower."
-  },
-  {
-    "subject": "DBMS",
-    "topicSlug": "concurrency-problems",
-    "order": 1,
-    "prompt": "T2 reads a value that T1 later rolls back. This is",
-    "options": [
-      {
-        "key": "a",
-        "label": "lost update"
-      },
-      {
-        "key": "b",
-        "label": "dirty read"
-      },
-      {
-        "key": "c",
-        "label": "phantom read"
-      },
-      {
-        "key": "d",
-        "label": "deadlock"
-      }
-    ],
-    "answerKey": "b",
-    "explanation": "T2 read uncommitted data that ended up never existing."
-  },
-  {
-    "subject": "DBMS",
-    "topicSlug": "concurrency-problems",
-    "order": 2,
-    "prompt": "Two transactions read the same balance, each subtract from it, and one deduction disappears. This is",
-    "options": [
-      {
-        "key": "a",
-        "label": "lost update"
-      },
-      {
-        "key": "b",
-        "label": "dirty read"
-      },
-      {
-        "key": "c",
-        "label": "non-repeatable read"
-      },
-      {
-        "key": "d",
-        "label": "phantom read"
-      }
-    ],
-    "answerKey": "a",
-    "explanation": "The second write overwrote the first, based on a stale copy."
-  },
-  {
-    "subject": "DBMS",
-    "topicSlug": "isolation-levels",
-    "order": 1,
-    "prompt": "Which level still allows phantom reads?",
-    "options": [
-      {
-        "key": "a",
-        "label": "READ UNCOMMITTED only"
-      },
-      {
-        "key": "b",
-        "label": "REPEATABLE READ and below"
-      },
-      {
-        "key": "c",
-        "label": "SERIALIZABLE"
-      },
-      {
-        "key": "d",
-        "label": "none"
-      }
-    ],
-    "answerKey": "b",
-    "explanation": "Repeatable read freezes rows you read, but new rows can still appear."
-  },
-  {
-    "subject": "DBMS",
-    "topicSlug": "isolation-levels",
-    "order": 2,
-    "prompt": "The lowest level that prevents dirty reads is",
-    "options": [
-      {
-        "key": "a",
-        "label": "READ UNCOMMITTED"
-      },
-      {
-        "key": "b",
-        "label": "READ COMMITTED"
-      },
-      {
-        "key": "c",
-        "label": "REPEATABLE READ"
-      },
-      {
-        "key": "d",
-        "label": "SERIALIZABLE"
-      }
-    ],
-    "answerKey": "b",
-    "explanation": "That's precisely what \"read committed\" means."
-  },
-  {
-    "subject": "DBMS",
-    "topicSlug": "locking-and-deadlocks",
-    "order": 1,
-    "prompt": "Two transactions each hold a row the other wants. This is",
-    "options": [
-      {
-        "key": "a",
-        "label": "starvation"
-      },
-      {
-        "key": "b",
-        "label": "deadlock"
-      },
-      {
-        "key": "c",
-        "label": "a dirty read"
-      },
-      {
-        "key": "d",
-        "label": "a phantom"
-      }
-    ],
-    "answerKey": "b",
-    "explanation": "A circular wait, which is the definition of deadlock."
-  },
-  {
-    "subject": "DBMS",
-    "topicSlug": "locking-and-deadlocks",
-    "order": 2,
-    "prompt": "Under two-phase locking, a transaction may",
-    "options": [
-      {
-        "key": "a",
-        "label": "take and release locks in any order"
-      },
-      {
-        "key": "b",
-        "label": "take all locks, then release them, never taking again"
-      },
-      {
-        "key": "c",
-        "label": "only take shared locks"
-      },
-      {
-        "key": "d",
-        "label": "skip locks if the row is unchanged"
-      }
-    ],
-    "answerKey": "b",
-    "explanation": "Growing phase, then shrinking phase, no going back."
-  },
-  {
-    "subject": "DBMS",
-    "topicSlug": "indexes-what-they-are-and-how-they-help",
-    "order": 1,
-    "prompt": "How many clustered indexes can a table have?",
-    "options": [
-      {
-        "key": "a",
-        "label": "one"
-      },
-      {
-        "key": "b",
-        "label": "one per column"
-      },
-      {
-        "key": "c",
-        "label": "unlimited"
-      },
-      {
-        "key": "d",
-        "label": "none"
-      }
-    ],
-    "answerKey": "a",
-    "explanation": "It defines the physical order, and rows can only sit in one order."
-  },
-  {
-    "subject": "DBMS",
-    "topicSlug": "indexes-what-they-are-and-how-they-help",
-    "order": 2,
-    "prompt": "Adding many indexes to a heavily-written table mainly costs you",
-    "options": [
-      {
-        "key": "a",
-        "label": "read speed"
-      },
-      {
-        "key": "b",
-        "label": "write speed and disk space"
-      },
-      {
-        "key": "c",
-        "label": "correctness"
-      },
-      {
-        "key": "d",
-        "label": "nothing"
-      }
-    ],
-    "answerKey": "b",
-    "explanation": "Every insert and update must maintain every index. Q3 (scenario). WHERE roll_no = 101 is fast, but WHERE UPPER(name) = 'AISHA' is slow even though name is indexed. Why, and what would you change? Answer: The index stores name as written, not upper-cased, so the database can't match against it and falls back to a full scan. Fixes: compare without the function (WHERE name = 'Aisha'), or create a functional index on UPPER(name) if the case-insensitive search is genuinely needed."
-  },
-  {
-    "subject": "DBMS",
-    "topicSlug": "b-plus-trees-and-hash-indexes",
-    "order": 1,
-    "prompt": "In a B+ tree index, actual data pointers are stored",
-    "options": [
-      {
-        "key": "a",
-        "label": "in the root"
-      },
-      {
-        "key": "b",
-        "label": "at every level"
-      },
-      {
-        "key": "c",
-        "label": "only in the leaf nodes"
-      },
-      {
-        "key": "d",
-        "label": "outside the tree"
-      }
-    ],
-    "answerKey": "c",
-    "explanation": "Upper levels are signposts only, which keeps the tree shallow."
-  },
-  {
-    "subject": "DBMS",
-    "topicSlug": "b-plus-trees-and-hash-indexes",
-    "order": 2,
-    "prompt": "Which query gets no benefit from a hash index?",
-    "options": [
-      {
-        "key": "a",
-        "label": "WHERE roll = 101"
-      },
-      {
-        "key": "b",
-        "label": "WHERE roll BETWEEN 101 AND 105"
-      },
-      {
-        "key": "c",
-        "label": "WHERE roll = 107"
-      },
-      {
-        "key": "d",
-        "label": "all benefit equally"
-      }
-    ],
-    "answerKey": "b",
-    "explanation": "Hashing destroys ordering, so ranges can't use it."
-  }
+ {
+  "subject": "DBMS",
+  "topicSlug": "why-dbms-file-system-problems",
+  "order": 1,
+  "prompt": "Two users update the same row at the same time and one update disappears. Which DBMS feature prevents this?",
+  "options": [
+   {
+    "key": "a",
+    "label": "Authorization"
+   },
+   {
+    "key": "b",
+    "label": "Indexing"
+   },
+   {
+    "key": "c",
+    "label": "Concurrency control / locking"
+   },
+   {
+    "key": "d",
+    "label": "Backup"
+   }
+  ],
+  "answerKey": "c",
+  "explanation": "Locking decides who goes first so no update is silently lost."
+ },
+ {
+  "subject": "DBMS",
+  "topicSlug": "why-dbms-file-system-problems",
+  "order": 2,
+  "prompt": "A DBMS is best described as",
+  "options": [
+   {
+    "key": "a",
+    "label": "A file that stores data"
+   },
+   {
+    "key": "b",
+    "label": "A programming language for data"
+   },
+   {
+    "key": "c",
+    "label": "Software that stores data and enforces rules on it"
+   },
+   {
+    "key": "d",
+    "label": "A spreadsheet with more rows"
+   }
+  ],
+  "answerKey": "c",
+  "explanation": "Storage plus enforced rules. (b) describes SQL, not a DBMS."
+ },
+ {
+  "subject": "DBMS",
+  "topicSlug": "cardinality-er-notation",
+  "order": 1,
+  "prompt": "One author writes many books, and each book has exactly one author. This is",
+  "options": [
+   {
+    "key": "a",
+    "label": "1:1"
+   },
+   {
+    "key": "b",
+    "label": "1:N"
+   },
+   {
+    "key": "c",
+    "label": "M:N"
+   },
+   {
+    "key": "d",
+    "label": "N:N"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "Many on the book side, one on the author side."
+ },
+ {
+  "subject": "DBMS",
+  "topicSlug": "cardinality-er-notation",
+  "order": 2,
+  "prompt": "Which case forces you to create an extra table?",
+  "options": [
+   {
+    "key": "a",
+    "label": "1:1"
+   },
+   {
+    "key": "b",
+    "label": "1:N"
+   },
+   {
+    "key": "c",
+    "label": "M:N"
+   },
+   {
+    "key": "d",
+    "label": "none of them"
+   }
+  ],
+  "answerKey": "c",
+  "explanation": "M:N needs a junction table, because neither side can store a list of unknown length."
+ },
+ {
+  "subject": "DBMS",
+  "topicSlug": "keys",
+  "order": 1,
+  "prompt": "(roll_no, name) is unique in the Student table. It is",
+  "options": [
+   {
+    "key": "a",
+    "label": "a candidate key"
+   },
+   {
+    "key": "b",
+    "label": "a super key only"
+   },
+   {
+    "key": "c",
+    "label": "a foreign key"
+   },
+   {
+    "key": "d",
+    "label": "not a key at all"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "It's unique, so it's a super key, but name is unnecessary, so it fails the minimal test for a candidate key."
+ },
+ {
+  "subject": "DBMS",
+  "topicSlug": "keys",
+  "order": 2,
+  "prompt": "How many primary keys can one table have?",
+  "options": [
+   {
+    "key": "a",
+    "label": "exactly one"
+   },
+   {
+    "key": "b",
+    "label": "one per column"
+   },
+   {
+    "key": "c",
+    "label": "as many as it has candidate keys"
+   },
+   {
+    "key": "d",
+    "label": "zero or more"
+   }
+  ],
+  "answerKey": "a",
+  "explanation": "Exactly one, though that one key may be made of multiple columns."
+ },
+ {
+  "subject": "DBMS",
+  "topicSlug": "integrity-constraints",
+  "order": 1,
+  "prompt": "You delete a course that enrollments still point at, and the enrollment rows vanish automatically. The rule in force is",
+  "options": [
+   {
+    "key": "a",
+    "label": "RESTRICT"
+   },
+   {
+    "key": "b",
+    "label": "SET NULL"
+   },
+   {
+    "key": "c",
+    "label": "CASCADE"
+   },
+   {
+    "key": "d",
+    "label": "domain integrity"
+   }
+  ],
+  "answerKey": "c",
+  "explanation": "CASCADE passes the delete down to the child rows."
+ },
+ {
+  "subject": "DBMS",
+  "topicSlug": "normal-forms-1nf-2nf-3nf",
+  "order": 1,
+  "prompt": "Enrollment(roll_no, course, grade, course_title) with key (roll_no, course) violates",
+  "options": [
+   {
+    "key": "a",
+    "label": "1NF"
+   },
+   {
+    "key": "b",
+    "label": "2NF"
+   },
+   {
+    "key": "c",
+    "label": "3NF"
+   },
+   {
+    "key": "d",
+    "label": "nothing"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "Course_title depends on course alone, which is only part of the key. That's a partial dependency."
+ },
+ {
+  "subject": "DBMS",
+  "topicSlug": "normal-forms-1nf-2nf-3nf",
+  "order": 2,
+  "prompt": "Student(roll_no, name, dept_id, dept_name) with key roll_no violates",
+  "options": [
+   {
+    "key": "a",
+    "label": "1NF"
+   },
+   {
+    "key": "b",
+    "label": "2NF"
+   },
+   {
+    "key": "c",
+    "label": "3NF"
+   },
+   {
+    "key": "d",
+    "label": "nothing"
+   }
+  ],
+  "answerKey": "c",
+  "explanation": "Dept_name depends on dept_id, a non-key column. Transitive dependency. It cannot be a 2NF problem, because the key is one column."
+ },
+ {
+  "subject": "DBMS",
+  "topicSlug": "bcnf-denormalization",
+  "order": 1,
+  "prompt": "Every table in BCNF is also in",
+  "options": [
+   {
+    "key": "a",
+    "label": "1NF only"
+   },
+   {
+    "key": "b",
+    "label": "2NF only"
+   },
+   {
+    "key": "c",
+    "label": "1NF, 2NF and 3NF"
+   },
+   {
+    "key": "d",
+    "label": "none of these"
+   }
+  ],
+  "answerKey": "c",
+  "explanation": "The forms stack, and BCNF sits above 3NF."
+ },
+ {
+  "subject": "DBMS",
+  "topicSlug": "bcnf-denormalization",
+  "order": 2,
+  "prompt": "You copy course_title into a reporting table to avoid a join. This is",
+  "options": [
+   {
+    "key": "a",
+    "label": "a normalization error"
+   },
+   {
+    "key": "b",
+    "label": "deliberate denormalization"
+   },
+   {
+    "key": "c",
+    "label": "a 2NF violation you must fix"
+   },
+   {
+    "key": "d",
+    "label": "a foreign key"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "A knowing trade of extra repetition for faster reads."
+ },
+ {
+  "subject": "DBMS",
+  "topicSlug": "joins",
+  "order": 1,
+  "prompt": "Student has 5 rows, Enrollment has 3 rows, and only 2 enrollments match a real student. An INNER JOIN returns",
+  "options": [
+   {
+    "key": "a",
+    "label": "5"
+   },
+   {
+    "key": "b",
+    "label": "3"
+   },
+   {
+    "key": "c",
+    "label": "2"
+   },
+   {
+    "key": "d",
+    "label": "15"
+   }
+  ],
+  "answerKey": "c",
+  "explanation": "Only matched pairs survive an inner join."
+ },
+ {
+  "subject": "DBMS",
+  "topicSlug": "joins",
+  "order": 2,
+  "prompt": "In a LEFT JOIN, a NULL in a right-hand column means",
+  "options": [
+   {
+    "key": "a",
+    "label": "the data was deleted"
+   },
+   {
+    "key": "b",
+    "label": "no matching row existed on the right"
+   },
+   {
+    "key": "c",
+    "label": "an error"
+   },
+   {
+    "key": "d",
+    "label": "the value is zero"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "The left row was kept, but nothing on the right matched it."
+ },
+ {
+  "subject": "DBMS",
+  "topicSlug": "aggregate-functions-group-by-having",
+  "order": 1,
+  "prompt": "To keep only groups with more than 5 rows, you use",
+  "options": [
+   {
+    "key": "a",
+    "label": "WHERE COUNT() > 5"
+   },
+   {
+    "key": "b",
+    "label": "HAVING COUNT() > 5"
+   },
+   {
+    "key": "c",
+    "label": "SELECT COUNT() > 5"
+   },
+   {
+    "key": "d",
+    "label": "ORDER BY COUNT()"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "WHERE runs beforethe count exists."
+ },
+ {
+  "subject": "DBMS",
+  "topicSlug": "aggregate-functions-group-by-having",
+  "order": 2,
+  "prompt": "A grade column has 10 rows, 3 of them NULL. COUNT(*) and COUNT(grade) return",
+  "options": [
+   {
+    "key": "a",
+    "label": "10 and 10"
+   },
+   {
+    "key": "b",
+    "label": "10 and 7"
+   },
+   {
+    "key": "c",
+    "label": "7 and 7"
+   },
+   {
+    "key": "d",
+    "label": "7 and 10"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "COUNT(*) counts rows; COUNT(grade) ignores NULLs."
+ },
+ {
+  "subject": "DBMS",
+  "topicSlug": "subqueries-set-operations",
+  "order": 1,
+  "prompt": "UNION differs from UNION ALL in that it",
+  "options": [
+   {
+    "key": "a",
+    "label": "is faster"
+   },
+   {
+    "key": "b",
+    "label": "allows different column counts"
+   },
+   {
+    "key": "c",
+    "label": "removes duplicate rows"
+   },
+   {
+    "key": "d",
+    "label": "only works on two tables"
+   }
+  ],
+  "answerKey": "c",
+  "explanation": "And removing duplicates is exactly why it's slower."
+ },
+ {
+  "subject": "DBMS",
+  "topicSlug": "concurrency-problems",
+  "order": 1,
+  "prompt": "T2 reads a value that T1 later rolls back. This is",
+  "options": [
+   {
+    "key": "a",
+    "label": "lost update"
+   },
+   {
+    "key": "b",
+    "label": "dirty read"
+   },
+   {
+    "key": "c",
+    "label": "phantom read"
+   },
+   {
+    "key": "d",
+    "label": "deadlock"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "T2 read uncommitted data that ended up never existing."
+ },
+ {
+  "subject": "DBMS",
+  "topicSlug": "concurrency-problems",
+  "order": 2,
+  "prompt": "Two transactions read the same balance, each subtract from it, and one deduction disappears. This is",
+  "options": [
+   {
+    "key": "a",
+    "label": "lost update"
+   },
+   {
+    "key": "b",
+    "label": "dirty read"
+   },
+   {
+    "key": "c",
+    "label": "non-repeatable read"
+   },
+   {
+    "key": "d",
+    "label": "phantom read"
+   }
+  ],
+  "answerKey": "a",
+  "explanation": "The second write overwrote the first, based on a stale copy."
+ },
+ {
+  "subject": "DBMS",
+  "topicSlug": "isolation-levels",
+  "order": 1,
+  "prompt": "Which level still allows phantom reads?",
+  "options": [
+   {
+    "key": "a",
+    "label": "READ UNCOMMITTED only"
+   },
+   {
+    "key": "b",
+    "label": "REPEATABLE READ and below"
+   },
+   {
+    "key": "c",
+    "label": "SERIALIZABLE"
+   },
+   {
+    "key": "d",
+    "label": "none"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "Repeatable read freezes rows you read, but new rows can still appear."
+ },
+ {
+  "subject": "DBMS",
+  "topicSlug": "isolation-levels",
+  "order": 2,
+  "prompt": "The lowest level that prevents dirty reads is",
+  "options": [
+   {
+    "key": "a",
+    "label": "READ UNCOMMITTED"
+   },
+   {
+    "key": "b",
+    "label": "READ COMMITTED"
+   },
+   {
+    "key": "c",
+    "label": "REPEATABLE READ"
+   },
+   {
+    "key": "d",
+    "label": "SERIALIZABLE"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "That's precisely what \"read committed\" means."
+ },
+ {
+  "subject": "DBMS",
+  "topicSlug": "locking-deadlocks",
+  "order": 1,
+  "prompt": "Two transactions each hold a row the other wants. This is",
+  "options": [
+   {
+    "key": "a",
+    "label": "starvation"
+   },
+   {
+    "key": "b",
+    "label": "deadlock"
+   },
+   {
+    "key": "c",
+    "label": "a dirty read"
+   },
+   {
+    "key": "d",
+    "label": "a phantom"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "A circular wait, which is the definition of deadlock."
+ },
+ {
+  "subject": "DBMS",
+  "topicSlug": "locking-deadlocks",
+  "order": 2,
+  "prompt": "Under two-phase locking, a transaction may",
+  "options": [
+   {
+    "key": "a",
+    "label": "take and release locks in any order"
+   },
+   {
+    "key": "b",
+    "label": "take all locks, then release them, never taking again"
+   },
+   {
+    "key": "c",
+    "label": "only take shared locks"
+   },
+   {
+    "key": "d",
+    "label": "skip locks if the row is unchanged"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "Growing phase, then shrinking phase, no going back."
+ },
+ {
+  "subject": "DBMS",
+  "topicSlug": "indexes-what-they-are-how-they-help",
+  "order": 1,
+  "prompt": "How many clustered indexes can a table have?",
+  "options": [
+   {
+    "key": "a",
+    "label": "one"
+   },
+   {
+    "key": "b",
+    "label": "one per column"
+   },
+   {
+    "key": "c",
+    "label": "unlimited"
+   },
+   {
+    "key": "d",
+    "label": "none"
+   }
+  ],
+  "answerKey": "a",
+  "explanation": "It defines the physical order, and rows can only sit in one order."
+ },
+ {
+  "subject": "DBMS",
+  "topicSlug": "indexes-what-they-are-how-they-help",
+  "order": 2,
+  "prompt": "Adding many indexes to a heavily-written table mainly costs you",
+  "options": [
+   {
+    "key": "a",
+    "label": "read speed"
+   },
+   {
+    "key": "b",
+    "label": "write speed and disk space"
+   },
+   {
+    "key": "c",
+    "label": "correctness"
+   },
+   {
+    "key": "d",
+    "label": "nothing"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "Every insert and update must maintain every index."
+ },
+ {
+  "subject": "DBMS",
+  "topicSlug": "b-trees-hash-indexes",
+  "order": 1,
+  "prompt": "In a B+ tree index, actual data pointers are stored",
+  "options": [
+   {
+    "key": "a",
+    "label": "in the root"
+   },
+   {
+    "key": "b",
+    "label": "at every level"
+   },
+   {
+    "key": "c",
+    "label": "only in the leaf nodes"
+   },
+   {
+    "key": "d",
+    "label": "outside the tree"
+   }
+  ],
+  "answerKey": "c",
+  "explanation": "Upper levels are signposts only, which keeps the tree shallow."
+ },
+ {
+  "subject": "DBMS",
+  "topicSlug": "b-trees-hash-indexes",
+  "order": 2,
+  "prompt": "Which query gets no benefit from a hash index?",
+  "options": [
+   {
+    "key": "a",
+    "label": "WHERE roll = 101"
+   },
+   {
+    "key": "b",
+    "label": "WHERE roll BETWEEN 101 AND 105"
+   },
+   {
+    "key": "c",
+    "label": "WHERE roll = 107"
+   },
+   {
+    "key": "d",
+    "label": "all benefit equally"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "Hashing destroys ordering, so ranges can't use it."
+ }
 ]

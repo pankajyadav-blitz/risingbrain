@@ -28,11 +28,29 @@ function getTransporter(): Transporter {
     },
   });
 
-  if (!env.isProd) globalForMail.mailer = transporter;
+  // Cache UNCONDITIONALLY. This used to be `if (!env.isProd)`, which is backwards:
+  // the pool exists to be reused, and skipping the cache in production meant every
+  // OTP send built a fresh `pool: true` transporter and never closed it, leaking a
+  // connection set per signup until Gmail answered "454 too many connections".
+  // `globalThis` (rather than a module const) is what survives dev hot-reload.
+  globalForMail.mailer = transporter;
   return transporter;
 }
 
-const from = () => env.MAIL_FROM || `RisingBrain <${env.GMAIL_USER}>`;
+/**
+ * The `From` header. `MAIL_FROM` is optional and hand-edited in deploy config, so
+ * it is also where a display name with no address ends up ("Rising Brain"). That
+ * is not a mailbox: nodemailer would emit `MAIL FROM:<Rising Brain>` and Gmail
+ * rejects the whole message with a 5.5.2 syntax error — which took out signup and
+ * password reset entirely. Treat an address-less value as the display NAME it
+ * plainly is and pair it with the authenticated mailbox.
+ */
+const from = () => {
+  const configured = env.MAIL_FROM.trim();
+  if (!configured) return `RisingBrain <${env.GMAIL_USER}>`;
+  if (!configured.includes("@")) return `${configured} <${env.GMAIL_USER}>`;
+  return configured;
+};
 
 /** Whether email sending is configured (used to fail fast with a clear message). */
 export function isMailConfigured(): boolean {

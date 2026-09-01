@@ -1,0 +1,3954 @@
+[
+ {
+  "subject": "CN",
+  "topicSlug": "what-a-network-is-and-the-problem-it-solves",
+  "order": 1,
+  "prompt": "Which set lists the three ingredients every network needs?",
+  "options": [
+   {
+    "key": "a",
+    "label": "Cables, electricity, a router"
+   },
+   {
+    "key": "b",
+    "label": "Devices, links, agreed rules"
+   },
+   {
+    "key": "c",
+    "label": "Internet, browser, server"
+   },
+   {
+    "key": "d",
+    "label": "Devices, passwords, a printer"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "Devices (nodes), links, and protocols. Miss any one and it is not a network."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "what-a-network-is-and-the-problem-it-solves",
+  "order": 2,
+  "prompt": "The ISP line to your hostel is cut. What happens to the hostel LAN?",
+  "options": [
+   {
+    "key": "a",
+    "label": "It stops completely"
+   },
+   {
+    "key": "b",
+    "label": "Only the Wi-Fi stops; cabled devices still work"
+   },
+   {
+    "key": "c",
+    "label": "It keeps working for devices inside the hostel"
+   },
+   {
+    "key": "d",
+    "label": "Every device loses its address"
+   }
+  ],
+  "answerKey": "c",
+  "explanation": "Only the path outside is lost. Printing and local file sharing still work."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "what-a-network-is-and-the-problem-it-solves",
+  "order": 3,
+  "prompt": "A protocol is",
+  "options": [
+   {
+    "key": "a",
+    "label": "A type of cable"
+   },
+   {
+    "key": "b",
+    "label": "The chip that connects a laptop to Wi-Fi"
+   },
+   {
+    "key": "c",
+    "label": "The address of a device"
+   },
+   {
+    "key": "d",
+    "label": "An agreed set of rules for exchanging data"
+   }
+  ],
+  "answerKey": "d",
+  "explanation": "It is an agreement on how to speak, not a piece of hardware."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "what-a-network-is-and-the-problem-it-solves",
+  "order": 4,
+  "prompt": "Why put one device in the middle instead of wiring every laptop to every other laptop?",
+  "options": [
+   {
+    "key": "a",
+    "label": "A middle device makes each cable faster"
+   },
+   {
+    "key": "b",
+    "label": "Direct wiring needs far too many cables as devices grow"
+   },
+   {
+    "key": "c",
+    "label": "A middle device removes the need for addresses"
+   },
+   {
+    "key": "d",
+    "label": "Direct wiring cannot carry Wi-Fi"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "10 devices need 45 direct cables. One middle device needs 10."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "client-server-and-the-requestresponse-idea",
+  "order": 1,
+  "prompt": "Which side always starts the conversation?",
+  "options": [
+   {
+    "key": "a",
+    "label": "The server"
+   },
+   {
+    "key": "b",
+    "label": "The client"
+   },
+   {
+    "key": "c",
+    "label": "The router"
+   },
+   {
+    "key": "d",
+    "label": "Whichever is switched on first"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "The server only waits. Nothing arrives unless the client asked."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "client-server-and-the-requestresponse-idea",
+  "order": 2,
+  "prompt": "\"Server\" is best described as",
+  "options": [
+   {
+    "key": "a",
+    "label": "A large, expensive machine"
+   },
+   {
+    "key": "b",
+    "label": "Any computer kept in a data centre"
+   },
+   {
+    "key": "c",
+    "label": "A role a computer plays in a conversation"
+   },
+   {
+    "key": "d",
+    "label": "Hardware with extra RAM"
+   }
+  ],
+  "answerKey": "c",
+  "explanation": "The same laptop is a client in one tab and a server on port 3000."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "client-server-and-the-requestresponse-idea",
+  "order": 3,
+  "prompt": "Which statement is true of peer-to-peer?",
+  "options": [
+   {
+    "key": "a",
+    "label": "There is one fixed machine that answers everyone"
+   },
+   {
+    "key": "b",
+    "label": "Every node can act as both client and server"
+   },
+   {
+    "key": "c",
+    "label": "Only servers are allowed to request data"
+   },
+   {
+    "key": "d",
+    "label": "It works without addresses"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "No fixed middle machine, so there is no single point of failure."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "client-server-and-the-requestresponse-idea",
+  "order": 4,
+  "prompt": "In our case study, which address belongs to the server?",
+  "options": [
+   {
+    "key": "a",
+    "label": "192.168.1.42"
+   },
+   {
+    "key": "b",
+    "label": "192.168.1.1"
+   },
+   {
+    "key": "c",
+    "label": "103.21.58.7"
+   },
+   {
+    "key": "d",
+    "label": "203.0.113.10"
+   }
+  ],
+  "answerKey": "d",
+  "explanation": "203.0.113.10 is college.edu. 192.168.1.42 is Aisha's laptop, the client."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "how-data-actually-travels-packets-bandwidth-latency-throughput",
+  "order": 1,
+  "prompt": "A packet is made of",
+  "options": [
+   {
+    "key": "a",
+    "label": "Header and payload"
+   },
+   {
+    "key": "b",
+    "label": "Payload and password"
+   },
+   {
+    "key": "c",
+    "label": "Bandwidth and latency"
+   },
+   {
+    "key": "d",
+    "label": "Source address only"
+   }
+  ],
+  "answerKey": "a",
+  "explanation": "The header carries source, destination and sequence number; the payload is your data."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "how-data-actually-travels-packets-bandwidth-latency-throughput",
+  "order": 2,
+  "prompt": "Packet 3 of 4 is lost on the way. What gets resent?",
+  "options": [
+   {
+    "key": "a",
+    "label": "All four packets"
+   },
+   {
+    "key": "b",
+    "label": "Packets 3 and 4"
+   },
+   {
+    "key": "c",
+    "label": "Only packet 3"
+   },
+   {
+    "key": "d",
+    "label": "Nothing — the page loads with a gap"
+   }
+  ],
+  "answerKey": "c",
+  "explanation": "Resending one small piece is the whole reason data is cut up."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "how-data-actually-travels-packets-bandwidth-latency-throughput",
+  "order": 3,
+  "prompt": "Your plan says 100 Mbps but you measure 40 Mbps. The 40 is your",
+  "options": [
+   {
+    "key": "a",
+    "label": "Bandwidth"
+   },
+   {
+    "key": "b",
+    "label": "Latency"
+   },
+   {
+    "key": "c",
+    "label": "Ping"
+   },
+   {
+    "key": "d",
+    "label": "Throughput"
+   }
+  ],
+  "answerKey": "d",
+  "explanation": "100 Mbps is the ceiling (bandwidth). 40 Mbps is what you actually get."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "how-data-actually-travels-packets-bandwidth-latency-throughput",
+  "order": 4,
+  "prompt": "Downloads are fast, but your online game keeps lagging. The likely problem is",
+  "options": [
+   {
+    "key": "a",
+    "label": "Low bandwidth"
+   },
+   {
+    "key": "b",
+    "label": "High latency"
+   },
+   {
+    "key": "c",
+    "label": "Packets that are too small"
+   },
+   {
+    "key": "d",
+    "label": "Too few packets being sent"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "Games send tiny amounts of data but need it to arrive fast. Width does not fix delay."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "lan-man-wan-pan",
+  "order": 1,
+  "prompt": "HostelNet-3F covers every room on one floor of one building. It is a",
+  "options": [
+   {
+    "key": "a",
+    "label": "PAN"
+   },
+   {
+    "key": "b",
+    "label": "LAN"
+   },
+   {
+    "key": "c",
+    "label": "MAN"
+   },
+   {
+    "key": "d",
+    "label": "WAN"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "One building, privately owned equipment. That is a LAN."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "lan-man-wan-pan",
+  "order": 2,
+  "prompt": "Which statement is correct?",
+  "options": [
+   {
+    "key": "a",
+    "label": "WAN always means a slow connection"
+   },
+   {
+    "key": "b",
+    "label": "LAN always means a fast connection"
+   },
+   {
+    "key": "c",
+    "label": "The names describe reach and ownership, not speed"
+   },
+   {
+    "key": "d",
+    "label": "Only WANs can carry internet traffic"
+   }
+  ],
+  "answerKey": "c",
+  "explanation": "Speed comes from the link and the distance, not the label."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "lan-man-wan-pan",
+  "order": 3,
+  "prompt": "Bluetooth earbuds paired to a phone form a",
+  "options": [
+   {
+    "key": "a",
+    "label": "PAN"
+   },
+   {
+    "key": "b",
+    "label": "WLAN"
+   },
+   {
+    "key": "c",
+    "label": "MAN"
+   },
+   {
+    "key": "d",
+    "label": "WAN"
+   }
+  ],
+  "answerKey": "a",
+  "explanation": "A few metres, around one person."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "lan-man-wan-pan",
+  "order": 4,
+  "prompt": "WLAN is best described as",
+  "options": [
+   {
+    "key": "a",
+    "label": "A WAN that uses radio"
+   },
+   {
+    "key": "b",
+    "label": "A LAN that uses radio instead of cable"
+   },
+   {
+    "key": "c",
+    "label": "A network larger than a MAN"
+   },
+   {
+    "key": "d",
+    "label": "Another name for the internet"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "Same LAN idea, radio instead of wire."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "topologies-bus-star-ring-mesh-hybrid",
+  "order": 1,
+  "prompt": "How many direct links does a full mesh of 6 devices need?",
+  "options": [
+   {
+    "key": "a",
+    "label": "6"
+   },
+   {
+    "key": "b",
+    "label": "12"
+   },
+   {
+    "key": "c",
+    "label": "15"
+   },
+   {
+    "key": "d",
+    "label": "30"
+   }
+  ],
+  "answerKey": "c",
+  "explanation": "N(n−1)/2 = 6×5/2 = 15."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "topologies-bus-star-ring-mesh-hybrid",
+  "order": 2,
+  "prompt": "In a star topology, one device's cable is cut. What happens?",
+  "options": [
+   {
+    "key": "a",
+    "label": "The whole network stops"
+   },
+   {
+    "key": "b",
+    "label": "Only that one device loses connection"
+   },
+   {
+    "key": "c",
+    "label": "Data starts travelling in the other direction"
+   },
+   {
+    "key": "d",
+    "label": "The central device shuts down"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "Each device has its own cable to the middle."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "topologies-bus-star-ring-mesh-hybrid",
+  "order": 3,
+  "prompt": "Which topology has the whole network fail if the main shared cable breaks?",
+  "options": [
+   {
+    "key": "a",
+    "label": "Star"
+   },
+   {
+    "key": "b",
+    "label": "Mesh"
+   },
+   {
+    "key": "c",
+    "label": "Bus"
+   },
+   {
+    "key": "d",
+    "label": "Hybrid"
+   }
+  ],
+  "answerKey": "c",
+  "explanation": "Bus shares one line, so a break splits everyone."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "topologies-bus-star-ring-mesh-hybrid",
+  "order": 4,
+  "prompt": "Why is star used in real buildings despite having a single point of failure?",
+  "options": [
+   {
+    "key": "a",
+    "label": "It needs the least cable of all topologies"
+   },
+   {
+    "key": "b",
+    "label": "The failure point is one cheap device that is easy to replace"
+   },
+   {
+    "key": "c",
+    "label": "It has no failure point at all"
+   },
+   {
+    "key": "d",
+    "label": "It is the only topology that supports Wi-Fi"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "The weakness is concentrated in one swappable box, and cable faults stay local."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "nic-hub-and-switch",
+  "order": 1,
+  "prompt": "A switch decides where to send a frame using",
+  "options": [
+   {
+    "key": "a",
+    "label": "The IP address"
+   },
+   {
+    "key": "b",
+    "label": "The MAC address"
+   },
+   {
+    "key": "c",
+    "label": "The port number of the application"
+   },
+   {
+    "key": "d",
+    "label": "The device name"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "Switches work with hardware addresses, not IPs."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "nic-hub-and-switch",
+  "order": 2,
+  "prompt": "A switch receives a frame for a device it has never seen. It",
+  "options": [
+   {
+    "key": "a",
+    "label": "Drops the frame"
+   },
+   {
+    "key": "b",
+    "label": "Returns an error to the sender"
+   },
+   {
+    "key": "c",
+    "label": "Sends it out of every port, once"
+   },
+   {
+    "key": "d",
+    "label": "Waits until the device sends something first"
+   }
+  ],
+  "answerKey": "c",
+  "explanation": "It floods once, then learns from the reply."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "nic-hub-and-switch",
+  "order": 3,
+  "prompt": "Which is a real disadvantage of a hub?",
+  "options": [
+   {
+    "key": "a",
+    "label": "It cannot connect more than four devices"
+   },
+   {
+    "key": "b",
+    "label": "Every device receives traffic meant for others"
+   },
+   {
+    "key": "c",
+    "label": "It requires manual configuration"
+   },
+   {
+    "key": "d",
+    "label": "It only works over Wi-Fi"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "Copying to every port wastes bandwidth and leaks traffic."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "nic-hub-and-switch",
+  "order": 4,
+  "prompt": "How does a switch's MAC address table get filled?",
+  "options": [
+   {
+    "key": "a",
+    "label": "An admin types in every address"
+   },
+   {
+    "key": "b",
+    "label": "The switch learns it by watching incoming frames"
+   },
+   {
+    "key": "c",
+    "label": "It is copied from the router at startup"
+   },
+   {
+    "key": "d",
+    "label": "It comes preloaded from the factory"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "It is automatic. Nobody configures it."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "router-modem-access-point-and-default-gateway",
+  "order": 1,
+  "prompt": "A router forwards data using",
+  "options": [
+   {
+    "key": "a",
+    "label": "MAC addresses"
+   },
+   {
+    "key": "b",
+    "label": "IP addresses"
+   },
+   {
+    "key": "c",
+    "label": "Port numbers only"
+   },
+   {
+    "key": "d",
+    "label": "Device names"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "IP is the between-networks address. MAC is inside one network."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "router-modem-access-point-and-default-gateway",
+  "order": 2,
+  "prompt": "Aisha's laptop wants to reach 203.0.113.10. It sends the packet first to",
+  "options": [
+   {
+    "key": "a",
+    "label": "203.0.113.10 directly"
+   },
+   {
+    "key": "b",
+    "label": "103.21.58.7"
+   },
+   {
+    "key": "c",
+    "label": "192.168.1.1"
+   },
+   {
+    "key": "d",
+    "label": "192.168.1.57"
+   }
+  ],
+  "answerKey": "c",
+  "explanation": "Not local, so it goes to the default gateway."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "router-modem-access-point-and-default-gateway",
+  "order": 3,
+  "prompt": "Which job does an access point do?",
+  "options": [
+   {
+    "key": "a",
+    "label": "Chooses the path out of the network"
+   },
+   {
+    "key": "b",
+    "label": "Converts data to radio so devices can join without cables"
+   },
+   {
+    "key": "c",
+    "label": "Converts the ISP signal into data"
+   },
+   {
+    "key": "d",
+    "label": "Stores MAC addresses per port"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "The AP adds Wi-Fi. Path choice is the router's job."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "router-modem-access-point-and-default-gateway",
+  "order": 4,
+  "prompt": "Why does the hostel router have two IP addresses?",
+  "options": [
+   {
+    "key": "a",
+    "label": "One is a spare in case the first fails"
+   },
+   {
+    "key": "b",
+    "label": "One faces the hostel network, one faces the ISP"
+   },
+   {
+    "key": "c",
+    "label": "One is for Wi-Fi and one is for cables"
+   },
+   {
+    "key": "d",
+    "label": "One is for sending and one is for receiving"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "It sits between two networks, so it needs an address on each side."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "why-layers-exist",
+  "order": 1,
+  "prompt": "A layer is allowed to talk to",
+  "options": [
+   {
+    "key": "a",
+    "label": "Any other layer"
+   },
+   {
+    "key": "b",
+    "label": "Only the layer directly above and below it"
+   },
+   {
+    "key": "c",
+    "label": "Only the application layer"
+   },
+   {
+    "key": "d",
+    "label": "Only layers on the other device"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "No skipping and no sideways. That is what keeps layers independent."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "why-layers-exist",
+  "order": 2,
+  "prompt": "Aisha switches from Wi-Fi to a cable. What must be rewritten?",
+  "options": [
+   {
+    "key": "a",
+    "label": "The browser"
+   },
+   {
+    "key": "b",
+    "label": "The TCP code"
+   },
+   {
+    "key": "c",
+    "label": "The IP code"
+   },
+   {
+    "key": "d",
+    "label": "Nothing above the bottom layer"
+   }
+  ],
+  "answerKey": "d",
+  "explanation": "Only the bottom layer changed; the handover above it is the same."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "why-layers-exist",
+  "order": 3,
+  "prompt": "Layers are best described as",
+  "options": [
+   {
+    "key": "a",
+    "label": "Separate physical devices"
+   },
+   {
+    "key": "b",
+    "label": "A division of the job, which one device may perform several of"
+   },
+   {
+    "key": "c",
+    "label": "Different network cables"
+   },
+   {
+    "key": "d",
+    "label": "Different buildings in a WAN"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "Her one laptop performs five layers by itself."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "why-layers-exist",
+  "order": 4,
+  "prompt": "When Aisha sends data, it moves through the stack",
+  "options": [
+   {
+    "key": "a",
+    "label": "Upwards"
+   },
+   {
+    "key": "b",
+    "label": "Downwards"
+   },
+   {
+    "key": "c",
+    "label": "Sideways"
+   },
+   {
+    "key": "d",
+    "label": "Only through the top layer"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "Sending goes down, receiving goes up."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "the-osi-model-a-tour-of-all-7-layers",
+  "order": 1,
+  "prompt": "A router operates mainly at which OSI layer?",
+  "options": [
+   {
+    "key": "a",
+    "label": "Layer 1, Physical"
+   },
+   {
+    "key": "b",
+    "label": "Layer 2, Data Link"
+   },
+   {
+    "key": "c",
+    "label": "Layer 3, Network"
+   },
+   {
+    "key": "d",
+    "label": "Layer 4, Transport"
+   }
+  ],
+  "answerKey": "c",
+  "explanation": "Routers work with IP addresses, which is the Network layer."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "the-osi-model-a-tour-of-all-7-layers",
+  "order": 2,
+  "prompt": "Port numbers are the business of which layer?",
+  "options": [
+   {
+    "key": "a",
+    "label": "Application"
+   },
+   {
+    "key": "b",
+    "label": "Transport"
+   },
+   {
+    "key": "c",
+    "label": "Network"
+   },
+   {
+    "key": "d",
+    "label": "Data Link"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "Ports identify the app; that is end-to-end delivery."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "the-osi-model-a-tour-of-all-7-layers",
+  "order": 3,
+  "prompt": "MAC addresses are used at which layer?",
+  "options": [
+   {
+    "key": "a",
+    "label": "Physical"
+   },
+   {
+    "key": "b",
+    "label": "Data Link"
+   },
+   {
+    "key": "c",
+    "label": "Network"
+   },
+   {
+    "key": "d",
+    "label": "Session"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "MAC is local delivery across one link."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "the-osi-model-a-tour-of-all-7-layers",
+  "order": 4,
+  "prompt": "Which statement about OSI is correct?",
+  "options": [
+   {
+    "key": "a",
+    "label": "Every laptop runs seven separate OSI programs"
+   },
+   {
+    "key": "b",
+    "label": "OSI is the protocol stack the internet actually uses"
+   },
+   {
+    "key": "c",
+    "label": "OSI is a reference model used to describe and compare networks"
+   },
+   {
+    "key": "d",
+    "label": "OSI has four layers"
+   }
+  ],
+  "answerKey": "c",
+  "explanation": "It is vocabulary and a map. TCP/IP is what runs."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "the-tcp-ip-model-and-osi-vs-tcp-ip",
+  "order": 1,
+  "prompt": "How many layers does the TCP/IP model have?",
+  "options": [
+   {
+    "key": "a",
+    "label": "3"
+   },
+   {
+    "key": "b",
+    "label": "4"
+   },
+   {
+    "key": "c",
+    "label": "5"
+   },
+   {
+    "key": "d",
+    "label": "7"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "Application, Transport, Internet, Network Access."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "the-tcp-ip-model-and-osi-vs-tcp-ip",
+  "order": 2,
+  "prompt": "OSI's Session and Presentation layers map to which TCP/IP layer?",
+  "options": [
+   {
+    "key": "a",
+    "label": "Transport"
+   },
+   {
+    "key": "b",
+    "label": "Internet"
+   },
+   {
+    "key": "c",
+    "label": "Application"
+   },
+   {
+    "key": "d",
+    "label": "Network Access"
+   }
+  ],
+  "answerKey": "c",
+  "explanation": "Folded into Application, done by the app itself."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "the-tcp-ip-model-and-osi-vs-tcp-ip",
+  "order": 3,
+  "prompt": "What is TCP/IP's third layer called?",
+  "options": [
+   {
+    "key": "a",
+    "label": "Network"
+   },
+   {
+    "key": "b",
+    "label": "Internet"
+   },
+   {
+    "key": "c",
+    "label": "Routing"
+   },
+   {
+    "key": "d",
+    "label": "Transport"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "Same job as OSI's Network layer, different name."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "the-tcp-ip-model-and-osi-vs-tcp-ip",
+  "order": 4,
+  "prompt": "Which statement is true?",
+  "options": [
+   {
+    "key": "a",
+    "label": "TCP/IP removed encryption from networking entirely"
+   },
+   {
+    "key": "b",
+    "label": "OSI protocols came first, then the model"
+   },
+   {
+    "key": "c",
+    "label": "TCP/IP's model was written to describe protocols that already worked"
+   },
+   {
+    "key": "d",
+    "label": "OSI is what actually runs on the internet"
+   }
+  ],
+  "answerKey": "c",
+  "explanation": "Protocols first, model second. That is the key origin difference."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "encapsulation-headers-and-pdu-names",
+  "order": 1,
+  "prompt": "The PDU at the network layer is called a",
+  "options": [
+   {
+    "key": "a",
+    "label": "Frame"
+   },
+   {
+    "key": "b",
+    "label": "Segment"
+   },
+   {
+    "key": "c",
+    "label": "Packet"
+   },
+   {
+    "key": "d",
+    "label": "Datagram"
+   }
+  ],
+  "answerKey": "c",
+  "explanation": "Segment is transport, frame is data link, packet is network."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "encapsulation-headers-and-pdu-names",
+  "order": 2,
+  "prompt": "Which layer adds a trailer as well as a header?",
+  "options": [
+   {
+    "key": "a",
+    "label": "Transport"
+   },
+   {
+    "key": "b",
+    "label": "Network"
+   },
+   {
+    "key": "c",
+    "label": "Data Link"
+   },
+   {
+    "key": "d",
+    "label": "Application"
+   }
+  ],
+  "answerKey": "c",
+  "explanation": "The FCS trailer, used to detect damage on the link."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "encapsulation-headers-and-pdu-names",
+  "order": 3,
+  "prompt": "A switch forwarding Aisha's frame reads",
+  "options": [
+   {
+    "key": "a",
+    "label": "The whole packet including the HTTP request"
+   },
+   {
+    "key": "b",
+    "label": "Only the frame header"
+   },
+   {
+    "key": "c",
+    "label": "Only the IP header"
+   },
+   {
+    "key": "d",
+    "label": "Only the TCP ports"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "It works at Layer 2, so it reads Layer 2 information only."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "encapsulation-headers-and-pdu-names",
+  "order": 4,
+  "prompt": "Decapsulation happens when data moves",
+  "options": [
+   {
+    "key": "a",
+    "label": "Down the stack at the sender"
+   },
+   {
+    "key": "b",
+    "label": "Up the stack at the receiver"
+   },
+   {
+    "key": "c",
+    "label": "Between two routers"
+   },
+   {
+    "key": "d",
+    "label": "Only when using UDP"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "Each layer strips the header its counterpart added."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "physical-layer-media-signals-and-transmission-modes",
+  "order": 1,
+  "prompt": "A walkie-talkie is an example of",
+  "options": [
+   {
+    "key": "a",
+    "label": "Simplex"
+   },
+   {
+    "key": "b",
+    "label": "Half duplex"
+   },
+   {
+    "key": "c",
+    "label": "Full duplex"
+   },
+   {
+    "key": "d",
+    "label": "Multiplex"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "Both directions, but strictly one at a time."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "physical-layer-media-signals-and-transmission-modes",
+  "order": 2,
+  "prompt": "Which medium carries data as pulses of light?",
+  "options": [
+   {
+    "key": "a",
+    "label": "Twisted pair copper"
+   },
+   {
+    "key": "b",
+    "label": "Coaxial cable"
+   },
+   {
+    "key": "c",
+    "label": "Fibre optic"
+   },
+   {
+    "key": "d",
+    "label": "Radio"
+   }
+  ],
+  "answerKey": "c",
+  "explanation": "Light through glass, which is why it goes so far."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "physical-layer-media-signals-and-transmission-modes",
+  "order": 3,
+  "prompt": "Why must a hub copy data to every port?",
+  "options": [
+   {
+    "key": "a",
+    "label": "It is a cheap design choice"
+   },
+   {
+    "key": "b",
+    "label": "It works at the physical layer and cannot read addresses"
+   },
+   {
+    "key": "c",
+    "label": "It is faster than checking a table"
+   },
+   {
+    "key": "d",
+    "label": "Because copper cable cannot carry addresses"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "To a hub, an address is just more bits."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "physical-layer-media-signals-and-transmission-modes",
+  "order": 4,
+  "prompt": "The physical layer's job is to",
+  "options": [
+   {
+    "key": "a",
+    "label": "Choose the best route across the internet"
+   },
+   {
+    "key": "b",
+    "label": "Turn bits into a signal and back again"
+   },
+   {
+    "key": "c",
+    "label": "Check whether data was damaged"
+   },
+   {
+    "key": "d",
+    "label": "Identify which app should receive the data"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "It moves signals. It never reads meaning."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "framing-and-error-detection",
+  "order": 1,
+  "prompt": "What does Ethernet put in the FCS field?",
+  "options": [
+   {
+    "key": "a",
+    "label": "A parity bit"
+   },
+   {
+    "key": "b",
+    "label": "A CRC result"
+   },
+   {
+    "key": "c",
+    "label": "The destination MAC"
+   },
+   {
+    "key": "d",
+    "label": "The length of the payload"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "FCS holds the CRC remainder."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "framing-and-error-detection",
+  "order": 2,
+  "prompt": "A frame arrives and the CRC check fails. What happens?",
+  "options": [
+   {
+    "key": "a",
+    "label": "The frame is repaired using the FCS"
+   },
+   {
+    "key": "b",
+    "label": "The receiver asks the sender to resend it"
+   },
+   {
+    "key": "c",
+    "label": "The frame is dropped"
+   },
+   {
+    "key": "d",
+    "label": "The frame is passed up with a warning flag"
+   }
+  ],
+  "answerKey": "c",
+  "explanation": "Detect and drop. Nothing more."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "framing-and-error-detection",
+  "order": 3,
+  "prompt": "The main weakness of a single parity bit is",
+  "options": [
+   {
+    "key": "a",
+    "label": "It is expensive to compute"
+   },
+   {
+    "key": "b",
+    "label": "Two flipped bits can cancel out and go unnoticed"
+   },
+   {
+    "key": "c",
+    "label": "It only works on copper"
+   },
+   {
+    "key": "d",
+    "label": "It cannot be used with framing"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "One flip is caught, two flips cancel."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "framing-and-error-detection",
+  "order": 4,
+  "prompt": "Framing exists because",
+  "options": [
+   {
+    "key": "a",
+    "label": "Bits arrive as a continuous stream with no natural boundaries"
+   },
+   {
+    "key": "b",
+    "label": "Frames travel faster than raw bits"
+   },
+   {
+    "key": "c",
+    "label": "Routers require it to choose a path"
+   },
+   {
+    "key": "d",
+    "label": "It encrypts the data"
+   }
+  ],
+  "answerKey": "a",
+  "explanation": "Markers tell the receiver where to cut."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "mac-addresses",
+  "order": 1,
+  "prompt": "How long is a MAC address?",
+  "options": [
+   {
+    "key": "a",
+    "label": "32 bits"
+   },
+   {
+    "key": "b",
+    "label": "48 bits"
+   },
+   {
+    "key": "c",
+    "label": "64 bits"
+   },
+   {
+    "key": "d",
+    "label": "128 bits"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "Six pairs of hex, 8 bits each."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "mac-addresses",
+  "order": 2,
+  "prompt": "What do the first three bytes of a MAC address identify?",
+  "options": [
+   {
+    "key": "a",
+    "label": "The country of the device"
+   },
+   {
+    "key": "b",
+    "label": "The network it is connected to"
+   },
+   {
+    "key": "c",
+    "label": "The manufacturer of the card"
+   },
+   {
+    "key": "d",
+    "label": "The operating system"
+   }
+  ],
+  "answerKey": "c",
+  "explanation": "The OUI, assigned to the manufacturer."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "mac-addresses",
+  "order": 3,
+  "prompt": "Aisha's frame passes through the router towards college.edu. Her MAC address",
+  "options": [
+   {
+    "key": "a",
+    "label": "Travels all the way to the server"
+   },
+   {
+    "key": "b",
+    "label": "Is replaced at the first hop and never leaves the hostel"
+   },
+   {
+    "key": "c",
+    "label": "Is copied into the IP header"
+   },
+   {
+    "key": "d",
+    "label": "Changes to the server's MAC"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "Frames are rebuilt hop by hop. Only IP stays end to end."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "mac-addresses",
+  "order": 4,
+  "prompt": "FF:FF:FF:FF:FF:FF means",
+  "options": [
+   {
+    "key": "a",
+    "label": "An unknown device"
+   },
+   {
+    "key": "b",
+    "label": "A damaged frame"
+   },
+   {
+    "key": "c",
+    "label": "Send to every device on the local network"
+   },
+   {
+    "key": "d",
+    "label": "The router's address"
+   }
+  ],
+  "answerKey": "c",
+  "explanation": "The broadcast address."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "ethernet-and-how-a-switch-learns",
+  "order": 1,
+  "prompt": "A switch builds its MAC address table by reading the",
+  "options": [
+   {
+    "key": "a",
+    "label": "Destination MAC of arriving frames"
+   },
+   {
+    "key": "b",
+    "label": "Source MAC of arriving frames"
+   },
+   {
+    "key": "c",
+    "label": "Destination IP address"
+   },
+   {
+    "key": "d",
+    "label": "FCS trailer"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "Learn from source, decide on destination."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "ethernet-and-how-a-switch-learns",
+  "order": 2,
+  "prompt": "A frame arrives for a MAC address not in the table. The switch",
+  "options": [
+   {
+    "key": "a",
+    "label": "Drops it"
+   },
+   {
+    "key": "b",
+    "label": "Floods it out of all ports except the incoming one"
+   },
+   {
+    "key": "c",
+    "label": "Sends it to the router"
+   },
+   {
+    "key": "d",
+    "label": "Sends an error back to the source"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "Flooding. The reply then teaches it the right port."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "ethernet-and-how-a-switch-learns",
+  "order": 3,
+  "prompt": "What is the standard Ethernet MTU?",
+  "options": [
+   {
+    "key": "a",
+    "label": "46 bytes"
+   },
+   {
+    "key": "b",
+    "label": "512 bytes"
+   },
+   {
+    "key": "c",
+    "label": "1500 bytes"
+   },
+   {
+    "key": "d",
+    "label": "65535 bytes"
+   }
+  ],
+  "answerKey": "c",
+  "explanation": "1500 bytes of payload."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "ethernet-and-how-a-switch-learns",
+  "order": 4,
+  "prompt": "Why do MAC table entries expire after a few minutes?",
+  "options": [
+   {
+    "key": "a",
+    "label": "To save electricity"
+   },
+   {
+    "key": "b",
+    "label": "So a device that moves to another port is relearned"
+   },
+   {
+    "key": "c",
+    "label": "To force devices to re-authenticate"
+   },
+   {
+    "key": "d",
+    "label": "Because MAC addresses change over time"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "Aging keeps the table honest when devices move."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "arp-turning-an-ip-address-into-a-mac-address",
+  "order": 1,
+  "prompt": "An ARP request is sent as a",
+  "options": [
+   {
+    "key": "a",
+    "label": "Unicast to the router"
+   },
+   {
+    "key": "b",
+    "label": "Broadcast to FF:FF:FF:FF:FF:FF"
+   },
+   {
+    "key": "c",
+    "label": "Multicast to all routers"
+   },
+   {
+    "key": "d",
+    "label": "Unicast to the DNS server"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "It has to ask everyone, because it does not know who to ask."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "arp-turning-an-ip-address-into-a-mac-address",
+  "order": 2,
+  "prompt": "Aisha wants to reach 203.0.113.10. She sends an ARP request for",
+  "options": [
+   {
+    "key": "a",
+    "label": "203.0.113.10"
+   },
+   {
+    "key": "b",
+    "label": "192.168.1.57"
+   },
+   {
+    "key": "c",
+    "label": "192.168.1.1"
+   },
+   {
+    "key": "d",
+    "label": "103.21.58.7"
+   }
+  ],
+  "answerKey": "c",
+  "explanation": "The destination is remote, so she needs her gateway's MAC."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "arp-turning-an-ip-address-into-a-mac-address",
+  "order": 3,
+  "prompt": "Who replies to an ARP request?",
+  "options": [
+   {
+    "key": "a",
+    "label": "Every device on the network"
+   },
+   {
+    "key": "b",
+    "label": "Only the device that owns the requested IP"
+   },
+   {
+    "key": "c",
+    "label": "The switch"
+   },
+   {
+    "key": "d",
+    "label": "The DHCP server"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "Everyone hears it, one answers."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "arp-turning-an-ip-address-into-a-mac-address",
+  "order": 4,
+  "prompt": "Why does a device keep an ARP cache?",
+  "options": [
+   {
+    "key": "a",
+    "label": "To store IP addresses it has been assigned"
+   },
+   {
+    "key": "b",
+    "label": "To avoid broadcasting for the same IP over and over"
+   },
+   {
+    "key": "c",
+    "label": "To remember which websites were visited"
+   },
+   {
+    "key": "d",
+    "label": "To detect damaged frames"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "The next hundred packets then need no asking."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "ipv4-addressing-structure-network-and-host-classes",
+  "order": 1,
+  "prompt": "How many bits are in an IPv4 address?",
+  "options": [
+   {
+    "key": "a",
+    "label": "16"
+   },
+   {
+    "key": "b",
+    "label": "32"
+   },
+   {
+    "key": "c",
+    "label": "48"
+   },
+   {
+    "key": "d",
+    "label": "128"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "Four octets of 8 bits."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "ipv4-addressing-structure-network-and-host-classes",
+  "order": 2,
+  "prompt": "Which class does 192.168.1.42 fall in under the old scheme?",
+  "options": [
+   {
+    "key": "a",
+    "label": "Class A"
+   },
+   {
+    "key": "b",
+    "label": "Class B"
+   },
+   {
+    "key": "c",
+    "label": "Class C"
+   },
+   {
+    "key": "d",
+    "label": "Class D"
+   }
+  ],
+  "answerKey": "c",
+  "explanation": "First number 192 falls in 192–223."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "ipv4-addressing-structure-network-and-host-classes",
+  "order": 3,
+  "prompt": "What is 127.0.0.1 used for?",
+  "options": [
+   {
+    "key": "a",
+    "label": "The default gateway"
+   },
+   {
+    "key": "b",
+    "label": "A device talking to itself"
+   },
+   {
+    "key": "c",
+    "label": "Broadcasting to the network"
+   },
+   {
+    "key": "d",
+    "label": "Multicast groups"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "Loopback: never leaves the machine."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "ipv4-addressing-structure-network-and-host-classes",
+  "order": 4,
+  "prompt": "Why do routers care about the network part and not the host part?",
+  "options": [
+   {
+    "key": "a",
+    "label": "The host part is encrypted"
+   },
+   {
+    "key": "b",
+    "label": "So they can store one entry per network instead of one per device"
+   },
+   {
+    "key": "c",
+    "label": "Because the host part changes constantly"
+   },
+   {
+    "key": "d",
+    "label": "Because the host part is only 8 bits"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "One entry per network is what keeps routing tables small enough to work."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "public-vs-private-addresses-and-a-first-look-at-ipv6",
+  "order": 1,
+  "prompt": "Which of these is a private address?",
+  "options": [
+   {
+    "key": "a",
+    "label": "103.21.58.7"
+   },
+   {
+    "key": "b",
+    "label": "172.20.5.4"
+   },
+   {
+    "key": "c",
+    "label": "203.0.113.10"
+   },
+   {
+    "key": "d",
+    "label": "8.8.8.8"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "172.20.x.x sits inside 172.16.0.0/12."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "public-vs-private-addresses-and-a-first-look-at-ipv6",
+  "order": 2,
+  "prompt": "How many bits is an IPv6 address?",
+  "options": [
+   {
+    "key": "a",
+    "label": "32"
+   },
+   {
+    "key": "b",
+    "label": "64"
+   },
+   {
+    "key": "c",
+    "label": "128"
+   },
+   {
+    "key": "d",
+    "label": "256"
+   }
+  ],
+  "answerKey": "c",
+  "explanation": "Four times the length of IPv4."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "public-vs-private-addresses-and-a-first-look-at-ipv6",
+  "order": 3,
+  "prompt": "Why can the same private address exist in thousands of buildings?",
+  "options": [
+   {
+    "key": "a",
+    "label": "The addresses are encrypted"
+   },
+   {
+    "key": "b",
+    "label": "Private addresses are never routed on the internet, so they never meet"
+   },
+   {
+    "key": "c",
+    "label": "Each one is registered with a different ISP"
+   },
+   {
+    "key": "d",
+    "label": "They are only used for Wi-Fi"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "They never appear on the public internet, so there is no clash."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "public-vs-private-addresses-and-a-first-look-at-ipv6",
+  "order": 4,
+  "prompt": "What does :: mean in an IPv6 address?",
+  "options": [
+   {
+    "key": "a",
+    "label": "The end of the address"
+   },
+   {
+    "key": "b",
+    "label": "A separator between network and host"
+   },
+   {
+    "key": "c",
+    "label": "A shortened run of zero groups"
+   },
+   {
+    "key": "d",
+    "label": "A broadcast address"
+   }
+  ],
+  "answerKey": "c",
+  "explanation": "It can be used only once per address."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "subnet-masks-and-cidr",
+  "order": 1,
+  "prompt": "How many usable host addresses does a /26 give?",
+  "options": [
+   {
+    "key": "a",
+    "label": "30"
+   },
+   {
+    "key": "b",
+    "label": "62"
+   },
+   {
+    "key": "c",
+    "label": "64"
+   },
+   {
+    "key": "d",
+    "label": "126"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "6 host bits, 64 addresses, minus 2."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "subnet-masks-and-cidr",
+  "order": 2,
+  "prompt": "Which mask matches /25?",
+  "options": [
+   {
+    "key": "a",
+    "label": "255.255.255.0"
+   },
+   {
+    "key": "b",
+    "label": "255.255.255.128"
+   },
+   {
+    "key": "c",
+    "label": "255.255.255.192"
+   },
+   {
+    "key": "d",
+    "label": "255.255.0.0"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "25 ones: 255.255.255.128."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "subnet-masks-and-cidr",
+  "order": 3,
+  "prompt": "Why subtract 2 when counting usable hosts?",
+  "options": [
+   {
+    "key": "a",
+    "label": "Two addresses are kept for the router"
+   },
+   {
+    "key": "b",
+    "label": "The network address and the broadcast address cannot be used"
+   },
+   {
+    "key": "c",
+    "label": "Two addresses are reserved for DNS"
+   },
+   {
+    "key": "d",
+    "label": "Two are lost to the subnet mask"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "All-zeros and all-ones host parts are reserved."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "subnet-masks-and-cidr",
+  "order": 4,
+  "prompt": "Which is the smaller network?",
+  "options": [
+   {
+    "key": "a",
+    "label": "/16"
+   },
+   {
+    "key": "b",
+    "label": "/20"
+   },
+   {
+    "key": "c",
+    "label": "/24"
+   },
+   {
+    "key": "d",
+    "label": "/28"
+   }
+  ],
+  "answerKey": "d",
+  "explanation": "Bigger prefix, fewer host bits, smaller network."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "subnetting-worked-step-by-step",
+  "order": 1,
+  "prompt": "To create 8 subnets, how many bits must you borrow?",
+  "options": [
+   {
+    "key": "a",
+    "label": "2"
+   },
+   {
+    "key": "b",
+    "label": "3"
+   },
+   {
+    "key": "c",
+    "label": "4"
+   },
+   {
+    "key": "d",
+    "label": "8"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "2³=8."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "subnetting-worked-step-by-step",
+  "order": 2,
+  "prompt": "For a /26, what is the block size?",
+  "options": [
+   {
+    "key": "a",
+    "label": "32"
+   },
+   {
+    "key": "b",
+    "label": "62"
+   },
+   {
+    "key": "c",
+    "label": "64"
+   },
+   {
+    "key": "d",
+    "label": "128"
+   }
+  ],
+  "answerKey": "c",
+  "explanation": "256 − 192 = 64."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "subnetting-worked-step-by-step",
+  "order": 3,
+  "prompt": "Which address is the broadcast address of 192.168.1.64/26?",
+  "options": [
+   {
+    "key": "a",
+    "label": "192.168.1.126"
+   },
+   {
+    "key": "b",
+    "label": "192.168.1.127"
+   },
+   {
+    "key": "c",
+    "label": "192.168.1.128"
+   },
+   {
+    "key": "d",
+    "label": "192.168.1.255"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "One below the next network address, .128."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "subnetting-worked-step-by-step",
+  "order": 4,
+  "prompt": "A floor needs 100 hosts. Which prefix fits with the least waste?",
+  "options": [
+   {
+    "key": "a",
+    "label": "/24"
+   },
+   {
+    "key": "b",
+    "label": "/25"
+   },
+   {
+    "key": "c",
+    "label": "/26"
+   },
+   {
+    "key": "d",
+    "label": "/27"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "/25 gives 126 usable. /26 gives only 62, which is too few."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "nat",
+  "order": 1,
+  "prompt": "What does the router rewrite when Aisha's packet leaves?",
+  "options": [
+   {
+    "key": "a",
+    "label": "The destination address"
+   },
+   {
+    "key": "b",
+    "label": "The source address and port"
+   },
+   {
+    "key": "c",
+    "label": "Both source and destination"
+   },
+   {
+    "key": "d",
+    "label": "The MAC address only"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "The destination must stay intact or the packet cannot arrive."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "nat",
+  "order": 2,
+  "prompt": "How does the router know which laptop a reply belongs to?",
+  "options": [
+   {
+    "key": "a",
+    "label": "By the MAC address in the reply"
+   },
+   {
+    "key": "b",
+    "label": "By the outside port number recorded in the NAT table"
+   },
+   {
+    "key": "c",
+    "label": "By asking every device"
+   },
+   {
+    "key": "d",
+    "label": "By the website's domain name"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "The port is the unique label for each conversation."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "nat",
+  "order": 3,
+  "prompt": "NAT exists mainly because",
+  "options": [
+   {
+    "key": "a",
+    "label": "Private addresses are more secure"
+   },
+   {
+    "key": "b",
+    "label": "IPv4 addresses ran out"
+   },
+   {
+    "key": "c",
+    "label": "Routers cannot read private addresses"
+   },
+   {
+    "key": "d",
+    "label": "It makes browsing faster"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "Address exhaustion. IPv6 is the real fix."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "nat",
+  "order": 4,
+  "prompt": "Which statement is correct?",
+  "options": [
+   {
+    "key": "a",
+    "label": "NAT inspects traffic and blocks threats"
+   },
+   {
+    "key": "b",
+    "label": "NAT is another name for a firewall"
+   },
+   {
+    "key": "c",
+    "label": "NAT blocks unsolicited incoming traffic as a side effect, but is not a firewall"
+   },
+   {
+    "key": "d",
+    "label": "NAT encrypts the packet"
+   }
+  ],
+  "answerKey": "c",
+  "explanation": "Useful side effect, not a security device."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "routing-the-routing-table-and-how-a-router-decides",
+  "order": 1,
+  "prompt": "What does 0.0.0.0/0 mean in a routing table?",
+  "options": [
+   {
+    "key": "a",
+    "label": "An invalid entry"
+   },
+   {
+    "key": "b",
+    "label": "The loopback network"
+   },
+   {
+    "key": "c",
+    "label": "The default route, matching everything"
+   },
+   {
+    "key": "d",
+    "label": "A directly connected network"
+   }
+  ],
+  "answerKey": "c",
+  "explanation": "Zero network bits, so every address falls inside it."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "routing-the-routing-table-and-how-a-router-decides",
+  "order": 2,
+  "prompt": "Two entries match a destination. Which one is used?",
+  "options": [
+   {
+    "key": "a",
+    "label": "The first one in the list"
+   },
+   {
+    "key": "b",
+    "label": "The one with the longer prefix"
+   },
+   {
+    "key": "c",
+    "label": "The one with the shorter prefix"
+   },
+   {
+    "key": "d",
+    "label": "The one with the lower next hop address"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "Longest prefix match: most specific wins."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "routing-the-routing-table-and-how-a-router-decides",
+  "order": 3,
+  "prompt": "How much of the path does a router know?",
+  "options": [
+   {
+    "key": "a",
+    "label": "The complete route to the destination"
+   },
+   {
+    "key": "b",
+    "label": "Only the next hop"
+   },
+   {
+    "key": "c",
+    "label": "The first three hops"
+   },
+   {
+    "key": "d",
+    "label": "It asks the destination for the route"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "The path emerges one decision at a time."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "routing-the-routing-table-and-how-a-router-decides",
+  "order": 4,
+  "prompt": "Which protocol is used for routing between different networks on the internet?",
+  "options": [
+   {
+    "key": "a",
+    "label": "ARP"
+   },
+   {
+    "key": "b",
+    "label": "OSPF"
+   },
+   {
+    "key": "c",
+    "label": "BGP"
+   },
+   {
+    "key": "d",
+    "label": "DHCP"
+   }
+  ],
+  "answerKey": "c",
+  "explanation": "OSPF works inside one network, BGP between them."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "ports-and-sockets",
+  "order": 1,
+  "prompt": "How many bits is a port number?",
+  "options": [
+   {
+    "key": "a",
+    "label": "8"
+   },
+   {
+    "key": "b",
+    "label": "16"
+   },
+   {
+    "key": "c",
+    "label": "32"
+   },
+   {
+    "key": "d",
+    "label": "48"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "16 bits, so 0 to 65535."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "ports-and-sockets",
+  "order": 2,
+  "prompt": "Which port does HTTPS use?",
+  "options": [
+   {
+    "key": "a",
+    "label": "22"
+   },
+   {
+    "key": "b",
+    "label": "53"
+   },
+   {
+    "key": "c",
+    "label": "80"
+   },
+   {
+    "key": "d",
+    "label": "443"
+   }
+  ],
+  "answerKey": "d",
+  "explanation": "80 is plain HTTP, 443 is HTTPS."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "ports-and-sockets",
+  "order": 3,
+  "prompt": "A socket is",
+  "options": [
+   {
+    "key": "a",
+    "label": "A physical connector on the network card"
+   },
+   {
+    "key": "b",
+    "label": "An IP address and port together"
+   },
+   {
+    "key": "c",
+    "label": "Another name for a MAC address"
+   },
+   {
+    "key": "d",
+    "label": "The cable between two devices"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "Nothing physical is involved."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "ports-and-sockets",
+  "order": 4,
+  "prompt": "Aisha opens three tabs to the same website. What keeps the three connections apart?",
+  "options": [
+   {
+    "key": "a",
+    "label": "Three different destination ports"
+   },
+   {
+    "key": "b",
+    "label": "Three different IP addresses"
+   },
+   {
+    "key": "c",
+    "label": "Three different source ports on her laptop"
+   },
+   {
+    "key": "d",
+    "label": "Three separate network cards"
+   }
+  ],
+  "answerKey": "c",
+  "explanation": "Same destination socket, different source ports."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "tcp-vs-udp",
+  "order": 1,
+  "prompt": "How large is the UDP header?",
+  "options": [
+   {
+    "key": "a",
+    "label": "8 bytes"
+   },
+   {
+    "key": "b",
+    "label": "20 bytes"
+   },
+   {
+    "key": "c",
+    "label": "32 bytes"
+   },
+   {
+    "key": "d",
+    "label": "40 bytes"
+   }
+  ],
+  "answerKey": "a",
+  "explanation": "Four fields only, 8 bytes total."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "tcp-vs-udp",
+  "order": 2,
+  "prompt": "Which protocol does a live video call normally use?",
+  "options": [
+   {
+    "key": "a",
+    "label": "TCP, so no frame is ever lost"
+   },
+   {
+    "key": "b",
+    "label": "UDP, because a late frame is useless"
+   },
+   {
+    "key": "c",
+    "label": "Both at the same time"
+   },
+   {
+    "key": "d",
+    "label": "Neither, it uses IP directly"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "Waiting for a resend would stall the call."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "tcp-vs-udp",
+  "order": 3,
+  "prompt": "\"UDP is unreliable\" means",
+  "options": [
+   {
+    "key": "a",
+    "label": "It frequently fails"
+   },
+   {
+    "key": "b",
+    "label": "It makes no guarantee about delivery or order"
+   },
+   {
+    "key": "c",
+    "label": "It only works on Wi-Fi"
+   },
+   {
+    "key": "d",
+    "label": "It cannot be used in production"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "It is a promise level, not a quality level."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "tcp-vs-udp",
+  "order": 4,
+  "prompt": "Which of these is a TCP feature that UDP does not have?",
+  "options": [
+   {
+    "key": "a",
+    "label": "Port numbers"
+   },
+   {
+    "key": "b",
+    "label": "A checksum"
+   },
+   {
+    "key": "c",
+    "label": "Retransmission of lost data"
+   },
+   {
+    "key": "d",
+    "label": "Carrying data over IP"
+   }
+  ],
+  "answerKey": "c",
+  "explanation": "Both have ports and checksums; only TCP resends."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "the-three-way-handshake-and-connection-teardown",
+  "order": 1,
+  "prompt": "How many segments make up the three-way handshake?",
+  "options": [
+   {
+    "key": "a",
+    "label": "2"
+   },
+   {
+    "key": "b",
+    "label": "3"
+   },
+   {
+    "key": "c",
+    "label": "4"
+   },
+   {
+    "key": "d",
+    "label": "6"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "SYN, SYN+ACK, ACK."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "the-three-way-handshake-and-connection-teardown",
+  "order": 2,
+  "prompt": "The server's reply in the handshake contains",
+  "options": [
+   {
+    "key": "a",
+    "label": "Only SYN"
+   },
+   {
+    "key": "b",
+    "label": "Only ACK"
+   },
+   {
+    "key": "c",
+    "label": "SYN and ACK in one segment"
+   },
+   {
+    "key": "d",
+    "label": "SYN, ACK and the requested page"
+   }
+  ],
+  "answerKey": "c",
+  "explanation": "Two flags, one segment. That is why it is three-way."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "the-three-way-handshake-and-connection-teardown",
+  "order": 3,
+  "prompt": "If a client sends seq=100, what will the server's ack be?",
+  "options": [
+   {
+    "key": "a",
+    "label": "99"
+   },
+   {
+    "key": "b",
+    "label": "100"
+   },
+   {
+    "key": "c",
+    "label": "101"
+   },
+   {
+    "key": "d",
+    "label": "500"
+   }
+  ],
+  "answerKey": "c",
+  "explanation": "ACK names the next byte expected."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "the-three-way-handshake-and-connection-teardown",
+  "order": 4,
+  "prompt": "Why does closing a TCP connection take four steps?",
+  "options": [
+   {
+    "key": "a",
+    "label": "Because closing is less reliable than opening"
+   },
+   {
+    "key": "b",
+    "label": "Because each direction is closed independently"
+   },
+   {
+    "key": "c",
+    "label": "Because the server must contact the router first"
+   },
+   {
+    "key": "d",
+    "label": "Because FIN segments are often lost"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "Full duplex means two streams to shut down."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "how-tcp-stays-reliable",
+  "order": 1,
+  "prompt": "What does ACK=7 mean?",
+  "options": [
+   {
+    "key": "a",
+    "label": "Byte 7 was lost"
+   },
+   {
+    "key": "b",
+    "label": "Everything before byte 7 arrived; send byte 7 next"
+   },
+   {
+    "key": "c",
+    "label": "Exactly 7 bytes arrived"
+   },
+   {
+    "key": "d",
+    "label": "Resend byte 7"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "ACK names the next expected byte."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "how-tcp-stays-reliable",
+  "order": 2,
+  "prompt": "Segments 1, 2 and 4 arrive but 3 is lost. What does the receiver send?",
+  "options": [
+   {
+    "key": "a",
+    "label": "ACK=5"
+   },
+   {
+    "key": "b",
+    "label": "ACK=4"
+   },
+   {
+    "key": "c",
+    "label": "ACK=3, repeatedly"
+   },
+   {
+    "key": "d",
+    "label": "A \"resend 3\" request"
+   }
+  ],
+  "answerKey": "c",
+  "explanation": "It cannot move past the gap."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "how-tcp-stays-reliable",
+  "order": 3,
+  "prompt": "What triggers fast retransmit?",
+  "options": [
+   {
+    "key": "a",
+    "label": "The retransmission timer expiring"
+   },
+   {
+    "key": "b",
+    "label": "Three duplicate ACKs"
+   },
+   {
+    "key": "c",
+    "label": "A router reporting congestion"
+   },
+   {
+    "key": "d",
+    "label": "The receiver's window reaching zero"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "Duplicates are a strong hint, faster than the timer."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "how-tcp-stays-reliable",
+  "order": 4,
+  "prompt": "Why does reliability sit at the transport layer rather than the data link layer?",
+  "options": [
+   {
+    "key": "a",
+    "label": "Data link cannot detect errors at all"
+   },
+   {
+    "key": "b",
+    "label": "Data link detects damage but only drops the frame; nobody below notices loss"
+   },
+   {
+    "key": "c",
+    "label": "Routers refuse to forward damaged packets"
+   },
+   {
+    "key": "d",
+    "label": "It is faster to check at the top"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "Detection and recovery are separate jobs on separate layers."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "flow-control-and-congestion-control",
+  "order": 1,
+  "prompt": "Flow control protects",
+  "options": [
+   {
+    "key": "a",
+    "label": "The network"
+   },
+   {
+    "key": "b",
+    "label": "The receiver"
+   },
+   {
+    "key": "c",
+    "label": "The router"
+   },
+   {
+    "key": "d",
+    "label": "The sender"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "The receiver's buffer is what would overflow."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "flow-control-and-congestion-control",
+  "order": 2,
+  "prompt": "How does a TCP sender learn that the network is congested?",
+  "options": [
+   {
+    "key": "a",
+    "label": "The router sends a congestion message"
+   },
+   {
+    "key": "b",
+    "label": "The receiver advertises a zero window"
+   },
+   {
+    "key": "c",
+    "label": "It infers it from lost packets"
+   },
+   {
+    "key": "d",
+    "label": "The DNS server reports it"
+   }
+  ],
+  "answerKey": "c",
+  "explanation": "Loss is the only signal it gets."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "flow-control-and-congestion-control",
+  "order": 3,
+  "prompt": "What does AIMD stand for in behaviour terms?",
+  "options": [
+   {
+    "key": "a",
+    "label": "Grow slowly, cut sharply"
+   },
+   {
+    "key": "b",
+    "label": "Grow sharply, cut slowly"
+   },
+   {
+    "key": "c",
+    "label": "Always send at maximum speed"
+   },
+   {
+    "key": "d",
+    "label": "Alternate between two fixed speeds"
+   }
+  ],
+  "answerKey": "a",
+  "explanation": "Additive increase, multiplicative decrease."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "flow-control-and-congestion-control",
+  "order": 4,
+  "prompt": "A sender's congestion window allows 10 segments and the receiver advertises room for 4. How many does it send?",
+  "options": [
+   {
+    "key": "a",
+    "label": "14"
+   },
+   {
+    "key": "b",
+    "label": "10"
+   },
+   {
+    "key": "c",
+    "label": "4"
+   },
+   {
+    "key": "d",
+    "label": "7"
+   }
+  ],
+  "answerKey": "c",
+  "explanation": "Always the smaller of the two windows."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "dns",
+  "order": 1,
+  "prompt": "Which port and protocol does a normal DNS lookup use?",
+  "options": [
+   {
+    "key": "a",
+    "label": "TCP 53"
+   },
+   {
+    "key": "b",
+    "label": "UDP 53"
+   },
+   {
+    "key": "c",
+    "label": "UDP 67"
+   },
+   {
+    "key": "d",
+    "label": "TCP 443"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "Small query, small reply. TCP is only for large answers and zone transfers."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "dns",
+  "order": 2,
+  "prompt": "Which server actually owns the answer for college.edu?",
+  "options": [
+   {
+    "key": "a",
+    "label": "The root server"
+   },
+   {
+    "key": "b",
+    "label": "The .edu TLD server"
+   },
+   {
+    "key": "c",
+    "label": "The authoritative server for the domain"
+   },
+   {
+    "key": "d",
+    "label": "The resolver at 8.8.8.8"
+   }
+  ],
+  "answerKey": "c",
+  "explanation": "Root and TLD only point onwards."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "dns",
+  "order": 3,
+  "prompt": "Reading results.college.edu, which part is the TLD?",
+  "options": [
+   {
+    "key": "a",
+    "label": "results"
+   },
+   {
+    "key": "b",
+    "label": "college"
+   },
+   {
+    "key": "c",
+    "label": "edu"
+   },
+   {
+    "key": "d",
+    "label": "The whole name"
+   }
+  ],
+  "answerKey": "c",
+  "explanation": "Read right to left; edu is the top level."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "dns",
+  "order": 4,
+  "prompt": "After DNS returns 203.0.113.10, what does the browser do next?",
+  "options": [
+   {
+    "key": "a",
+    "label": "Ask the DNS server for the page"
+   },
+   {
+    "key": "b",
+    "label": "Open a new TCP connection to 203.0.113.10"
+   },
+   {
+    "key": "c",
+    "label": "Ask the root server for the page"
+   },
+   {
+    "key": "d",
+    "label": "Broadcast an ARP request for 203.0.113.10"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "DNS gave the number and stepped out. And she ARPs for the gateway, not the server."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "dhcp",
+  "order": 1,
+  "prompt": "What does DORA stand for?",
+  "options": [
+   {
+    "key": "a",
+    "label": "Detect, Open, Reply, Assign"
+   },
+   {
+    "key": "b",
+    "label": "Discover, Offer, Request, Acknowledge"
+   },
+   {
+    "key": "c",
+    "label": "Direct, Order, Route, Accept"
+   },
+   {
+    "key": "d",
+    "label": "Deliver, Obtain, Renew, Allocate"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "Discover, Offer, Request, Acknowledge."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "dhcp",
+  "order": 2,
+  "prompt": "Why is the first DHCP message a broadcast?",
+  "options": [
+   {
+    "key": "a",
+    "label": "Broadcasts are faster"
+   },
+   {
+    "key": "b",
+    "label": "The client has no IP address yet, so it cannot address anyone"
+   },
+   {
+    "key": "c",
+    "label": "DHCP servers only accept broadcasts"
+   },
+   {
+    "key": "d",
+    "label": "To reach servers on other networks"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "No address means no way to address anyone."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "dhcp",
+  "order": 3,
+  "prompt": "Besides an IP address, what else does a DHCP lease normally include?",
+  "options": [
+   {
+    "key": "a",
+    "label": "The MAC address of the router"
+   },
+   {
+    "key": "b",
+    "label": "The password for the Wi-Fi"
+   },
+   {
+    "key": "c",
+    "label": "Subnet mask, default gateway and DNS server"
+   },
+   {
+    "key": "d",
+    "label": "The routing table"
+   }
+  ],
+  "answerKey": "c",
+  "explanation": "Four settings, not one."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "dhcp",
+  "order": 4,
+  "prompt": "Why does the client send a REQUEST after receiving an OFFER?",
+  "options": [
+   {
+    "key": "a",
+    "label": "The offer is not valid until repeated"
+   },
+   {
+    "key": "b",
+    "label": "To confirm which offer it accepted, when several servers replied"
+   },
+   {
+    "key": "c",
+    "label": "To ask for a longer lease"
+   },
+   {
+    "key": "d",
+    "label": "To check the address is not already in use"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "So unaccepted offers go back into the pool."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "http-and-https",
+  "order": 1,
+  "prompt": "What does a 404 status mean?",
+  "options": [
+   {
+    "key": "a",
+    "label": "The server crashed"
+   },
+   {
+    "key": "b",
+    "label": "The requested resource was not found"
+   },
+   {
+    "key": "c",
+    "label": "The page moved permanently"
+   },
+   {
+    "key": "d",
+    "label": "The request succeeded"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "4xx is the client's mistake; 5xx is the server's."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "http-and-https",
+  "order": 2,
+  "prompt": "HTTPS differs from HTTP by",
+  "options": [
+   {
+    "key": "a",
+    "label": "Using a completely different set of methods"
+   },
+   {
+    "key": "b",
+    "label": "Running the same protocol inside TLS, on port 443"
+   },
+   {
+    "key": "c",
+    "label": "Replacing TCP with UDP"
+   },
+   {
+    "key": "d",
+    "label": "Removing status codes"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "Same letters, sealed envelope."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "http-and-https",
+  "order": 3,
+  "prompt": "\"HTTP is stateless\" means",
+  "options": [
+   {
+    "key": "a",
+    "label": "It cannot carry data"
+   },
+   {
+    "key": "b",
+    "label": "The server keeps no memory of previous requests"
+   },
+   {
+    "key": "c",
+    "label": "It only works on one network"
+   },
+   {
+    "key": "d",
+    "label": "It has no status codes"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "Which is exactly why cookies exist."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "http-and-https",
+  "order": 4,
+  "prompt": "With HTTPS, what can a router along the path still see?",
+  "options": [
+   {
+    "key": "a",
+    "label": "The full URL Aisha requested"
+   },
+   {
+    "key": "b",
+    "label": "The page contents"
+   },
+   {
+    "key": "c",
+    "label": "The source and destination IP addresses"
+   },
+   {
+    "key": "d",
+    "label": "Her login password"
+   }
+  ],
+  "answerKey": "c",
+  "explanation": "The addresses are on the outside of the envelope."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "full-trace-end-to-end",
+  "order": 1,
+  "prompt": "In the correct order, which comes first?",
+  "options": [
+   {
+    "key": "a",
+    "label": "TCP handshake"
+   },
+   {
+    "key": "b",
+    "label": "DNS lookup"
+   },
+   {
+    "key": "c",
+    "label": "HTTP GET request"
+   },
+   {
+    "key": "d",
+    "label": "TLS handshake"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "You cannot connect to a name. The address comes first."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "full-trace-end-to-end",
+  "order": 2,
+  "prompt": "As the packet crosses five routers, what changes at each hop?",
+  "options": [
+   {
+    "key": "a",
+    "label": "The source and destination IP addresses"
+   },
+   {
+    "key": "b",
+    "label": "The source and destination MAC addresses"
+   },
+   {
+    "key": "c",
+    "label": "The port numbers"
+   },
+   {
+    "key": "d",
+    "label": "Nothing changes"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "New frame every hop; IP header untouched."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "full-trace-end-to-end",
+  "order": 3,
+  "prompt": "Aisha's laptop sends an ARP request for which address?",
+  "options": [
+   {
+    "key": "a",
+    "label": "203.0.113.10"
+   },
+   {
+    "key": "b",
+    "label": "8.8.8.8"
+   },
+   {
+    "key": "c",
+    "label": "192.168.1.1"
+   },
+   {
+    "key": "d",
+    "label": "103.21.58.7"
+   }
+  ],
+  "answerKey": "c",
+  "explanation": "The gateway, because the destination is remote."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "full-trace-end-to-end",
+  "order": 4,
+  "prompt": "Which stage assigns her the default gateway address in the first place?",
+  "options": [
+   {
+    "key": "a",
+    "label": "DNS"
+   },
+   {
+    "key": "b",
+    "label": "ARP"
+   },
+   {
+    "key": "c",
+    "label": "DHCP"
+   },
+   {
+    "key": "d",
+    "label": "NAT"
+   }
+  ],
+  "answerKey": "c",
+  "explanation": "It is one of the four settings in the lease."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "wi-fi-basics",
+  "order": 1,
+  "prompt": "What does SSID mean?",
+  "options": [
+   {
+    "key": "a",
+    "label": "The password of a network"
+   },
+   {
+    "key": "b",
+    "label": "The name a wireless network advertises"
+   },
+   {
+    "key": "c",
+    "label": "The encryption standard in use"
+   },
+   {
+    "key": "d",
+    "label": "The MAC address of the access point"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "The advertised network name."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "wi-fi-basics",
+  "order": 2,
+  "prompt": "Why does Wi-Fi use collision avoidance rather than detection?",
+  "options": [
+   {
+    "key": "a",
+    "label": "Avoidance is faster"
+   },
+   {
+    "key": "b",
+    "label": "A radio cannot hear other signals while it is transmitting"
+   },
+   {
+    "key": "c",
+    "label": "Collisions never happen on radio"
+   },
+   {
+    "key": "d",
+    "label": "Detection only works with IPv6"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "Its own signal drowns out everything else."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "wi-fi-basics",
+  "order": 3,
+  "prompt": "Compared with 2.4 GHz, the 5 GHz band is",
+  "options": [
+   {
+    "key": "a",
+    "label": "Slower but reaches further"
+   },
+   {
+    "key": "b",
+    "label": "Faster but reaches less far"
+   },
+   {
+    "key": "c",
+    "label": "Faster and reaches further"
+   },
+   {
+    "key": "d",
+    "label": "Identical, just a different label"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "Speed and reach trade off in radio."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "wi-fi-basics",
+  "order": 4,
+  "prompt": "Two access points near each other on the same channel will",
+  "options": [
+   {
+    "key": "a",
+    "label": "Merge into one network"
+   },
+   {
+    "key": "b",
+    "label": "Interfere with each other"
+   },
+   {
+    "key": "c",
+    "label": "Double the available speed"
+   },
+   {
+    "key": "d",
+    "label": "Automatically switch bands"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "A channel is a shared slot."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "common-attacks",
+  "order": 1,
+  "prompt": "Spoofing is possible because",
+  "options": [
+   {
+    "key": "a",
+    "label": "Routers are badly configured"
+   },
+   {
+    "key": "b",
+    "label": "Nothing in the header verifies the source address"
+   },
+   {
+    "key": "c",
+    "label": "Encryption is too slow"
+   },
+   {
+    "key": "d",
+    "label": "Switches flood unknown addresses"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "The sender simply writes the field."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "common-attacks",
+  "order": 2,
+  "prompt": "A DDoS attack aims to",
+  "options": [
+   {
+    "key": "a",
+    "label": "Steal data from a server"
+   },
+   {
+    "key": "b",
+    "label": "Modify traffic in transit"
+   },
+   {
+    "key": "c",
+    "label": "Overwhelm a server so real users cannot be served"
+   },
+   {
+    "key": "d",
+    "label": "Read passwords from packets"
+   }
+  ],
+  "answerKey": "c",
+  "explanation": "Exhaustion, not intrusion."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "common-attacks",
+  "order": 3,
+  "prompt": "What defeats a man-in-the-middle attack on a website?",
+  "options": [
+   {
+    "key": "a",
+    "label": "A stronger Wi-Fi password"
+   },
+   {
+    "key": "b",
+    "label": "A certificate that the attacker cannot produce"
+   },
+   {
+    "key": "c",
+    "label": "Using UDP instead of TCP"
+   },
+   {
+    "key": "d",
+    "label": "A larger subnet mask"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "Identity is the thing they cannot fake."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "common-attacks",
+  "order": 4,
+  "prompt": "Which attack does encryption not protect against?",
+  "options": [
+   {
+    "key": "a",
+    "label": "Sniffing"
+   },
+   {
+    "key": "b",
+    "label": "Reading traffic in a MITM attack"
+   },
+   {
+    "key": "c",
+    "label": "DDoS"
+   },
+   {
+    "key": "d",
+    "label": "Capturing packets on open Wi-Fi"
+   }
+  ],
+  "answerKey": "c",
+  "explanation": "Encrypted floods are still floods."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "firewall-vpn-and-proxy",
+  "order": 1,
+  "prompt": "A stateful firewall differs from a simple one because it",
+  "options": [
+   {
+    "key": "a",
+    "label": "Encrypts traffic as well as filtering it"
+   },
+   {
+    "key": "b",
+    "label": "Tracks existing connections and allows their replies"
+   },
+   {
+    "key": "c",
+    "label": "Works only on wireless networks"
+   },
+   {
+    "key": "d",
+    "label": "Replaces the router"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "It remembers who started the conversation."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "firewall-vpn-and-proxy",
+  "order": 2,
+  "prompt": "With a VPN in use, what does the hostel network see?",
+  "options": [
+   {
+    "key": "a",
+    "label": "The full URL Aisha requested"
+   },
+   {
+    "key": "b",
+    "label": "Encrypted traffic to one address"
+   },
+   {
+    "key": "c",
+    "label": "Nothing at all"
+   },
+   {
+    "key": "d",
+    "label": "The website's certificate"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "Destination and content are inside the tunnel."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "firewall-vpn-and-proxy",
+  "order": 3,
+  "prompt": "The main difference between a proxy and a VPN is",
+  "options": [
+   {
+    "key": "a",
+    "label": "A proxy is usually per-application and often unencrypted"
+   },
+   {
+    "key": "b",
+    "label": "A proxy is faster in every case"
+   },
+   {
+    "key": "c",
+    "label": "A VPN cannot hide your IP address"
+   },
+   {
+    "key": "d",
+    "label": "There is no difference"
+   }
+  ],
+  "answerKey": "a",
+  "explanation": "VPN covers the device, proxy usually one app."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "firewall-vpn-and-proxy",
+  "order": 4,
+  "prompt": "Which statement about VPNs is accurate?",
+  "options": [
+   {
+    "key": "a",
+    "label": "They make you completely anonymous"
+   },
+   {
+    "key": "b",
+    "label": "They shift who can see your traffic, from your network to the VPN provider"
+   },
+   {
+    "key": "c",
+    "label": "They prevent websites from setting cookies"
+   },
+   {
+    "key": "d",
+    "label": "They remove the need for HTTPS"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "Trust moves. It does not disappear."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "encryption-basics-and-certificates",
+  "order": 1,
+  "prompt": "Symmetric encryption's main weakness is",
+  "options": [
+   {
+    "key": "a",
+    "label": "It is very slow"
+   },
+   {
+    "key": "b",
+    "label": "Sharing the key securely in the first place"
+   },
+   {
+    "key": "c",
+    "label": "It cannot encrypt large files"
+   },
+   {
+    "key": "d",
+    "label": "It needs a certificate authority"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "Which is exactly what asymmetric solves."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "encryption-basics-and-certificates",
+  "order": 2,
+  "prompt": "In asymmetric encryption, what may be shared freely?",
+  "options": [
+   {
+    "key": "a",
+    "label": "The private key"
+   },
+   {
+    "key": "b",
+    "label": "The public key"
+   },
+   {
+    "key": "c",
+    "label": "Both keys"
+   },
+   {
+    "key": "d",
+    "label": "Neither key"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "Only the private key must stay secret."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "encryption-basics-and-certificates",
+  "order": 3,
+  "prompt": "What does a certificate prove?",
+  "options": [
+   {
+    "key": "a",
+    "label": "That the website is trustworthy"
+   },
+   {
+    "key": "b",
+    "label": "That this public key belongs to this domain, according to a trusted CA"
+   },
+   {
+    "key": "c",
+    "label": "That the connection uses symmetric encryption"
+   },
+   {
+    "key": "d",
+    "label": "That the server is physically secure"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "Identity of the domain, nothing about its intentions."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "encryption-basics-and-certificates",
+  "order": 4,
+  "prompt": "Why does HTTPS use both kinds of encryption?",
+  "options": [
+   {
+    "key": "a",
+    "label": "For extra layers of secrecy"
+   },
+   {
+    "key": "b",
+    "label": "Asymmetric agrees the key, symmetric is fast enough for the data"
+   },
+   {
+    "key": "c",
+    "label": "Symmetric only works on port 443"
+   },
+   {
+    "key": "d",
+    "label": "Because certificates require both"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "Slow and safe to start, fast to continue."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "the-master-answer",
+  "order": 1,
+  "prompt": "Which beat do most candidates skip entirely?",
+  "options": [
+   {
+    "key": "a",
+    "label": "DNS resolution"
+   },
+   {
+    "key": "b",
+    "label": "Getting an address via DHCP"
+   },
+   {
+    "key": "c",
+    "label": "The TCP handshake"
+   },
+   {
+    "key": "d",
+    "label": "Rendering the page"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "Most start at DNS. Beat 1 is free marks."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "the-master-answer",
+  "order": 2,
+  "prompt": "You have 45 seconds instead of 90. What should you do?",
+  "options": [
+   {
+    "key": "a",
+    "label": "Cover the first three beats in full detail"
+   },
+   {
+    "key": "b",
+    "label": "Cover all six beats at half the depth"
+   },
+   {
+    "key": "c",
+    "label": "Only explain DNS, since it is most important"
+   },
+   {
+    "key": "d",
+    "label": "Ask for more time"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "Depth is negotiable, order and completeness are not."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "the-master-answer",
+  "order": 3,
+  "prompt": "In the answer, when does ARP happen?",
+  "options": [
+   {
+    "key": "a",
+    "label": "Before DNS"
+   },
+   {
+    "key": "b",
+    "label": "After the mask check shows the destination is remote"
+   },
+   {
+    "key": "c",
+    "label": "During the TCP handshake"
+   },
+   {
+    "key": "d",
+    "label": "Only if HTTPS is used"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "She ARPs for the gateway, not the server."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "the-master-answer",
+  "order": 4,
+  "prompt": "What changes at every hop across the internet?",
+  "options": [
+   {
+    "key": "a",
+    "label": "The destination IP address"
+   },
+   {
+    "key": "b",
+    "label": "The destination port"
+   },
+   {
+    "key": "c",
+    "label": "The source and destination MAC addresses"
+   },
+   {
+    "key": "d",
+    "label": "The sequence numbers"
+   }
+  ],
+  "answerKey": "c",
+  "explanation": "New frame each hop; the IP header is untouched."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "rapid-fire-and-the-confusion-table",
+  "order": 1,
+  "prompt": "Which ports does DHCP use?",
+  "options": [
+   {
+    "key": "a",
+    "label": "53 and 54"
+   },
+   {
+    "key": "b",
+    "label": "67 and 68"
+   },
+   {
+    "key": "c",
+    "label": "80 and 443"
+   },
+   {
+    "key": "d",
+    "label": "20 and 21"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "67 server side, 68 client side."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "rapid-fire-and-the-confusion-table",
+  "order": 2,
+  "prompt": "What is the PDU at the data link layer?",
+  "options": [
+   {
+    "key": "a",
+    "label": "Segment"
+   },
+   {
+    "key": "b",
+    "label": "Packet"
+   },
+   {
+    "key": "c",
+    "label": "Frame"
+   },
+   {
+    "key": "d",
+    "label": "Bit"
+   }
+  ],
+  "answerKey": "c",
+  "explanation": "Segment is transport, packet is network, frame is data link."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "rapid-fire-and-the-confusion-table",
+  "order": 3,
+  "prompt": "How many usable hosts does a /26 provide?",
+  "options": [
+   {
+    "key": "a",
+    "label": "30"
+   },
+   {
+    "key": "b",
+    "label": "62"
+   },
+   {
+    "key": "c",
+    "label": "64"
+   },
+   {
+    "key": "d",
+    "label": "126"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "6 host bits, 64 addresses, minus 2."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "rapid-fire-and-the-confusion-table",
+  "order": 4,
+  "prompt": "Asked \"which port is HTTPS?\", the best answer is",
+  "options": [
+   {
+    "key": "a",
+    "label": "\"443, though it can be configured differently on some servers\""
+   },
+   {
+    "key": "b",
+    "label": "\"443\""
+   },
+   {
+    "key": "c",
+    "label": "\"I believe it is 443, similar to HTTP's 80\""
+   },
+   {
+    "key": "d",
+    "label": "\"Either 80 or 443 depending on encryption\""
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "Short question, short answer. Caveats read as doubt."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "mock-drill-and-self-check",
+  "order": 1,
+  "prompt": "Why does Round 2 ask you to solve subnetting out loud?",
+  "options": [
+   {
+    "key": "a",
+    "label": "It is faster than working silently"
+   },
+   {
+    "key": "b",
+    "label": "Interviewers score the method, and silence shows them nothing"
+   },
+   {
+    "key": "c",
+    "label": "It prevents arithmetic mistakes"
+   },
+   {
+    "key": "d",
+    "label": "Written work is not allowed in interviews"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "They are watching how you get there."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "mock-drill-and-self-check",
+  "order": 2,
+  "prompt": "You pause for five seconds on \"what is the MTU?\" during the drill. What should you do?",
+  "options": [
+   {
+    "key": "a",
+    "label": "Reread the whole course"
+   },
+   {
+    "key": "b",
+    "label": "Reread Module 4, where MTU was taught"
+   },
+   {
+    "key": "c",
+    "label": "Ignore it, since it is one small fact"
+   },
+   {
+    "key": "d",
+    "label": "Redo the drill immediately"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "Each stumble names one module. Go there, not here."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "mock-drill-and-self-check",
+  "order": 3,
+  "prompt": "Why is rereading a weaker preparation than speaking?",
+  "options": [
+   {
+    "key": "a",
+    "label": "Reading takes longer"
+   },
+   {
+    "key": "b",
+    "label": "Rereading builds recognition, but interviews test recall"
+   },
+   {
+    "key": "c",
+    "label": "Written material contains errors"
+   },
+   {
+    "key": "d",
+    "label": "Speaking is faster"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "Familiarity feels like readiness and is not."
+ },
+ {
+  "subject": "CN",
+  "topicSlug": "mock-drill-and-self-check",
+  "order": 4,
+  "prompt": "You go blank mid-answer in a real interview. Best move",
+  "options": [
+   {
+    "key": "a",
+    "label": "Stay silent until you remember"
+   },
+   {
+    "key": "b",
+    "label": "Change to a topic you know better"
+   },
+   {
+    "key": "c",
+    "label": "Say what you do know and reason outward from it"
+   },
+   {
+    "key": "d",
+    "label": "Admit you did not prepare that section"
+   }
+  ],
+  "answerKey": "c",
+  "explanation": "Method earns partial credit. Silence earns nothing."
+ }
+]

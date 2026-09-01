@@ -6,12 +6,36 @@
 import { NextResponse } from "next/server";
 import { RateLimiterRedis } from "rate-limiter-flexible";
 import { redis, redisTry } from "./redis";
+import { env } from "../env";
 
 // 5 attempts / 15 min per identifier — for login, register, password reset.
 const authLimiter = new RateLimiterRedis({
   storeClient: redis,
   keyPrefix: "rl:auth",
   points: 5,
+  duration: 15 * 60,
+  blockDuration: 15 * 60,
+});
+
+/**
+ * 20 attempts / 15 min per ACCOUNT, independent of where they come from.
+ *
+ * The IP bucket above can only ever be advisory: `X-Forwarded-For` is written by
+ * the client unless a trusted proxy overwrites it (see `clientIp`), so an
+ * attacker who varies the header gets a fresh IP bucket per request and the
+ * 5-attempt limit never fires. This bucket is keyed by the email being attacked
+ * instead, which the attacker cannot vary while still guessing the same account's
+ * password or 6-digit OTP.
+ *
+ * The tradeoff is deliberate: a griefer can burn a victim's 20 attempts and lock
+ * that ONE account's login for 15 minutes. Unbounded credential and OTP guessing
+ * is the worse of the two, and 20/15min still leaves a 6-digit code (10^6 values,
+ * expiring in minutes, with its own per-code attempt cap) far out of reach.
+ */
+const accountLimiter = new RateLimiterRedis({
+  storeClient: redis,
+  keyPrefix: "rl:auth:acct",
+  points: 20,
   duration: 15 * 60,
   blockDuration: 15 * 60,
 });
@@ -54,12 +78,61 @@ async function consume(limiter: RateLimiterRedis, id: string): Promise<RateResul
 export const limitAuth = (id: string) => consume(authLimiter, id);
 export const limitWrite = (id: string) => consume(writeLimiter, id);
 
+/**
+ * Best-available client IP from `X-Forwarded-For`.
+ *
+ * Read from the RIGHT of the chain, not the left. Each proxy APPENDS the address
+ * it saw, so the rightmost entries are the ones written by infrastructure and
+ * everything to their left is whatever the client sent. Reading `split(",")[0]`
+ * (what this did) took the one value entirely under the caller's control: vary it
+ * per request and every attempt lands in its own bucket, so the 5-per-15-minutes
+ * auth limit never triggers at all.
+ *
+ * With `TRUSTED_PROXY_HOPS = 0` there is no trusted hop, so this is still only a
+ * best guess — that is why auth routes also consume `accountLimiter`, which does
+ * not depend on the header being honest.
+ */
+export function clientIp(req: Request): string {
+  const chain = (req.headers.get("x-forwarded-for") ?? "")
+    .split(",")
+    .map((part) => part.trim())
+    .filter(Boolean);
+  if (!chain.length) return "unknown";
+  const idx = chain.length - 1 - Math.max(0, env.TRUSTED_PROXY_HOPS);
+  return chain[Math.max(0, idx)] ?? "unknown";
+}
+
 /** Client identifier — prefer the user id, fall back to the forwarded IP. */
 export function clientId(req: Request, userId?: string): string {
   if (userId) return `user:${userId}`;
-  const fwd = req.headers.get("x-forwarded-for");
-  const ip = fwd ? fwd.split(",")[0]!.trim() : "127.0.0.1";
-  return `ip:${ip}`;
+  return `ip:${clientIp(req)}`;
+}
+
+const tooMany = (retryAfterSeconds?: number) =>
+  NextResponse.json(
+    { error: "Too many attempts. Try again later." },
+    { status: 429, headers: { "Retry-After": String(retryAfterSeconds ?? 900) } }
+  );
+
+/**
+ * Per-IP auth throttle. Call BEFORE parsing the body (it is the cheap guard), and
+ * pair it with `checkAccountLimit` once the email is known — neither is
+ * sufficient alone. Returns a ready-to-send 429, or `null` to proceed.
+ */
+export async function checkAuthLimit(req: Request): Promise<NextResponse | null> {
+  const rl = await limitAuth(clientId(req));
+  return rl.ok ? null : tooMany(rl.retryAfterSeconds);
+}
+
+/**
+ * Per-account auth throttle — the one that actually bounds password/OTP guessing,
+ * because it cannot be sidestepped by rotating a request header.
+ */
+export async function checkAccountLimit(email: string): Promise<NextResponse | null> {
+  const key = email.trim().toLowerCase();
+  if (!key) return null;
+  const rl = await consume(accountLimiter, `email:${key}`);
+  return rl.ok ? null : tooMany(rl.retryAfterSeconds);
 }
 
 /**

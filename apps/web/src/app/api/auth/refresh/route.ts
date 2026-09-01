@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { rotateSession, SessionUnavailableError } from "@/lib/auth/session";
 import { setAuthCookies, clearAuthCookies, readRefreshCookie } from "@/lib/auth/cookies";
+import { safeRedirectPath } from "@/lib/auth/safe-redirect";
 
 /**
  * Exchanges a valid refresh token for a fresh access token (and rotates the
@@ -37,12 +38,6 @@ export async function POST(req: Request) {
   return NextResponse.json({ ok: true });
 }
 
-/** Only allow redirecting back to a local path (no open-redirects). */
-function safePath(raw: string | null): string {
-  if (!raw || !raw.startsWith("/") || raw.startsWith("//")) return "/sheet";
-  return raw;
-}
-
 /**
  * Redirecting variant used by the edge proxy: when a page request arrives with
  * an expired access token but a live refresh token, the proxy bounces here. We
@@ -56,7 +51,7 @@ function safePath(raw: string | null): string {
  */
 export async function GET(req: Request) {
   const url = new URL(req.url);
-  const target = safePath(url.searchParams.get("redirect"));
+  const target = safeRedirectPath(url.searchParams.get("redirect"));
   const soft = url.searchParams.get("soft") === "1";
 
   const refresh = await readRefreshCookie();

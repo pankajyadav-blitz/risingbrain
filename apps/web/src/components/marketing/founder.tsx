@@ -33,15 +33,18 @@ const metrics: [LucideIcon, string, string][] = [
  * Rebuilt from a centred-avatar layout. The old version put a 128px circular
  * portrait in a tinted box beside two paragraphs of muted body text — which
  * made the human face the smallest element in the one section whose entire job
- * is to introduce a person. The source image is 900×900, so it can carry a
+ * is to introduce a person. The source image is 1414×1600, so it can carry a
  * full-bleed editorial crop instead.
  *
  * Changes worth knowing:
  *  - Portrait runs the full height of the card, with a scrim carrying the name,
  *    role and socials over it. One block instead of four stacked centred ones.
+ *  - Portrait frame follows the source's ~7:8 aspect below `lg` rather than a
+ *    flat min-height, and the crop is pinned to the face (52% / 28%).
  *  - `ex-Walmart` etc. were 12px muted pills AND repeated verbatim in the first
  *    prose paragraph. They're now a single labelled "Previously" row, and the
  *    prose no longer re-lists them.
+ *  - Copy is first-person, in Anjali's own words.
  *  - Scroll-reveal on the card, matching Stats / Reviews / FAQ.
  */
 export function Founder() {
@@ -53,13 +56,13 @@ export function Founder() {
             <div className="grid gap-0 lg:grid-cols-[0.85fr_1.15fr]">
               {/* Portrait — full-bleed, with the identity block scrimmed over
                   the base so the photo isn't competing with a caption below it. */}
-              <div className="relative min-h-[26rem] sm:min-h-[30rem] lg:min-h-full">
+              <div className="relative aspect-[7/8] max-h-[30rem] sm:max-h-[34rem] lg:aspect-auto lg:max-h-none lg:min-h-full">
                 <Image
                   src="/team/anjali-kumari.jpg"
                   alt="Anjali Kumari, founder of RisingBrain"
                   fill
                   sizes="(min-width: 1024px) 42vw, 100vw"
-                  className="object-cover object-[center_30%]"
+                  className="object-cover object-[52%_28%]"
                   priority
                 />
                 {/* Scrim: opaque at the base, clear by mid-frame, so the text
@@ -98,22 +101,26 @@ export function Founder() {
                 </Eyebrow>
 
                 <h2 className="mt-4 text-2xl font-bold sm:text-3xl">
-                  Built by someone who <span className="text-gradient">walked the path</span>
+                  Hi, I&apos;m <span className="text-gradient">Anjali</span> 👋
                 </h2>
 
                 <div className="mt-4 space-y-3 text-sm leading-relaxed text-muted">
+                  <p>I&apos;m a software engineer and the founder of RisingBrain.</p>
                   <p>
-                    An ECE graduate from PSIT Kanpur, Anjali broke into product companies from a
-                    non-CS, non-metro background — no coding culture, no seniors to ask, no
-                    roadmap. She built RisingBrain so the next student wouldn&apos;t have to figure
-                    it out alone.
+                    I started RisingBrain because I know how confusing interview preparation can
+                    feel when you don&apos;t have a clear roadmap. I wanted to build the kind of
+                    platform I wished I had when I was preparing — simple, structured, practical,
+                    and accessible to everyone.
                   </p>
                   <p>
-                    Through her <strong className="text-foreground">30-Day DSA Challenge</strong>{" "}
-                    and daily breakdowns, she has mentored{" "}
-                    <strong className="text-foreground">100+ engineers 1:1</strong> and reached a
-                    community of <strong className="text-foreground">450K+</strong> learners across
-                    LinkedIn, YouTube and Instagram.
+                    What started with sharing what I learned has grown into a community of{" "}
+                    <strong className="text-foreground">450K+</strong> learners across LinkedIn,
+                    YouTube, and Instagram, along with mentoring{" "}
+                    <strong className="text-foreground">100+ engineers</strong> 1:1.
+                  </p>
+                  <p>
+                    Today, I&apos;m building RisingBrain with one goal: help you prepare smarter,
+                    build confidence, and become interview-ready.
                   </p>
                 </div>
 

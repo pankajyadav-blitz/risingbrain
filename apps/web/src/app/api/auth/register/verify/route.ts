@@ -4,7 +4,7 @@ import { verifyEmailSchema } from "@/lib/auth/validation";
 import { verifyOtp } from "@/lib/auth/otp";
 import { createSession } from "@/lib/auth/session";
 import { setAuthCookies } from "@/lib/auth/cookies";
-import { limitAuth, clientId } from "@/lib/auth/rate-limit";
+import { checkAuthLimit, checkAccountLimit } from "@/lib/auth/rate-limit";
 
 const OTP_ERRORS: Record<string, string> = {
   expired: "That code has expired. Please request a new one.",
@@ -17,13 +17,8 @@ const OTP_ERRORS: Record<string, string> = {
  * the pending record (name + already-hashed password), then start a session.
  */
 export async function POST(req: Request) {
-  const rl = await limitAuth(clientId(req));
-  if (!rl.ok) {
-    return NextResponse.json(
-      { error: "Too many attempts. Try again later." },
-      { status: 429, headers: { "Retry-After": String(rl.retryAfterSeconds ?? 900) } }
-    );
-  }
+  const ipLimited = await checkAuthLimit(req);
+  if (ipLimited) return ipLimited;
 
   const parsed = verifyEmailSchema.safeParse(await req.json().catch(() => null));
   if (!parsed.success) {
@@ -33,6 +28,10 @@ export async function POST(req: Request) {
     );
   }
   const { email, code } = parsed.data;
+  // Second bucket, keyed by the account under attack rather than by a header the
+  // caller controls. See checkAccountLimit.
+  const accountLimited = await checkAccountLimit(email);
+  if (accountLimited) return accountLimited;
 
   const result = await verifyOtp({ purpose: "signup", email, code });
   if (!result.ok) {
@@ -73,6 +72,14 @@ export async function POST(req: Request) {
       },
     });
   } else if (!existing.passwordHash) {
+    // Admin-disabled accounts are denied a session on every OTHER path (login,
+    // OAuth callback). Without the same check here, a disabled social-login user
+    // could walk the ordinary signup flow against their own address and be handed
+    // a fresh session — restoring the access an admin had just taken away.
+    if (existing.disabledAt) {
+      return NextResponse.json({ error: "This account has been disabled." }, { status: 403 });
+    }
+
     // Merge credentials into an existing social-login account (same verified email).
     user = await prisma.user.update({
       where: { id: existing.id },

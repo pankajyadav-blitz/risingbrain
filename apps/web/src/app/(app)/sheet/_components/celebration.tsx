@@ -20,8 +20,8 @@ import { Trophy } from "lucide-react";
  *                                         toggle the user clicked rather than the
  *                                         middle of the screen.
  *  - "pattern" (a subcategory cleared)  → a small confetti burst, centred.
- *  - "topic"   (a whole category done)  → a larger multicolour burst, centred.
- *  - "sheet"   (the entire sheet done)  → full-screen confetti rain + a trophy card.
+ *  - "topic"  (a whole category done)  → a larger multicolour burst, centred.
+ *  - "sheet"  (the entire sheet done)  → full-screen confetti rain + a trophy card.
  *
  * When one toggle completes several tiers at once (last problem finishes the
  * pattern AND the topic AND the sheet), the grandest tier wins — which is also

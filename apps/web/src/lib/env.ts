@@ -34,6 +34,17 @@ export const env = {
   REFRESH_TOKEN_TTL_DAYS: Number(optional("REFRESH_TOKEN_TTL_DAYS", "30")),
   APP_URL,
 
+  /**
+   * How many reverse proxies sit in front of the app and append to
+   * `X-Forwarded-For`. The client IP is read that many hops from the RIGHT of the
+   * chain, because every entry to the left of a trusted hop is attacker-supplied.
+   * Default 0 = nothing trusted in front (the container publishes :3000 directly),
+   * in which case the header carries no trustworthy IP at all and rate limiting
+   * leans on its account-keyed bucket instead. Set this to the real hop count when
+   * you put nginx/Cloudflare/ALB in front.
+   */
+  TRUSTED_PROXY_HOPS: Number(optional("TRUSTED_PROXY_HOPS", "0")) || 0,
+
   GOOGLE_CLIENT_ID: optional("GOOGLE_CLIENT_ID"),
   GOOGLE_CLIENT_SECRET: optional("GOOGLE_CLIENT_SECRET"),
   GITHUB_CLIENT_ID: optional("GITHUB_CLIENT_ID"),

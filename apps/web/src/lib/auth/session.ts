@@ -248,9 +248,10 @@ async function resolveGrace(
  */
 async function serveWithinGrace(
   sid: string,
-  data: RedisSession
+  data: RedisSession,
+  reason = "refresh race"
 ): Promise<IssuedTokens> {
-  console.warn(`[auth] refresh race on session ${sid} — serving access token within grace window`);
+  console.warn(`[auth] ${reason} on session ${sid} — serving access token, refresh cookie untouched`);
   // Keep the session's activity timestamp honest without touching the hash.
   // Best-effort: this is a nicety, and failing it must not fail the refresh.
   await prisma.session
@@ -423,7 +424,16 @@ export async function rotateSession(
     // Redis already authenticated this token, so the session is real — let the
     // user through on the cached identity rather than logging them out over a
     // write we can retry on the next rotation.
-    rotatedInDb = fromRedis;
+    //
+    // But serve it the SAME way as a grace hit: an access token, and the refresh
+    // cookie left exactly as it is. Handing back a NEW refresh token here (what
+    // this used to do) is what made the blip fatal instead of survivable — the
+    // durable row still holds the old hash with no `prevRefreshHash`, so once
+    // Postgres recovered the next rotation lost the compare-and-swap, found
+    // nothing in either grace store, and revoked the session. One transient write
+    // failure guaranteed a hard logout ~12 minutes later; now it costs nothing
+    // beyond a refresh cycle.
+    if (fromRedis) return serveWithinGrace(sid!, data, "database write failed");
   }
 
   if (!rotatedInDb) {

@@ -32,7 +32,7 @@ IMG_ROOT = os.path.join(REPO, "apps/web/public/study-notes/sql")
 SEED_OUT = os.path.join(REPO, "packages/database/seed/domain-sql.json")
 
 doc = fitz.open(PDF)
-ZW = "​‌‍﻿"          # zero-width junk the source PDF is littered with
+ZW = "​‌‍﻿"         # zero-width junk the source PDF is littered with
 
 def clean(s):
     for c in ZW: s = s.replace(c, "")
@@ -138,9 +138,9 @@ def norm_code(text):
         kept.append(l)
     lines = kept
     # A lone leading space is a PDF artifact; 2+ spaces is deliberate alignment.
-    lines = [(l[1:] if (l.startswith(" ") and not l.startswith("  ")) else l) for l in lines]
+    lines = [(l[1:] if (l.startswith(" ") and not l.startswith(" ")) else l) for l in lines]
     rest = [l for l in lines[1:] if l.strip()]
-    if rest and all(l.startswith(" ") and not l.startswith("  ") for l in rest):
+    if rest and all(l.startswith(" ") and not l.startswith(" ") for l in rest):
         lines = lines[:1] + [(l[1:] if l.startswith(" ") else l) for l in lines[1:]]
     return "\n".join(lines).strip()
 

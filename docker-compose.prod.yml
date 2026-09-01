@@ -52,7 +52,9 @@ services:
       GITHUB_CLIENT_SECRET: "c09f054932a11a2b66edaa80c2e97a10612c878a"
       GMAIL_USER: "siri963690@gmail.com"
       GMAIL_APP_PASSWORD: "vbwp juwu fhpk zukh"
-      MAIL_FROM: "Rising Brain"
+      # Must be a full mailbox, not a bare display name — a name-only value makes
+      # Gmail reject every OTP with a 5.5.2 syntax error.
+      MAIL_FROM: "Rising Brain <siri963690@gmail.com>"
     healthcheck:
       test: ["CMD-SHELL", "node -e \"fetch('http://127.0.0.1:3000/').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))\""]
       interval: 15s

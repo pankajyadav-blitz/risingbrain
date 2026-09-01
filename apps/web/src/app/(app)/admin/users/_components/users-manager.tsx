@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Search, Loader2, ShieldBan, ShieldCheck, Flame } from "lucide-react";
+import { Search, Loader2, ShieldBan, ShieldCheck } from "lucide-react";
 import { Role } from "@risingbrain/database/enums";
 import { cn } from "@risingbrain/ui/cn";
 import { Select } from "../../_components/fields";
@@ -15,7 +15,6 @@ type AdminUser = {
   role: string;
   disabledAt: string | null;
   createdAt: string;
-  currentStreak: number;
 };
 
 const ROLE_OPTIONS = [
@@ -158,9 +157,6 @@ export function UsersManager({ currentUserId }: { currentUserId: string }) {
                   </div>
                   <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted">
                     <span>{u.name ?? "—"}</span>
-                    <span className="inline-flex items-center gap-1">
-                      <Flame className="h-3 w-3" /> {u.currentStreak}
-                    </span>
                     <span>Joined {new Date(u.createdAt).toLocaleDateString()}</span>
                   </div>
                 </div>

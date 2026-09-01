@@ -1,0 +1,2368 @@
+[
+ {
+  "subject": "OS",
+  "topicSlug": "what-an-os-is-referee-illusionist-glue",
+  "order": 1,
+  "prompt": "Aisha's laptop has 4 cores and about 200 programs loaded. What is the OS mainly doing about this?",
+  "options": [
+   {
+    "key": "a",
+    "label": "Running all 200 programs at the same time on 4 cores"
+   },
+   {
+    "key": "b",
+    "label": "Rapidly switching the cores between programs so all of them make progress"
+   },
+   {
+    "key": "c",
+    "label": "Refusing to start programs 5 onwards until a core is free"
+   },
+   {
+    "key": "d",
+    "label": "Splitting each core into 50 smaller cores"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "With 4 cores, the OS switches them rapidly between programs so each makes progress; nothing truly runs 200 at once."
+ },
+ {
+  "subject": "OS",
+  "topicSlug": "what-an-os-is-referee-illusionist-glue",
+  "order": 2,
+  "prompt": "Which of these is the \"illusionist\" job of an OS?",
+  "options": [
+   {
+    "key": "a",
+    "label": "Stopping the compiler from overwriting the browser's memory"
+   },
+   {
+    "key": "b",
+    "label": "Turning \"save file\" into disk block writes"
+   },
+   {
+    "key": "c",
+    "label": "Making each app behave as if it owns the whole laptop"
+   },
+   {
+    "key": "d",
+    "label": "Loading the kernel into RAM at boot"
+   }
+  ],
+  "answerKey": "c",
+  "explanation": "The illusionist job is giving every app the false impression that it owns the whole machine."
+ },
+ {
+  "subject": "OS",
+  "topicSlug": "power-button-to-login-the-boot-sequence",
+  "order": 1,
+  "prompt": "Why can the kernel not simply start itself when the laptop powers on?",
+  "options": [
+   {
+    "key": "a",
+    "label": "The kernel is encrypted until the user logs in"
+   },
+   {
+    "key": "b",
+    "label": "The kernel is a file on the SSD, and RAM is empty at power-on"
+   },
+   {
+    "key": "c",
+    "label": "The kernel only runs in user mode"
+   },
+   {
+    "key": "d",
+    "label": "The CPU cannot execute kernel code until a driver is installed"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "RAM is volatile and empty at power-on, so the kernel file has to be copied in from the SSD by something else first."
+ },
+ {
+  "subject": "OS",
+  "topicSlug": "power-button-to-login-the-boot-sequence",
+  "order": 2,
+  "prompt": "Aisha closes her lid and reopens it two minutes later; her desktop appears in one second. Why is this faster than the 18-second boot?",
+  "options": [
+   {
+    "key": "a",
+    "label": "The bootloader caches the kernel on the SSD"
+   },
+   {
+    "key": "b",
+    "label": "The firmware skips its hardware checks after the first boot"
+   },
+   {
+    "key": "c",
+    "label": "RAM stayed powered, so the kernel and her apps were never unloaded"
+   },
+   {
+    "key": "d",
+    "label": "The login program was disabled"
+   }
+  ],
+  "answerKey": "c",
+  "explanation": "Sleep keeps RAM powered, so the kernel and apps are still loaded and nothing has to be fetched from disk again."
+ },
+ {
+  "subject": "OS",
+  "topicSlug": "user-mode-vs-kernel-mode-and-system-calls",
+  "order": 1,
+  "prompt": "The editor executes an instruction that talks straight to the SSD controller. What happens?",
+  "options": [
+   {
+    "key": "a",
+    "label": "The instruction runs, but slowly"
+   },
+   {
+    "key": "b",
+    "label": "The CPU refuses it because the editor is in user mode, and the OS steps in"
+   },
+   {
+    "key": "c",
+    "label": "The OS silently rewrites it into a system call"
+   },
+   {
+    "key": "d",
+    "label": "The instruction runs only if the file is smaller than 4 KB"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "Talking to a device is a privileged instruction; in user mode the CPU refuses it and hands control to the OS."
+ },
+ {
+  "subject": "OS",
+  "topicSlug": "user-mode-vs-kernel-mode-and-system-calls",
+  "order": 2,
+  "prompt": "Which pair correctly describes a system call?",
+  "options": [
+   {
+    "key": "a",
+    "label": "Same mode, different program"
+   },
+   {
+    "key": "b",
+    "label": "Different mode, same program"
+   },
+   {
+    "key": "c",
+    "label": "Different — mode, different program"
+   },
+   {
+    "key": "d",
+    "label": "Same mode, same program"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "A system call flips the CPU from user to kernel mode while the same program keeps the CPU."
+ },
+ {
+  "subject": "OS",
+  "topicSlug": "interrupts-how-the-os-gets-control-back",
+  "order": 1,
+  "prompt": "The compile job runs an infinite loop and makes no system calls. What stops it from freezing the laptop?",
+  "options": [
+   {
+    "key": "a",
+    "label": "The OS polls every program once a second"
+   },
+   {
+    "key": "b",
+    "label": "The timer interrupt forces the CPU into the kernel periodically"
+   },
+   {
+    "key": "c",
+    "label": "The compiler is required to yield voluntarily"
+   },
+   {
+    "key": "d",
+    "label": "The kernel runs on a reserved fifth core"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "The hardware timer fires every few milliseconds and forces entry into the kernel regardless of what the program is doing."
+ },
+ {
+  "subject": "OS",
+  "topicSlug": "interrupts-how-the-os-gets-control-back",
+  "order": 2,
+  "prompt": "A program divides by zero. What is this called?",
+  "options": [
+   {
+    "key": "a",
+    "label": "An interrupt, because the CPU stops"
+   },
+   {
+    "key": "b",
+    "label": "A trap, because the kernel is entered"
+   },
+   {
+    "key": "c",
+    "label": "An exception, because the running instruction caused it"
+   },
+   {
+    "key": "d",
+    "label": "A system call, because control moves to the kernel"
+   }
+  ],
+  "answerKey": "c",
+  "explanation": "An exception is caused by the instruction currently executing, unlike an interrupt which comes from unrelated hardware."
+ },
+ {
+  "subject": "OS",
+  "topicSlug": "program-vs-process-the-address-space",
+  "order": 1,
+  "prompt": "Aisha runs gcc in two terminals at once. How many heaps exist?",
+  "options": [
+   {
+    "key": "a",
+    "label": "One, shared between both"
+   },
+   {
+    "key": "b",
+    "label": "Two, one per process"
+   },
+   {
+    "key": "c",
+    "label": "One per CPU core"
+   },
+   {
+    "key": "d",
+    "label": "None until the program calls for memory"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "Each launch creates a separate process with its own complete address space, so there are two heaps."
+ },
+ {
+  "subject": "OS",
+  "topicSlug": "program-vs-process-the-address-space",
+  "order": 2,
+  "prompt": "Which section of a process's address space holds the trail of function calls?",
+  "options": [
+   {
+    "key": "a",
+    "label": "Code"
+   },
+   {
+    "key": "b",
+    "label": "Data"
+   },
+   {
+    "key": "c",
+    "label": "Heap"
+   },
+   {
+    "key": "d",
+    "label": "Stack"
+   }
+  ],
+  "answerKey": "d",
+  "explanation": "The stack holds local variables and pushes a frame for every function call."
+ },
+ {
+  "subject": "OS",
+  "topicSlug": "process-states-and-the-state-transition-diagram",
+  "order": 1,
+  "prompt": "The browser's network reply finally arrives. What state does it move to?",
+  "options": [
+   {
+    "key": "a",
+    "label": "Running, immediately"
+   },
+   {
+    "key": "b",
+    "label": "Ready, and it queues for a core"
+   },
+   {
+    "key": "c",
+    "label": "New, because it restarts its request"
+   },
+   {
+    "key": "d",
+    "label": "Terminated, because the request is done"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "There is only one arrow into Running and it starts at Ready, so the browser must queue for a core."
+ },
+ {
+  "subject": "OS",
+  "topicSlug": "process-states-and-the-state-transition-diagram",
+  "order": 2,
+  "prompt": "The compile job's 4 ms time slice expires. Which transition happens?",
+  "options": [
+   {
+    "key": "a",
+    "label": "Running to Waiting"
+   },
+   {
+    "key": "b",
+    "label": "Running to Terminated"
+   },
+   {
+    "key": "c",
+    "label": "Running to Ready"
+   },
+   {
+    "key": "d",
+    "label": "Ready to Waiting"
+   }
+  ],
+  "answerKey": "c",
+  "explanation": "The timer interrupt takes the core back, but the process is still perfectly able to run."
+ },
+ {
+  "subject": "OS",
+  "topicSlug": "the-pcb-and-what-a-context-switch-really-costs",
+  "order": 1,
+  "prompt": "The editor makes a read system call that returns immediately from cache. What happened?",
+  "options": [
+   {
+    "key": "a",
+    "label": "A context switch, because the kernel ran"
+   },
+   {
+    "key": "b",
+    "label": "A mode switch only, because the same process kept the CPU"
+   },
+   {
+    "key": "c",
+    "label": "Both, because every system call switches processes"
+   },
+   {
+    "key": "d",
+    "label": "Neither, because cached reads skip the kernel"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "The same process kept the CPU and only the privilege level changed."
+ },
+ {
+  "subject": "OS",
+  "topicSlug": "the-pcb-and-what-a-context-switch-really-costs",
+  "order": 2,
+  "prompt": "Why is a very short time slice a bad idea?",
+  "options": [
+   {
+    "key": "a",
+    "label": "Processes would never finish their work"
+   },
+   {
+    "key": "b",
+    "label": "The PCB would grow too large to store"
+   },
+   {
+    "key": "c",
+    "label": "The 5 us switching cost would become a large share of the total time"
+   },
+   {
+    "key": "d",
+    "label": "The ready queue would run out of space"
+   }
+  ],
+  "answerKey": "c",
+  "explanation": "The 5 us switch is fixed overhead, so the shorter the slice, the larger a fraction of time is wasted."
+ },
+ {
+  "subject": "OS",
+  "topicSlug": "creating-processes-fork-exec-wait-zombies-and-orphans",
+  "order": 1,
+  "prompt": "Why is switching between two threads of the same process cheaper than switching between two processes?",
+  "options": [
+   {
+    "key": "a",
+    "label": "Threads have smaller PCBs to copy"
+   },
+   {
+    "key": "b",
+    "label": "The memory map does not have to change"
+   },
+   {
+    "key": "c",
+    "label": "Threads never use CPU registers"
+   },
+   {
+    "key": "d",
+    "label": "The kernel is not involved in either case"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "Threads share one address space, so the expensive memory map switch is skipped."
+ },
+ {
+  "subject": "OS",
+  "topicSlug": "why-scheduling-exists-cpu-and-i-o-bursts",
+  "order": 1,
+  "prompt": "The browser is blocked waiting for a network reply. Is the scheduler considering it?",
+  "options": [
+   {
+    "key": "a",
+    "label": "Yes, it is in the ready queue"
+   },
+   {
+    "key": "b",
+    "label": "No, it is Waiting, so a core would be useless to it"
+   },
+   {
+    "key": "c",
+    "label": "Yes, but only if no CPU-bound process is available"
+   },
+   {
+    "key": "d",
+    "label": "No, because it has already terminated"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "Only Ready processes are scheduling candidates; a Waiting process needs an event, not a core."
+ },
+ {
+  "subject": "OS",
+  "topicSlug": "why-scheduling-exists-cpu-and-i-o-bursts",
+  "order": 2,
+  "prompt": "Which piece of hardware makes preemptive scheduling possible?",
+  "options": [
+   {
+    "key": "a",
+    "label": "The disk controller"
+   },
+   {
+    "key": "b",
+    "label": "The memory management unit"
+   },
+   {
+    "key": "c",
+    "label": "The timer interrupt"
+   },
+   {
+    "key": "d",
+    "label": "The second CPU core"
+   }
+  ],
+  "answerKey": "c",
+  "explanation": "Without a timer interrupt the OS could never take a core back from a program that makes no system calls."
+ },
+ {
+  "subject": "OS",
+  "topicSlug": "the-metrics-fcfs-and-sjf",
+  "order": 1,
+  "prompt": "A process arrives at 3 ms, first gets the core at 10 ms, and finishes at 11 ms. What is its waiting time?",
+  "options": [
+   {
+    "key": "a",
+    "label": "1 ms"
+   },
+   {
+    "key": "b",
+    "label": "7 ms"
+   },
+   {
+    "key": "c",
+    "label": "8 ms"
+   },
+   {
+    "key": "d",
+    "label": "11 ms"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "Turnaround is 11 - 3 = 8, and waiting is turnaround minus the 1 ms burst."
+ },
+ {
+  "subject": "OS",
+  "topicSlug": "the-metrics-fcfs-and-sjf",
+  "order": 2,
+  "prompt": "Why can a real OS not simply use SJF?",
+  "options": [
+   {
+    "key": "a",
+    "label": "SJF produces worse average waiting times than FCFS"
+   },
+   {
+    "key": "b",
+    "label": "SJF needs the burst length in advance, which the OS does not know"
+   },
+   {
+    "key": "c",
+    "label": "SJF requires a preemptive timer, which not all CPUs have"
+   },
+   {
+    "key": "d",
+    "label": "SJF cannot handle processes that arrive at different times"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "SJF assumes future knowledge the OS does not have, so real systems can only estimate it."
+ },
+ {
+  "subject": "OS",
+  "topicSlug": "srtf-round-robin-and-choosing-the-quantum",
+  "order": 1,
+  "prompt": "Under Round Robin with a 4 ms quantum, the compile job is cut off after 4 ms with 4 ms remaining. Where does it go?",
+  "options": [
+   {
+    "key": "a",
+    "label": "To the front of the ready queue"
+   },
+   {
+    "key": "b",
+    "label": "To the back of the ready queue"
+   },
+   {
+    "key": "c",
+    "label": "To the waiting queue until I/O completes"
+   },
+   {
+    "key": "d",
+    "label": "It keeps the core, since it has not finished"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "The queue rotates; sending a preempted process to the front would let it monopolise the core."
+ },
+ {
+  "subject": "OS",
+  "topicSlug": "srtf-round-robin-and-choosing-the-quantum",
+  "order": 2,
+  "prompt": "The Nova-14's quantum is lowered from 4 ms to 50 us. What happens?",
+  "options": [
+   {
+    "key": "a",
+    "label": "Turnaround improves because jobs finish sooner"
+   },
+   {
+    "key": "b",
+    "label": "Nothing changes, since the same jobs still run"
+   },
+   {
+    "key": "c",
+    "label": "Roughly 9% of CPU time is lost to context switching"
+   },
+   {
+    "key": "d",
+    "label": "Round Robin becomes non-preemptive"
+   }
+  ],
+  "answerKey": "c",
+  "explanation": "With a 5 us switch against a 50 us quantum, about 5 of every 55 us is overhead."
+ },
+ {
+  "subject": "OS",
+  "topicSlug": "srtf-round-robin-and-choosing-the-quantum",
+  "order": 3,
+  "prompt": "With a quantum of 8 ms, our four jobs produce exactly the FCFS schedule. Why?",
+  "options": [
+   {
+    "key": "a",
+    "label": "8 ms is the length of the longest burst, so nobody is ever cut off"
+   },
+   {
+    "key": "b",
+    "label": "Round Robin ignores the quantum when jobs arrive at different times"
+   },
+   {
+    "key": "c",
+    "label": "The scheduler switches to FCFS when the queue is short"
+   },
+   {
+    "key": "d",
+    "label": "Context switches become free at large quanta"
+   }
+  ],
+  "answerKey": "a",
+  "explanation": "Every burst fits inside one quantum, so no process is ever preempted and the rotation never happens."
+ },
+ {
+  "subject": "OS",
+  "topicSlug": "priority-starvation-aging-and-mlfq",
+  "order": 1,
+  "prompt": "Under MLFQ, the code editor's 1 ms burst finishes well inside its 1 ms top-queue turn... and then it blocks waiting for the next keypress. What happens to it?",
+  "options": [
+   {
+    "key": "a",
+    "label": "It is demoted, because it used the core"
+   },
+   {
+    "key": "b",
+    "label": "It stays in the top queue, because it blocked before its quantum ended"
+   },
+   {
+    "key": "c",
+    "label": "It is promoted above the top queue"
+   },
+   {
+    "key": "d",
+    "label": "It is removed from the queues until Aisha types"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "Blocking early is the signal that a process is interactive, so MLFQ keeps it at a high priority."
+ },
+ {
+  "subject": "OS",
+  "topicSlug": "priority-starvation-aging-and-mlfq",
+  "order": 2,
+  "prompt": "A process is waiting for a resource that another process will never release. Is this starvation?",
+  "options": [
+   {
+    "key": "a",
+    "label": "Yes, and aging would fix it"
+   },
+   {
+    "key": "b",
+    "label": "Yes, but only if priorities are involved"
+   },
+   {
+    "key": "c",
+    "label": "No, it is deadlock, and aging would not help"
+   },
+   {
+    "key": "d",
+    "label": "No, it is preemption"
+   }
+  ],
+  "answerKey": "c",
+  "explanation": "It is waiting on a resource rather than on a turn, so raising its priority changes nothing."
+ },
+ {
+  "subject": "OS",
+  "topicSlug": "priority-starvation-aging-and-mlfq",
+  "order": 3,
+  "prompt": "What does aging change about a waiting process?",
+  "options": [
+   {
+    "key": "a",
+    "label": "Its burst time"
+   },
+   {
+    "key": "b",
+    "label": "Its priority"
+   },
+   {
+    "key": "c",
+    "label": "Its arrival time"
+   },
+   {
+    "key": "d",
+    "label": "Its quantum"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "Aging raises priority with waiting time, which is what guarantees nothing waits forever."
+ },
+ {
+  "subject": "OS",
+  "topicSlug": "the-race-condition-traced-line-by-line",
+  "order": 1,
+  "prompt": "Why can bytes_loaded = bytes_loaded + 1 be interrupted halfway?",
+  "options": [
+   {
+    "key": "a",
+    "label": "Because the variable is stored on the heap"
+   },
+   {
+    "key": "b",
+    "label": "Because it compiles to three machine instructions, not one"
+   },
+   {
+    "key": "c",
+    "label": "Because the two threads run on different cores"
+   },
+   {
+    "key": "d",
+    "label": "Because addition is a slow operation"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "Read, add and write are separate instructions, and preemption can land between any two of them."
+ },
+ {
+  "subject": "OS",
+  "topicSlug": "the-race-condition-traced-line-by-line",
+  "order": 2,
+  "prompt": "Three threads only ever read a shared value; none writes to it. Is this a race condition?",
+  "options": [
+   {
+    "key": "a",
+    "label": "Yes, any shared access is a race"
+   },
+   {
+    "key": "b",
+    "label": "Yes, if they run on different cores"
+   },
+   {
+    "key": "c",
+    "label": "No, a race needs at least one writer"
+   },
+   {
+    "key": "d",
+    "label": "No, but only if the value is small enough"
+   }
+  ],
+  "answerKey": "c",
+  "explanation": "Concurrent reads of an unchanging value are always safe; a race needs a writer."
+ },
+ {
+  "subject": "OS",
+  "topicSlug": "the-critical-section-problem",
+  "order": 1,
+  "prompt": "A locking scheme guarantees only one thread is ever inside, but one unlucky thread is repeatedly overtaken and never gets in. Which requirement is violated?",
+  "options": [
+   {
+    "key": "a",
+    "label": "Mutual exclusion"
+   },
+   {
+    "key": "b",
+    "label": "Progress"
+   },
+   {
+    "key": "c",
+    "label": "Bounded waiting"
+   },
+   {
+    "key": "d",
+    "label": "None; it is correct"
+   }
+  ],
+  "answerKey": "c",
+  "explanation": "Bounded waiting is the requirement that limits how often others can enter ahead of you."
+ },
+ {
+  "subject": "OS",
+  "topicSlug": "the-critical-section-problem",
+  "order": 2,
+  "prompt": "Why should a critical section be kept as short as possible?",
+  "options": [
+   {
+    "key": "a",
+    "label": "Long ones use more memory"
+   },
+   {
+    "key": "b",
+    "label": "Every other thread is blocked for its whole duration"
+   },
+   {
+    "key": "c",
+    "label": "The compiler cannot optimise long sections"
+   },
+   {
+    "key": "d",
+    "label": "The scheduler refuses sections longer than one quantum"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "Every instruction inside the fence is time during which all other threads are stuck."
+ },
+ {
+  "subject": "OS",
+  "topicSlug": "mutexes-spinlocks-and-test-and-set",
+  "order": 1,
+  "prompt": "Two threads call test_and_set on a free lock at the same instant. What do they get back?",
+  "options": [
+   {
+    "key": "a",
+    "label": "Both get 0"
+   },
+   {
+    "key": "b",
+    "label": "Both get 1"
+   },
+   {
+    "key": "c",
+    "label": "One gets 0 and the other gets 1"
+   },
+   {
+    "key": "d",
+    "label": "The result is undefined"
+   }
+  ],
+  "answerKey": "c",
+  "explanation": "Test-and-set is atomic, so the two calls are serialised and only one can see the free lock."
+ },
+ {
+  "subject": "OS",
+  "topicSlug": "mutexes-spinlocks-and-test-and-set",
+  "order": 2,
+  "prompt": "A thread expects to wait about 300 ns for a lock. Context switching costs 5 us. Which is better?",
+  "options": [
+   {
+    "key": "a",
+    "label": "A blocking mutex, because sleeping is always cheaper"
+   },
+   {
+    "key": "b",
+    "label": "A spinlock, because the wait is far shorter than a switch"
+   },
+   {
+    "key": "c",
+    "label": "Neither; 300 ns is too short to need a lock"
+   },
+   {
+    "key": "d",
+    "label": "A blocking mutex, because spinlocks are unsafe"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "Sleeping and waking would cost far more than the 300 ns wait itself."
+ },
+ {
+  "subject": "OS",
+  "topicSlug": "semaphores",
+  "order": 1,
+  "prompt": "A semaphore starts at 3. Four threads call wait in quick succession. What happens to the fourth?",
+  "options": [
+   {
+    "key": "a",
+    "label": "It gets a permit, since the count wraps around"
+   },
+   {
+    "key": "b",
+    "label": "It sleeps until another thread calls signal"
+   },
+   {
+    "key": "c",
+    "label": "It receives an error and continues"
+   },
+   {
+    "key": "d",
+    "label": "It spins until the count becomes negative"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "The count is 0, so the fourth thread blocks until a permit is returned."
+ },
+ {
+  "subject": "OS",
+  "topicSlug": "semaphores",
+  "order": 2,
+  "prompt": "What value would you initialise a semaphore to if you want it to act as a lock?",
+  "options": [
+   {
+    "key": "a",
+    "label": "0"
+   },
+   {
+    "key": "b",
+    "label": "1"
+   },
+   {
+    "key": "c",
+    "label": "2"
+   },
+   {
+    "key": "d",
+    "label": "The number of threads"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "Starting at 1 means exactly one thread can hold it at a time."
+ },
+ {
+  "subject": "OS",
+  "topicSlug": "producerconsumer-and-the-bounded-buffer",
+  "order": 1,
+  "prompt": "In the producer, why must wait(empty) come before wait(mutex)?",
+  "options": [
+   {
+    "key": "a",
+    "label": "Because empty is a counting semaphore and must always go first"
+   },
+   {
+    "key": "b",
+    "label": "Otherwise a full buffer makes the producer sleep while holding the mutex"
+   },
+   {
+    "key": "c",
+    "label": "Because the consumer checks mutex first"
+   },
+   {
+    "key": "d",
+    "label": "To keep empty and full adding up to 4"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "Sleeping while holding the mutex leaves the consumer unable to make room, which deadlocks both."
+ },
+ {
+  "subject": "OS",
+  "topicSlug": "producerconsumer-and-the-bounded-buffer",
+  "order": 2,
+  "prompt": "The buffer has 4 slots and 2 are filled. What are the semaphore values?",
+  "options": [
+   {
+    "key": "a",
+    "label": "empty = 4, full = 4, mutex = 1"
+   },
+   {
+    "key": "b",
+    "label": "empty = 2, full = 2, mutex = 1"
+   },
+   {
+    "key": "c",
+    "label": "empty = 0, full = 2, mutex = 0"
+   },
+   {
+    "key": "d",
+    "label": "empty = 2, full = 4, mutex = 2"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "The counts are literally the free slots and the filled slots, and the mutex is unheld."
+ },
+ {
+  "subject": "OS",
+  "topicSlug": "the-four-coffman-conditions",
+  "order": 1,
+  "prompt": "A deadlocked pair of processes is running on the Nova-14. What does CPU usage look like?",
+  "options": [
+   {
+    "key": "a",
+    "label": "Pinned at 100%, since both are looping"
+   },
+   {
+    "key": "b",
+    "label": "Near zero, since both are in the Waiting state"
+   },
+   {
+    "key": "c",
+    "label": "Exactly 50%, one core each"
+   },
+   {
+    "key": "d",
+    "label": "It rises steadily until the OS intervenes"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "Deadlocked processes sit in Waiting and consume no CPU, which is what makes deadlock easy to miss."
+ },
+ {
+  "subject": "OS",
+  "topicSlug": "the-four-coffman-conditions",
+  "order": 2,
+  "prompt": "Which condition is broken if a resource can be forcibly taken back from the process holding it?",
+  "options": [
+   {
+    "key": "a",
+    "label": "Mutual exclusion"
+   },
+   {
+    "key": "b",
+    "label": "Hold and wait"
+   },
+   {
+    "key": "c",
+    "label": "No preemption"
+   },
+   {
+    "key": "d",
+    "label": "Circular wait"
+   }
+  ],
+  "answerKey": "c",
+  "explanation": "No preemption means the resource can only be released voluntarily, so forcible reclaim breaks it."
+ },
+ {
+  "subject": "OS",
+  "topicSlug": "resource-allocation-graphs-and-detection",
+  "order": 1,
+  "prompt": "A resource allocation graph shows no cycle. What can you conclude?",
+  "options": [
+   {
+    "key": "a",
+    "label": "Nothing, without knowing instance counts"
+   },
+   {
+    "key": "b",
+    "label": "There is definitely no deadlock"
+   },
+   {
+    "key": "c",
+    "label": "There is definitely a deadlock"
+   },
+   {
+    "key": "d",
+    "label": "There may be a deadlock among multi-instance resources"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "The absence of a cycle rules out deadlock regardless of how many instances each resource has."
+ },
+ {
+  "subject": "OS",
+  "topicSlug": "resource-allocation-graphs-and-detection",
+  "order": 2,
+  "prompt": "An arrow points from a process to a resource. What does it mean?",
+  "options": [
+   {
+    "key": "a",
+    "label": "The process is holding that resource"
+   },
+   {
+    "key": "b",
+    "label": "The process is requesting that resource and is waiting"
+   },
+   {
+    "key": "c",
+    "label": "The resource has been preempted from the process"
+   },
+   {
+    "key": "d",
+    "label": "The process has released the resource"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "An arrow out of a process is a request, which means the process is waiting for that resource."
+ },
+ {
+  "subject": "OS",
+  "topicSlug": "prevention-avoidance-and-recovery",
+  "order": 1,
+  "prompt": "Available is 3, 3, 4. Which process can be run first in a safe sequence, given the Need values 7 4 3 (music), 1 2 2 (browser), 6 0 0 (editor), 0 1 1 (compile)?",
+  "options": [
+   {
+    "key": "a",
+    "label": "The music player, since it needs the most"
+   },
+   {
+    "key": "b",
+    "label": "Either the browser or the compile job"
+   },
+   {
+    "key": "c",
+    "label": "The editor, since it needs no file handles"
+   },
+   {
+    "key": "d",
+    "label": "None of them; the state is unsafe"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "Both 1 2 2 and 0 1 1 fit inside the available 3 3 4, so either can safely go first."
+ },
+ {
+  "subject": "OS",
+  "topicSlug": "prevention-avoidance-and-recovery",
+  "order": 2,
+  "prompt": "The Banker's algorithm denies a request even though the resources are free. Why?",
+  "options": [
+   {
+    "key": "a",
+    "label": "The requesting process has exceeded its declared maximum"
+   },
+   {
+    "key": "b",
+    "label": "Granting it would leave a state with no safe sequence"
+   },
+   {
+    "key": "c",
+    "label": "The resources are reserved for higher-priority processes"
+   },
+   {
+    "key": "d",
+    "label": "The process is already deadlocked"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "Avoidance refuses any state from which every process could no longer be guaranteed to finish."
+ },
+ {
+  "subject": "OS",
+  "topicSlug": "prevention-avoidance-and-recovery",
+  "order": 3,
+  "prompt": "Which prevention technique is actually used in real concurrent programs?",
+  "options": [
+   {
+    "key": "a",
+    "label": "Requiring all resources to be requested up front"
+   },
+   {
+    "key": "b",
+    "label": "Making every resource shareable"
+   },
+   {
+    "key": "c",
+    "label": "Numbering locks and always acquiring them in increasing order"
+   },
+   {
+    "key": "d",
+    "label": "Forcibly preempting open files"
+   }
+  ],
+  "answerKey": "c",
+  "explanation": "Lock ordering breaks circular wait, costs nothing at runtime, and only requires an agreed convention."
+ },
+ {
+  "subject": "OS",
+  "topicSlug": "prevention-avoidance-and-recovery",
+  "order": 4,
+  "prompt": "A system is in an unsafe state. What follows?",
+  "options": [
+   {
+    "key": "a",
+    "label": "A deadlock has already occurred"
+   },
+   {
+    "key": "b",
+    "label": "A deadlock will definitely occur"
+   },
+   {
+    "key": "c",
+    "label": "A deadlock may occur, but might not"
+   },
+   {
+    "key": "d",
+    "label": "The state is impossible under the Banker's algorithm"
+   }
+  ],
+  "answerKey": "c",
+  "explanation": "Unsafe means deadlock is reachable, not that it has happened or must happen."
+ },
+ {
+  "subject": "OS",
+  "topicSlug": "logical-and-physical-addresses-and-the-mmu",
+  "order": 1,
+  "prompt": "The compile job and the browser both access address 5000. What happens?",
+  "options": [
+   {
+    "key": "a",
+    "label": "They read the same byte, which is a race condition"
+   },
+   {
+    "key": "b",
+    "label": "The MMU translates each to a different physical address"
+   },
+   {
+    "key": "c",
+    "label": "The second access fails with a protection error"
+   },
+   {
+    "key": "d",
+    "label": "The OS pauses one of them until the other finishes"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "Each process has its own translation table, so identical logical addresses land in different frames."
+ },
+ {
+  "subject": "OS",
+  "topicSlug": "logical-and-physical-addresses-and-the-mmu",
+  "order": 2,
+  "prompt": "Why is address translation done in hardware rather than by the OS?",
+  "options": [
+   {
+    "key": "a",
+    "label": "The OS does not know the physical addresses"
+   },
+   {
+    "key": "b",
+    "label": "Hardware translation is more secure"
+   },
+   {
+    "key": "c",
+    "label": "Running OS code on every memory access would be far too slow"
+   },
+   {
+    "key": "d",
+    "label": "The MMU can only be programmed by hardware"
+   }
+  ],
+  "answerKey": "c",
+  "explanation": "Address translation happens on every access, so any software involvement would dominate the cost."
+ },
+ {
+  "subject": "OS",
+  "topicSlug": "contiguous-allocation-and-fragmentation",
+  "order": 1,
+  "prompt": "Holes of 100, 500, 200, 300, 600 MB and a 212 MB request. Which hole does best fit choose?",
+  "options": [
+   {
+    "key": "a",
+    "label": "500 MB"
+   },
+   {
+    "key": "b",
+    "label": "300 MB"
+   },
+   {
+    "key": "c",
+    "label": "600 MB"
+   },
+   {
+    "key": "d",
+    "label": "200 MB"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "Best fit takes the smallest hole that is still large enough, which is 300 MB."
+ },
+ {
+  "subject": "OS",
+  "topicSlug": "contiguous-allocation-and-fragmentation",
+  "order": 2,
+  "prompt": "There is 1,700 MB free but a 700 MB request fails. What is this called?",
+  "options": [
+   {
+    "key": "a",
+    "label": "Internal fragmentation"
+   },
+   {
+    "key": "b",
+    "label": "External fragmentation"
+   },
+   {
+    "key": "c",
+    "label": "Thrashing"
+   },
+   {
+    "key": "d",
+    "label": "A memory leak"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "The free memory exists but is split into pieces too small for the request."
+ },
+ {
+  "subject": "OS",
+  "topicSlug": "paging-and-address-translation",
+  "order": 1,
+  "prompt": "With 4 KB pages, logical address 9,000 falls in which page, at what offset?",
+  "options": [
+   {
+    "key": "a",
+    "label": "Page 2, offset 808"
+   },
+   {
+    "key": "b",
+    "label": "Page 3, offset 904"
+   },
+   {
+    "key": "c",
+    "label": "Page 2, offset 9000"
+   },
+   {
+    "key": "d",
+    "label": "Page 1, offset 4904"
+   }
+  ],
+  "answerKey": "a",
+  "explanation": "9000 divided by 4096 gives page 2, and the remainder 808 is the offset."
+ },
+ {
+  "subject": "OS",
+  "topicSlug": "paging-and-address-translation",
+  "order": 2,
+  "prompt": "Logical address 0x2328 translates to physical 0x7328. Why are the last three hex digits identical?",
+  "options": [
+   {
+    "key": "a",
+    "label": "Coincidence caused by this particular page table"
+   },
+   {
+    "key": "b",
+    "label": "They are the offset, which is copied without translation"
+   },
+   {
+    "key": "c",
+    "label": "The MMU only translates even-numbered pages"
+   },
+   {
+    "key": "d",
+    "label": "Because frame 7 happens to start at address 0x7000"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "Only the page number is replaced by a frame number; the offset passes through untouched."
+ },
+ {
+  "subject": "OS",
+  "topicSlug": "paging-and-address-translation",
+  "order": 3,
+  "prompt": "What does paging introduce that contiguous allocation did not have?",
+  "options": [
+   {
+    "key": "a",
+    "label": "External fragmentation"
+   },
+   {
+    "key": "b",
+    "label": "Internal fragmentation and an extra memory access per reference"
+   },
+   {
+    "key": "c",
+    "label": "The need for compaction"
+   },
+   {
+    "key": "d",
+    "label": "A shared address space between processes"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "Fixed pieces waste part of the last page, and the page table must be read before the data."
+ },
+ {
+  "subject": "OS",
+  "topicSlug": "the-tlb-and-a-look-at-segmentation",
+  "order": 1,
+  "prompt": "TLB access is 10 ns, RAM is 100 ns, and the hit rate is 90%. What is the effective access time?",
+  "options": [
+   {
+    "key": "a",
+    "label": "110 ns"
+   },
+   {
+    "key": "b",
+    "label": "120 ns"
+   },
+   {
+    "key": "c",
+    "label": "200 ns"
+   },
+   {
+    "key": "d",
+    "label": "210 ns"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "0.90 x 110 + 0.10 x 210 = 120 ns."
+ },
+ {
+  "subject": "OS",
+  "topicSlug": "the-tlb-and-a-look-at-segmentation",
+  "order": 2,
+  "prompt": "Why is the TLB flushed on a context switch?",
+  "options": [
+   {
+    "key": "a",
+    "label": "Its entries belong to the outgoing process and would be wrong"
+   },
+   {
+    "key": "b",
+    "label": "To free memory for the incoming process"
+   },
+   {
+    "key": "c",
+    "label": "Because the page size may change between processes"
+   },
+   {
+    "key": "d",
+    "label": "It is not flushed; it is shared between all processes"
+   }
+  ],
+  "answerKey": "a",
+  "explanation": "Translations are per process, so stale entries would map the new process to the wrong frames."
+ },
+ {
+  "subject": "OS",
+  "topicSlug": "the-tlb-and-a-look-at-segmentation",
+  "order": 3,
+  "prompt": "What does segmentation have that paging does not?",
+  "options": [
+   {
+    "key": "a",
+    "label": "Freedom from external fragmentation"
+   },
+   {
+    "key": "b",
+    "label": "Pieces that correspond to meaningful parts of the program"
+   },
+   {
+    "key": "c",
+    "label": "A smaller lookup table"
+   },
+   {
+    "key": "d",
+    "label": "Hardware support in the MMU"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "Segments follow the program's own structure, which is what makes segment-level protection meaningful."
+ },
+ {
+  "subject": "OS",
+  "topicSlug": "demand-paging",
+  "order": 1,
+  "prompt": "What does the valid bit in a page table entry indicate?",
+  "options": [
+   {
+    "key": "a",
+    "label": "Whether the process is allowed to write to the page"
+   },
+   {
+    "key": "b",
+    "label": "Whether the page is currently in RAM"
+   },
+   {
+    "key": "c",
+    "label": "Whether the page has been modified since loading"
+   },
+   {
+    "key": "d",
+    "label": "Whether the page belongs to the running process"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "The valid bit says whether the page is resident; if not, the frame number is meaningless."
+ },
+ {
+  "subject": "OS",
+  "topicSlug": "demand-paging",
+  "order": 2,
+  "prompt": "Why can a program be larger than the Nova-14's physical RAM?",
+  "options": [
+   {
+    "key": "a",
+    "label": "The OS compresses pages before loading them"
+   },
+   {
+    "key": "b",
+    "label": "Only the pages currently being used need to be resident"
+   },
+   {
+    "key": "c",
+    "label": "The MMU allocates extra frames on demand"
+   },
+   {
+    "key": "d",
+    "label": "Unused pages are deleted from the program"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "Demand paging keeps only the touched pages resident, so the address space can exceed physical RAM."
+ },
+ {
+  "subject": "OS",
+  "topicSlug": "handling-a-page-fault-and-effective-access-time",
+  "order": 1,
+  "prompt": "Memory access is 100 ns and a page fault costs 100,000 ns. With a fault rate of 0.001, what is the effective access time?",
+  "options": [
+   {
+    "key": "a",
+    "label": "100.1 ns"
+   },
+   {
+    "key": "b",
+    "label": "199.9 ns"
+   },
+   {
+    "key": "c",
+    "label": "1,099 ns"
+   },
+   {
+    "key": "d",
+    "label": "100,100 ns"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "0.999 x 100 + 0.001 x 100,000 = 199.9 ns."
+ },
+ {
+  "subject": "OS",
+  "topicSlug": "handling-a-page-fault-and-effective-access-time",
+  "order": 2,
+  "prompt": "Why is the faulting instruction restarted rather than resumed?",
+  "options": [
+   {
+    "key": "a",
+    "label": "The CPU forgets the instruction during the trap"
+   },
+   {
+    "key": "b",
+    "label": "It never completed, so there is no partial state to continue from"
+   },
+   {
+    "key": "c",
+    "label": "Restarting is faster than saving the partial result"
+   },
+   {
+    "key": "d",
+    "label": "The page may have loaded into a different frame"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "The instruction was stopped before completing anything, so there is no partial state to resume from."
+ },
+ {
+  "subject": "OS",
+  "topicSlug": "page-replacement-fifo-lru-and-optimal",
+  "order": 1,
+  "prompt": "FIFO on the string 1 2 3 4 1 2 5 1 2 3 4 5 gives 9 faults with 3 frames and 10 with 4. What is this called?",
+  "options": [
+   {
+    "key": "a",
+    "label": "Thrashing"
+   },
+   {
+    "key": "b",
+    "label": "Belady's anomaly"
+   },
+   {
+    "key": "c",
+    "label": "The convoy effect"
+   },
+   {
+    "key": "d",
+    "label": "External fragmentation"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "Belady's anomaly is more frames producing more faults, which only non-stack algorithms like FIFO can show."
+ },
+ {
+  "subject": "OS",
+  "topicSlug": "page-replacement-fifo-lru-and-optimal",
+  "order": 2,
+  "prompt": "Why can the Optimal algorithm not be used in a real OS?",
+  "options": [
+   {
+    "key": "a",
+    "label": "It is too slow to compute"
+   },
+   {
+    "key": "b",
+    "label": "It requires knowing which pages will be referenced in future"
+   },
+   {
+    "key": "c",
+    "label": "It suffers from Belady's anomaly"
+   },
+   {
+    "key": "d",
+    "label": "It needs hardware support that does not exist"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "Choosing the page needed furthest ahead requires the future reference string."
+ },
+ {
+  "subject": "OS",
+  "topicSlug": "page-replacement-fifo-lru-and-optimal",
+  "order": 3,
+  "prompt": "Why do real systems approximate LRU instead of implementing it exactly?",
+  "options": [
+   {
+    "key": "a",
+    "label": "Exact LRU produces more faults than the approximation"
+   },
+   {
+    "key": "b",
+    "label": "Exact LRU would need bookkeeping on every memory access"
+   },
+   {
+    "key": "c",
+    "label": "Exact LRU exhibits Belady's anomaly"
+   },
+   {
+    "key": "d",
+    "label": "The page table has no room for timestamps"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "Exact LRU means updating ordering information on every single memory reference."
+ },
+ {
+  "subject": "OS",
+  "topicSlug": "thrashing-and-the-working-set",
+  "order": 1,
+  "prompt": "During thrashing, what does CPU utilisation look like?",
+  "options": [
+   {
+    "key": "a",
+    "label": "Very high, since the OS is working hard"
+   },
+   {
+    "key": "b",
+    "label": "Very low, since most processes are blocked on the disk"
+   },
+   {
+    "key": "c",
+    "label": "Exactly 100%, split between swapping and executing"
+   },
+   {
+    "key": "d",
+    "label": "Unchanged from normal operation"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "Nearly every process is in Waiting on a page fetch, so almost nothing is ready to run."
+ },
+ {
+  "subject": "OS",
+  "topicSlug": "thrashing-and-the-working-set",
+  "order": 2,
+  "prompt": "The last six references were 3, 2, 5, 5, 6, 5. What is the working set for a window of 6?",
+  "options": [
+   {
+    "key": "a",
+    "label": "{5}"
+   },
+   {
+    "key": "b",
+    "label": "{3, 2, 5, 6}"
+   },
+   {
+    "key": "c",
+    "label": "{3, 2, 5, 5, 6, 5}"
+   },
+   {
+    "key": "d",
+    "label": "{2, 5}"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "The working set is the distinct pages in the window, so repeats collapse to one entry each."
+ },
+ {
+  "subject": "OS",
+  "topicSlug": "thrashing-and-the-working-set",
+  "order": 3,
+  "prompt": "A machine is thrashing. Which action would make it worse?",
+  "options": [
+   {
+    "key": "a",
+    "label": "Adding more physical RAM"
+   },
+   {
+    "key": "b",
+    "label": "Suspending some processes"
+   },
+   {
+    "key": "c",
+    "label": "Increasing the swap space so more processes can be loaded"
+   },
+   {
+    "key": "d",
+    "label": "Reducing the number of running programs"
+   }
+  ],
+  "answerKey": "c",
+  "explanation": "More swap lets the OS admit more processes, which increases memory pressure and deepens the spiral."
+ },
+ {
+  "subject": "OS",
+  "topicSlug": "files-directories-inodes-and-the-open-file-table",
+  "order": 1,
+  "prompt": "Aisha renames a 12 KB file. Why is it instant?",
+  "options": [
+   {
+    "key": "a",
+    "label": "The OS defers the copy until the file is next read"
+   },
+   {
+    "key": "b",
+    "label": "Only a directory entry changes; the inode and data are untouched"
+   },
+   {
+    "key": "c",
+    "label": "12 KB is small enough to copy in under a millisecond"
+   },
+   {
+    "key": "d",
+    "label": "The file is cached in RAM at the time"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "The name lives in the directory table, so renaming never touches the inode or the data blocks."
+ },
+ {
+  "subject": "OS",
+  "topicSlug": "files-directories-inodes-and-the-open-file-table",
+  "order": 2,
+  "prompt": "The editor and the compile job both have build.log open. What do they share?",
+  "options": [
+   {
+    "key": "a",
+    "label": "The file descriptor number"
+   },
+   {
+    "key": "b",
+    "label": "The current offset"
+   },
+   {
+    "key": "c",
+    "label": "The inode, but not the offset"
+   },
+   {
+    "key": "d",
+    "label": "Nothing; each gets a private copy"
+   }
+  ],
+  "answerKey": "c",
+  "explanation": "There is one inode per file, but each open gets its own entry holding its own offset."
+ },
+ {
+  "subject": "OS",
+  "topicSlug": "allocation-methods-and-free-space",
+  "order": 1,
+  "prompt": "Why is random access slow with linked allocation?",
+  "options": [
+   {
+    "key": "a",
+    "label": "The blocks are stored in reverse order"
+   },
+   {
+    "key": "b",
+    "label": "Each block's location is only known from the previous block"
+   },
+   {
+    "key": "c",
+    "label": "The index block must be read before every access"
+   },
+   {
+    "key": "d",
+    "label": "Linked blocks cannot be cached"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "Every block is found only through its predecessor, so reaching block n means reading n blocks."
+ },
+ {
+  "subject": "OS",
+  "topicSlug": "allocation-methods-and-free-space",
+  "order": 2,
+  "prompt": "With 12 direct pointers and 4 KB blocks, what is the largest file that needs no indirect block?",
+  "options": [
+   {
+    "key": "a",
+    "label": "4 KB"
+   },
+   {
+    "key": "b",
+    "label": "48 KB"
+   },
+   {
+    "key": "c",
+    "label": "4 MB"
+   },
+   {
+    "key": "d",
+    "label": "1,024 blocks"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "12 direct pointers at 4 KB per block covers 48 KB before an indirect block is needed."
+ },
+ {
+  "subject": "OS",
+  "topicSlug": "disk-geometry-and-disk-scheduling",
+  "order": 1,
+  "prompt": "Head at 53, queue 98, 183, 37, 122, 14, 124, 65, 67. What is the total head movement under FCFS?",
+  "options": [
+   {
+    "key": "a",
+    "label": "236"
+   },
+   {
+    "key": "b",
+    "label": "331"
+   },
+   {
+    "key": "c",
+    "label": "640"
+   },
+   {
+    "key": "d",
+    "label": "199"
+   }
+  ],
+  "answerKey": "c",
+  "explanation": "Serving 98, 183, 37, 122, 14, 124, 65, 67 in arrival order from 53 totals 640 tracks."
+ },
+ {
+  "subject": "OS",
+  "topicSlug": "disk-geometry-and-disk-scheduling",
+  "order": 2,
+  "prompt": "What is the main weakness of SSTF?",
+  "options": [
+   {
+    "key": "a",
+    "label": "It always moves the head further than FCFS"
+   },
+   {
+    "key": "b",
+    "label": "A distant request can be starved indefinitely"
+   },
+   {
+    "key": "c",
+    "label": "It only works on solid state drives"
+   },
+   {
+    "key": "d",
+    "label": "It requires knowing future requests"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "SSTF always favours nearby requests, so a distant one can be passed over indefinitely."
+ },
+ {
+  "subject": "OS",
+  "topicSlug": "disk-geometry-and-disk-scheduling",
+  "order": 3,
+  "prompt": "Why does disk scheduling matter far less on an SSD?",
+  "options": [
+   {
+    "key": "a",
+    "label": "SSDs serve requests in parallel"
+   },
+   {
+    "key": "b",
+    "label": "There is no head to move, so block position barely affects access time"
+   },
+   {
+    "key": "c",
+    "label": "SSDs reorder requests internally using SCAN"
+   },
+   {
+    "key": "d",
+    "label": "SSDs have much larger blocks"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "With no mechanical head, seek time disappears and the order of blocks stops mattering."
+ },
+ {
+  "subject": "OS",
+  "topicSlug": "i-o-polling-interrupts-dma-buffering-and-caching",
+  "order": 1,
+  "prompt": "With DMA, how many interrupts does a 350-block transfer generate?",
+  "options": [
+   {
+    "key": "a",
+    "label": "350, one per block"
+   },
+   {
+    "key": "b",
+    "label": "One, at the end of the whole transfer"
+   },
+   {
+    "key": "c",
+    "label": "None; DMA does not use interrupts"
+   },
+   {
+    "key": "d",
+    "label": "Two, one at the start and one at the end"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "The DMA controller transfers everything itself and interrupts once when the whole job is done."
+ },
+ {
+  "subject": "OS",
+  "topicSlug": "i-o-polling-interrupts-dma-buffering-and-caching",
+  "order": 2,
+  "prompt": "Which best describes the page cache?",
+  "options": [
+   {
+    "key": "a",
+    "label": "A buffer that smooths the size mismatch between disk blocks and reads"
+   },
+   {
+    "key": "b",
+    "label": "A cache holding copies of recently used disk blocks in spare RAM"
+   },
+   {
+    "key": "c",
+    "label": "A region of swap space reserved for evicted pages"
+   },
+   {
+    "key": "d",
+    "label": "The DMA controller's staging area"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "It keeps copies of blocks already read, so a repeat read is served from RAM."
+ },
+ {
+  "subject": "OS",
+  "topicSlug": "i-o-polling-interrupts-dma-buffering-and-caching",
+  "order": 3,
+  "prompt": "A program writes to build.log and the call returns immediately. Where is the data?",
+  "options": [
+   {
+    "key": "a",
+    "label": "On the SSD, since writes are synchronous"
+   },
+   {
+    "key": "b",
+    "label": "In the page cache in RAM, not yet on the SSD"
+   },
+   {
+    "key": "c",
+    "label": "In the DMA controller's registers"
+   },
+   {
+    "key": "d",
+    "label": "In the process's own stack"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "Writes are absorbed by the page cache and flushed later, which is why they feel instant."
+ },
+ {
+  "subject": "OS",
+  "topicSlug": "one-click-all-eight-modules",
+  "order": 1,
+  "prompt": "In the trace, what moved the editor from Waiting to Ready?",
+  "options": [
+   {
+    "key": "a",
+    "label": "The scheduler's timer interrupt"
+   },
+   {
+    "key": "b",
+    "label": "The keyboard interrupt handler"
+   },
+   {
+    "key": "c",
+    "label": "The fork() system call"
+   },
+   {
+    "key": "d",
+    "label": "A page fault on the editor's code"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "The keyboard's interrupt handler stored the key and marked the editor Ready."
+ },
+ {
+  "subject": "OS",
+  "topicSlug": "one-click-all-eight-modules",
+  "order": 2,
+  "prompt": "The compile job ran for 3.2 seconds. What was the CPU doing during its page faults?",
+  "options": [
+   {
+    "key": "a",
+    "label": "Idling until the SSD replied"
+   },
+   {
+    "key": "b",
+    "label": "Running another process, since the compile job was in Waiting"
+   },
+   {
+    "key": "c",
+    "label": "Copying the page byte by byte"
+   },
+   {
+    "key": "d",
+    "label": "Flushing the TLB repeatedly"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "A faulting process is in Waiting, so the scheduler hands the core to somebody else."
+ },
+ {
+  "subject": "OS",
+  "topicSlug": "one-click-all-eight-modules",
+  "order": 3,
+  "prompt": "Which module's work appears nowhere in the timeline as an event?",
+  "options": [
+   {
+    "key": "a",
+    "label": "Module 3, because scheduling is invisible"
+   },
+   {
+    "key": "b",
+    "label": "Module 6, because address translation happens on every access"
+   },
+   {
+    "key": "c",
+    "label": "Module 8, because DMA needs no CPU"
+   },
+   {
+    "key": "d",
+    "label": "Module 5, because no deadlock occurred"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "Address translation happens on every access, so it underlies the whole trace rather than appearing as one event."
+ },
+ {
+  "subject": "OS",
+  "topicSlug": "answer-frames-for-the-20-most-asked-questions",
+  "order": 1,
+  "prompt": "Which two beats of the answer frame should you protect if you are cut short?",
+  "options": [
+   {
+    "key": "a",
+    "label": "Mechanism and trade-off"
+   },
+   {
+    "key": "b",
+    "label": "Define and example"
+   },
+   {
+    "key": "c",
+    "label": "Define and mechanism"
+   },
+   {
+    "key": "d",
+    "label": "Example and trade-off"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "The definition anchors the answer and the concrete example proves you have actually used the idea."
+ },
+ {
+  "subject": "OS",
+  "topicSlug": "answer-frames-for-the-20-most-asked-questions",
+  "order": 2,
+  "prompt": "An interviewer asks about the TLB and you describe the speed benefit. What should you add unprompted?",
+  "options": [
+   {
+    "key": "a",
+    "label": "The exact size of a typical TLB"
+   },
+   {
+    "key": "b",
+    "label": "That it is flushed on every context switch"
+   },
+   {
+    "key": "c",
+    "label": "The history of associative memory"
+   },
+   {
+    "key": "d",
+    "label": "A comparison with the L1 data cache"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "Naming the cost answers the follow-up before it is asked."
+ },
+ {
+  "subject": "OS",
+  "topicSlug": "answer-frames-for-the-20-most-asked-questions",
+  "order": 3,
+  "prompt": "What is the strongest answer to a question you genuinely do not know?",
+  "options": [
+   {
+    "key": "a",
+    "label": "Guess confidently and move on"
+   },
+   {
+    "key": "b",
+    "label": "Say you do not know and stop"
+   },
+   {
+    "key": "c",
+    "label": "Say you do not know, then connect it to something adjacent you do know"
+   },
+   {
+    "key": "d",
+    "label": "Change the subject to something you prepared"
+   }
+  ],
+  "answerKey": "c",
+  "explanation": "Admitting the gap and reasoning toward it shows judgement; bluffing shows the opposite."
+ },
+ {
+  "subject": "OS",
+  "topicSlug": "cross-topic-traps-and-rapid-fire-drill",
+  "order": 1,
+  "prompt": "A process is waiting for a lock that another process will never release. Aging is applied.",
+  "options": [
+   {
+    "key": "a",
+    "label": "It eventually runs, because its priority rises"
+   },
+   {
+    "key": "b",
+    "label": "Nothing, because it is deadlocked, not starved"
+   },
+   {
+    "key": "c",
+    "label": "It is killed by the OS after a timeout"
+   },
+   {
+    "key": "d",
+    "label": "The lock is preempted from the holder"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "Aging raises priority, which does nothing for a process waiting on a resource that will never be released."
+ },
+ {
+  "subject": "OS",
+  "topicSlug": "cross-topic-traps-and-rapid-fire-drill",
+  "order": 2,
+  "prompt": "A program makes a read system call that is served from the page cache. How many context switches occurred?",
+  "options": [
+   {
+    "key": "a",
+    "label": "Zero; only a mode switch happened"
+   },
+   {
+    "key": "b",
+    "label": "One, into the kernel"
+   },
+   {
+    "key": "c",
+    "label": "Two, in and back out"
+   },
+   {
+    "key": "d",
+    "label": "One per block read"
+   }
+  ],
+  "answerKey": "a",
+  "explanation": "The same process kept the CPU; only the privilege level changed."
+ },
+ {
+  "subject": "OS",
+  "topicSlug": "cross-topic-traps-and-rapid-fire-drill",
+  "order": 3,
+  "prompt": "With 4 KB pages, logical address 0x5ABC has what offset?",
+  "options": [
+   {
+    "key": "a",
+    "label": "0x5"
+   },
+   {
+    "key": "b",
+    "label": "0xABC"
+   },
+   {
+    "key": "c",
+    "label": "0x5AB"
+   },
+   {
+    "key": "d",
+    "label": "0xBC"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "With 4 KB pages the offset is the bottom 12 bits, which is the last three hex digits."
+ },
+ {
+  "subject": "OS",
+  "topicSlug": "cross-topic-traps-and-rapid-fire-drill",
+  "order": 4,
+  "prompt": "Which of these can exhibit Belady's anomaly?",
+  "options": [
+   {
+    "key": "a",
+    "label": "LRU"
+   },
+   {
+    "key": "b",
+    "label": "Optimal"
+   },
+   {
+    "key": "c",
+    "label": "FIFO"
+   },
+   {
+    "key": "d",
+    "label": "All page replacement algorithms"
+   }
+  ],
+  "answerKey": "c",
+  "explanation": "FIFO is not a stack algorithm, so more frames can produce more faults."
+ },
+ {
+  "subject": "OS",
+  "topicSlug": "cross-topic-traps-and-rapid-fire-drill",
+  "order": 5,
+  "prompt": "Two threads of the browser both read a shared counter and neither writes. Is this a race condition?",
+  "options": [
+   {
+    "key": "a",
+    "label": "Yes, any concurrent access is a race"
+   },
+   {
+    "key": "b",
+    "label": "No, a race requires at least one writer"
+   },
+   {
+    "key": "c",
+    "label": "Only on a multi-core CPU"
+   },
+   {
+    "key": "d",
+    "label": "Only if the counter is on the heap"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "Concurrent reads of an unchanging value are safe."
+ },
+ {
+  "subject": "OS",
+  "topicSlug": "cross-topic-traps-and-rapid-fire-drill",
+  "order": 6,
+  "prompt": "The Round Robin quantum is set to 8 ms and every process's burst is under 8 ms. What has Round Robin become?",
+  "options": [
+   {
+    "key": "a",
+    "label": "SJF"
+   },
+   {
+    "key": "b",
+    "label": "SRTF"
+   },
+   {
+    "key": "c",
+    "label": "FCFS"
+   },
+   {
+    "key": "d",
+    "label": "Priority scheduling"
+   }
+  ],
+  "answerKey": "c",
+  "explanation": "If no process is ever preempted, the rotation never happens and the schedule is FCFS."
+ },
+ {
+  "subject": "OS",
+  "topicSlug": "cross-topic-traps-and-rapid-fire-drill",
+  "order": 7,
+  "prompt": "A page table entry has its valid bit clear. What does the MMU do on access?",
+  "options": [
+   {
+    "key": "a",
+    "label": "Returns zero"
+   },
+   {
+    "key": "b",
+    "label": "Raises a trap into the kernel"
+   },
+   {
+    "key": "c",
+    "label": "Allocates a new frame automatically"
+   },
+   {
+    "key": "d",
+    "label": "Reads the page directly from swap"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "An invalid entry means the page is not resident, so the MMU traps and the OS handles the fault."
+ },
+ {
+  "subject": "OS",
+  "topicSlug": "cross-topic-traps-and-rapid-fire-drill",
+  "order": 8,
+  "prompt": "SSTF is chosen for a disk with a continuous stream of nearby requests. What is the risk?",
+  "options": [
+   {
+    "key": "a",
+    "label": "Head movement will exceed FCFS"
+   },
+   {
+    "key": "b",
+    "label": "A distant request is starved indefinitely"
+   },
+   {
+    "key": "c",
+    "label": "The disk will thrash"
+   },
+   {
+    "key": "d",
+    "label": "Requests will be served out of arrival order, which corrupts files"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "SSTF always favours the nearest request, so a far one can be passed over forever."
+ },
+ {
+  "subject": "OS",
+  "topicSlug": "cross-topic-traps-and-rapid-fire-drill",
+  "order": 9,
+  "prompt": "In the producer–consumer solution, the producer calls wait(mutex) before wait(empty).",
+  "options": [
+   {
+    "key": "a",
+    "label": "The producer overwrites the oldest entry"
+   },
+   {
+    "key": "b",
+    "label": "The producer sleeps holding the mutex, and both threads deadlock"
+   },
+   {
+    "key": "c",
+    "label": "The consumer is signalled and makes room"
+   },
+   {
+    "key": "d",
+    "label": "wait(empty) fails and returns an error"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "It sleeps holding the lock the consumer needs to make room, so neither can proceed."
+ },
+ {
+  "subject": "OS",
+  "topicSlug": "cross-topic-traps-and-rapid-fire-drill",
+  "order": 10,
+  "prompt": "Thrashing is occurring. Which single change makes it worse?",
+  "options": [
+   {
+    "key": "a",
+    "label": "Adding physical RAM"
+   },
+   {
+    "key": "b",
+    "label": "Suspending a process"
+   },
+   {
+    "key": "c",
+    "label": "Adding swap space so more processes can be loaded"
+   },
+   {
+    "key": "d",
+    "label": "Reducing the degree of multiprogramming"
+   }
+  ],
+  "answerKey": "c",
+  "explanation": "More swap admits more processes, increasing memory pressure and deepening the spiral."
+ },
+ {
+  "subject": "OS",
+  "topicSlug": "cross-topic-traps-and-rapid-fire-drill",
+  "order": 11,
+  "prompt": "Which is true of a hard link?",
+  "options": [
+   {
+    "key": "a",
+    "label": "It stores a path to the original file"
+   },
+   {
+    "key": "b",
+    "label": "It is a second directory entry pointing at the same inode"
+   },
+   {
+    "key": "c",
+    "label": "It breaks when the original is deleted"
+   },
+   {
+    "key": "d",
+    "label": "It duplicates the file's data blocks"
+   }
+  ],
+  "answerKey": "b",
+  "explanation": "A hard link is another name for the same inode, so the file survives deleting either name."
+ },
+ {
+  "subject": "OS",
+  "topicSlug": "cross-topic-traps-and-rapid-fire-drill",
+  "order": 12,
+  "prompt": "With DMA, what is the CPU doing during a 350-block transfer?",
+  "options": [
+   {
+    "key": "a",
+    "label": "Copying each block into memory"
+   },
+   {
+    "key": "b",
+    "label": "Polling the controller for completion"
+   },
+   {
+    "key": "c",
+    "label": "Running other processes; it is uninvolved until the final interrupt"
+   },
+   {
+    "key": "d",
+    "label": "Handling one interrupt per block"
+   }
+  ],
+  "answerKey": "c",
+  "explanation": "The DMA controller performs the whole transfer and interrupts once at the end."
+ }
+]

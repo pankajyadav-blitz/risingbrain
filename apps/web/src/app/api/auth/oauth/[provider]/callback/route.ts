@@ -56,23 +56,70 @@ async function handleCallback(req: Request, ctx: { params: Promise<{ provider: s
     return fail("oauth_exchange");
   }
 
-  // Resolve (or create) the user, then link the OAuth identity idempotently.
+  // Resolve the user by the OAUTH LINK first, and only then by email.
+  //
+  // Resolving by email alone (what this did before) made the `oauth_accounts`
+  // table decorative: the link was written but never read, so the provider
+  // identity that owned an account was whatever address the provider reported
+  // TODAY. A provider account linked to user A that later changes its email to
+  // user B's address logged the caller straight in as user B.
   const providerEnum = p === "google" ? "GOOGLE" : "GITHUB";
-  let user = await prisma.user.findUnique({ where: { email: profile.email } });
+
+  const link = await prisma.oAuthAccount.findUnique({
+    where: {
+      provider_providerAccountId: {
+        provider: providerEnum,
+        providerAccountId: profile.providerAccountId,
+      },
+    },
+    select: { userId: true },
+  });
+
+  let user = link ? await prisma.user.findUnique({ where: { id: link.userId } }) : null;
+
   if (!user) {
-    user = await prisma.user.create({
-      data: {
-        email: profile.email,
-        name: profile.name ?? "RisingBrain user",
-        image: profile.image,
-        emailVerified: new Date(),
-        role: "NORMAL",
+    // No link yet, so this identity has to be matched to an account by email —
+    // which is only sound when the PROVIDER has verified that address. Without
+    // this gate, adding an unconfirmed address to your own provider account is
+    // enough to claim the RisingBrain account that already owns it.
+    if (!profile.emailVerified) return fail("email_unverified");
+
+    user =
+      (await prisma.user.findUnique({ where: { email: profile.email } })) ??
+      (await prisma.user.create({
+        data: {
+          email: profile.email,
+          name: profile.name ?? "RisingBrain user",
+          image: profile.image,
+          emailVerified: new Date(),
+          role: "NORMAL",
+        },
+      }));
+
+    await prisma.oAuthAccount.upsert({
+      where: {
+        provider_providerAccountId: {
+          provider: providerEnum,
+          providerAccountId: profile.providerAccountId,
+        },
+      },
+      update: { userId: user.id },
+      create: {
+        userId: user.id,
+        provider: providerEnum,
+        providerAccountId: profile.providerAccountId,
       },
     });
-  } else {
-    // Existing account (possibly a credentials-first user with the same email):
-    // merge by linking this OAuth identity below. Fill in image / verify the
-    // email opportunistically — the provider has proven ownership of it.
+  }
+
+  // Admin-disabled accounts are denied a session even with a valid OAuth
+  // handshake. Checked before the profile write below so a disabled account is
+  // not quietly mutated on every sign-in attempt.
+  if (user.disabledAt) return fail("account_disabled");
+
+  // Fill in image / mark the email verified opportunistically — but only on the
+  // strength of an address the provider actually proved.
+  if (profile.emailVerified) {
     const data: { image?: string; emailVerified?: Date } = {};
     if (profile.image && profile.image !== user.image) data.image = profile.image;
     if (!user.emailVerified) data.emailVerified = new Date();
@@ -80,24 +127,6 @@ async function handleCallback(req: Request, ctx: { params: Promise<{ provider: s
       user = await prisma.user.update({ where: { id: user.id }, data });
     }
   }
-
-  await prisma.oAuthAccount.upsert({
-    where: {
-      provider_providerAccountId: {
-        provider: providerEnum,
-        providerAccountId: profile.providerAccountId,
-      },
-    },
-    update: {},
-    create: {
-      userId: user.id,
-      provider: providerEnum,
-      providerAccountId: profile.providerAccountId,
-    },
-  });
-
-  // Admin-disabled accounts are denied a session even with a valid OAuth handshake.
-  if (user.disabledAt) return fail("account_disabled");
 
   const tokens = await createSession({
     userId: user.id,

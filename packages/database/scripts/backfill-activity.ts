@@ -192,10 +192,10 @@ async function main() {
         ) AS t(u, d, dsa, mcq)
         ON CONFLICT ("userId", day) DO UPDATE SET
           count         = EXCLUDED.count,
-          "dsaCount"    = EXCLUDED."dsaCount",
-          "mcqCount"    = EXCLUDED."mcqCount",
+          "dsaCount"   = EXCLUDED."dsaCount",
+          "mcqCount"   = EXCLUDED."mcqCount",
           "courseCount" = 0,
-          "updatedAt"   = now()`
+          "updatedAt"  = now()`
     );
     tickDays(part.length);
   }
