@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Building2, MessageSquareQuote, Sparkles, Trophy } from "lucide-react";
 import { getCurrentUser } from "@/lib/auth/current-user";
+import { PublishStatus } from "@risingbrain/database/enums";
 import { Container, Eyebrow } from "@/components/marketing/primitives";
 import { CountUp } from "@/components/motion/count-up";
 import { Reveal } from "@/components/motion/reveal";
@@ -29,6 +30,11 @@ export default async function InterviewPage({
     getInterviewFeed(params, current?.id ?? null),
     current ? getMySubmissions(current.id) : Promise.resolve([]),
   ]);
+
+  // One open submission per author (enforced by `POST /api/interview`). Finding
+  // it here means the feed can say so BEFORE the composer is opened, instead of
+  // letting someone write a second write-up and meet a 409 at the end of it.
+  const pending = mySubmissions.find((s) => s.status === PublishStatus.PENDING_REVIEW) ?? null;
 
   const stats: { icon: typeof Building2; label: string; value: number }[] = [
     { icon: MessageSquareQuote, label: "experiences", value: feed.globalTotal },
@@ -87,6 +93,7 @@ export default async function InterviewPage({
             <InterviewFeed
             experiences={feed.experiences}
             signedIn={signedIn}
+            pendingSubmission={pending ? { id: pending.id, title: pending.title } : null}
             datasetEmpty={feed.globalTotal === 0}
             filters={params}
             page={feed.page}

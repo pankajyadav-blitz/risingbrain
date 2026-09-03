@@ -14,6 +14,13 @@ import { parseExperiencePayload } from "./_payload";
  * callers get a 401. Returns `{ id, status }` so the composer can tell the
  * author their write-up is queued rather than live.
  *
+ * ONE OPEN SUBMISSION PER AUTHOR. Someone with a write-up already waiting cannot
+ * queue another until that one has been ruled on. The review queue is worked by
+ * hand, so an author who posts five drafts in a row isn't five times as likely
+ * to be published — they just push everyone else's submission down the list. The
+ * existing draft stays fully editable (`PATCH /api/interview/[id]`), which is
+ * the answer to "I thought of something else": improve the one in the queue.
+ *
  * Editing and removing an existing one live in `[id]/route.ts`; validation is
  * shared via `_payload.ts` so the two paths enforce identical rules.
  */
@@ -23,6 +30,25 @@ export async function POST(req: Request) {
 
   const limited = await checkWriteLimit(req, user.id);
   if (limited) return limited;
+
+  // Checked before the body is parsed — it is the cheaper guard, and there is no
+  // point validating a write-up that cannot be filed. 409, not 429: this is a
+  // conflict with a row that already exists, and it clears when that row is
+  // reviewed rather than after a wait.
+  const openSubmission = await prisma.interviewExperience.findFirst({
+    where: { authorId: user.id, status: PublishStatus.PENDING_REVIEW },
+    select: { id: true },
+  });
+  if (openSubmission) {
+    return NextResponse.json(
+      {
+        error:
+          "You already have an experience waiting for review. You can keep editing that one — once a moderator has looked at it, you can post another.",
+        pendingId: openSubmission.id,
+      },
+      { status: 409 },
+    );
+  }
 
   let raw: Record<string, unknown>;
   try {

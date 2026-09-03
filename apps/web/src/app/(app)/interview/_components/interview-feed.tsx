@@ -13,6 +13,7 @@ import {
   PenLine,
   Search,
   SlidersHorizontal,
+  TriangleAlert,
   X,
 } from "lucide-react";
 import { Avatar } from "@/components/marketing/primitives";
@@ -45,6 +46,7 @@ const SORT_CHIPS: { value: FeedSort; label: string }[] = [
 export function InterviewFeed({
   experiences,
   signedIn,
+  pendingSubmission,
   datasetEmpty,
   filters,
   page,
@@ -54,6 +56,8 @@ export function InterviewFeed({
 }: {
   experiences: FeedExperience[];
   signedIn: boolean;
+  /** The author's write-up already waiting on review, if they have one. */
+  pendingSubmission: { id: string; title: string } | null;
   datasetEmpty: boolean;
   filters: FeedParams;
   page: number;
@@ -66,6 +70,8 @@ export function InterviewFeed({
   const searchParams = useSearchParams();
   const [isPending, startTransition] = useTransition();
   const [composerOpen, setComposerOpen] = useState(false);
+  /** Set when Share is pressed while a submission is already in the queue. */
+  const [blocked, setBlocked] = useState(false);
   const [query, setQuery] = useState(filters.q);
   const debounceRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
 
@@ -103,13 +109,66 @@ export function InterviewFeed({
   }
 
   function onShare() {
-    if (signedIn) setComposerOpen(true);
-    else router.push("/login");
+    if (!signedIn) {
+      router.push("/login");
+      return;
+    }
+    // An author may only have one write-up in the queue at a time, and the API
+    // enforces it. Saying so here — rather than opening the composer and
+    // rejecting the finished post — is the difference between a rule and a trap.
+    if (pendingSubmission) {
+      setBlocked(true);
+      return;
+    }
+    setComposerOpen(true);
   }
 
   const filtersActive =
     filters.q !== "" || filters.verdict !== null || filters.difficulty !== null;
-  const shareLabel = signedIn ? "Share your experience" : "Sign in to share your experience";
+  const shareLabel = !signedIn
+    ? "Sign in to share your experience"
+    : pendingSubmission
+      ? "One experience is already in review"
+      : "Share your experience";
+
+  /** The warning, once Share has been pressed with a submission still queued. */
+  const pendingNotice = blocked && pendingSubmission && (
+    <div
+      role="alert"
+      className="animate-in mx-auto mt-4 flex max-w-xl items-start gap-3 rounded-2xl border border-amber-500/30 bg-amber-500/10 px-4 py-3.5 text-left"
+    >
+      <TriangleAlert className="mt-0.5 h-4 w-4 shrink-0 text-amber-500" />
+      <div className="min-w-0 text-sm leading-relaxed text-muted">
+        <p className="font-semibold text-foreground">
+          You already have an experience waiting for review
+        </p>
+        <p className="mt-0.5">
+          A moderator reads every write-up before it reaches the feed, and one at a time keeps
+          that queue moving. You can keep editing{" "}
+          <Link
+            href={`/interview/${pendingSubmission.id}`}
+            className="font-medium text-accent hover:underline"
+          >
+            {pendingSubmission.title}
+          </Link>{" "}
+          in the meantime — once it has been reviewed, you can post another.
+        </p>
+      </div>
+      <button
+        type="button"
+        onClick={() => setBlocked(false)}
+        aria-label="Dismiss"
+        className="grid h-7 w-7 shrink-0 place-items-center rounded-lg text-muted transition-colors hover:text-foreground"
+      >
+        <X className="h-3.5 w-3.5" />
+      </button>
+    </div>
+  );
+
+  /** Share is styled down to a quiet pill while it can't actually be used. */
+  const shareCls = pendingSubmission
+    ? "glass-pill inline-flex items-center gap-2 rounded-full px-6 py-3 text-sm font-semibold text-muted"
+    : "btn-glow inline-flex items-center gap-2 rounded-full bg-rb-green-500 px-6 py-3 text-sm font-semibold text-black";
 
   // Truly empty table → invite the first contribution (no filter UI).
   if (datasetEmpty) {
@@ -124,14 +183,11 @@ export function InterviewFeed({
             Be the first to share what your interview was really like — the questions, the rounds,
             and the verdict. Your story helps the next candidate walk in prepared.
           </p>
-          <button
-            type="button"
-            onClick={onShare}
-            className="btn-glow mt-7 inline-flex items-center gap-2 rounded-full bg-rb-green-500 px-6 py-3 text-sm font-semibold text-black"
-          >
+          <button type="button" onClick={onShare} className={`mt-7 ${shareCls}`}>
             <PenLine className="h-4 w-4" />
             {shareLabel}
           </button>
+          {pendingNotice}
         </div>
         {composerOpen && <Composer onClose={() => setComposerOpen(false)} />}
       </>
@@ -141,15 +197,14 @@ export function InterviewFeed({
   return (
     <div>
       {/* Share CTA */}
-      <div className="mb-6 flex justify-center">
-        <button
-          type="button"
-          onClick={onShare}
-          className="btn-glow inline-flex items-center gap-2 rounded-full bg-rb-green-500 px-6 py-3 text-sm font-semibold text-black"
-        >
-          <PenLine className="h-4 w-4" />
-          {shareLabel}
-        </button>
+      <div className="mb-6">
+        <div className="flex justify-center">
+          <button type="button" onClick={onShare} className={shareCls}>
+            <PenLine className="h-4 w-4" />
+            {shareLabel}
+          </button>
+        </div>
+        {pendingNotice}
       </div>
 
       {/* Filter / search bar */}

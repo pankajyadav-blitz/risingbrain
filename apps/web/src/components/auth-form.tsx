@@ -9,8 +9,6 @@ import {
   User,
   Eye,
   EyeOff,
-  Globe,
-  KeyRound,
   ArrowRight,
   ArrowLeft,
   ShieldCheck,
@@ -18,6 +16,7 @@ import {
   Loader2,
 } from "lucide-react";
 import { OtpInput } from "@/components/auth/otp-input";
+import { GitHubMark, GoogleMark } from "@/components/auth/provider-icons";
 import { PasswordChecklist } from "@/components/auth/password-checklist";
 import { LoadingOverlay } from "@/components/loading/loading-overlay";
 import { isStrongPassword } from "@/lib/auth/password-policy";
@@ -245,19 +244,24 @@ export function AuthForm({ mode, callbackUrl }: { mode: Mode; callbackUrl?: stri
               <div className="grid grid-cols-2 gap-3">
                 {/* These are API routes (server-side OAuth handshake), not pages —
                     a full navigation is intended, so a plain anchor is correct. */}
+                {/* Each button wears its provider's own colours rather than the
+                    app's glass pill: a social sign-in is recognised before it is
+                    read, and two identical grey pills give a returning user
+                    nothing to aim at. Google's is the white/#dadce0 button from
+                    their sign-in guidelines; GitHub's is their near-black. */}
                 {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
                 <a
                   href="/api/auth/oauth/google"
-                  className="glass-pill glass-hover inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm text-foreground"
+                  className="inline-flex items-center justify-center gap-2.5 rounded-xl border border-[#dadce0] bg-white px-4 py-2.5 text-sm font-medium text-[#3c4043] transition-colors hover:bg-[#f7f8f8] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4285F4]"
                 >
-                  <Globe className="h-4 w-4" /> Google
+                  <GoogleMark className="h-4 w-4" /> Google
                 </a>
                 {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
                 <a
                   href="/api/auth/oauth/github"
-                  className="glass-pill glass-hover inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm text-foreground"
+                  className="inline-flex items-center justify-center gap-2.5 rounded-xl border border-[#3d444d] bg-[#24292f] px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-[#32383f] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#8b949e]"
                 >
-                  <KeyRound className="h-4 w-4" /> GitHub
+                  <GitHubMark className="h-4 w-4" /> GitHub
                 </a>
               </div>
 

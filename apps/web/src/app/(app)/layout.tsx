@@ -1,4 +1,5 @@
 import { IconRail } from "@/components/shell/icon-rail";
+import { FeedbackWidget } from "@/components/feedback/feedback-widget";
 import { getCurrentUser, getCurrentUserProfileForChrome } from "@/lib/auth/current-user";
 import { getCurrentStreak } from "@/lib/streak";
 import { getNavForRole, type AppRole } from "@/lib/rbac";
@@ -58,6 +59,13 @@ export default async function AppLayout({
       <div className="app-scrollport flex min-w-0 flex-1 flex-col lg:min-h-0 lg:overflow-y-auto lg:rounded-2xl lg:border lg:border-border lg:bg-surface/20">
         {children}
       </div>
+
+      {/* One mount for the whole signed-in shell, so "report this" is always in
+          the same corner instead of a per-page affordance people have to hunt
+          for. Signed-out visitors get nothing: filing feedback needs an account
+          (`/api/feedback` is 401 without one), and a button that only ever
+          bounces you to /login is worse than no button. */}
+      {current && <FeedbackWidget userId={current.id} />}
     </div>
   );
 }

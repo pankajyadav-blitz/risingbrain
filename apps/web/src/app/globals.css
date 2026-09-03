@@ -669,3 +669,61 @@ body::before {
   outline: 2px solid var(--accent);
   border-radius: 0.5rem;
 }
+
+/* ==========================================================================
+   Feedback nudge — see components/feedback/feedback-widget.tsx.
+
+   The card is asking for a moment of someone's attention while they are in the
+   middle of something else, so the motion has one job: make it clear the card
+   came OUT of the button in the corner, and then stop. It rises from that
+   corner (`transform-origin`), plays once, and never loops — a pulsing overlay
+   that keeps moving reads as an ad and gets dismissed unread.
+   ========================================================================== */
+@keyframes fb-nudge-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.94);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.fb-nudge {
+  animation: fb-nudge-in 420ms var(--ease-soft) both;
+  transform-origin: bottom right;
+}
+
+/* The button's icon gives one small wave as the card appears — enough to tie
+   the two together, short enough to be over before it is annoying. */
+@keyframes fb-attention {
+  0%,
+  100% {
+    transform: none;
+  }
+  25% {
+    transform: rotate(-12deg) scale(1.08);
+  }
+  55% {
+    transform: rotate(9deg) scale(1.05);
+  }
+  80% {
+    transform: rotate(-4deg);
+  }
+}
+.fb-attention {
+  animation: fb-attention 900ms var(--ease-soft) 2;
+}
+
+/* Reduced motion: the nudge still appears — it is information, not decoration —
+   but nothing moves to announce it. The halo goes entirely; a ping that can't
+   animate is just a green disc sitting under the button. */
+@media (prefers-reduced-motion: reduce) {
+  .fb-nudge,
+  .fb-attention {
+    animation: none;
+  }
+  .fb-ring {
+    display: none;
+  }
+}

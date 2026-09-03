@@ -50,6 +50,7 @@ if (process.env.NODE_ENV !== "production") {
 // Re-export the Prisma enums the app uses (runtime const objects in Prisma 7).
 export {
   Difficulty,
+  FeedbackStatus,
   InterviewVerdict,
   ProblemStatus,
   PublishStatus,

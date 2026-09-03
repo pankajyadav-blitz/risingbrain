@@ -197,6 +197,28 @@ export const interviewQueueStatus = z.enum([
   PublishStatus.ARCHIVED,
 ]);
 
+// ---------------------------------------------------------------------------
+// Feedback — the admin inbox behind the floating feedback widget
+// ---------------------------------------------------------------------------
+
+/**
+ * What an admin can do to one piece of feedback.
+ *
+ *   view    NEW → VIEWED (also releases the author's unread quota)
+ *   unview  VIEWED → NEW (put it back in the inbox; re-applies the quota)
+ *
+ * `delete` is NOT here — a hard delete is its own DELETE verb so it can never be
+ * reached by a typo'd action string.
+ */
+export const FEEDBACK_REVIEW_ACTIONS = ["view", "unview"] as const;
+
+export type FeedbackReviewAction = (typeof FEEDBACK_REVIEW_ACTIONS)[number];
+
+export const feedbackReview = z.object({
+  id,
+  action: z.enum(FEEDBACK_REVIEW_ACTIONS),
+});
+
 /** Move a row up/down: swap `order` between two siblings of one `entity`. */
 export const reorderPayload = z.object({
   entity: z.enum([

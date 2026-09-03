@@ -6,6 +6,7 @@ import {
   LayoutDashboard,
   ListTodo,
   Database,
+  MessageSquareText,
   NotebookPen,
   ShieldCheck,
   Users,
@@ -18,6 +19,7 @@ const TABS = [
   { href: "/admin/domain", label: "Domain", icon: Database },
   { href: "/admin/screening", label: "Screening", icon: NotebookPen },
   { href: "/admin/interview", label: "Interviews", icon: ShieldCheck },
+  { href: "/admin/feedback", label: "Feedback", icon: MessageSquareText },
   { href: "/admin/users", label: "Users", icon: Users },
 ];
 

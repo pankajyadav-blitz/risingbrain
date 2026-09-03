@@ -1,7 +1,16 @@
 import Link from "next/link";
-import { ListTodo, Database, NotebookPen, ShieldCheck, Users, ArrowRight } from "lucide-react";
+import {
+  ListTodo,
+  Database,
+  MessageSquareText,
+  NotebookPen,
+  ShieldCheck,
+  Users,
+  ArrowRight,
+} from "lucide-react";
 import { prisma } from "@/lib/db";
 import { countPendingInterviews } from "./interview/_data";
+import { getFeedbackSummary } from "./feedback/_data";
 import { RevalidateButton } from "./_components/revalidate-button";
 
 /**
@@ -23,6 +32,7 @@ export default async function AdminOverviewPage() {
     users,
     pendingInterviews,
     publishedInterviews,
+    feedback,
   ] = await Promise.all([
     prisma.dsaSheet.count(),
     prisma.dsaTopic.count(),
@@ -36,6 +46,7 @@ export default async function AdminOverviewPage() {
     prisma.user.count(),
     countPendingInterviews(),
     prisma.interviewExperience.count({ where: { status: "PUBLISHED" } }),
+    getFeedbackSummary(),
   ]);
 
   /**
@@ -91,6 +102,26 @@ export default async function AdminOverviewPage() {
       urgent: pendingInterviews > 0,
     },
     {
+      href: "/admin/feedback",
+      icon: MessageSquareText,
+      title: "Feedback",
+      blurb: "Notes sent from the in-app feedback button.",
+      // Unread leads for the same reason the interview queue leads on its
+      // backlog — and here it is load-bearing twice over: until someone reads
+      // these, their authors are blocked from sending any more.
+      primary: { label: "Unread", value: feedback.unread },
+      secondary: [
+        ["read", feedback.read],
+        // Shown as the rounded average over the notes that carried a score, so
+        // "4.2★ from 18" rather than a number diluted by every bug report.
+        [
+          `★ avg from ${feedback.rated}`,
+          feedback.averageRating ? Number(feedback.averageRating.toFixed(1)) : 0,
+        ],
+      ] as const,
+      urgent: feedback.unread > 0,
+    },
+    {
       href: "/admin/users",
       icon: Users,
       title: "Users",
@@ -114,10 +145,8 @@ export default async function AdminOverviewPage() {
         <RevalidateButton />
       </div>
 
-      {/* Five sections: a 2-col track would strand the last card on its own row,
-          so the layout widens to three from `lg` (3 + 2) and keeps two columns
-          below that (2 + 2 + 1, with the odd card at the bottom where it reads
-          as the end of the list rather than a gap). */}
+      {/* Six sections: three columns from `lg` (3 + 3) and two below that
+          (2 + 2 + 2), so no card is ever stranded alone on the last row. */}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {sections.map((s) => {
           const Icon = s.icon;

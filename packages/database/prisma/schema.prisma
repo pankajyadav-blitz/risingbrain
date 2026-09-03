@@ -175,6 +175,9 @@ model User {
   interviewReviews  InterviewExperience[] @relation("InterviewReviewer")
   interviewLikes    InterviewLike[]
   interviewComments InterviewComment[]
+  feedback          Feedback[]            @relation("FeedbackAuthor")
+  // Feedback this user has marked read. Only ever non-empty for admins.
+  feedbackReviews   Feedback[]            @relation("FeedbackReviewer")
 
   @@index([role])
   @@map("users")
@@ -845,4 +848,58 @@ model ActivityDay {
   @@unique([userId, day])
   @@index([userId])
   @@map("activity_days")
+}
+
+// ============================================================================
+// PRODUCT FEEDBACK
+// ============================================================================
+
+// Where one piece of feedback sits in the admin's inbox.
+//
+//   NEW    nobody has read it yet — it counts against the author's open quota
+//   VIEWED an admin has read it; the author's quota frees up again
+enum FeedbackStatus {
+  NEW
+  VIEWED
+}
+
+// A note a signed-in user sends from the floating widget. Deliberately thin:
+// one body, one author, one read/unread flag. There is no reply thread — the
+// point is a low-friction "here's what's broken", not a support system.
+//
+// The body is markdown (converted from the widget's rich-text HTML on write, the
+// same way an interview experience is), so one renderer serves both.
+model Feedback {
+  id     String         @id @default(cuid())
+  userId String
+  body   String // markdown
+  // 1–5 stars, optional: the widget can be opened to report a bug, where a
+  // score is noise, and the nudge can be answered with a star before anyone has
+  // typed a word. Null means "not given", NOT zero — averaging it as 0 would
+  // drag the score down every time someone only reported a broken page.
+  rating Int?
+  // A user may hold at most FEEDBACK_PENDING_LIMIT rows in NEW at once (see
+  // `lib/feedback.ts`). That is the rate limit: it is cleared by an admin
+  // reading the feedback, not by waiting, so the quota tracks "how much unread
+  // work this person has queued" rather than elapsed time.
+  status FeedbackStatus @default(NEW)
+
+  // --- read trail (null until an admin has opened it) ---
+  reviewedAt   DateTime?
+  reviewedById String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation("FeedbackAuthor", fields: [userId], references: [id], onDelete: Cascade)
+  // SetNull, not Cascade: deleting an admin account must not delete the feedback
+  // they once read.
+  reviewedBy User? @relation("FeedbackReviewer", fields: [reviewedById], references: [id], onDelete: SetNull)
+
+  // The admin inbox reads one status newest-first; the quota check counts
+  // (userId, status = NEW). Both are single index range scans.
+  @@index([status, createdAt(sort: Desc)])
+  @@index([userId, status])
+  @@index([reviewedById])
+  @@map("feedback")
 }
