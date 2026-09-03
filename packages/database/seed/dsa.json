@@ -601,7 +601,7 @@
                   "reference": "GFG",
                   "difficulty": "MEDIUM",
                   "leetcodeUrl": "https://leetcode.com/problems/maximum-subarray/",
-                  "gfgUrl": "https://www.geeksforgeeks.org/problems/k-th-largest-sum-contiguous-subarray/1",
+                  "gfgUrl": null,
                   "companies": [
                     {
                       "name": "Amazon",
@@ -1081,9 +1081,9 @@
                 {
                   "id": "problem_0046",
                   "title": "Find kth rotation",
-                  "reference": "LC 189",
+                  "reference": "GFG",
                   "difficulty": "EASY",
-                  "leetcodeUrl": "https://leetcode.com/problems/rotate-array/description/",
+                  "leetcodeUrl": null,
                   "gfgUrl": "https://www.geeksforgeeks.org/problems/rotation4723/1",
                   "companies": [
                     {
@@ -1296,7 +1296,7 @@
                   "reference": "LC 1552",
                   "difficulty": "MEDIUM",
                   "leetcodeUrl": "https://leetcode.com/problems/magnetic-force-between-two-balls/description/",
-                  "gfgUrl": "https://www.geeksforgeeks.org/problems/magnet-array-problem3743/1",
+                  "gfgUrl": null,
                   "companies": [
                     {
                       "name": "Flipkart",
@@ -1675,7 +1675,7 @@
                   "reference": "LC 227",
                   "difficulty": "MEDIUM",
                   "leetcodeUrl": "https://leetcode.com/problems/basic-calculator-ii/",
-                  "gfgUrl": "https://www.geeksforgeeks.org/problems/create-your-own-calculator4308/1",
+                  "gfgUrl": null,
                   "companies": [
                     {
                       "name": "Microsoft",
@@ -1753,7 +1753,7 @@
                   "reference": "LC 844",
                   "difficulty": "EASY",
                   "leetcodeUrl": "https://leetcode.com/problems/backspace-string-compare/",
-                  "gfgUrl": "https://www.geeksforgeeks.org/problems/string-comparison5858/1",
+                  "gfgUrl": null,
                   "companies": [
                     {
                       "name": "Amazon",
@@ -1776,7 +1776,7 @@
                   "reference": "LC 1047",
                   "difficulty": "EASY",
                   "leetcodeUrl": "https://leetcode.com/problems/remove-all-adjacent-duplicates-in-string/",
-                  "gfgUrl": "https://www.geeksforgeeks.org/dsa/remove-all-adjacent-duplicates-in-string-ii/",
+                  "gfgUrl": null,
                   "companies": [
                     {
                       "name": "Microsoft",
@@ -2175,7 +2175,7 @@
                   "reference": "LC 1249",
                   "difficulty": "MEDIUM",
                   "leetcodeUrl": "https://leetcode.com/problems/minimum-remove-to-make-valid-parentheses/",
-                  "gfgUrl": "https://www.geeksforgeeks.org/problems/min-add-to-make-parentheses-valid/1",
+                  "gfgUrl": null,
                   "companies": [
                     {
                       "name": "Meta",
@@ -2218,7 +2218,7 @@
                       "logo": null
                     }
                   ],
-                  "youtubeUrl": "https://youtu.be/PrvZ91XczPA?si=4p8IwVUzKUPV_jtX"
+                  "youtubeUrl": "https://youtu.be/PrvZ91XczPA?si=zEscxcN3j6Rh3C31"
                 },
                 {
                   "id": "problem_0095",
@@ -2349,7 +2349,7 @@
                   "reference": "Classic",
                   "difficulty": "MEDIUM",
                   "leetcodeUrl": "https://leetcode.com/problems/powx-n/",
-                  "gfgUrl": "https://www.geeksforgeeks.org/problems/power-of-numbers-1587115620/1",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/powx-n/1",
                   "companies": [
                     {
                       "name": "Amazon",
@@ -2497,7 +2497,7 @@
                       "logo": "https://companieslogo.com/img/orig/ADBE-fb158b30.png?t=1740130206"
                     }
                   ],
-                  "youtubeUrl": null
+                  "youtubeUrl": "https://youtu.be/G1-oSUP2vcU?si=RM_FMdpCtCkLydZK"
                 },
                 {
                   "id": "prob_rec_dc_2",
@@ -2589,13 +2589,13 @@
                       "logo": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTk6zMotp9rnGOp9uo3sIoYeHi19hsTW2r6pQ&s"
                     }
                   ],
-                  "youtubeUrl": null
+                  "youtubeUrl": "https://youtu.be/eeJQFxknAv4?si=fab8lCqNpvojX5ik"
                 }
               ]
             },
             {
               "id": "topic_0009_sub_3",
-              "name": "Recursion on LinkedList",
+              "name": "Recursion on LinkedList / Stack",
               "order": 3,
               "strategy": "Process data structures recursively by handling the first/last element and recursing on the rest.",
               "identification": "Problems asking to reverse, delete, or merge standard linear data structures.",
@@ -2621,7 +2621,7 @@
                       "logo": "https://s3-alpha.figma.com/hub/file/6516490032/e7dabd51-4155-4761-a247-b3d6a6f52f73-cover.png"
                     }
                   ],
-                  "youtubeUrl": null
+                  "youtubeUrl": "https://youtu.be/XnNaU61HG0U?si=E7YxxdVnQnQkkYiP"
                 },
                 {
                   "id": "prob_rec_struct_4",
@@ -2644,7 +2644,53 @@
                       "logo": "https://companieslogo.com/img/orig/ADBE-fb158b30.png?t=1740130206"
                     }
                   ],
-                  "youtubeUrl": null
+                  "youtubeUrl": "https://www.youtube.com/watch?v=WWOvCh31xBk"
+                },
+                {
+                  "id": "prob_rec_struct_5",
+                  "title": "Delete Middle of Stack",
+                  "reference": "Classic",
+                  "difficulty": "EASY",
+                  "leetcodeUrl": null,
+                  "gfgUrl": "https://practice.geeksforgeeks.org/problems/delete-middle-element-of-a-stack/1",
+                  "companies": [
+                    {
+                      "name": "Zoho",
+                      "logo": "https://companieslogo.com/img/orig/ZOHO.NS-a78b54e3.png"
+                    },
+                    {
+                      "name": "Freshworks",
+                      "logo": "https://cdn.worldvectorlogo.com/logos/freshworks-1.svg"
+                    },
+                    {
+                      "name": "Oracle",
+                      "logo": "https://upload.wikimedia.org/wikipedia/commons/5/50/Oracle_logo.svg"
+                    }
+                  ],
+                  "youtubeUrl": "https://youtu.be/WyU32Nj0iAY?si=lry2YTI02Jc25Ozt"
+                },
+                {
+                  "id": "prob_rec_struct_6",
+                  "title": "Reverse Stack",
+                  "reference": "Classic",
+                  "difficulty": "MEDIUM",
+                  "leetcodeUrl": null,
+                  "gfgUrl": "https://practice.geeksforgeeks.org/problems/reverse-a-stack/1",
+                  "companies": [
+                    {
+                      "name": "Amazon",
+                      "logo": "https://upload.wikimedia.org/wikipedia/commons/d/de/Amazon_icon.png"
+                    },
+                    {
+                      "name": "Adobe",
+                      "logo": "https://companieslogo.com/img/orig/ADBE-fb158b30.png?t=1740130206"
+                    },
+                    {
+                      "name": "Zoho",
+                      "logo": "https://companieslogo.com/img/orig/ZOHO.NS-a78b54e3.png"
+                    }
+                  ],
+                  "youtubeUrl": "https://youtu.be/PrvZ91XczPA?si=4p8IwVUzKUPV_jtX"
                 }
               ]
             },
@@ -2761,7 +2807,7 @@
                       "logo": "https://1000logos.net/wp-content/uploads/2021/06/Zomato-logo.png"
                     }
                   ],
-                  "youtubeUrl": null
+                  "youtubeUrl": "https://youtu.be/wS0AAIfS2Yw?si=g3OBkdYVV2lKjekI"
                 },
                 {
                   "id": "problem_0098",
@@ -2784,7 +2830,7 @@
                       "logo": "https://upload.wikimedia.org/wikipedia/commons/b/b7/PayPal_Logo_Icon_2014.svg"
                     }
                   ],
-                  "youtubeUrl": null
+                  "youtubeUrl": "https://youtu.be/wS0AAIfS2Yw?si=g3OBkdYVV2lKjekI"
                 },
                 {
                   "id": "problem_0099",
@@ -2807,7 +2853,7 @@
                       "logo": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTg4b2xFrY7mhOS9pGOnckG88R0ZzHpzYZ7hA&s"
                     }
                   ],
-                  "youtubeUrl": null
+                  "youtubeUrl": "https://youtu.be/zJg7Heus8RI?si=8QCVcrBzjkRq_tJo"
                 },
                 {
                   "id": "problem_0100",
@@ -2815,7 +2861,7 @@
                   "reference": "LC 707",
                   "difficulty": "MEDIUM",
                   "leetcodeUrl": "https://leetcode.com/problems/design-linked-list/",
-                  "gfgUrl": "https://www.geeksforgeeks.org/problems/introduction-to-linked-list/1",
+                  "gfgUrl": null,
                   "companies": [
                     {
                       "name": "Amazon",
@@ -2830,7 +2876,7 @@
                       "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/Goldman_Sachs.svg/250px-Goldman_Sachs.svg.png"
                     }
                   ],
-                  "youtubeUrl": null
+                  "youtubeUrl": "https://youtu.be/szJxAKv16es?si=xZwqE9OfmMZ2_bug"
                 },
                 {
                   "id": "problem_0101",
@@ -2853,7 +2899,7 @@
                       "logo": "https://1000logos.net/wp-content/uploads/2021/06/Zomato-logo.png"
                     }
                   ],
-                  "youtubeUrl": null
+                  "youtubeUrl": "https://youtu.be/nmakP0KDsOU?si=yH16N6bt-iH9hDuq"
                 },
                 {
                   "id": "problem_1002",
@@ -2876,7 +2922,7 @@
                       "logo": "https://www.citypng.com/public/uploads/preview/flipkart-logo-icon-hd-png-701751694706828v1habfry9b.png"
                     }
                   ],
-                  "youtubeUrl": null
+                  "youtubeUrl": "https://youtu.be/WZdOHNebhdo?si=nDtpJ_ZJN8X74Zr-"
                 }
               ]
             },
@@ -2908,7 +2954,7 @@
                       "logo": "https://cdn.iconscout.com/icon/free/png-256/free-paytm-icon-svg-download-png-226448.png?f=webp"
                     }
                   ],
-                  "youtubeUrl": null
+                  "youtubeUrl": "https://youtu.be/ZSyUwlzmN-U?si=A2yKylgvGNGFeGjf"
                 },
                 {
                   "id": "problem_0103",
@@ -2931,7 +2977,7 @@
                       "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/Goldman_Sachs.svg/250px-Goldman_Sachs.svg.png"
                     }
                   ],
-                  "youtubeUrl": null
+                  "youtubeUrl": "https://youtu.be/CVPhZHylPsg?si=gO_kVbhbvwSatOBp"
                 },
                 {
                   "id": "problem_0104",
@@ -2954,7 +3000,7 @@
                       "logo": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTg4b2xFrY7mhOS9pGOnckG88R0ZzHpzYZ7hA&s"
                     }
                   ],
-                  "youtubeUrl": null
+                  "youtubeUrl": "https://youtu.be/7Gp7DV5ufm4?si=YFIbM6_XF880F9_Q"
                 },
                 {
                   "id": "problem_0105",
@@ -2977,7 +3023,7 @@
                       "logo": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSOqDecYNB4XzOS5TFHmIBXBgf_DMPzKttsmw&s"
                     }
                   ],
-                  "youtubeUrl": null
+                  "youtubeUrl": "https://youtu.be/zJg7Heus8RI?si=8QCVcrBzjkRq_tJo"
                 }
               ]
             },
@@ -3009,7 +3055,7 @@
                       "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/Goldman_Sachs.svg/250px-Goldman_Sachs.svg.png"
                     }
                   ],
-                  "youtubeUrl": null
+                  "youtubeUrl": "https://youtu.be/XnNaU61HG0U?si=I34Y7OH3UFBqRqTG"
                 },
                 {
                   "id": "problem_0107",
@@ -3032,7 +3078,7 @@
                       "logo": "https://s3-alpha.figma.com/hub/file/6516490032/e7dabd51-4155-4761-a247-b3d6a6f52f73-cover.png"
                     }
                   ],
-                  "youtubeUrl": null
+                  "youtubeUrl": "https://youtu.be/aZ3L4M5SaXE?si=iW-s5HdY8HSf4kTT"
                 },
                 {
                   "id": "problem_0108",
@@ -3055,7 +3101,7 @@
                       "logo": "https://companieslogo.com/img/orig/ADBE-fb158b30.png?t=1740130206"
                     }
                   ],
-                  "youtubeUrl": null
+                  "youtubeUrl": "https://youtu.be/N6Gg4zUI73E?si=CudotWkbW89Fh_Cm"
                 },
                 {
                   "id": "problem_1010",
@@ -3077,7 +3123,7 @@
                       "logo": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVu_punmVpXPehlmF-zb9LO30EZQRtHpK7KA&s"
                     }
                   ],
-                  "youtubeUrl": null,
+                  "youtubeUrl": "https://youtu.be/ITlTfoXSXR4?si=vYe6kZSCgGrzyYRd",
                   "reference": "LC"
                 },
                 {
@@ -3101,7 +3147,7 @@
                       "logo": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTg4b2xFrY7mhOS9pGOnckG88R0ZzHpzYZ7hA&s"
                     }
                   ],
-                  "youtubeUrl": null
+                  "youtubeUrl": "https://youtu.be/vMKUlvivp0A?si=51zg0TG2Di26n3Yu"
                 },
                 {
                   "id": "problem_0110",
@@ -3124,7 +3170,7 @@
                       "logo": "https://companieslogo.com/img/orig/ADBE-fb158b30.png?t=1740130206"
                     }
                   ],
-                  "youtubeUrl": null
+                  "youtubeUrl": "https://youtu.be/-sAXKktW0xg?si=oLPA08CFSR1M6Dnj"
                 },
                 {
                   "id": "problem_0111",
@@ -3147,7 +3193,7 @@
                       "logo": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7g-Z03mvYWp-V0fzAUngNU4ZLVExOT0EpwA&s"
                     }
                   ],
-                  "youtubeUrl": null
+                  "youtubeUrl": "https://youtu.be/RdXan2ryzTA?si=dESwXc4DGIuFawRh"
                 }
               ]
             },
@@ -3179,7 +3225,7 @@
                       "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/Goldman_Sachs.svg/250px-Goldman_Sachs.svg.png"
                     }
                   ],
-                  "youtubeUrl": null
+                  "youtubeUrl": "https://youtu.be/WWOvCh31xBk?si=SYP4e99-gFN9dfSj"
                 },
                 {
                   "id": "problem_0113",
@@ -3202,7 +3248,7 @@
                       "logo": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTEih3HSg7_49qZjWfXxFwxpUWgapkXYA1u6w&s"
                     }
                   ],
-                  "youtubeUrl": null
+                  "youtubeUrl": "https://youtu.be/bsHyg2eUYg8"
                 },
                 {
                   "id": "problem_0114",
@@ -3225,7 +3271,7 @@
                       "logo": "https://companieslogo.com/img/orig/ADBE-fb158b30.png?t=1740130206"
                     }
                   ],
-                  "youtubeUrl": null
+                  "youtubeUrl": "https://youtu.be/G1-oSUP2vcU?si=RM_FMdpCtCkLydZK"
                 },
                 {
                   "id": "problem_0115",
@@ -3248,7 +3294,7 @@
                       "logo": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTg4b2xFrY7mhOS9pGOnckG88R0ZzHpzYZ7hA&s"
                     }
                   ],
-                  "youtubeUrl": null
+                  "youtubeUrl": "https://youtu.be/drBFwqH4JrM?si=5F-qppEdP2AnRM0F"
                 },
                 {
                   "id": "problem_0116",
@@ -3271,7 +3317,7 @@
                       "logo": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7g-Z03mvYWp-V0fzAUngNU4ZLVExOT0EpwA&s"
                     }
                   ],
-                  "youtubeUrl": null
+                  "youtubeUrl": "https://youtu.be/NXoc0cTJseU?si=qmq0kK4ay7LwdxAx"
                 },
                 {
                   "id": "problem_1003",
@@ -3294,7 +3340,7 @@
                       "logo": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVu_punmVpXPehlmF-zb9LO30EZQRtHpK7KA&s"
                     }
                   ],
-                  "youtubeUrl": null
+                  "youtubeUrl": "https://youtu.be/mU4xJV-tquY?si=-YRKv9juKWFt-PUJ"
                 },
                 {
                   "id": "problem_1004",
@@ -3317,7 +3363,7 @@
                       "logo": "https://1000logos.net/wp-content/uploads/2017/02/Facebook-Logosu.png"
                     }
                   ],
-                  "youtubeUrl": null
+                  "youtubeUrl": "https://youtu.be/YmkUl_Qsunk?si=y0jDuX6UDYvJCP72"
                 }
               ]
             },
@@ -3349,7 +3395,7 @@
                       "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/Goldman_Sachs.svg/250px-Goldman_Sachs.svg.png"
                     }
                   ],
-                  "youtubeUrl": null
+                  "youtubeUrl": "https://youtu.be/XDTUbHHaJ9s"
                 },
                 {
                   "id": "problem_0118",
@@ -3372,7 +3418,7 @@
                       "logo": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTEih3HSg7_49qZjWfXxFwxpUWgapkXYA1u6w&s"
                     }
                   ],
-                  "youtubeUrl": null
+                  "youtubeUrl": "https://youtu.be/nkBX6Ew5fys"
                 },
                 {
                   "id": "problem_0119",
@@ -3395,7 +3441,7 @@
                       "logo": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTVf6nm-Dk1ELbj1aBfeN_vJH6R1wAqYWnltw&s"
                     }
                   ],
-                  "youtubeUrl": null
+                  "youtubeUrl": "https://youtu.be/JNEKtUnIlOI"
                 },
                 {
                   "id": "problem_0120",
@@ -3418,7 +3464,7 @@
                       "logo": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTg4b2xFrY7mhOS9pGOnckG88R0ZzHpzYZ7hA&s"
                     }
                   ],
-                  "youtubeUrl": null
+                  "youtubeUrl": "https://youtu.be/RXpV_CLC9UU"
                 },
                 {
                   "id": "problem_1005",
@@ -4045,7 +4091,7 @@
                       "logo": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTVf6nm-Dk1ELbj1aBfeN_vJH6R1wAqYWnltw&s"
                     }
                   ],
-                  "youtubeUrl": null
+                  "youtubeUrl": "https://youtu.be/bc-qEyh8eW8?si=VXaYXs7WAAXjCkZz"
                 },
                 {
                   "id": "problem_0179",
@@ -4068,7 +4114,7 @@
                       "logo": "https://1000logos.net/wp-content/uploads/2021/06/Zomato-logo.png"
                     }
                   ],
-                  "youtubeUrl": null
+                  "youtubeUrl": "https://youtu.be/bc-qEyh8eW8?si=VXaYXs7WAAXjCkZz"
                 },
                 {
                   "id": "problem_0180",
@@ -4091,7 +4137,7 @@
                       "logo": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTVf6nm-Dk1ELbj1aBfeN_vJH6R1wAqYWnltw&s"
                     }
                   ],
-                  "youtubeUrl": null
+                  "youtubeUrl": "https://youtu.be/bc-qEyh8eW8?si=VXaYXs7WAAXjCkZz"
                 },
                 {
                   "id": "problem_0181",
@@ -4110,7 +4156,30 @@
                       "logo": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVu_punmVpXPehlmF-zb9LO30EZQRtHpK7KA&s"
                     }
                   ],
-                  "youtubeUrl": null
+                  "youtubeUrl": "https://youtu.be/UbB1dNqCvMI?si=wQ2CYP0oObj4BP2_"
+                },
+                {
+                  "id": "problem_1100",
+                  "title": "Symmetric Tree",
+                  "reference": "LC 101",
+                  "difficulty": "EASY",
+                  "leetcodeUrl": "https://leetcode.com/problems/symmetric-tree/",
+                  "gfgUrl": null,
+                  "companies": [
+                    {
+                      "name": "Amazon",
+                      "logo": "https://upload.wikimedia.org/wikipedia/commons/d/de/Amazon_icon.png"
+                    },
+                    {
+                      "name": "Microsoft",
+                      "logo": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVu_punmVpXPehlmF-zb9LO30EZQRtHpK7KA&s"
+                    },
+                    {
+                      "name": "Google",
+                      "logo": "https://s3-alpha.figma.com/hub/file/6516490032/e7dabd51-4155-4761-a247-b3d6a6f52f73-cover.png"
+                    }
+                  ],
+                  "youtubeUrl": "https://youtu.be/UbB1dNqCvMI?si=wQ2CYP0oObj4BP2_"
                 },
                 {
                   "id": "problem_0182",
@@ -4133,7 +4202,30 @@
                       "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/Goldman_Sachs.svg/250px-Goldman_Sachs.svg.png"
                     }
                   ],
-                  "youtubeUrl": null
+                  "youtubeUrl": "https://youtu.be/Gu2qwHI54jI?si=fVoyoCr_jhkS5J9B"
+                },
+                {
+                  "id": "problem_1101",
+                  "title": "Balanced Binary Tree",
+                  "reference": "LC 110",
+                  "difficulty": "EASY",
+                  "leetcodeUrl": "https://leetcode.com/problems/balanced-binary-tree/",
+                  "gfgUrl": null,
+                  "companies": [
+                    {
+                      "name": "Amazon",
+                      "logo": "https://upload.wikimedia.org/wikipedia/commons/d/de/Amazon_icon.png"
+                    },
+                    {
+                      "name": "Microsoft",
+                      "logo": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVu_punmVpXPehlmF-zb9LO30EZQRtHpK7KA&s"
+                    },
+                    {
+                      "name": "Google",
+                      "logo": "https://s3-alpha.figma.com/hub/file/6516490032/e7dabd51-4155-4761-a247-b3d6a6f52f73-cover.png"
+                    }
+                  ],
+                  "youtubeUrl": "https://youtu.be/FuEtvz2HmMY?si=XarNYeSdthkoCyfG"
                 },
                 {
                   "id": "problem_0183",
@@ -4156,7 +4248,30 @@
                       "logo": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTVf6nm-Dk1ELbj1aBfeN_vJH6R1wAqYWnltw&s"
                     }
                   ],
-                  "youtubeUrl": null
+                  "youtubeUrl": "https://youtu.be/GLPeZfpjR80?si=QURbfLGKNv23CPlq"
+                },
+                {
+                  "id": "problem_1102",
+                  "title": "Subtree of Another Tree",
+                  "reference": "LC 572",
+                  "difficulty": "EASY",
+                  "leetcodeUrl": "https://leetcode.com/problems/subtree-of-another-tree/",
+                  "gfgUrl": null,
+                  "companies": [
+                    {
+                      "name": "Amazon",
+                      "logo": "https://upload.wikimedia.org/wikipedia/commons/d/de/Amazon_icon.png"
+                    },
+                    {
+                      "name": "Microsoft",
+                      "logo": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVu_punmVpXPehlmF-zb9LO30EZQRtHpK7KA&s"
+                    },
+                    {
+                      "name": "Google",
+                      "logo": "https://s3-alpha.figma.com/hub/file/6516490032/e7dabd51-4155-4761-a247-b3d6a6f52f73-cover.png"
+                    }
+                  ],
+                  "youtubeUrl": "https://youtu.be/QELiK5frdmo?si=Rx8QyOR-hcpP8tJD"
                 },
                 {
                   "id": "problem_0184",
@@ -4175,7 +4290,30 @@
                       "logo": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTVf6nm-Dk1ELbj1aBfeN_vJH6R1wAqYWnltw&s"
                     }
                   ],
-                  "youtubeUrl": null
+                  "youtubeUrl": "https://youtu.be/kRMBNp4G888?si=8G9V7giQuyc1l73j"
+                },
+                {
+                  "id": "problem_1104",
+                  "title": "Path Sum II",
+                  "reference": "LC 113",
+                  "difficulty": "MEDIUM",
+                  "leetcodeUrl": "https://leetcode.com/problems/path-sum-ii/",
+                  "gfgUrl": null,
+                  "companies": [
+                    {
+                      "name": "Amazon",
+                      "logo": "https://upload.wikimedia.org/wikipedia/commons/d/de/Amazon_icon.png"
+                    },
+                    {
+                      "name": "Microsoft",
+                      "logo": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVu_punmVpXPehlmF-zb9LO30EZQRtHpK7KA&s"
+                    },
+                    {
+                      "name": "Google",
+                      "logo": "https://s3-alpha.figma.com/hub/file/6516490032/e7dabd51-4155-4761-a247-b3d6a6f52f73-cover.png"
+                    }
+                  ],
+                  "youtubeUrl": "https://youtu.be/fVM2bqhBxyI?si=Gkm7nznB3HHXRVS6"
                 },
                 {
                   "id": "problem_0185",
@@ -4255,7 +4393,7 @@
                       "logo": "https://s3-alpha.figma.com/hub/file/6516490032/e7dabd51-4155-4761-a247-b3d6a6f52f73-cover.png"
                     }
                   ],
-                  "youtubeUrl": null
+                  "youtubeUrl": "https://youtu.be/rkoq1xYgysc?si=NP-30U3Q_3dWAMyi"
                 },
                 {
                   "id": "problem_0189",
@@ -4272,6 +4410,29 @@
                     {
                       "name": "Amazon",
                       "logo": "https://upload.wikimedia.org/wikipedia/commons/d/de/Amazon_icon.png"
+                    }
+                  ],
+                  "youtubeUrl": "https://youtu.be/PtVeA8Vtf-k?si=9jzcqaD2qx5XkHgn"
+                },
+                {
+                  "id": "problem_1103",
+                  "title": "Count Complete Tree Nodes",
+                  "reference": "LC 222",
+                  "difficulty": "MEDIUM",
+                  "leetcodeUrl": "https://leetcode.com/problems/count-complete-tree-nodes/",
+                  "gfgUrl": null,
+                  "companies": [
+                    {
+                      "name": "Amazon",
+                      "logo": "https://upload.wikimedia.org/wikipedia/commons/d/de/Amazon_icon.png"
+                    },
+                    {
+                      "name": "Microsoft",
+                      "logo": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVu_punmVpXPehlmF-zb9LO30EZQRtHpK7KA&s"
+                    },
+                    {
+                      "name": "Google",
+                      "logo": "https://s3-alpha.figma.com/hub/file/6516490032/e7dabd51-4155-4761-a247-b3d6a6f52f73-cover.png"
                     }
                   ],
                   "youtubeUrl": null
@@ -4293,7 +4454,7 @@
                       "logo": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVu_punmVpXPehlmF-zb9LO30EZQRtHpK7KA&s"
                     }
                   ],
-                  "youtubeUrl": null
+                  "youtubeUrl": "https://youtu.be/d5kbLp3BEqs?si=IPUWomfEU55SNSVL"
                 },
                 {
                   "id": "problem_0191",
@@ -4312,7 +4473,7 @@
                       "logo": "https://upload.wikimedia.org/wikipedia/commons/d/de/Amazon_icon.png"
                     }
                   ],
-                  "youtubeUrl": null
+                  "youtubeUrl": "https://youtu.be/tYB3oYK1woo?si=LZk_ea9xU39xMjMu"
                 },
                 {
                   "id": "problem_0192",
@@ -4363,7 +4524,7 @@
                       "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/Goldman_Sachs.svg/250px-Goldman_Sachs.svg.png"
                     }
                   ],
-                  "youtubeUrl": null
+                  "youtubeUrl": "https://youtu.be/wkpSXB4bzdA?si=ppAtZP2piYclf0q8"
                 },
                 {
                   "id": "problem_0194",
@@ -4386,7 +4547,7 @@
                       "logo": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTg4b2xFrY7mhOS9pGOnckG88R0ZzHpzYZ7hA&s"
                     }
                   ],
-                  "youtubeUrl": null
+                  "youtubeUrl": "https://youtu.be/g5pwB1X-rfY?si=V_3k-gs_1P0o4D1P"
                 },
                 {
                   "id": "problem_0195",
@@ -4409,7 +4570,7 @@
                       "logo": "https://1000logos.net/wp-content/uploads/2021/06/Zomato-logo.png"
                     }
                   ],
-                  "youtubeUrl": null
+                  "youtubeUrl": "https://youtu.be/xo3i19SvDaU?si=hVG03nDbOvKocGu0"
                 },
                 {
                   "id": "problem_0196",
@@ -4432,7 +4593,7 @@
                       "logo": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7g-Z03mvYWp-V0fzAUngNU4ZLVExOT0EpwA&s"
                     }
                   ],
-                  "youtubeUrl": null
+                  "youtubeUrl": "https://youtu.be/GLPeZfpjR80?si=QURbfLGKNv23CPlq"
                 },
                 {
                   "id": "problem_0197",
@@ -4455,7 +4616,7 @@
                       "logo": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTVf6nm-Dk1ELbj1aBfeN_vJH6R1wAqYWnltw&s"
                     }
                   ],
-                  "youtubeUrl": null
+                  "youtubeUrl": "https://youtu.be/6SBaKv6p6bQ?si=XlZIXjaNAAU9WGeq"
                 },
                 {
                   "id": "problem_1006",
@@ -4463,7 +4624,7 @@
                   "reference": "LC 116",
                   "difficulty": "MEDIUM",
                   "leetcodeUrl": "https://leetcode.com/problems/populating-next-right-pointers-in-each-node/",
-                  "gfgUrl": "https://www.geeksforgeeks.org/connect-nodes-at-same-level/",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/connect-nodes-at-same-level/1",
                   "companies": [
                     {
                       "name": "Amazon",
@@ -4478,7 +4639,7 @@
                       "logo": "https://www.citypng.com/public/uploads/preview/flipkart-logo-icon-hd-png-701751694706828v1habfry9b.png"
                     }
                   ],
-                  "youtubeUrl": null
+                  "youtubeUrl": "https://youtu.be/xt96GOBa02w?si=K305_AjwAaTK3LGM"
                 },
                 {
                   "id": "problem_1007",
@@ -4486,7 +4647,7 @@
                   "reference": "LC 993",
                   "difficulty": "EASY",
                   "leetcodeUrl": "https://leetcode.com/problems/cousins-in-binary-tree/",
-                  "gfgUrl": "https://www.geeksforgeeks.org/check-two-nodes-cousins-binary-tree/",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/check-if-two-nodes-are-cousins/1",
                   "companies": [
                     {
                       "name": "Amazon",
@@ -4501,7 +4662,76 @@
                       "logo": "https://companieslogo.com/img/orig/ADBE-fb158b30.png?t=1740130206"
                     }
                   ],
-                  "youtubeUrl": null
+                  "youtubeUrl": "https://youtu.be/BjFCmspVQl4?si=PZHL17gYvNQxtWP3"
+                },
+                {
+                  "id": "problem_1108",
+                  "title": "Left Side View",
+                  "reference": "GFG",
+                  "difficulty": "EASY",
+                  "leetcodeUrl": null,
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/left-view-of-binary-tree/1",
+                  "companies": [
+                    {
+                      "name": "Amazon",
+                      "logo": "https://upload.wikimedia.org/wikipedia/commons/d/de/Amazon_icon.png"
+                    },
+                    {
+                      "name": "Microsoft",
+                      "logo": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVu_punmVpXPehlmF-zb9LO30EZQRtHpK7KA&s"
+                    },
+                    {
+                      "name": "Flipkart",
+                      "logo": "https://www.citypng.com/public/uploads/preview/flipkart-logo-icon-hd-png-701751694706828v1habfry9b.png"
+                    }
+                  ],
+                  "youtubeUrl": "https://youtu.be/xo3i19SvDaU?si=hVG03nDbOvKocGu0"
+                },
+                {
+                  "id": "problem_1106",
+                  "title": "Bottom View of Binary Tree",
+                  "reference": "GFG",
+                  "difficulty": "MEDIUM",
+                  "leetcodeUrl": null,
+                  "gfgUrl": "https://practice.geeksforgeeks.org/problems/bottom-view-of-binary-tree/1",
+                  "companies": [
+                    {
+                      "name": "Amazon",
+                      "logo": "https://upload.wikimedia.org/wikipedia/commons/d/de/Amazon_icon.png"
+                    },
+                    {
+                      "name": "Microsoft",
+                      "logo": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVu_punmVpXPehlmF-zb9LO30EZQRtHpK7KA&s"
+                    },
+                    {
+                      "name": "Google",
+                      "logo": "https://s3-alpha.figma.com/hub/file/6516490032/e7dabd51-4155-4761-a247-b3d6a6f52f73-cover.png"
+                    }
+                  ],
+                  "youtubeUrl": "https://youtu.be/mTCcQ7StEO4?si=4M8QzN5v_msUKh09"
+                },
+                {
+                  "id": "problem_1107",
+                  "title": "Maximum Width of Binary Tree",
+                  "reference": "LC 662",
+                  "difficulty": "MEDIUM",
+                  "leetcodeUrl": "https://leetcode.com/problems/maximum-width-of-binary-tree/",
+                  "gfgUrl": null,
+                  "companies": [
+                    {
+                      "name": "Amazon",
+                      "logo": "https://upload.wikimedia.org/wikipedia/commons/d/de/Amazon_icon.png"
+                    },
+                    {
+                      "name": "Microsoft",
+                      "logo": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVu_punmVpXPehlmF-zb9LO30EZQRtHpK7KA&s"
+                    },
+                    {
+                      "name": "Google",
+                      "logo": "https://s3-alpha.figma.com/hub/file/6516490032/e7dabd51-4155-4761-a247-b3d6a6f52f73-cover.png"
+                    }
+                  ],
+                  "youtubeUrl": "https://youtu.be/J-EsqQjcx8E?si=sQa5Yyp4rapCRm4K"
                 }
               ]
             },
@@ -4531,6 +4761,29 @@
                     {
                       "name": "Goldman Sachs",
                       "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/Goldman_Sachs.svg/250px-Goldman_Sachs.svg.png"
+                    }
+                  ],
+                  "youtubeUrl": null
+                },
+                {
+                  "id": "problem_1123",
+                  "title": "Lowest Common Ancestor of Deepest Leaves",
+                  "reference": "LC 1123",
+                  "difficulty": "MEDIUM",
+                  "leetcodeUrl": "https://leetcode.com/problems/lowest-common-ancestor-of-deepest-leaves/",
+                  "gfgUrl": null,
+                  "companies": [
+                    {
+                      "name": "Amazon",
+                      "logo": "https://upload.wikimedia.org/wikipedia/commons/d/de/Amazon_icon.png"
+                    },
+                    {
+                      "name": "Google",
+                      "logo": "https://s3-alpha.figma.com/hub/file/6516490032/e7dabd51-4155-4761-a247-b3d6a6f52f73-cover.png"
+                    },
+                    {
+                      "name": "Microsoft",
+                      "logo": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVu_punmVpXPehlmF-zb9LO30EZQRtHpK7KA&s"
                     }
                   ],
                   "youtubeUrl": null
@@ -4727,6 +4980,48 @@
                     }
                   ],
                   "youtubeUrl": null
+                },
+                {
+                  "id": "problem_1115",
+                  "title": "Construct Binary Tree from Inorder and Postorder Traversal",
+                  "reference": "LC 106",
+                  "difficulty": "MEDIUM",
+                  "leetcodeUrl": "https://leetcode.com/problems/construct-binary-tree-from-inorder-and-postorder-traversal/",
+                  "gfgUrl": null,
+                  "companies": [
+                    {
+                      "name": "Amazon",
+                      "logo": "https://upload.wikimedia.org/wikipedia/commons/d/de/Amazon_icon.png"
+                    },
+                    {
+                      "name": "Microsoft",
+                      "logo": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVu_punmVpXPehlmF-zb9LO30EZQRtHpK7KA&s"
+                    },
+                    {
+                      "name": "Google",
+                      "logo": "https://s3-alpha.figma.com/hub/file/6516490032/e7dabd51-4155-4761-a247-b3d6a6f52f73-cover.png"
+                    }
+                  ],
+                  "youtubeUrl": null
+                },
+                {
+                  "id": "problem_1109",
+                  "title": "Construct Binary Tree from Preorder and Postorder Traversal",
+                  "reference": "LC 889",
+                  "difficulty": "MEDIUM",
+                  "leetcodeUrl": "https://leetcode.com/problems/construct-binary-tree-from-preorder-and-postorder-traversal/description/",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/construct-tree-from-preorder-postorder/1",
+                  "companies": [
+                    {
+                      "name": "Amazon",
+                      "logo": "https://upload.wikimedia.org/wikipedia/commons/d/de/Amazon_icon.png"
+                    },
+                    {
+                      "name": "Microsoft",
+                      "logo": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVu_punmVpXPehlmF-zb9LO30EZQRtHpK7KA&s"
+                    }
+                  ],
+                  "youtubeUrl": null
                 }
               ]
             }
@@ -4837,6 +5132,52 @@
                   "youtubeUrl": null
                 },
                 {
+                  "id": "problem_1111",
+                  "title": "Binary Search Tree Iterator",
+                  "reference": "LC 173",
+                  "difficulty": "MEDIUM",
+                  "leetcodeUrl": "https://leetcode.com/problems/binary-search-tree-iterator/",
+                  "gfgUrl": null,
+                  "companies": [
+                    {
+                      "name": "Amazon",
+                      "logo": "https://upload.wikimedia.org/wikipedia/commons/d/de/Amazon_icon.png"
+                    },
+                    {
+                      "name": "Microsoft",
+                      "logo": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVu_punmVpXPehlmF-zb9LO30EZQRtHpK7KA&s"
+                    },
+                    {
+                      "name": "Google",
+                      "logo": "https://s3-alpha.figma.com/hub/file/6516490032/e7dabd51-4155-4761-a247-b3d6a6f52f73-cover.png"
+                    }
+                  ],
+                  "youtubeUrl": null
+                },
+                {
+                  "id": "problem_1113",
+                  "title": "Two Sum IV: Input is a BST",
+                  "reference": "LC 653",
+                  "difficulty": "EASY",
+                  "leetcodeUrl": "https://leetcode.com/problems/two-sum-iv-input-is-a-bst/",
+                  "gfgUrl": null,
+                  "companies": [
+                    {
+                      "name": "Amazon",
+                      "logo": "https://upload.wikimedia.org/wikipedia/commons/d/de/Amazon_icon.png"
+                    },
+                    {
+                      "name": "Microsoft",
+                      "logo": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVu_punmVpXPehlmF-zb9LO30EZQRtHpK7KA&s"
+                    },
+                    {
+                      "name": "Google",
+                      "logo": "https://s3-alpha.figma.com/hub/file/6516490032/e7dabd51-4155-4761-a247-b3d6a6f52f73-cover.png"
+                    }
+                  ],
+                  "youtubeUrl": null
+                },
+                {
                   "id": "problem_0210",
                   "title": "Delete Node in a BST",
                   "reference": "LC 450",
@@ -4887,7 +5228,7 @@
                   "title": "Merge 2 BST",
                   "reference": "GFG",
                   "difficulty": "MEDIUM",
-                  "leetcodeUrl": "https://leetcode.com/problems/merge-bsts-to-create-single-bst/description/",
+                  "leetcodeUrl": "https://leetcode.com/problems/merge-two-binary-trees/description/",
                   "gfgUrl": "https://www.geeksforgeeks.org/problems/merge-two-bst-s/1",
                   "companies": [
                     {
@@ -4901,6 +5242,25 @@
                     {
                       "name": "Amazon",
                       "logo": "https://upload.wikimedia.org/wikipedia/commons/d/de/Amazon_icon.png"
+                    }
+                  ],
+                  "youtubeUrl": null
+                },
+                {
+                  "id": "problem_1117",
+                  "title": "Merge BSTs",
+                  "reference": "LC 1932",
+                  "difficulty": "MEDIUM",
+                  "leetcodeUrl": "https://leetcode.com/problems/merge-bsts-to-create-single-bst/",
+                  "gfgUrl": null,
+                  "companies": [
+                    {
+                      "name": "Google",
+                      "logo": "https://s3-alpha.figma.com/hub/file/6516490032/e7dabd51-4155-4761-a247-b3d6a6f52f73-cover.png"
+                    },
+                    {
+                      "name": "Microsoft",
+                      "logo": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVu_punmVpXPehlmF-zb9LO30EZQRtHpK7KA&s"
                     }
                   ],
                   "youtubeUrl": null
@@ -4934,7 +5294,99 @@
                   "reference": "LC 230",
                   "difficulty": "MEDIUM",
                   "leetcodeUrl": "https://leetcode.com/problems/kth-smallest-element-in-a-bst/",
-                  "gfgUrl": "https://www.geeksforgeeks.org/find-k-th-smallest-element-in-bst-order-statistics-in-bst/",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/find-k-th-smallest-element-in-bst/1",
+                  "companies": [
+                    {
+                      "name": "Amazon",
+                      "logo": "https://upload.wikimedia.org/wikipedia/commons/d/de/Amazon_icon.png"
+                    },
+                    {
+                      "name": "Microsoft",
+                      "logo": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVu_punmVpXPehlmF-zb9LO30EZQRtHpK7KA&s"
+                    },
+                    {
+                      "name": "Google",
+                      "logo": "https://s3-alpha.figma.com/hub/file/6516490032/e7dabd51-4155-4761-a247-b3d6a6f52f73-cover.png"
+                    }
+                  ],
+                  "youtubeUrl": null
+                },
+                {
+                  "id": "problem_1116",
+                  "title": "Convert Binary Tree to Doubly Linked List",
+                  "reference": "GFG",
+                  "difficulty": "HARD",
+                  "leetcodeUrl": null,
+                  "gfgUrl": "https://practice.geeksforgeeks.org/problems/binary-tree-to-dll/1",
+                  "companies": [
+                    {
+                      "name": "Amazon",
+                      "logo": "https://upload.wikimedia.org/wikipedia/commons/d/de/Amazon_icon.png"
+                    },
+                    {
+                      "name": "Microsoft",
+                      "logo": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVu_punmVpXPehlmF-zb9LO30EZQRtHpK7KA&s"
+                    },
+                    {
+                      "name": "Google",
+                      "logo": "https://s3-alpha.figma.com/hub/file/6516490032/e7dabd51-4155-4761-a247-b3d6a6f52f73-cover.png"
+                    }
+                  ],
+                  "youtubeUrl": null
+                },
+                {
+                  "id": "problem_1110",
+                  "title": "Convert BST to Greater Tree",
+                  "reference": "LC 538",
+                  "difficulty": "MEDIUM",
+                  "leetcodeUrl": "https://leetcode.com/problems/convert-bst-to-greater-tree/",
+                  "gfgUrl": null,
+                  "companies": [
+                    {
+                      "name": "Amazon",
+                      "logo": "https://upload.wikimedia.org/wikipedia/commons/d/de/Amazon_icon.png"
+                    },
+                    {
+                      "name": "Microsoft",
+                      "logo": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVu_punmVpXPehlmF-zb9LO30EZQRtHpK7KA&s"
+                    },
+                    {
+                      "name": "Google",
+                      "logo": "https://s3-alpha.figma.com/hub/file/6516490032/e7dabd51-4155-4761-a247-b3d6a6f52f73-cover.png"
+                    }
+                  ],
+                  "youtubeUrl": null
+                },
+                {
+                  "id": "problem_1112",
+                  "title": "Inorder Successor / Predecessor in BST",
+                  "reference": "GFG",
+                  "difficulty": "MEDIUM",
+                  "leetcodeUrl": null,
+                  "gfgUrl": "https://practice.geeksforgeeks.org/problems/predecessor-and-successor/1",
+                  "companies": [
+                    {
+                      "name": "Amazon",
+                      "logo": "https://upload.wikimedia.org/wikipedia/commons/d/de/Amazon_icon.png"
+                    },
+                    {
+                      "name": "Microsoft",
+                      "logo": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVu_punmVpXPehlmF-zb9LO30EZQRtHpK7KA&s"
+                    },
+                    {
+                      "name": "Google",
+                      "logo": "https://s3-alpha.figma.com/hub/file/6516490032/e7dabd51-4155-4761-a247-b3d6a6f52f73-cover.png"
+                    }
+                  ],
+                  "youtubeUrl": null
+                },
+                {
+                  "id": "problem_1114",
+                  "title": "Construct Binary Search Tree from Preorder Traversal",
+                  "reference": "LC 1008",
+                  "difficulty": "MEDIUM",
+                  "leetcodeUrl": "https://leetcode.com/problems/construct-binary-search-tree-from-preorder-traversal/",
+                  "gfgUrl": null,
                   "companies": [
                     {
                       "name": "Amazon",
@@ -4965,7 +5417,7 @@
                   "title": "Lowest Common Ancestor of BST",
                   "reference": "LC 235",
                   "difficulty": "MEDIUM",
-                  "leetcodeUrl": "https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-search-tree/",
+                  "leetcodeUrl": "https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-search-tree/description/",
                   "gfgUrl": "https://www.geeksforgeeks.org/problems/lowest-common-ancestor-in-a-bst/1",
                   "companies": [
                     {
@@ -5166,7 +5618,7 @@
                   "reference": "LC 286",
                   "difficulty": "MEDIUM",
                   "leetcodeUrl": "https://leetcode.com/problems/walls-and-gates/description/",
-                  "gfgUrl": "https://www.geeksforgeeks.org/problems/reducing-walls4443/1",
+                  "gfgUrl": null,
                   "companies": [
                     {
                       "name": "Amazon",
@@ -5613,7 +6065,7 @@
                   "reference": "LC 332",
                   "difficulty": "HARD",
                   "leetcodeUrl": "https://leetcode.com/problems/reconstruct-itinerary/description/",
-                  "gfgUrl": "https://www.geeksforgeeks.org/dsa/find-itinerary-from-a-given-list-of-tickets/",
+                  "gfgUrl": null,
                   "companies": [
                     {
                       "name": "Google",
@@ -5691,7 +6143,7 @@
                   "reference": "LC 1135",
                   "difficulty": "MEDIUM",
                   "leetcodeUrl": "https://leetcode.com/problems/lexicographically-smallest-equivalent-string/description/",
-                  "gfgUrl": "https://www.geeksforgeeks.org/problems/mila-and-strings0435/1",
+                  "gfgUrl": null,
                   "companies": [
                     {
                       "name": "Amazon",
@@ -6031,7 +6483,7 @@
                   "reference": "GFG",
                   "difficulty": "MEDIUM",
                   "leetcodeUrl": "https://leetcode.com/problems/find-the-city-with-the-smallest-number-of-neighbors-at-a-threshold-distance/description/",
-                  "gfgUrl": "-https://www.geeksforgeeks.org/problems/city-with-the-smallest-number-of-neighbors-at-a-threshold-distance/1 ",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/city-with-the-smallest-number-of-neighbors-at-a-threshold-distance/1",
                   "companies": [
                     {
                       "name": "Amazon",
@@ -6310,7 +6762,7 @@
                       "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/Goldman_Sachs.svg/250px-Goldman_Sachs.svg.png"
                     }
                   ],
-                  "youtubeUrl": null
+                  "youtubeUrl": "https://youtu.be/bsHyg2eUYg8"
                 },
                 {
                   "id": "problem_0150",
@@ -8367,7 +8819,7 @@
                       "logo": "https://1000logos.net/wp-content/uploads/2021/06/Zomato-logo.png"
                     }
                   ],
-                  "youtubeUrl": null
+                  "youtubeUrl": "https://youtu.be/Gu2qwHI54jI?si=fVoyoCr_jhkS5J9B"
                 },
                 {
                   "id": "problem_0335",
@@ -8466,7 +8918,7 @@
                   "title": "Path Sum III",
                   "reference": "LC 437",
                   "difficulty": "MEDIUM",
-                  "leetcodeUrl": "https://leetcode.com/problems/path-sum-iii/description/",
+                  "leetcodeUrl": "https://leetcode.com/problems/path-sum-iii/",
                   "gfgUrl": "https://www.geeksforgeeks.org/problems/k-sum-paths/1",
                   "companies": [
                     {
@@ -8478,8 +8930,8 @@
                       "logo": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVu_punmVpXPehlmF-zb9LO30EZQRtHpK7KA&s"
                     },
                     {
-                      "name": "PhonePe",
-                      "logo": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTVf6nm-Dk1ELbj1aBfeN_vJH6R1wAqYWnltw&s"
+                      "name": "Google",
+                      "logo": "https://s3-alpha.figma.com/hub/file/6516490032/e7dabd51-4155-4761-a247-b3d6a6f52f73-cover.png"
                     }
                   ],
                   "youtubeUrl": null
@@ -8498,8 +8950,8 @@
                   "title": "0-1 Knapsack",
                   "reference": "GFG",
                   "difficulty": "MEDIUM",
-                  "leetcodeUrl": "https://www.geeksforgeeks.org/problems/0-1-knapsack-problem0945/1",
-                  "gfgUrl": "https://www.geeksforgeeks.org/0-1-knapsack-problem-dp-10/",
+                  "leetcodeUrl": null,
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/0-1-knapsack-problem/1",
                   "companies": [
                     {
                       "name": "Amazon",
@@ -8868,7 +9320,7 @@
                   "title": "Add and Search Word",
                   "reference": "LC 211",
                   "difficulty": "MEDIUM",
-                  "leetcodeUrl": "https://leetcode.com/problems/add-and-search-word-data-structure-design/",
+                  "leetcodeUrl": "https://leetcode.com/problems/design-add-and-search-words-data-structure/",
                   "gfgUrl": "https://www.geeksforgeeks.org/problems/design-add-and-search-words-data-structure--154618/1",
                   "companies": [
                     {
@@ -9016,7 +9468,7 @@
                   "reference": "LC 472",
                   "difficulty": "HARD",
                   "leetcodeUrl": "https://leetcode.com/problems/concatenated-words/",
-                  "gfgUrl": "https://www.geeksforgeeks.org/dsa/find-all-concatenations-of-words-in-array/?utm_source=chatgpt.com",
+                  "gfgUrl": "https://www.geeksforgeeks.org/dsa/find-all-concatenations-of-words-in-array/",
                   "companies": [
                     {
                       "name": "Flipkart",
@@ -9179,7 +9631,7 @@
                   "reference": "LC 191",
                   "difficulty": "EASY",
                   "leetcodeUrl": "https://leetcode.com/problems/number-of-1-bits/description/",
-                  "gfgUrl": "https://www.geeksforgeeks.org/problems/count-total-set-bits-1587115620/1",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/set-bits0143/1",
                   "companies": [
                     {
                       "name": "Amazon",
@@ -9919,7 +10371,7 @@
                   "title": "Find First and Last Position of Element",
                   "reference": "LC 34",
                   "difficulty": "MEDIUM",
-                  "leetcodeUrl": "https://leetcode.com/problems/find-first-and-last-position-of-element/",
+                  "leetcodeUrl": "https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/",
                   "gfgUrl": null,
                   "companies": [
                     {
@@ -9963,9 +10415,9 @@
                 {
                   "id": "lm_problem_0517",
                   "title": "Min Speed to Arrive on Time",
-                  "reference": "LC 1011",
+                  "reference": "LC 1870",
                   "difficulty": "MEDIUM",
-                  "leetcodeUrl": "https://leetcode.com/problems/min-speed-to-arrive-on-time/",
+                  "leetcodeUrl": "https://leetcode.com/problems/minimum-speed-to-arrive-on-time/",
                   "gfgUrl": "https://www.geeksforgeeks.org/problems/minimum-travel-time/1",
                   "companies": [
                     {
@@ -10029,7 +10481,24 @@
                   "difficulty": "MEDIUM",
                   "leetcodeUrl": "https://leetcode.com/problems/remove-k-digits/",
                   "gfgUrl": "https://www.geeksforgeeks.org/problems/remove-k-digits/1",
-                  "companies": [],
+                  "companies": [
+                    {
+                      "name": "Goldman Sachs",
+                      "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/Goldman_Sachs.svg/250px-Goldman_Sachs.svg.png"
+                    },
+                    {
+                      "name": "Sumo Logic",
+                      "logo": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7g-Z03mvYWp-V0fzAUngNU4ZLVExOT0EpwA&s"
+                    },
+                    {
+                      "name": "Amazon",
+                      "logo": "https://upload.wikimedia.org/wikipedia/commons/d/de/Amazon_icon.png"
+                    },
+                    {
+                      "name": "Microsoft",
+                      "logo": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVu_punmVpXPehlmF-zb9LO30EZQRtHpK7KA&s"
+                    }
+                  ],
                   "youtubeUrl": "https://youtu.be/u9Ih5uY-6U0?si=qBZ1HKJ63A5yBHIy"
                 },
                 {
@@ -10039,7 +10508,20 @@
                   "difficulty": "MEDIUM",
                   "leetcodeUrl": "https://leetcode.com/problems/remove-duplicate-letters/",
                   "gfgUrl": null,
-                  "companies": [],
+                  "companies": [
+                    {
+                      "name": "Google",
+                      "logo": "https://s3-alpha.figma.com/hub/file/6516490032/e7dabd51-4155-4761-a247-b3d6a6f52f73-cover.png"
+                    },
+                    {
+                      "name": "Microsoft",
+                      "logo": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVu_punmVpXPehlmF-zb9LO30EZQRtHpK7KA&s"
+                    },
+                    {
+                      "name": "Meta",
+                      "logo": "https://upload.wikimedia.org/wikipedia/commons/a/ab/Meta-Logo.png"
+                    }
+                  ],
                   "youtubeUrl": "https://youtu.be/VNBVQ89mlTo?si=_m94Uvyq0XIHJ2Ra"
                 },
                 {
@@ -10049,7 +10531,20 @@
                   "difficulty": "MEDIUM",
                   "leetcodeUrl": "https://leetcode.com/problems/smallest-subsequence-of-distinct-characters/",
                   "gfgUrl": null,
-                  "companies": [],
+                  "companies": [
+                    {
+                      "name": "Google",
+                      "logo": "https://s3-alpha.figma.com/hub/file/6516490032/e7dabd51-4155-4761-a247-b3d6a6f52f73-cover.png"
+                    },
+                    {
+                      "name": "Amazon",
+                      "logo": "https://upload.wikimedia.org/wikipedia/commons/d/de/Amazon_icon.png"
+                    },
+                    {
+                      "name": "Uber",
+                      "logo": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT1qkiD90vY7E0mYyM71L9fWkQx44q8q6f5qw&s"
+                    }
+                  ],
                   "youtubeUrl": null
                 },
                 {
@@ -10059,7 +10554,20 @@
                   "difficulty": "HARD",
                   "leetcodeUrl": "https://leetcode.com/problems/create-maximum-number/",
                   "gfgUrl": null,
-                  "companies": [],
+                  "companies": [
+                    {
+                      "name": "Google",
+                      "logo": "https://s3-alpha.figma.com/hub/file/6516490032/e7dabd51-4155-4761-a247-b3d6a6f52f73-cover.png"
+                    },
+                    {
+                      "name": "Amazon",
+                      "logo": "https://upload.wikimedia.org/wikipedia/commons/d/de/Amazon_icon.png"
+                    },
+                    {
+                      "name": "ByteDance",
+                      "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/ByteDance_logo.svg/250px-ByteDance_logo.svg.png"
+                    }
+                  ],
                   "youtubeUrl": null
                 },
                 {
@@ -10068,8 +10576,21 @@
                   "reference": "LC 1249",
                   "difficulty": "MEDIUM",
                   "leetcodeUrl": "https://leetcode.com/problems/minimum-remove-to-make-valid-parentheses/",
-                  "gfgUrl": "https://www.geeksforgeeks.org/problems/min-add-to-make-parentheses-valid/1",
-                  "companies": [],
+                  "gfgUrl": null,
+                  "companies": [
+                    {
+                      "name": "Meta",
+                      "logo": "https://upload.wikimedia.org/wikipedia/commons/a/ab/Meta-Logo.png"
+                    },
+                    {
+                      "name": "Amazon",
+                      "logo": "https://upload.wikimedia.org/wikipedia/commons/d/de/Amazon_icon.png"
+                    },
+                    {
+                      "name": "Bloomberg",
+                      "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Bloomberg_logo.svg/250px-Bloomberg_logo.svg.png"
+                    }
+                  ],
                   "youtubeUrl": "https://youtu.be/54m6kYA9QFE?si=jXy2ClmV9PpTh5Ko"
                 }
               ]
@@ -10155,7 +10676,7 @@
                   "title": "Basic Calculator I",
                   "reference": "LC 224",
                   "difficulty": "MEDIUM",
-                  "leetcodeUrl": "https://leetcode.com/problems/basic-calculator-i/",
+                  "leetcodeUrl": "https://leetcode.com/problems/basic-calculator/",
                   "gfgUrl": "https://www.geeksforgeeks.org/problems/calculator/1",
                   "companies": [
                     {
@@ -10178,7 +10699,7 @@
                   "title": "Remove Adjacent Duplicates II",
                   "reference": "LC 1209",
                   "difficulty": "MEDIUM",
-                  "leetcodeUrl": "https://leetcode.com/problems/remove-adjacent-duplicates-ii/",
+                  "leetcodeUrl": "https://leetcode.com/problems/remove-all-adjacent-duplicates-in-string-ii/",
                   "gfgUrl": "https://www.geeksforgeeks.org/problems/recursively-remove-all-adjacent-duplicates0744/0",
                   "companies": [
                     {
@@ -10302,14 +10823,14 @@
                       "logo": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTg4b2xFrY7mhOS9pGOnckG88R0ZzHpzYZ7hA&s"
                     }
                   ],
-                  "youtubeUrl": null
+                  "youtubeUrl": "https://youtu.be/7Gp7DV5ufm4?si=YFIbM6_XF880F9_Q"
                 },
                 {
                   "id": "lm_problem_0528",
                   "title": "Reverse Linked List II (Between m & n)",
                   "reference": "LC 92",
                   "difficulty": "MEDIUM",
-                  "leetcodeUrl": "https://leetcode.com/problems/reverse-linked-list-ii-between-m-n/",
+                  "leetcodeUrl": "https://leetcode.com/problems/reverse-linked-list-ii/",
                   "gfgUrl": null,
                   "companies": [
                     {
@@ -10325,7 +10846,7 @@
                       "logo": "https://cdn.iconscout.com/icon/free/png-256/free-paytm-icon-svg-download-png-226448.png?f=webp"
                     }
                   ],
-                  "youtubeUrl": null
+                  "youtubeUrl": "https://youtu.be/aZ3L4M5SaXE?si=iW-s5HdY8HSf4kTT"
                 },
                 {
                   "id": "lm_problem_0529",
@@ -10348,7 +10869,7 @@
                       "logo": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTg4b2xFrY7mhOS9pGOnckG88R0ZzHpzYZ7hA&s"
                     }
                   ],
-                  "youtubeUrl": null
+                  "youtubeUrl": "https://youtu.be/vMKUlvivp0A?si=51zg0TG2Di26n3Yu"
                 },
                 {
                   "id": "lm_problem_0530",
@@ -10371,7 +10892,7 @@
                       "logo": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTEih3HSg7_49qZjWfXxFwxpUWgapkXYA1u6w&s"
                     }
                   ],
-                  "youtubeUrl": null
+                  "youtubeUrl": "https://youtu.be/bsHyg2eUYg8"
                 },
                 {
                   "id": "lm_problem_0531",
@@ -10394,7 +10915,7 @@
                       "logo": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTEih3HSg7_49qZjWfXxFwxpUWgapkXYA1u6w&s"
                     }
                   ],
-                  "youtubeUrl": null
+                  "youtubeUrl": "https://youtu.be/nkBX6Ew5fys"
                 },
                 {
                   "id": "lm_problem_0532",
@@ -10486,7 +11007,7 @@
                   "title": "Flatten Multilevel DLL",
                   "reference": "LC 430",
                   "difficulty": "MEDIUM",
-                  "leetcodeUrl": "https://leetcode.com/problems/flatten-multilevel-dll/",
+                  "leetcodeUrl": "https://leetcode.com/problems/flatten-a-multilevel-doubly-linked-list/",
                   "gfgUrl": "https://www.geeksforgeeks.org/problems/flattening-a-linked-list/1",
                   "companies": [
                     {
@@ -10571,7 +11092,7 @@
                   "title": "Subarray Sum Divisible by K",
                   "reference": "LC 974",
                   "difficulty": "MEDIUM",
-                  "leetcodeUrl": "https://leetcode.com/problems/subarray-sum-divisible-by-k/",
+                  "leetcodeUrl": "https://leetcode.com/problems/subarray-sums-divisible-by-k/",
                   "gfgUrl": "https://www.geeksforgeeks.org/problems/sub-array-sum-divisible-by-k2617/1",
                   "companies": [
                     {
@@ -10657,7 +11178,7 @@
                   "reference": "LC 215",
                   "difficulty": "MEDIUM",
                   "leetcodeUrl": "https://leetcode.com/problems/kth-largest-element-in-an-array/",
-                  "gfgUrl": "https://www.geeksforgeeks.org/problems/k-largest-elements2331/1",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/kth-largest-element5034/1",
                   "companies": [
                     {
                       "name": "Amazon",
@@ -10718,7 +11239,7 @@
                       "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/Goldman_Sachs.svg/250px-Goldman_Sachs.svg.png"
                     }
                   ],
-                  "youtubeUrl": null
+                  "youtubeUrl": "https://youtu.be/bsHyg2eUYg8"
                 },
                 {
                   "id": "lm_problem_0544",
@@ -10771,8 +11292,8 @@
                   "title": "Power of X",
                   "reference": "LC 50",
                   "difficulty": "MEDIUM",
-                  "leetcodeUrl": "https://leetcode.com/problems/power-of-x/",
-                  "gfgUrl": "https://www.geeksforgeeks.org/problems/power-of-numbers-1587115620/1",
+                  "leetcodeUrl": "https://leetcode.com/problems/powx-n/",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/powx-n/1",
                   "companies": [
                     {
                       "name": "Amazon",
@@ -10810,7 +11331,7 @@
                       "logo": "https://companieslogo.com/img/orig/ADBE-fb158b30.png?t=1740130206"
                     }
                   ],
-                  "youtubeUrl": null
+                  "youtubeUrl": "https://youtu.be/G1-oSUP2vcU?si=RM_FMdpCtCkLydZK"
                 },
                 {
                   "id": "lm_problem_0548",
@@ -10879,7 +11400,7 @@
                       "logo": "https://www.citypng.com/public/uploads/preview/flipkart-logo-icon-hd-png-701751694706828v1habfry9b.png"
                     }
                   ],
-                  "youtubeUrl": "https://youtu.be/PrvZ91XczPA?si=4p8IwVUzKUPV_jtX"
+                  "youtubeUrl": "https://youtu.be/PrvZ91XczPA?si=zEscxcN3j6Rh3C31"
                 },
                 {
                   "id": "lm_problem_0551",
@@ -11095,7 +11616,7 @@
                       "logo": "https://companieslogo.com/img/orig/ADBE-fb158b30.png?t=1740130206"
                     }
                   ],
-                  "youtubeUrl": null
+                  "youtubeUrl": "https://youtu.be/g5pwB1X-rfY?si=V_3k-gs_1P0o4D1P"
                 },
                 {
                   "id": "lm_problem_0559",
@@ -11118,7 +11639,7 @@
                       "logo": "https://1000logos.net/wp-content/uploads/2017/02/Facebook-Logosu.png"
                     }
                   ],
-                  "youtubeUrl": null
+                  "youtubeUrl": "https://youtu.be/xo3i19SvDaU?si=hVG03nDbOvKocGu0"
                 },
                 {
                   "id": "lm_problem_0560",
@@ -11141,14 +11662,14 @@
                       "logo": "https://s3-alpha.figma.com/hub/file/6516490032/e7dabd51-4155-4761-a247-b3d6a6f52f73-cover.png"
                     }
                   ],
-                  "youtubeUrl": null
+                  "youtubeUrl": "https://youtu.be/GLPeZfpjR80?si=QURbfLGKNv23CPlq"
                 },
                 {
                   "id": "lm_problem_0561",
                   "title": "Maximum Path Sum",
                   "reference": "LC 124",
                   "difficulty": "MEDIUM",
-                  "leetcodeUrl": "https://leetcode.com/problems/maximum-path-sum/",
+                  "leetcodeUrl": "https://leetcode.com/problems/binary-tree-maximum-path-sum/",
                   "gfgUrl": "https://www.geeksforgeeks.org/problems/maximum-path-sum-from-any-node/1",
                   "companies": [
                     {
@@ -11171,7 +11692,7 @@
                   "title": "Lowest Common Ancestor of Binary Tree",
                   "reference": "LC 236",
                   "difficulty": "MEDIUM",
-                  "leetcodeUrl": "https://leetcode.com/problems/lowest-common-ancestor-of-binary-tree/",
+                  "leetcodeUrl": "https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/",
                   "gfgUrl": "https://www.geeksforgeeks.org/problems/lowest-common-ancestor-in-a-binary-tree/1",
                   "companies": [
                     {
@@ -11217,7 +11738,7 @@
                   "title": "Construct Binary Tree from Preorder & Inorder",
                   "reference": "LC 105",
                   "difficulty": "MEDIUM",
-                  "leetcodeUrl": "https://leetcode.com/problems/construct-binary-tree-from-preorder-inorder/",
+                  "leetcodeUrl": "https://leetcode.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/",
                   "gfgUrl": "https://www.geeksforgeeks.org/problems/construct-tree-1/1",
                   "companies": [
                     {
@@ -11263,7 +11784,7 @@
                   "title": "Convert Sorted Array to BST",
                   "reference": "LC 108",
                   "difficulty": "MEDIUM",
-                  "leetcodeUrl": "https://leetcode.com/problems/convert-sorted-array-to-bst/",
+                  "leetcodeUrl": "https://leetcode.com/problems/convert-sorted-array-to-binary-search-tree/",
                   "gfgUrl": "https://www.geeksforgeeks.org/problems/array-to-bst4443/1",
                   "companies": [
                     {
@@ -11309,7 +11830,7 @@
                   "title": "Lowest Common Ancestor of BST",
                   "reference": "LC 235",
                   "difficulty": "MEDIUM",
-                  "leetcodeUrl": "https://leetcode.com/problems/lowest-common-ancestor-of-bst/",
+                  "leetcodeUrl": "https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-search-tree/description/",
                   "gfgUrl": "https://www.geeksforgeeks.org/problems/lowest-common-ancestor-in-a-bst/1",
                   "companies": [
                     {
@@ -11440,7 +11961,7 @@
                   "title": "Minimum Cost to Connect All Cities",
                   "reference": "LC 1135",
                   "difficulty": "MEDIUM",
-                  "leetcodeUrl": "https://leetcode.com/problems/minimum-cost-to-connect-all-cities/",
+                  "leetcodeUrl": "https://leetcode.com/problems/connecting-cities-with-minimum-cost/",
                   "gfgUrl": "https://www.geeksforgeeks.org/problems/minimum-cost-to-connect-all-houses-in-a-city/1",
                   "companies": [
                     {
@@ -11509,7 +12030,7 @@
                   "title": "Evaluate Division (Union-Find)",
                   "reference": "LC 399",
                   "difficulty": "MEDIUM",
-                  "leetcodeUrl": "https://leetcode.com/problems/evaluate-division-union-find/",
+                  "leetcodeUrl": "https://leetcode.com/problems/evaluate-division/",
                   "gfgUrl": null,
                   "companies": [
                     {
@@ -11571,7 +12092,7 @@
                   "title": "1. Jump Game II",
                   "reference": "LC 45",
                   "difficulty": "MEDIUM",
-                  "leetcodeUrl": "https://leetcode.com/problems/1-jump-game-ii/",
+                  "leetcodeUrl": "https://leetcode.com/problems/jump-game-ii/",
                   "gfgUrl": null,
                   "companies": [
                     {
@@ -11594,7 +12115,7 @@
                   "title": "2. Non-overlapping Intervals",
                   "reference": "LC 435",
                   "difficulty": "MEDIUM",
-                  "leetcodeUrl": "https://leetcode.com/problems/2-non-overlapping-intervals/",
+                  "leetcodeUrl": "https://leetcode.com/problems/non-overlapping-intervals/",
                   "gfgUrl": null,
                   "companies": [
                     {
@@ -11617,7 +12138,7 @@
                   "title": "3. Minimum Number of Arrows to Burst Balloons",
                   "reference": "LC 452",
                   "difficulty": "MEDIUM",
-                  "leetcodeUrl": "https://leetcode.com/problems/3-minimum-number-of-arrows-to-burst-balloons/",
+                  "leetcodeUrl": "https://leetcode.com/problems/minimum-number-of-arrows-to-burst-balloons/",
                   "gfgUrl": null,
                   "companies": [
                     {
@@ -11640,7 +12161,7 @@
                   "title": "4. Meeting Rooms II",
                   "reference": "LC 253",
                   "difficulty": "MEDIUM",
-                  "leetcodeUrl": "https://leetcode.com/problems/4-meeting-rooms-ii/",
+                  "leetcodeUrl": "https://leetcode.com/problems/meeting-rooms-ii/",
                   "gfgUrl": null,
                   "companies": [
                     {
@@ -11663,7 +12184,7 @@
                   "title": "6. Gas Station / Minimum Refueling Stops",
                   "reference": "LC 871",
                   "difficulty": "MEDIUM",
-                  "leetcodeUrl": "https://leetcode.com/problems/6-gas-station-minimum-refueling-stops/",
+                  "leetcodeUrl": "https://leetcode.com/problems/minimum-number-of-refueling-stops/",
                   "gfgUrl": null,
                   "companies": [
                     {
@@ -11864,7 +12385,7 @@
                   "reference": "LC 132",
                   "difficulty": "MEDIUM",
                   "leetcodeUrl": "https://leetcode.com/problems/palindrome-partitioning-ii/",
-                  "gfgUrl": "https://www.geeksforgeeks.org/problems/palindromic-patitioning4825/1",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/palindromic-patitioning4845/1",
                   "companies": [
                     {
                       "name": "Microsoft",
@@ -11933,7 +12454,7 @@
                   "reference": "LC 968",
                   "difficulty": "MEDIUM",
                   "leetcodeUrl": "https://leetcode.com/problems/binary-tree-cameras/",
-                  "gfgUrl": "https://www.geeksforgeeks.org/problems/binary-tree-cameras/1",
+                  "gfgUrl": "https://www.geeksforgeeks.org/dsa/minimum-number-of-cameras-required-to-monitor-all-nodes-of-a-binary-tree/",
                   "companies": [
                     {
                       "name": "Google",
@@ -12040,8 +12561,8 @@
                   "title": "Add and Search Word",
                   "reference": "LC 211",
                   "difficulty": "MEDIUM",
-                  "leetcodeUrl": "https://leetcode.com/problems/add-and-search-word/",
-                  "gfgUrl": "https://www.geeksforgeeks.org/problems/trie-delete/1",
+                  "leetcodeUrl": "https://leetcode.com/problems/design-add-and-search-words-data-structure/",
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/design-add-and-search-words-data-structure--154618/1",
                   "companies": [
                     {
                       "name": "Flipkart",
