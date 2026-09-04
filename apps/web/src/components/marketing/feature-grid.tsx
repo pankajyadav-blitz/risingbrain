@@ -14,8 +14,8 @@ type Feature = {
 };
 
 /**
- * The four tracks, shown as four equal cards in a single row on `lg` (stacking to
- * two columns on `sm` and one on mobile). DOM order is visual order.
+ * The five tracks, shown as equal cards (stacking to two columns on `sm` and one
+ * on mobile). DOM order is visual order.
  */
 const features: Feature[] = [
   {
@@ -39,6 +39,14 @@ const features: Feature[] = [
     title: "Screening",
     desc: "Quant aptitude and logical reasoning — crisp theory, then timed MCQ practice.",
     tag: "MCQ drills",
+  },
+  {
+    key: "puzzles",
+    href: "/puzzles",
+    title: "Puzzles",
+    desc: "Classic interview brainteasers — logic, weighing, parity and optimisation — each with a diagram, staged hints and a worked solution.",
+    tag: "Lateral thinking",
+    meta: "84 puzzles · 12 patterns",
   },
   {
     key: "interview",
@@ -68,7 +76,9 @@ export function FeatureGrid() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        {/* Five tracks, all on ONE row from `lg` up — the Container has no hard
+            max-width, so the row grows with the screen instead of capping. */}
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-5">
           {features.map((f) => {
             return (
               <Link
@@ -90,7 +100,9 @@ export function FeatureGrid() {
                   </h3>
                   <p className="mt-2 max-w-[52ch] text-sm leading-relaxed text-muted">{f.desc}</p>
 
-                  <div className="mt-auto flex items-center justify-between gap-4 pt-6">
+                  {/* Wraps rather than collides: at five-across the meta text and
+                      the Explore affordance can exceed one line on a 1280px screen. */}
+                  <div className="mt-auto flex flex-wrap items-center justify-between gap-x-4 gap-y-2 pt-6">
                     {/* Inventory metadata is the depth proof — a title says
                         nothing, a count says the content exists. */}
                     {f.meta ? (

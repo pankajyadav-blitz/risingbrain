@@ -14,6 +14,7 @@
  *   sheets    → a graph being traversed (BFS front lighting nodes/edges)
  *   domain    → packets traveling a small router mesh
  *   screening → a pen filling MCQ bubbles on ruled paper
+ *   puzzles   → a jigsaw piece dropping into the gap it completes
  *   interview → a video-call tile with a breathing avatar + audio waveform
  */
 import { useEffect, useRef } from "react";
@@ -1022,12 +1023,77 @@ function drawScreen(ctx: CanvasRenderingContext2D, t: number, w: number, h: numb
 }
 
 /* ---------------------------------------------------------------------- */
-export type FeatureArtKey = "sheets" | "domain" | "screening" | "interview";
+
+/* ---------------------------------------------------------------------- */
+/* Puzzles — a jigsaw piece dropping into the gap it completes.            */
+/* ---------------------------------------------------------------------- */
+function drawPuzzles(ctx: CanvasRenderingContext2D, t: number, w: number, h: number, c: Colors) {
+  backdrop(ctx, w, h, c);
+
+  // 2x2 board, centred. Three tiles are already placed; the fourth flies in.
+  const size = Math.min(w, h) * 0.5;
+  const gap = size * 0.06;
+  const tile = (size - gap) / 2;
+  const ox = (w - size) / 2;
+  const oy = (h - size) / 2;
+
+  const CYCLE = 3.4;
+  const phase = (t % CYCLE) / CYCLE;
+  // Ease the piece in over the first 55%, then hold it seated.
+  const p = phase < 0.55 ? clamp01(phase / 0.55) : 1;
+  const ease = 1 - Math.pow(1 - p, 3);
+
+  const seated: [number, number][] = [
+    [ox, oy],
+    [ox + tile + gap, oy],
+    [ox, oy + tile + gap],
+  ];
+  for (const [x, y] of seated) {
+    rr(ctx, x, y, tile, tile, tile * 0.22);
+    ctx.fillStyle = withAlpha(c.ink, 0.1);
+    ctx.fill();
+    ctx.strokeStyle = withAlpha(c.ink, 0.22);
+    ctx.lineWidth = 1;
+    ctx.stroke();
+  }
+
+  // The empty slot, so the gap reads as a gap before the piece lands.
+  const sx = ox + tile + gap;
+  const sy = oy + tile + gap;
+  rr(ctx, sx, sy, tile, tile, tile * 0.22);
+  ctx.strokeStyle = withAlpha(c.ink, 0.18);
+  ctx.setLineDash([4, 4]);
+  ctx.lineWidth = 1;
+  ctx.stroke();
+  ctx.setLineDash([]);
+
+  // The travelling piece: comes from lower-right, fades up as it seats.
+  const fx = lerp(sx + tile * 0.9, sx, ease);
+  const fy = lerp(sy + tile * 0.8, sy, ease);
+  rr(ctx, fx, fy, tile, tile, tile * 0.22);
+  ctx.fillStyle = withAlpha(c.accent, 0.18);
+  ctx.fill();
+  ctx.strokeStyle = withAlpha(c.accent, 0.55 + 0.45 * ease);
+  ctx.lineWidth = 1.8;
+  ctx.stroke();
+
+  // Knob on the seated edge — the detail that makes it read as jigsaw.
+  const kr = tile * 0.13;
+  ctx.beginPath();
+  ctx.arc(fx, fy + tile / 2, kr, 0, Math.PI * 2);
+  ctx.fillStyle = withAlpha(c.accent, 0.18);
+  ctx.fill();
+  ctx.strokeStyle = withAlpha(c.accent, 0.55 + 0.45 * ease);
+  ctx.stroke();
+}
+
+export type FeatureArtKey = "sheets" | "domain" | "screening" | "puzzles" | "interview";
 
 const DRAWS: Record<FeatureArtKey, Draw> = {
   sheets: drawSheets,
   domain: drawDomain,
   screening: drawScreening,
+  puzzles: drawPuzzles,
   interview: drawScreen,
 };
 
