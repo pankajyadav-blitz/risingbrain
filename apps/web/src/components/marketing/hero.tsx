@@ -2,7 +2,6 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { Container } from "./primitives";
 import { PatternRecognition } from "./pattern-recognition";
-import { CATALOG_STATS } from "./catalog-stats";
 
 /**
  * Hero.

@@ -9,6 +9,7 @@ const columns: { title: string; links: [string, string][] }[] = [
       ["Sheets", "/sheet"],
       ["Domain", "/domain"],
       ["Screening", "/screening"],
+      ["Puzzles", "/puzzles"],
       ["Interview Stories", "/interview"],
     ],
   },

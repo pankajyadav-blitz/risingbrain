@@ -1,5 +1,5 @@
 import { Container } from "@/components/marketing/primitives";
-import { AptitudeWorkspaceSkeleton } from "./_components/workspace-skeleton";
+import { QuizWorkspaceSkeleton } from "../_quiz/components/workspace-skeleton";
 
 /**
  * Fallback for `/screening` while its layout's session lookup resolves. The navbar
@@ -7,11 +7,11 @@ import { AptitudeWorkspaceSkeleton } from "./_components/workspace-skeleton";
  * body — a pure skeleton (header + index + paper), the same one the layout
  * streams behind <Suspense>, so there's no half-real content during loading.
  */
-export default function AptitudeLoading() {
+export default function ScreeningLoading() {
   return (
     <main className="flex-1 lg:flex lg:min-h-0 lg:flex-col">
       <Container className="py-6 sm:py-8 lg:flex lg:min-h-0 lg:flex-1 lg:flex-col">
-        <AptitudeWorkspaceSkeleton />
+        <QuizWorkspaceSkeleton />
       </Container>
     </main>
   );

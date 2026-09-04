@@ -15,15 +15,54 @@ import { env } from "../env";
 
 const globalForRedis = globalThis as unknown as { redis?: Redis };
 
-/** Hard ceiling on any single Redis round-trip before we fall back to Postgres. */
-const REDIS_TIMEOUT_MS = 1_000;
+/**
+ * Hard ceiling on a single Redis COMMAND before we fall back to Postgres. Kept
+ * tight: it is paid on the hot path of every authenticated request.
+ */
+const COMMAND_TIMEOUT_MS = 1_000;
+
+/**
+ * Separate, roomier ceiling for ESTABLISHING the connection.
+ *
+ * These were one value, which meant the first call after a cold start had to fit
+ * DNS + TCP handshake AND the command itself into 1s. On the container deploy
+ * Redis is on localhost so that was never close; against a REMOTE Redis (a
+ * managed instance reached from a serverless function, over a TCP proxy and
+ * possibly cross-region) the handshake alone can eat the whole budget. The
+ * breaker then opens and OTP signup / password reset answer 503 — they are the
+ * one thing with no Postgres fallback.
+ *
+ * Worst case for a cold request is now CONNECT + COMMAND, and only on the call
+ * that actually opens the socket; every subsequent command is bounded by
+ * COMMAND_TIMEOUT_MS alone.
+ */
+const CONNECT_TIMEOUT_MS = 3_000;
+
+/**
+ * Race `promise` against a timer, always clearing the timer. Without the clear,
+ * every Redis call would leave a pending timeout behind — which on a serverless
+ * platform keeps the event loop from settling after the response is sent.
+ */
+async function withTimeout<T>(promise: Promise<T>, ms: number, message: string): Promise<T> {
+  let timer: ReturnType<typeof setTimeout> | undefined;
+  try {
+    return await Promise.race([
+      promise,
+      new Promise<never>((_, reject) => {
+        timer = setTimeout(() => reject(new Error(message)), ms);
+      }),
+    ]);
+  } finally {
+    if (timer) clearTimeout(timer);
+  }
+}
 
 export const redis =
   globalForRedis.redis ??
   new Redis(env.REDIS_URL, {
     // Don't crash the process on a transient Redis hiccup; auth degrades to DB.
     maxRetriesPerRequest: 1,
-    connectTimeout: REDIS_TIMEOUT_MS,
+    connectTimeout: CONNECT_TIMEOUT_MS,
     // Fail commands immediately while disconnected instead of buffering them.
     // Without this a Redis outage turns every auth call into a hang.
     enableOfflineQueue: false,
@@ -94,18 +133,14 @@ export async function redisAttempt<T>(op: () => Promise<T>): Promise<RedisResult
 
   try {
     // `lazyConnect` + `enableOfflineQueue: false` means a command issued before
-    // the socket is up would reject, so establish the connection first — still
-    // inside the timeout below, so a dead Redis can't stall the request.
-    const run = async () => {
-      if (redis.status === "wait" || redis.status === "end") await redis.connect();
-      return op();
-    };
-    const value = await Promise.race([
-      run(),
-      new Promise<never>((_, reject) =>
-        setTimeout(() => reject(new Error("redis timeout")), REDIS_TIMEOUT_MS)
-      ),
-    ]);
+    // the socket is up would reject, so establish the connection first. Connect
+    // and command are bounded SEPARATELY: a slow first handshake must not eat the
+    // command's budget, and a warm connection must not inherit the roomier
+    // connect allowance. Both are bounded, so a dead Redis still can't stall.
+    if (redis.status === "wait" || redis.status === "end") {
+      await withTimeout(redis.connect(), CONNECT_TIMEOUT_MS, "redis connect timeout");
+    }
+    const value = await withTimeout(op(), COMMAND_TIMEOUT_MS, "redis timeout");
     circuitOpenedAt = 0; // healthy again
     return { ok: true, value };
   } catch (error) {

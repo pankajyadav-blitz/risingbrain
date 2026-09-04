@@ -37,7 +37,7 @@ const features: Feature[] = [
     key: "screening",
     href: "/screening",
     title: "Screening",
-    desc: "Quant aptitude, logical reasoning and puzzles — crisp theory, then timed MCQ practice.",
+    desc: "Quant aptitude and logical reasoning — crisp theory, then timed MCQ practice.",
     tag: "MCQ drills",
   },
   {

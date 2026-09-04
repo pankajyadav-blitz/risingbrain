@@ -19,7 +19,17 @@ try {
 export default defineConfig({
   schema: "prisma/schema.prisma",
   datasource: {
-    url: env("DATABASE_URL"),
+    /**
+     * Migrations need a DIRECT connection, never a transaction pooler.
+     * PgBouncer/Neon-pooler style poolers break DDL and the advisory lock Prisma
+     * takes to serialise migrations, so `migrate deploy` can hang or half-apply.
+     * The app itself still uses the POOLED `DATABASE_URL` (see src/index.ts).
+     *
+     * Set DIRECT_DATABASE_URL to the unpooled endpoint:
+     *   Railway -> DATABASE_UNPOOLED_URL   Neon -> the non `-pooler` host
+     * Falls back to DATABASE_URL when no pooler is in play (e.g. local dev).
+     */
+    url: process.env.DIRECT_DATABASE_URL ?? env("DATABASE_URL"),
   },
   migrations: {
     seed: "bun run prisma/seed.ts",

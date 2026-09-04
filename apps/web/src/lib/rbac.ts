@@ -81,6 +81,7 @@ export function getNavForRole(role: AppRole | null): NavItem[] {
     { label: "Sheets", href: "/sheet" },
     { label: "Domain", href: "/domain" },
     { label: "Screening", href: "/screening" },
+    { label: "Puzzles", href: "/puzzles" },
     { label: "Courses", href: "/courses" },
     { label: "Interview", href: "/interview" },
   ];

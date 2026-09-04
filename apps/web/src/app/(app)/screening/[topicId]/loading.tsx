@@ -1,4 +1,4 @@
-import { PaperSkeleton } from "../_components/workspace-skeleton";
+import { PaperSkeleton } from "../../_quiz/components/workspace-skeleton";
 
 /**
  * Instant skeleton shown while a topic's paper streams in (the lazy fetch). It's
@@ -6,6 +6,6 @@ import { PaperSkeleton } from "../_components/workspace-skeleton";
  * (navbar, header) and the `@nav` index stay put, so just this pane swaps.
  * Shares <PaperSkeleton> with the workspace fallback so they never drift.
  */
-export default function AptitudeTopicLoading() {
+export default function ScreeningTopicLoading() {
   return <PaperSkeleton />;
 }

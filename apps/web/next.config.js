@@ -11,6 +11,9 @@ const nextConfig = {
   // Skipped on Vercel: its build pipeline produces its own serverless output and a
   // standalone bundle there is dead weight. Gating on the VERCEL env var (which
   // Vercel sets automatically) keeps ONE config working for both deploy targets.
+  // Node-only config file; the shared eslint config loads serviceworker globals,
+  // not node ones, so `process` trips no-undef here.
+  // eslint-disable-next-line no-undef
   output: process.env.VERCEL ? undefined : "standalone",
   // Trace from the monorepo root so the standalone bundle pulls in the workspace
   // packages and the hoisted (Bun-symlinked) node_modules correctly.

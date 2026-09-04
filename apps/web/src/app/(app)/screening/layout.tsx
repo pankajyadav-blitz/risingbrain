@@ -2,13 +2,13 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 import { Container } from "@/components/marketing/primitives";
 import { getCurrentUser } from "@/lib/auth/current-user";
-import { AptitudeWorkspace } from "./_components/workspace";
-import { AptitudeWorkspaceSkeleton } from "./_components/workspace-skeleton";
+import { QuizWorkspace } from "../_quiz/components/workspace";
+import { QuizWorkspaceSkeleton } from "../_quiz/components/workspace-skeleton";
+import { SCREENING_ROUTE } from "../_quiz/routes";
 
 export const metadata: Metadata = {
   title: "Screening",
-  description:
-    "Topic-wise aptitude, logical reasoning and puzzle drills with crisp theory, key formulae and MCQ practice to sharpen your speed.",
+  description: "Topic-wise aptitude and logical reasoning drills with crisp theory, key formulae and MCQ practice to sharpen your speed.",
 };
 
 /**
@@ -16,6 +16,9 @@ export const metadata: Metadata = {
  * `children` slot (the `[topicId]` paper) render side by side and stream
  * independently. This layout persists across topic navigations, so the live
  * progress provider is seeded ONCE here and the per-topic paper loads lazily.
+ *
+ * The workspace itself is shared with the sibling quiz route — see
+ * `_quiz/routes.ts` for what differs between them.
  *
  * Publicly accessible — guests can read all questions, but interactive actions
  * (selecting answers, hints, submitting) redirect to /login via paper-attempt.tsx.
@@ -26,13 +29,8 @@ export const metadata: Metadata = {
  * what opts into that (see the rule of the same name in globals.css); without it
  * the shared page-enter wrapper sizes to content and both panes lose their
  * height, collapsing back to one page-level scroll.
- *
- * The navbar + footer come from the parent (app) layout. Only the (fast) session
- * lookup is awaited here; the header + index + paper all stream together inside
- * one <Suspense> via <AptitudeWorkspace>, so the loading screen is a pure
- * skeleton (no half-real header) until the data resolves.
  */
-export default async function AptitudeLayout({
+export default async function ScreeningLayout({
   children,
   nav,
 }: {
@@ -49,10 +47,16 @@ export default async function AptitudeLayout({
         tight
         className="py-6 sm:py-8 lg:flex lg:min-h-0 lg:flex-1 lg:flex-col lg:pt-5 lg:pb-3"
       >
-        <Suspense fallback={<AptitudeWorkspaceSkeleton />}>
-          <AptitudeWorkspace profileId={user?.id ?? null} nav={nav}>
+        <Suspense fallback={<QuizWorkspaceSkeleton />}>
+          <QuizWorkspace
+            profileId={user?.id ?? null}
+            kinds={SCREENING_ROUTE.kinds}
+            basePath={SCREENING_ROUTE.basePath}
+            emptyLabel={SCREENING_ROUTE.emptyLabel}
+            nav={nav}
+          >
             {children}
-          </AptitudeWorkspace>
+          </QuizWorkspace>
         </Suspense>
       </Container>
     </main>

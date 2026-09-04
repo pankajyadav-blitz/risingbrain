@@ -33,8 +33,16 @@ FROM oven/bun:1 AS builder
 WORKDIR /app
 ENV NEXT_TELEMETRY_DISABLED=1
 
-ENV DATABASE_URL="postgresql://neondb_owner:npg_pH7LtsSFGv2R@ep-holy-feather-atde6vmv.c-9.us-east-1.aws.neon.tech/neondb"
-ENV AUTH_SECRET="IbueTy4mvrQm2jWmMYmjCbTY2eaGUEROk4Wa+hN+w8Z2erBDZnIbOcaDUfvxHcmA"
+# Placeholders ONLY. `next build` evaluates src/lib/env.ts while collecting page
+# data, and every `required()` there must resolve or the build dies. Nothing
+# connects at build time, so these values are never used — the REAL ones arrive
+# at runtime from docker-compose.prod.yml. Keep them obviously fake so a leaked
+# image layer (`docker history`) never exposes a production credential.
+#
+# Every key that env.ts marks required in production needs a line here.
+ENV DATABASE_URL="postgresql://build:build@127.0.0.1:5432/build"
+ENV AUTH_SECRET="BUILD_TIME_PLACEHOLDER_NOT_A_REAL_SECRET_xxxxxxxxxxxxxxxxxx"
+ENV REDIS_URL="redis://127.0.0.1:6379"
 # Install with the FULL source present so Bun's workspace symlinks and .bin
 # binstubs (prisma, next, …) resolve correctly. Copying node_modules across
 # build stages breaks Bun's symlink layout — that's why `prisma`/`next` weren't
