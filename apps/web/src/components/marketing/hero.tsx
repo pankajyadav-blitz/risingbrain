@@ -25,6 +25,7 @@ const tracks = [
   { label: "DSA Sheets", href: "/sheet" },
   { label: "Domain", href: "/domain" },
   { label: "Aptitude", href: "/screening" },
+  { label: "Puzzles", href: "/puzzles" },
   { label: "Interview Stories", href: "/interview" },
   { label: "Courses", href: "/courses" },
 ];
