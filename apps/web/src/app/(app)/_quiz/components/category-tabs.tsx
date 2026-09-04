@@ -79,7 +79,10 @@ export function CategoryTabs({ basePath }: { basePath: string }) {
               </span>
               <span className="text-xs font-medium text-muted">
                 {c.topics.length} {c.topics.length === 1 ? "topic" : "topics"}
-                {signedIn ? ` · ${pct}%` : ""}
+                {/* A category with no questions (puzzles) can never have a
+                    percentage — showing "· 0%" would read as "you have solved
+                    none" rather than "there is nothing to solve". */}
+                {signedIn && total > 0 ? ` · ${pct}%` : ""}
               </span>
             </span>
           </button>

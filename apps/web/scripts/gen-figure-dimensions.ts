@@ -62,7 +62,22 @@ const TARGET_TEXT_PX = 15;
  * These keep their own pixels and let the column and height ceilings in globals.css do
  * the sizing, the same as any figure with no text at all.
  */
-const INTRINSIC_DIRS = ["puzzles"];
+const ILLUSTRATION_DIRS = ["puzzles"];
+/**
+ * Display width every illustration is normalised to.
+ *
+ * Illustrations can't be sized by the text measurement below (their only text is a
+ * poster title, which would shrink a 1000px scene to ~150px), but leaving them at
+ * intrinsic pixels is no better: the puzzle set was exported at anything from 660px
+ * to 1536px, and since `--fig-nat` is one of the three CSS ceilings, a 660px scene
+ * renders visibly narrower than the 1536px one beside it despite carrying the same
+ * kind of picture. Normalising the WIDTH instead of the text height gives the set one
+ * consistent size — and because this sits at or above the reading column, every
+ * illustration simply fills the column and they all match.
+ *
+ * `MAX_UPSCALE` still applies, so a small export is never blown up into mush.
+ */
+const ILLUSTRATION_WIDTH_PX = 1000;
 /**
  * A figure may be enlarged past its own pixels this far and no further. Beyond roughly
  * this the upscaling is visible, and a soft figure is worse than a slightly small one.
@@ -324,9 +339,10 @@ for (const file of walk(FIGURE_DIR).sort()) {
   }
 
   const [w, h] = size;
-  if (INTRINSIC_DIRS.some((dir) => key.startsWith(`/study-notes/${dir}/`))) {
+  if (ILLUSTRATION_DIRS.some((dir) => key.startsWith(`/study-notes/${dir}/`))) {
     intrinsic += 1;
-    dimensions[key] = [w, h];
+    const scale = Math.min(ILLUSTRATION_WIDTH_PX / w, MAX_UPSCALE);
+    dimensions[key] = [Math.max(1, Math.round(w * scale)), Math.max(1, Math.round(h * scale))];
     continue;
   }
   const decoded = isPng ? pngLuma(buf) : null;
@@ -360,6 +376,6 @@ console.log(
 console.log(
   `   normalised to ${TARGET_TEXT_PX}px text — ${shrunk} shrunk` +
     (unmeasured ? `, ${unmeasured} left at intrinsic size (no text found)` : "") +
-    (intrinsic ? `, ${intrinsic} left at intrinsic size (illustrations)` : "")
+    (intrinsic ? `, ${intrinsic} illustrations normalised to ${ILLUSTRATION_WIDTH_PX}px wide` : "")
 );
 console.log(`   display widths ${Math.min(...widths)}–${Math.max(...widths)}px`);

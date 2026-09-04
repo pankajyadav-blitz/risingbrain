@@ -111,10 +111,15 @@ export function NavList({
                 <span data-truncate className="min-w-0 flex-1 truncate">
                   {t.name}
                 </span>
-                <NavTrailing
-                  label={signedIn && sc ? `${sc.score}/${t.total}` : String(t.total)}
-                  done={done}
-                />
+                {/* Content-only topics (the puzzle bank) carry no graded
+                    questions, so a count chip here would read "0" against every
+                    row. Drop the chip entirely rather than render a zero. */}
+                {t.total > 0 ? (
+                  <NavTrailing
+                    label={signedIn && sc ? `${sc.score}/${t.total}` : String(t.total)}
+                    done={done}
+                  />
+                ) : null}
               </Link>
             </li>
           );
