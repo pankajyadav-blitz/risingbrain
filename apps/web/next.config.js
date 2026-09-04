@@ -7,7 +7,11 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const nextConfig = {
   // Emit a self-contained server bundle (`.next/standalone`) so the production
   // Docker image needs only Node + the traced deps — no full `node_modules`.
-  output: "standalone",
+  //
+  // Skipped on Vercel: its build pipeline produces its own serverless output and a
+  // standalone bundle there is dead weight. Gating on the VERCEL env var (which
+  // Vercel sets automatically) keeps ONE config working for both deploy targets.
+  output: process.env.VERCEL ? undefined : "standalone",
   // Trace from the monorepo root so the standalone bundle pulls in the workspace
   // packages and the hoisted (Bun-symlinked) node_modules correctly.
   outputFileTracingRoot: join(__dirname, "../../"),

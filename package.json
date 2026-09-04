@@ -14,6 +14,7 @@
     "db:studio": "bun --filter @risingbrain/database db:studio",
     "db:seed": "bun --filter @risingbrain/database db:seed",
     "db:update-dsa": "bun --filter @risingbrain/database db:update-dsa",
+    "db:update-puzzles": "bun --filter @risingbrain/database db:update-puzzles",
     "db:seed-domain": "bun --filter @risingbrain/database db:seed-domain",
     "db:seed-domain-sql": "bun --filter @risingbrain/database db:seed-domain-sql",
     "db:seed-domain-dbms": "bun --filter @risingbrain/database db:seed-domain-dbms",

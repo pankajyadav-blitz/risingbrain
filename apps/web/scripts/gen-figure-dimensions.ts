@@ -56,6 +56,14 @@ const OUT = join(ROOT, "src", "lib", "figure-dimensions.json");
  */
 const TARGET_TEXT_PX = 15;
 /**
+ * Sub-trees whose figures are scene illustrations, not diagrams: a drawn puzzle scene
+ * carries one big poster title and no body copy, so the text measurement below locks
+ * onto that title and normalising it to 15px shrinks a 1000px illustration to ~150px.
+ * These keep their own pixels and let the column and height ceilings in globals.css do
+ * the sizing, the same as any figure with no text at all.
+ */
+const INTRINSIC_DIRS = ["puzzles"];
+/**
  * A figure may be enlarged past its own pixels this far and no further. Beyond roughly
  * this the upscaling is visible, and a soft figure is worse than a slightly small one.
  * Only reached by small captures whose lettering is already below target.
@@ -299,6 +307,7 @@ function walk(dir: string): string[] {
 const dimensions: Record<string, [number, number]> = {};
 let skipped = 0;
 let unmeasured = 0;
+let intrinsic = 0;
 let shrunk = 0;
 
 for (const file of walk(FIGURE_DIR).sort()) {
@@ -315,6 +324,11 @@ for (const file of walk(FIGURE_DIR).sort()) {
   }
 
   const [w, h] = size;
+  if (INTRINSIC_DIRS.some((dir) => key.startsWith(`/study-notes/${dir}/`))) {
+    intrinsic += 1;
+    dimensions[key] = [w, h];
+    continue;
+  }
   const decoded = isPng ? pngLuma(buf) : null;
   const line = decoded ? textLineHeight(decoded.gray, decoded.w, decoded.h) : null;
   if (!line) {
@@ -345,6 +359,7 @@ console.log(
 );
 console.log(
   `   normalised to ${TARGET_TEXT_PX}px text — ${shrunk} shrunk` +
-    (unmeasured ? `, ${unmeasured} left at intrinsic size (no text found)` : "")
+    (unmeasured ? `, ${unmeasured} left at intrinsic size (no text found)` : "") +
+    (intrinsic ? `, ${intrinsic} left at intrinsic size (illustrations)` : "")
 );
 console.log(`   display widths ${Math.min(...widths)}–${Math.max(...widths)}px`);

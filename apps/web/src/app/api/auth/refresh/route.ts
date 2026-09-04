@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { rotateSession, SessionUnavailableError } from "@/lib/auth/session";
 import { setAuthCookies, clearAuthCookies, readRefreshCookie } from "@/lib/auth/cookies";
 import { safeRedirectPath } from "@/lib/auth/safe-redirect";
+import { env } from "@/lib/env";
 
 /**
  * Exchanges a valid refresh token for a fresh access token (and rotates the
@@ -48,6 +49,15 @@ export async function POST(req: Request) {
  * allowed to read anonymously. A dead refresh token then just means "browse signed
  * out" — sending them to /login would be a worse experience than the stale navbar
  * we were trying to fix. Without it (a genuinely gated route) failure goes to /login.
+ *
+ * Every redirect below is based on `env.APP_URL`, NOT on `req.url`. Under
+ * `output: "standalone"` the server binds to `process.env.HOSTNAME` (which Docker
+ * sets to the container id, and our Dockerfile pins to 0.0.0.0) and Next runs with
+ * `trustHostHeader: false`, so it ignores the incoming Host header and `req.url`
+ * resolves to `http://0.0.0.0:3000/...`. The proxy gets away with `req.url` because
+ * Next rewrites same-origin *middleware* redirects to a relative Location; a route
+ * handler emits its Location verbatim, so using `url.origin` here sent real users
+ * to http://0.0.0.0:3000. `url` is still parsed below, but only for searchParams.
  */
 export async function GET(req: Request) {
   const url = new URL(req.url);
@@ -69,7 +79,7 @@ export async function GET(req: Request) {
       // intact. The proxy's 10s attempt marker stops this from looping, and the
       // next navigation retries once the store recovers.
       console.error("[auth] refresh unavailable, preserving session cookies:", err);
-      return NextResponse.redirect(new URL(target, url.origin));
+      return NextResponse.redirect(new URL(target, env.APP_URL));
     }
     throw err;
   }
@@ -78,8 +88,8 @@ export async function GET(req: Request) {
     // Clears the refresh cookie too, so the proxy sees nothing to recover and
     // won't bounce this visitor here again.
     await clearAuthCookies();
-    if (soft) return NextResponse.redirect(new URL(target, url.origin));
-    const login = new URL("/login", url.origin);
+    if (soft) return NextResponse.redirect(new URL(target, env.APP_URL));
+    const login = new URL("/login", env.APP_URL);
     login.searchParams.set("callbackUrl", target);
     return NextResponse.redirect(login);
   }
@@ -91,5 +101,5 @@ export async function GET(req: Request) {
   // Set-Cookie): the marker has to still be there on the way back for the proxy to
   // notice and render signed-out instead of bouncing again. It expires on its own
   // in 10s, and a valid access token makes it irrelevant long before that.
-  return NextResponse.redirect(new URL(target, url.origin));
+  return NextResponse.redirect(new URL(target, env.APP_URL));
 }

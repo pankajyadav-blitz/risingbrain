@@ -28,7 +28,13 @@ const isProd = process.env.NODE_ENV === "production";
 
 export const env = {
   DATABASE_URL: required("DATABASE_URL"),
-  REDIS_URL: optional("REDIS_URL", "redis://localhost:6379"),
+  /**
+   * Required in production. The old localhost default meant a deploy that simply
+   * forgot the var did not fail — it silently dialled a Redis that wasn't there,
+   * which takes OTP signup and password reset down (they have no Postgres
+   * fallback) while everything else quietly degrades. Fail loudly at boot instead.
+   */
+  REDIS_URL: isProd ? required("REDIS_URL") : optional("REDIS_URL", "redis://localhost:6379"),
   AUTH_SECRET: required("AUTH_SECRET"),
   ACCESS_TOKEN_TTL: optional("ACCESS_TOKEN_TTL", "15m"),
   REFRESH_TOKEN_TTL_DAYS: Number(optional("REFRESH_TOKEN_TTL_DAYS", "30")),
@@ -38,10 +44,17 @@ export const env = {
    * How many reverse proxies sit in front of the app and append to
    * `X-Forwarded-For`. The client IP is read that many hops from the RIGHT of the
    * chain, because every entry to the left of a trusted hop is attacker-supplied.
-   * Default 0 = nothing trusted in front (the container publishes :3000 directly),
-   * in which case the header carries no trustworthy IP at all and rate limiting
-   * leans on its account-keyed bucket instead. Set this to the real hop count when
-   * you put nginx/Cloudflare/ALB in front.
+   * Read as `chain[length - 1 - hops]`, so 0 = the RIGHTMOST entry.
+   *
+   * Correct values, given the header is written by exactly one trusted layer:
+   *   - 0 on Vercel (its edge sets x-forwarded-for to the client IP), and
+   *   - 0 on EC2 behind our Caddy, because the Caddyfile REPLACES the header with
+   *     `{remote_host}` rather than appending to it — so the chain is length 1 and
+   *     nothing the caller sent survives.
+   *   - 1 only if you add a second trusted hop in front (e.g. Cloudflare → Caddy).
+   *
+   * Getting this too HIGH is the dangerous direction: it reads further left, into
+   * attacker-supplied entries, and the per-IP auth limit silently stops working.
    */
   TRUSTED_PROXY_HOPS: Number(optional("TRUSTED_PROXY_HOPS", "0")) || 0,
 

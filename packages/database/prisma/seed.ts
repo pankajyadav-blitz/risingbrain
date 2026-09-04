@@ -321,6 +321,7 @@ async function seedQuiz() {
         answerKey: string;
         explanation?: string;
         hint?: string;
+        difficulty?: string | null;
         order: number;
       }>;
     }>;
@@ -344,6 +345,9 @@ async function seedQuiz() {
     answerKey: string;
     explanation: string | null;
     hint: string | null;
+    // Only the puzzle bank carries a per-question difficulty today; the quant and
+    // reasoning sets leave it unset, hence null rather than a default.
+    difficulty: Difficulty | null;
     order: number;
   }[] = [];
 
@@ -376,6 +380,7 @@ async function seedQuiz() {
           answerKey: q.answerKey,
           explanation: q.explanation ?? null,
           hint: q.hint ?? null,
+          difficulty: q.difficulty ? toDifficulty(q.difficulty) : null,
           order: q.order,
         });
       }
