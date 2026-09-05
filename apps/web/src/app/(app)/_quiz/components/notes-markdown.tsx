@@ -5,6 +5,7 @@ import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
 import { NotesFigure } from "@/components/notes-figure";
 import { createHeadingIds } from "@/lib/markdown-toc";
+import { rehypePuzzleAnswer } from "@/lib/rehype-puzzle-answer";
 
 /**
  * Renders a topic's notes (stored as markdown in `QuizTopic.theory`, seeded from
@@ -59,12 +60,24 @@ function buildComponents(): Components {
   };
 }
 
-export function NotesMarkdown({ source }: { source: string }) {
+export function NotesMarkdown({
+  source,
+  /**
+   * Wrap each `**Solution**` / `**Reasoning**` pair in a tinted panel. Only the
+   * puzzle bank is written that way, so this stays opt-in — passing it for the
+   * quant/reasoning notes would tint any block that happened to open with a
+   * bold "Solution".
+   */
+  highlightAnswers = false,
+}: {
+  source: string;
+  highlightAnswers?: boolean;
+}) {
   return (
     <div className="notes-prose">
       <Markdown
         remarkPlugins={[remarkGfm, remarkMath]}
-        rehypePlugins={[rehypeKatex]}
+        rehypePlugins={highlightAnswers ? [rehypeKatex, rehypePuzzleAnswer] : [rehypeKatex]}
         components={buildComponents()}
       >
         {source}

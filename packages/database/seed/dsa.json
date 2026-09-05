@@ -975,7 +975,7 @@
                       "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/Goldman_Sachs.svg/250px-Goldman_Sachs.svg.png"
                     }
                   ],
-                  "youtubeUrl": "https://youtu.be/-UyYRPvYNkI?si=_m0S-b7Vie2w643t"
+                  "youtubeUrl": "https://youtu.be/wS0AAIfS2Yw?si=1lq_pLDcPf_x2vLG"
                 },
                 {
                   "id": "problem_0041",
@@ -3898,8 +3898,8 @@
         },
         {
           "id": "topic_0010",
-          "name": "Tree",
-          "description": "Hierarchical data structure with a root value and subtrees of children.",
+          "name": "Binary Tree",
+          "description": "Hierarchical data structure with a root value and subtrees of children, including ordered binary search trees.",
           "subtopics": [
             {
               "id": "subtopic_0036",
@@ -4701,14 +4701,7 @@
                   "youtubeUrl": null
                 }
               ]
-            }
-          ]
-        },
-        {
-          "id": "topic_0011",
-          "name": "Binary Search Tree",
-          "description": "Tree data structure where left child < root < right child.",
-          "subtopics": [
+            },
             {
               "id": "subtopic_0040",
               "name": "BST Operations",
@@ -9154,7 +9147,7 @@
                       "logo": "https://upload.wikimedia.org/wikipedia/commons/d/de/Amazon_icon.png"
                     },
                     {
-                      "name": "Paypal",
+                      "name": "PayPal",
                       "logo": null
                     },
                     {
@@ -9641,7 +9634,7 @@
                       "logo": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTVf6nm-Dk1ELbj1aBfeN_vJH6R1wAqYWnltw&s"
                     }
                   ],
-                  "youtubeUrl": null
+                  "youtubeUrl": "https://www.youtube.com/watch?v=kge_3sdDWfE&list=PLvNVexrplJJyQTJ7a6sx3MzZjq1cR2geB&index=7"
                 },
                 {
                   "id": "lm_problem_0506",
@@ -9703,7 +9696,7 @@
                       "logo": "https://upload.wikimedia.org/wikipedia/commons/b/b7/PayPal_Logo_Icon_2014.svg"
                     }
                   ],
-                  "youtubeUrl": null
+                  "youtubeUrl": "https://www.youtube.com/watch?v=L84y20axpIA"
                 },
                 {
                   "id": "lm_problem_0508",
@@ -9949,7 +9942,7 @@
                       "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/Goldman_Sachs.svg/250px-Goldman_Sachs.svg.png"
                     }
                   ],
-                  "youtubeUrl": null
+                  "youtubeUrl": "https://www.youtube.com/watch?v=2jqTPmHyz8U"
                 }
               ]
             }
@@ -10601,7 +10594,7 @@
                       "logo": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7g-Z03mvYWp-V0fzAUngNU4ZLVExOT0EpwA&s"
                     }
                   ],
-                  "youtubeUrl": null
+                  "youtubeUrl": "https://youtu.be/7IJdLmNJaSA?si=C0kzObuVWbuQvV4J"
                 },
                 {
                   "id": "lm_problem_0539",
@@ -12208,7 +12201,8 @@
                   "id": "problem_sbc_0001",
                   "title": "Trapping Rain Water",
                   "difficulty": "HARD",
-                  "gfgUrl": "https://www.geeksforgeeks.org/problems/trapping-rain-water-1587115621/1"
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/trapping-rain-water-1587115621/1",
+                  "youtubeUrl": "https://www.youtube.com/watch?v=uLCmHMPQo2M&list=PLvNVexrplJJzvtkPJ6tTZGqbwd5NlJBF2&index=6"
                 },
                 {
                   "id": "problem_sbc_0002",
@@ -12226,7 +12220,8 @@
                   "id": "problem_sbc_0004",
                   "title": "Move Zeroes",
                   "difficulty": "EASY",
-                  "gfgUrl": "https://www.geeksforgeeks.org/problems/move-all-zeroes-to-end-of-array0751/1"
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/move-all-zeroes-to-end-of-array0751/1",
+                  "youtubeUrl": "https://www.youtube.com/watch?v=kxibKXHbgVs&list=PLvNVexrplJJzvtkPJ6tTZGqbwd5NlJBF2&index=4"
                 },
                 {
                   "id": "problem_sbc_0005",
@@ -12238,7 +12233,8 @@
                       "name": "Infosys",
                       "logo": "https://logo.clearbit.com/infosys.com"
                     }
-                  ]
+                  ],
+                  "youtubeUrl": "https://www.youtube.com/watch?v=PShx8lzd8_E&list=PLvNVexrplJJzvtkPJ6tTZGqbwd5NlJBF2&index=2"
                 },
                 {
                   "id": "problem_sbc_0006",
@@ -12305,7 +12301,8 @@
                       "name": "Cognizant",
                       "logo": "https://logo.clearbit.com/cognizant.com"
                     }
-                  ]
+                  ],
+                  "youtubeUrl": "https://www.youtube.com/watch?v=e8iJPXS64MY&list=PLvNVexrplJJyQTJ7a6sx3MzZjq1cR2geB&index=9"
                 },
                 {
                   "id": "problem_sbc_0011",
@@ -12317,7 +12314,8 @@
                   "id": "problem_sbc_0012",
                   "title": "Maximum Sum Subarray of Size K",
                   "difficulty": "MEDIUM",
-                  "gfgUrl": "https://www.geeksforgeeks.org/problems/max-sum-subarray-of-size-k5313/1"
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/max-sum-subarray-of-size-k5313/1",
+                  "youtubeUrl": "https://www.youtube.com/watch?v=dgjKO46bu3A&list=PLvNVexrplJJyQTJ7a6sx3MzZjq1cR2geB&index=2"
                 },
                 {
                   "id": "problem_sbc_0013",
@@ -12338,7 +12336,8 @@
                   "id": "problem_sbc_0014",
                   "title": "Product of Array Except Self",
                   "difficulty": "MEDIUM",
-                  "gfgUrl": "https://www.geeksforgeeks.org/problems/product-array-puzzle4525/1"
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/product-array-puzzle4525/1",
+                  "youtubeUrl": "https://www.youtube.com/watch?v=I4zq1fXgugY&list=PLvNVexrplJJzc0FYDK1M7feNLJVSCV-cL&index=3"
                 }
               ]
             },
@@ -12370,7 +12369,8 @@
                       "name": "Infosys",
                       "logo": "https://logo.clearbit.com/infosys.com"
                     }
-                  ]
+                  ],
+                  "youtubeUrl": "https://www.youtube.com/watch?v=JjxEFeNdOoE&list=PLvNVexrplJJy-eQ3PNGlfRN2IvC9VE_Zz&index=23"
                 }
               ]
             },
@@ -12439,7 +12439,8 @@
                   "id": "problem_sbc_0020",
                   "title": "Valid Palindrome",
                   "difficulty": "EASY",
-                  "gfgUrl": "https://www.geeksforgeeks.org/problems/palindrome-string0817/1"
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/palindrome-string0817/1",
+                  "youtubeUrl": "https://www.youtube.com/watch?v=L84y20axpIA"
                 },
                 {
                   "id": "problem_sbc_0021",
@@ -12471,13 +12472,15 @@
                   "id": "problem_sbc_0023",
                   "title": "Longest Substring Without Repeating Characters",
                   "difficulty": "MEDIUM",
-                  "gfgUrl": "https://www.geeksforgeeks.org/problems/longest-distinct-characters-in-string5848/1"
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/longest-distinct-characters-in-string5848/1",
+                  "youtubeUrl": "https://youtu.be/92dMI4paQY4"
                 },
                 {
                   "id": "problem_sbc_0024",
                   "title": "Minimum Window Substring",
                   "difficulty": "HARD",
-                  "gfgUrl": "https://www.geeksforgeeks.org/problems/smallest-window-in-a-string-containing-all-the-characters-of-another-string-1587115621/1"
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/smallest-window-in-a-string-containing-all-the-characters-of-another-string-1587115621/1",
+                  "youtubeUrl": "https://youtu.be/9w9xip122n8"
                 },
                 {
                   "id": "problem_sbc_0025",
@@ -12544,7 +12547,8 @@
                   "id": "problem_sbc_0030",
                   "title": "Binary Search",
                   "difficulty": "EASY",
-                  "gfgUrl": "https://www.geeksforgeeks.org/problems/who-will-win-1587115621/1"
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/who-will-win-1587115621/1",
+                  "youtubeUrl": "https://youtu.be/bjMOevaiZn0?si=1En1Sz8BoLlpg9LD"
                 },
                 {
                   "id": "problem_sbc_0031",
@@ -12560,19 +12564,22 @@
                       "name": "Accenture",
                       "logo": "https://logo.clearbit.com/accenture.com"
                     }
-                  ]
+                  ],
+                  "youtubeUrl": "https://youtu.be/aFN2LrKg6i0?si=djEiRxbZse_2GViD"
                 },
                 {
                   "id": "problem_sbc_0032",
                   "title": "Find Minimum in Rotated Sorted Array",
                   "difficulty": "MEDIUM",
-                  "gfgUrl": "https://www.geeksforgeeks.org/problems/minimum-element-in-a-sorted-and-rotated-array3611/1"
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/minimum-element-in-a-sorted-and-rotated-array3611/1",
+                  "youtubeUrl": "https://youtu.be/eDC6Pk-LQDw?si=ERs4FwLlwDkCSNMO"
                 },
                 {
                   "id": "problem_sbc_0033",
                   "title": "Median of Two Sorted Arrays",
                   "difficulty": "HARD",
-                  "gfgUrl": "https://www.geeksforgeeks.org/problems/median-of-2-sorted-arrays-of-different-sizes/1"
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/median-of-2-sorted-arrays-of-different-sizes/1",
+                  "youtubeUrl": "https://youtu.be/eeJQFxknAv4?si=fab8lCqNpvojX5ik"
                 },
                 {
                   "id": "problem_sbc_0034",
@@ -12630,7 +12637,8 @@
                   "id": "problem_sbc_0037",
                   "title": "Search Insert Position",
                   "difficulty": "EASY",
-                  "gfgUrl": "https://www.geeksforgeeks.org/problems/search-insert-position-of-k-in-a-sorted-array/1"
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/search-insert-position-of-k-in-a-sorted-array/1",
+                  "youtubeUrl": "https://youtu.be/wS0AAIfS2Yw?si=1lq_pLDcPf_x2vLG"
                 }
               ]
             },
@@ -12645,13 +12653,15 @@
                   "id": "problem_sbc_0038",
                   "title": "Koko Eating Bananas",
                   "difficulty": "MEDIUM",
-                  "gfgUrl": "https://www.geeksforgeeks.org/problems/koko-eating-bananas/1"
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/koko-eating-bananas/1",
+                  "youtubeUrl": "https://youtu.be/sPlRs126bFU?si=8mCShPyIVcIMUgPe"
                 },
                 {
                   "id": "problem_sbc_0039",
                   "title": "Aggressive Cows",
                   "difficulty": "MEDIUM",
-                  "gfgUrl": "https://www.geeksforgeeks.org/problems/aggressive-cows/1"
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/aggressive-cows/1",
+                  "youtubeUrl": "https://youtu.be/WMtvM9BrrM0?si=YbrPPUabxAyo7FQ9"
                 }
               ]
             },
@@ -12676,7 +12686,8 @@
                       "name": "Accenture",
                       "logo": "https://logo.clearbit.com/accenture.com"
                     }
-                  ]
+                  ],
+                  "youtubeUrl": "https://www.youtube.com/watch?v=2jqTPmHyz8U"
                 }
               ]
             }
@@ -12698,7 +12709,8 @@
                   "id": "problem_sbc_0041",
                   "title": "Intersection of Two Linked Lists",
                   "difficulty": "EASY",
-                  "gfgUrl": "https://www.geeksforgeeks.org/problems/intersection-point-in-y-shapped-linked-lists/1"
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/intersection-point-in-y-shapped-linked-lists/1",
+                  "youtubeUrl": "https://youtu.be/WZdOHNebhdo?si=nDtpJ_ZJN8X74Zr-"
                 }
               ]
             },
@@ -12713,7 +12725,8 @@
                   "id": "problem_sbc_0042",
                   "title": "Middle of the Linked List",
                   "difficulty": "EASY",
-                  "gfgUrl": "https://www.geeksforgeeks.org/problems/finding-middle-element-in-a-linked-list/1"
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/finding-middle-element-in-a-linked-list/1",
+                  "youtubeUrl": "https://youtu.be/ZSyUwlzmN-U?si=A2yKylgvGNGFeGjf"
                 },
                 {
                   "id": "problem_sbc_0043",
@@ -12734,7 +12747,8 @@
                       "name": "Cognizant",
                       "logo": "https://logo.clearbit.com/cognizant.com"
                     }
-                  ]
+                  ],
+                  "youtubeUrl": "https://youtu.be/CVPhZHylPsg?si=gO_kVbhbvwSatOBp"
                 }
               ]
             },
@@ -12749,7 +12763,8 @@
                   "id": "problem_sbc_0045",
                   "title": "Reverse Linked List",
                   "difficulty": "EASY",
-                  "gfgUrl": "https://www.geeksforgeeks.org/problems/reverse-a-linked-list/1"
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/reverse-a-linked-list/1",
+                  "youtubeUrl": "https://youtu.be/XnNaU61HG0U?si=E7YxxdVnQnQkkYiP"
                 },
                 {
                   "id": "problem_sbc_0046",
@@ -12775,13 +12790,15 @@
                   "id": "problem_sbc_0047",
                   "title": "Reverse Nodes in k-Group",
                   "difficulty": "HARD",
-                  "gfgUrl": "https://www.geeksforgeeks.org/problems/reverse-a-linked-list-in-groups-of-given-size/1"
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/reverse-a-linked-list-in-groups-of-given-size/1",
+                  "youtubeUrl": "https://youtu.be/vMKUlvivp0A?si=51zg0TG2Di26n3Yu"
                 },
                 {
                   "id": "problem_sbc_0048",
                   "title": "Palindrome Linked List",
                   "difficulty": "EASY",
-                  "gfgUrl": "https://www.geeksforgeeks.org/problems/check-if-linked-list-is-pallindrome/1"
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/check-if-linked-list-is-pallindrome/1",
+                  "youtubeUrl": "https://youtu.be/N6Gg4zUI73E?si=CudotWkbW89Fh_Cm"
                 }
               ]
             },
@@ -12802,7 +12819,8 @@
                       "name": "Accenture",
                       "logo": "https://logo.clearbit.com/accenture.com"
                     }
-                  ]
+                  ],
+                  "youtubeUrl": "https://youtu.be/WWOvCh31xBk?si=SYP4e99-gFN9dfSj"
                 }
               ]
             },
@@ -12827,7 +12845,8 @@
                       "name": "Accenture",
                       "logo": "https://logo.clearbit.com/accenture.com"
                     }
-                  ]
+                  ],
+                  "youtubeUrl": "https://youtu.be/nkBX6Ew5fys"
                 }
               ]
             }
@@ -12947,7 +12966,8 @@
                   "id": "problem_sbc_0059",
                   "title": "Subarray Sum Equals K",
                   "difficulty": "MEDIUM",
-                  "gfgUrl": "https://www.geeksforgeeks.org/problems/subarrays-with-sum-k/1"
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/subarrays-with-sum-k/1",
+                  "youtubeUrl": "https://www.youtube.com/watch?v=d2wUDNz_6iA&list=PLvNVexrplJJzc0FYDK1M7feNLJVSCV-cL&index=5"
                 }
               ]
             },
@@ -13009,18 +13029,21 @@
                   "id": "problem_sbc_0062",
                   "title": "Next Greater Element I",
                   "difficulty": "EASY",
-                  "gfgUrl": "https://www.geeksforgeeks.org/problems/next-larger-element-1587115620/1"
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/next-larger-element-1587115620/1",
+                  "youtubeUrl": "https://youtu.be/rfl_M3SuvIE"
                 },
                 {
                   "id": "problem_sbc_0063",
                   "title": "Daily Temperatures",
-                  "difficulty": "MEDIUM"
+                  "difficulty": "MEDIUM",
+                  "youtubeUrl": "https://youtu.be/OQY4tbt_m6I"
                 },
                 {
                   "id": "problem_sbc_0064",
                   "title": "Largest Rectangle in Histogram",
                   "difficulty": "HARD",
-                  "gfgUrl": "https://www.geeksforgeeks.org/problems/maximum-rectangular-area-in-a-histogram-1587115620/1"
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/maximum-rectangular-area-in-a-histogram-1587115620/1",
+                  "youtubeUrl": "https://youtu.be/OQJjh6AT00g"
                 }
               ]
             },
@@ -13034,7 +13057,8 @@
                 {
                   "id": "problem_sbc_0065",
                   "title": "Evaluate Reverse Polish Notation",
-                  "difficulty": "MEDIUM"
+                  "difficulty": "MEDIUM",
+                  "youtubeUrl": "https://youtu.be/wKbDy5FWksE"
                 }
               ]
             },
@@ -13049,7 +13073,8 @@
                   "id": "problem_sbc_0066",
                   "title": "Decode String",
                   "difficulty": "MEDIUM",
-                  "gfgUrl": "https://www.geeksforgeeks.org/problems/decode-the-string2444/1"
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/decode-the-string2444/1",
+                  "youtubeUrl": "https://youtu.be/hTf5N2vOCL8?si=4H7jCGEYzMy8wOfL"
                 }
               ]
             },
@@ -13064,7 +13089,8 @@
                   "id": "problem_sbc_0067",
                   "title": "Valid Parentheses",
                   "difficulty": "EASY",
-                  "gfgUrl": "https://www.geeksforgeeks.org/problems/parenthesis-checker2744/1"
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/parenthesis-checker2744/1",
+                  "youtubeUrl": "https://youtu.be/3VCxVEkraw8?si=p-bvF1Rx6gdsHaSe"
                 }
               ]
             },
@@ -13079,13 +13105,15 @@
                   "id": "problem_sbc_0068",
                   "title": "Min Stack",
                   "difficulty": "MEDIUM",
-                  "gfgUrl": "https://www.geeksforgeeks.org/problems/get-minimum-element-from-stack/1"
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/get-minimum-element-from-stack/1",
+                  "youtubeUrl": "https://youtu.be/D9HDBEx_Bac?si=4d-suWPCG6phLsvU"
                 },
                 {
                   "id": "problem_sbc_0069",
                   "title": "Implement Queue using Stacks",
                   "difficulty": "EASY",
-                  "gfgUrl": "https://www.geeksforgeeks.org/problems/queue-using-stack/1"
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/queue-using-stack/1",
+                  "youtubeUrl": "https://youtu.be/83r2JVsu5Ro?si=1Lz8Vw7H58Duim_n"
                 },
                 {
                   "id": "problem_sbc_0070",
@@ -13097,7 +13125,8 @@
                       "name": "Accenture",
                       "logo": "https://logo.clearbit.com/accenture.com"
                     }
-                  ]
+                  ],
+                  "youtubeUrl": "https://youtu.be/leR-4ANdsRQ?si=cufoTT1MA0d7t47Z"
                 }
               ]
             }
@@ -13141,7 +13170,8 @@
                   "id": "problem_sbc_0072",
                   "title": "Maximum Depth of Binary Tree",
                   "difficulty": "EASY",
-                  "gfgUrl": "https://www.geeksforgeeks.org/problems/maximum-depth-of-binary-tree/1"
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/maximum-depth-of-binary-tree/1",
+                  "youtubeUrl": "https://youtu.be/GLPeZfpjR80?si=QURbfLGKNv23CPlq"
                 },
                 {
                   "id": "problem_sbc_0073",
@@ -13180,19 +13210,22 @@
                   "id": "problem_sbc_0076",
                   "title": "Binary Tree Level Order Traversal",
                   "difficulty": "MEDIUM",
-                  "gfgUrl": "https://www.geeksforgeeks.org/problems/level-order-traversal/1"
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/level-order-traversal/1",
+                  "youtubeUrl": "https://youtu.be/wkpSXB4bzdA?si=ppAtZP2piYclf0q8"
                 },
                 {
                   "id": "problem_sbc_0077",
                   "title": "Binary Tree Right Side View",
                   "difficulty": "MEDIUM",
-                  "gfgUrl": "https://www.geeksforgeeks.org/problems/right-view-of-binary-tree/1"
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/right-view-of-binary-tree/1",
+                  "youtubeUrl": "https://youtu.be/xo3i19SvDaU?si=hVG03nDbOvKocGu0"
                 },
                 {
                   "id": "problem_sbc_0078",
                   "title": "Binary Tree Zigzag Level Order Traversal",
                   "difficulty": "MEDIUM",
-                  "gfgUrl": "https://www.geeksforgeeks.org/problems/zigzag-tree-traversal/1"
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/zigzag-tree-traversal/1",
+                  "youtubeUrl": "https://youtu.be/g5pwB1X-rfY?si=V_3k-gs_1P0o4D1P"
                 }
               ]
             },
@@ -13477,7 +13510,8 @@
                   "id": "problem_sbc_0099",
                   "title": "Merge k Sorted Lists",
                   "difficulty": "HARD",
-                  "gfgUrl": "https://www.geeksforgeeks.org/problems/merge-k-sorted-linked-lists/1"
+                  "gfgUrl": "https://www.geeksforgeeks.org/problems/merge-k-sorted-linked-lists/1",
+                  "youtubeUrl": "https://youtu.be/bsHyg2eUYg8"
                 }
               ]
             },
@@ -13734,7 +13768,8 @@
                       "name": "Infosys",
                       "logo": "https://logo.clearbit.com/infosys.com"
                     }
-                  ]
+                  ],
+                  "youtubeUrl": "https://www.youtube.com/watch?v=JjxEFeNdOoE&list=PLvNVexrplJJy-eQ3PNGlfRN2IvC9VE_Zz&index=23"
                 }
               ]
             },
@@ -13784,7 +13819,8 @@
                       "name": "Accenture",
                       "logo": "https://logo.clearbit.com/accenture.com"
                     }
-                  ]
+                  ],
+                  "youtubeUrl": "https://youtu.be/5MS14_6rSa8"
                 },
                 {
                   "id": "problem_sbc_0120",

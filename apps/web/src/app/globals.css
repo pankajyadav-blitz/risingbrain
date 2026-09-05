@@ -346,6 +346,37 @@ body::before {
   color: var(--note-tip);
 }
 
+/* --- Puzzle answer --------------------------------------------------------
+   The puzzle bank has no graded questions: each `## N. Title` section holds the
+   statement, the hints and then the answer, all as running prose. Without a
+   break the solution reads as just more of the puzzle, and the eye slides into
+   it while the reader is still trying to solve. `rehype-puzzle-answer` wraps the
+   `**Solution**` + `**Reasoning**` pair so it gets the same tinted-card-with-a-
+   rule treatment the callouts use — deliberately the SAME green (`--note-tip`,
+   which resolves to green-700 on light and green-300 on dark) rather than a
+   second one, so the notes keep a single accent. Only the shape says "this is
+   set apart"; the colour says "this is the same family of aside". */
+.notes-prose .puzzle-answer {
+  margin-block: 1.6rem;
+  padding: 0.9rem 1.15rem;
+  border: 1px solid color-mix(in srgb, var(--note-tip) 22%, transparent);
+  border-left: 3px solid var(--note-tip);
+  border-radius: 0.25rem 0.85rem 0.85rem 0.25rem;
+  background: var(--note-tip-bg);
+  color: var(--reading-foreground);
+}
+.notes-prose .puzzle-answer > :first-child {
+  margin-top: 0;
+}
+.notes-prose .puzzle-answer > :last-child {
+  margin-bottom: 0;
+}
+/* Both labels inside — "Solution" and "Reasoning" — not just the first, so the
+   panel reads as two named parts of one answer. */
+.notes-prose .puzzle-answer > p > strong:first-child {
+  color: var(--note-tip);
+}
+
 /* --- Code ----------------------------------------------------------------
    Code is primary content here, not an occasional aside: these are CS notes and
    most topics carry a worked example. It is set on its own material — a surface

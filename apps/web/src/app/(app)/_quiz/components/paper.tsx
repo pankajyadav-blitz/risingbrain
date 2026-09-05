@@ -101,7 +101,16 @@ export function Paper({ paper }: { paper: AptPaper }) {
 
             <ReadingTabs
               questionCount={paper.questions.length}
-              notes={paper.theory ? <NotesMarkdown source={paper.theory} /> : null}
+              notes={
+                paper.theory ? (
+                  <NotesMarkdown
+                    source={paper.theory}
+                    // Puzzles carry their answer in the notes; the other kinds
+                    // grade it, so only this one gets the solution panel.
+                    highlightAnswers={paper.kind === "PUZZLE"}
+                  />
+                ) : null
+              }
               practice={practice}
             />
           </div>
