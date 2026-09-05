@@ -3885,14 +3885,6 @@
                   "youtubeUrl": null
                 }
               ]
-            },
-            {
-              "id": "subtopic_0026",
-              "name": "Sliding Window + HashMap",
-              "order": 2,
-              "strategy": "Maintain counts in a moving window → expand/shrink → track longest/shortest satisfying condition.",
-              "identification": "Problem mentions substring/window with constraints on counts or distinct elements.",
-              "problems": []
             }
           ]
         },
