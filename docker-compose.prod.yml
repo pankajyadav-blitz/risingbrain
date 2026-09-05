@@ -30,31 +30,31 @@ services:
       # Public base URL — MUST match your domain and the OAuth callback URLs you
       # registered (…/api/auth/oauth/<provider>/callback). For a local prod test
       # this is http://localhost:3000.
-      APP_URL: "https://risingbrain.1000xdevs.dev"
+      APP_URL: ""
 
       # Managed Postgres (Neon). Use the POOLED endpoint + sslmode=require, and
       # drop channel_binding (node-postgres pools don't negotiate it).
-      DATABASE_URL: "postgresql://neondb_owner:npg_pH7LtsSFGv2R@ep-holy-feather-atde6vmv-pooler.c-9.us-east-1.aws.neon.tech/neondb?sslmode=require"
+      DATABASE_URL: ""
 
       # Redis runs in the container below; host = the service name "redis"
       # (NOT localhost). Password must match the `redis` service command.
       REDIS_URL: "redis://default:risingbrain@redis:6379"
 
       # Auth — generate with: openssl rand -base64 48
-      AUTH_SECRET: "IbueTy4mvrQm2jWmMYmjCbTY2eaGUEROk4Wa+hN+w8Z2erBDZnIbOcaDUfvxHcmw"
+      AUTH_SECRET: ""
       ACCESS_TOKEN_TTL: "15m"
       REFRESH_TOKEN_TTL_DAYS: "30"
 
       # OAuth credentials (from .env).
-      GOOGLE_CLIENT_ID: "22515612882-1nicb41nmjhjdp1rqrv0pdsi9do9nuja.apps.googleusercontent.com"
-      GOOGLE_CLIENT_SECRET: "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"
-      GITHUB_CLIENT_ID: "Ov23lir6as70Gx4Yvxy6"
-      GITHUB_CLIENT_SECRET: "c09f054932a11a2b66edaa80c2e97a10612c878a"
-      GMAIL_USER: "siri963690@gmail.com"
-      GMAIL_APP_PASSWORD: "vbwp juwu fhpk zukh"
+      GOOGLE_CLIENT_ID: ""
+      GOOGLE_CLIENT_SECRET: ""
+      GITHUB_CLIENT_ID: ""
+      GITHUB_CLIENT_SECRET: ""
+      GMAIL_USER: ""
+      GMAIL_APP_PASSWORD: ""
       # Must be a full mailbox, not a bare display name — a name-only value makes
       # Gmail reject every OTP with a 5.5.2 syntax error.
-      MAIL_FROM: "Rising Brain <siri963690@gmail.com>"
+      MAIL_FROM: ""
     healthcheck:
       test: ["CMD-SHELL", "node -e \"fetch('http://127.0.0.1:3000/').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))\""]
       interval: 15s
