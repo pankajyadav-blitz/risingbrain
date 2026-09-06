@@ -31,11 +31,11 @@ export function SelectedCategoryProvider({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
-  const activeTopicId = pathname.split("/")[2] ?? "";
+  const activeTopicSlug = pathname.split("/")[2] ?? "";
 
   const categoryOfActive = useMemo(
-    () => categories.find((c) => c.topics.some((t) => t.id === activeTopicId))?.id,
-    [categories, activeTopicId]
+    () => categories.find((c) => c.topics.some((t) => t.slug === activeTopicSlug))?.id,
+    [categories, activeTopicSlug]
   );
 
   const [selectedId, setSelectedId] = useState(

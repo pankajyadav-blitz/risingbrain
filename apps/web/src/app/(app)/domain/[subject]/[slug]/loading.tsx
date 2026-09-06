@@ -1,4 +1,4 @@
-import { TopicSkeleton } from "../_components/workspace-skeleton";
+import { TopicSkeleton } from "../../_components/workspace-skeleton";
 
 /**
  * Instant skeleton shown while a topic's content streams in (the lazy fetch). It's

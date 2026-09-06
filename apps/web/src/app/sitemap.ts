@@ -26,12 +26,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   try {
     const experiences = await prisma.interviewExperience.findMany({
       where: { status: "PUBLISHED" },
-      select: { id: true, updatedAt: true },
+      select: { slug: true, updatedAt: true },
       orderBy: { updatedAt: "desc" },
       take: 5000,
     });
     const dynamicRoutes: MetadataRoute.Sitemap = experiences.map((e) => ({
-      url: absoluteUrl(`/interview/${e.id}`),
+      url: absoluteUrl(`/interview/${e.slug}`),
       lastModified: e.updatedAt,
       changeFrequency: "weekly",
       priority: 0.6,

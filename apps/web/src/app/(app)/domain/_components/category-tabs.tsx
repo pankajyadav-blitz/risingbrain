@@ -2,7 +2,7 @@
 
 import { usePathname, useRouter } from "next/navigation";
 import { useSelectedSubject } from "./selected-subject";
-import { SUBJECT_META } from "../_categories";
+import { SUBJECT_META, domainTopicHref } from "../_categories";
 import type { DomainSubjectIndex } from "../_data";
 
 /**
@@ -18,16 +18,16 @@ export function CategoryTabs() {
   const ctx = useSelectedSubject();
   const router = useRouter();
   const pathname = usePathname();
-  const activeTopicId = pathname.split("/")[2] ?? "";
+  const activeTopicSlug = pathname.split("/")[3] ?? "";
   if (!ctx) return null;
   const { subjects, selected, select } = ctx;
 
   function open(s: DomainSubjectIndex) {
     select(s.subject);
-    const already = s.groups.some((g) => g.topics.some((t) => t.id === activeTopicId));
+    const already = s.groups.some((g) => g.topics.some((t) => t.slug === activeTopicSlug));
     if (already) return;
     const first = s.groups[0]?.topics[0];
-    if (first) router.push(`/domain/${first.id}`);
+    if (first) router.push(domainTopicHref(s.subject, first.slug));
   }
 
   // One subject → a plain header, not a lone clickable tab.

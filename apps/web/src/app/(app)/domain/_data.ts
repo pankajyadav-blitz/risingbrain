@@ -100,15 +100,46 @@ export async function getDomainIndex(): Promise<{ subjects: DomainSubjectIndex[]
   return { subjects, total: subjects.reduce((s, x) => s + x.total, 0) };
 }
 
-/** First topic id in display order — `/domain` redirects here so it's never empty. */
-export async function getFirstTopicId(): Promise<string | null> {
+/** First topic in display order — `/domain` redirects here so it's never empty. */
+export async function getFirstTopic(): Promise<{ subject: DomainSubject; slug: string } | null> {
   const { subjects } = await getDomainIndex();
   for (const s of subjects) {
     for (const g of s.groups) {
-      if (g.topics[0]) return g.topics[0].id;
+      if (g.topics[0]) return { subject: s.subject, slug: g.topics[0].slug };
     }
   }
   return null;
+}
+
+/** First topic of ONE subject — `/domain/<subject>` opens straight into it. */
+export async function getFirstTopicOfSubject(subject: DomainSubject): Promise<string | null> {
+  const { subjects } = await getDomainIndex();
+  const s = subjects.find((x) => x.subject === subject);
+  for (const g of s?.groups ?? []) {
+    if (g.topics[0]) return g.topics[0].slug;
+  }
+  return null;
+}
+
+/**
+ * Resolve a legacy `/domain/<cuid>` link to its subject + slug.
+ *
+ * Topic URLs carried the primary key before this route was nested, and those ids
+ * are not even stable — a domain reseed deletes and recreates every row — so the
+ * lookup may well miss. It costs one indexed read to avoid 404ing a live link.
+ */
+export async function getTopicLocationById(
+  id: string
+): Promise<{ subject: DomainSubject; slug: string } | null> {
+  "use cache";
+  cacheLife("hours");
+  cacheTag(CACHE_TAGS.domainCatalog);
+
+  const t = await prisma.domainTopic.findFirst({
+    where: { id, isPublished: true },
+    select: { subject: true, slug: true },
+  });
+  return t;
 }
 
 export type DomainOption = { key: string; label: string };
@@ -135,16 +166,23 @@ export type DomainTopicDetail = {
 /**
  * Per-topic loader — only this topic's notes + questions ship, and NO answer
  * key. It reads no cookies (the learner's marks come from the client provider),
- * so the `[topicId]` segment is statically prefetchable: hovering a nav item
- * warms and caches the content, making the click feel instant.
+ * so the `[subject]/[slug]` segment is statically prefetchable: hovering a nav
+ * item warms and caches the content, making the click feel instant.
+ *
+ * Addressed by (subject, slug) — the pair the table already declares unique.
+ * Slugs repeat across subjects ("views" is both a SQL and a DBMS topic), which is
+ * precisely why the subject is in the URL.
  */
-export async function getDomainTopic(id: string): Promise<DomainTopicDetail | null> {
+export async function getDomainTopic(
+  subject: DomainSubject,
+  slug: string
+): Promise<DomainTopicDetail | null> {
   "use cache";
   cacheLife("hours");
   cacheTag(CACHE_TAGS.domainCatalog);
 
   const t = await prisma.domainTopic.findFirst({
-    where: { id, isPublished: true },
+    where: { subject, slug, isPublished: true },
     select: {
       id: true,
       slug: true,

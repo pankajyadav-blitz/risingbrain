@@ -93,7 +93,7 @@ export default async function InterviewPage({
             <InterviewFeed
             experiences={feed.experiences}
             signedIn={signedIn}
-            pendingSubmission={pending ? { id: pending.id, title: pending.title } : null}
+            pendingSubmission={pending ? { slug: pending.slug, title: pending.title } : null}
             datasetEmpty={feed.globalTotal === 0}
             filters={params}
             page={feed.page}

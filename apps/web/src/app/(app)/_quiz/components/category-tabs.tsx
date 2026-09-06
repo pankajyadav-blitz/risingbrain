@@ -23,7 +23,7 @@ export function CategoryTabs({ basePath }: { basePath: string }) {
   const progress = useProgress();
   const router = useRouter();
   const pathname = usePathname();
-  const activeTopicId = pathname.split("/")[2] ?? "";
+  const activeTopicSlug = pathname.split("/")[2] ?? "";
   const signedIn = progress?.signedIn ?? false;
   if (!ctx) return null;
   const { categories, selectedId, select } = ctx;
@@ -34,10 +34,10 @@ export function CategoryTabs({ basePath }: { basePath: string }) {
   // already belongs to the clicked category, keep it (no needless navigation).
   function handleSelect(c: AptIndexCategory) {
     select(c.id);
-    const alreadyOpen = c.topics.some((t) => t.id === activeTopicId);
+    const alreadyOpen = c.topics.some((t) => t.slug === activeTopicSlug);
     if (alreadyOpen) return;
     const first = c.topics[0];
-    if (first) router.push(`${basePath}/${first.id}`);
+    if (first) router.push(`${basePath}/${first.slug}`);
   }
 
   return (

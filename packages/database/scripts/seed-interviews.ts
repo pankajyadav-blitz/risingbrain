@@ -27,6 +27,7 @@ import {
 import { PrismaPg } from "@prisma/adapter-pg";
 
 import interviewData from "../seed/interview.json";
+import { interviewSlug } from "@risingbrain/core/utils";
 
 const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL });
 const prisma = new PrismaClient({ adapter });
@@ -187,15 +188,17 @@ async function main() {
   const posts = interviewData as InterviewPostJson[];
   const ordered = shuffleAvoidingAdjacentCompanies(posts);
 
-  const deleted = await prisma.interviewExperience.deleteMany();
-  console.log(`🗑️  Deleted ${deleted.count} existing interview experiences.`);
+  // NO deleteMany here, deliberately. This table also holds real user
+  // submissions, plus likes and comments that cascade from it — wiping it to
+  // reload editorial posts would take all of that with it. Posts are matched by
+  // their title-derived slug and updated in place instead (see the upsert below).
 
   const emailFor = (name: string) => `${slugify(name)}@example.com`;
 
   // Bulk-create the unique authors first (skipDuplicates keeps existing users),
-  // then resolve their ids in one query and bulk-insert the experiences —
-  // matching how prisma/seed.ts does it. Every post is "Anonymous" today, so
-  // this collapses one upsert per post into a single round trip.
+  // then resolve their ids in one query. Every post is "Anonymous" today, so
+  // this collapses one upsert per author into a single round trip. The
+  // experiences themselves are upserted individually below, keyed by slug.
   const authorRows = new Map<
     string,
     { email: string; name: string; role: Role }
@@ -217,31 +220,65 @@ async function main() {
   const authorId = new Map(authors.map((a) => [a.email, a.id]));
 
   const now = Date.now();
-  const experienceRows = ordered.map((post, index) => ({
-    authorId: authorId.get(emailFor(post.authorName))!,
-    company: post.company,
-    role: post.role,
-    verdict: post.verdict as InterviewVerdict,
-    difficulty: toDifficulty(post.difficulty),
-    roundsCount: post.roundsCount,
-    title: post.title,
-    excerpt: post.excerpt,
-    body: post.body,
-    tags: post.tags,
-    likeCount: post.likeCount,
-    // Seeded posts bypass the approval queue: they are editorial content, not
-    // user submissions, and the column defaults to PENDING_REVIEW so leaving it
-    // out would seed an empty feed and a review queue nobody asked for.
-    status: PublishStatus.PUBLISHED,
-    // Index 0 is newest, so the feed's createdAt DESC sort mirrors `ordered`.
-    createdAt: new Date(now - index * SPACING_MINUTES * 60_000),
-  }));
-  await insertMany(
-    (r) => prisma.interviewExperience.createMany({ data: r }),
-    experienceRows,
-  );
 
-  console.log(`✅ Inserted ${ordered.length} interview experiences.`);
+  // Two editorial posts could share a title; salt the tie the same way the
+  // create path does so every slug stays reproducible across runs.
+  const taken = new Set<string>();
+  const slugFor = (title: string) => {
+    let slug = interviewSlug(title);
+    for (let n = 2; taken.has(slug); n++) slug = interviewSlug(title, String(n));
+    taken.add(slug);
+    return slug;
+  };
+
+  // One upsert per post rather than a bulk createMany: the slug is the stable
+  // identity, so a rerun edits the row that is already there. Costs 40 round
+  // trips, which is the price of not destroying the table on every seed.
+  let created = 0;
+  for (const [index, post] of ordered.entries()) {
+    const content = {
+      company: post.company,
+      role: post.role,
+      verdict: post.verdict as InterviewVerdict,
+      difficulty: toDifficulty(post.difficulty),
+      roundsCount: post.roundsCount,
+      title: post.title,
+      excerpt: post.excerpt,
+      body: post.body,
+      tags: post.tags,
+      // Seeded posts bypass the approval queue: they are editorial content, not
+      // user submissions, and the column defaults to PENDING_REVIEW so leaving it
+      // out would seed an empty feed and a review queue nobody asked for.
+      status: PublishStatus.PUBLISHED,
+    };
+
+    const slug = slugFor(post.title);
+    const before = await prisma.interviewExperience.findUnique({
+      where: { slug },
+      select: { id: true },
+    });
+
+    await prisma.interviewExperience.upsert({
+      where: { slug },
+      // `likeCount` and `createdAt` are NOT refreshed: likes accumulate from real
+      // readers (InterviewLike is the truth), and rewriting createdAt on every
+      // seed would reshuffle a feed that is sorted by it.
+      update: content,
+      create: {
+        ...content,
+        slug,
+        authorId: authorId.get(emailFor(post.authorName))!,
+        likeCount: post.likeCount,
+        // Index 0 is newest, so the feed's createdAt DESC sort mirrors `ordered`.
+        createdAt: new Date(now - index * SPACING_MINUTES * 60_000),
+      },
+    });
+    if (!before) created++;
+  }
+
+  console.log(
+    `✅ ${ordered.length} interview experiences seeded (${created} created, ${ordered.length - created} updated in place).`,
+  );
   console.log(`   order: ${ordered.map((p) => p.company).join(" → ")}`);
 }
 

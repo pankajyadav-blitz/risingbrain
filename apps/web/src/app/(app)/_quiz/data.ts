@@ -30,7 +30,7 @@ import type { AptOption } from "./components/question-card";
 
 export type AptKind = "APTITUDE" | "LOGICAL_REASONING" | "PUZZLE";
 
-export type AptIndexTopic = { id: string; name: string; total: number };
+export type AptIndexTopic = { id: string; slug: string; name: string; total: number };
 export type AptIndexCategory = {
   id: string;
   slug: string;
@@ -51,7 +51,7 @@ export async function getQuizIndex(kinds: AptKind[]) {
     include: {
       topics: {
         orderBy: { order: "asc" },
-        select: { id: true, name: true, _count: { select: { questions: true } } },
+        select: { id: true, slug: true, name: true, _count: { select: { questions: true } } },
       },
     },
   });
@@ -61,7 +61,14 @@ export async function getQuizIndex(kinds: AptKind[]) {
     slug: c.slug,
     name: c.name,
     kind: c.kind as AptKind,
-    topics: c.topics.map((t) => ({ id: t.id, name: t.name, total: t._count.questions })),
+    // Both id and slug ride along: the slug is the URL segment, the id is what
+    // the progress provider keys scores by.
+    topics: c.topics.map((t) => ({
+      id: t.id,
+      slug: t.slug,
+      name: t.name,
+      total: t._count.questions,
+    })),
   }));
 
   const totalTopics = categories.reduce((s, c) => s + c.topics.length, 0);
@@ -73,11 +80,11 @@ export async function getQuizIndex(kinds: AptKind[]) {
   return { categories, totalTopics, totalQuestions };
 }
 
-/** First topic id in display order — the route index redirects here so the paper is never empty. */
-export async function getFirstTopicId(kinds: AptKind[]): Promise<string | null> {
+/** First topic slug in display order — the route index redirects here so the paper is never empty. */
+export async function getFirstTopicSlug(kinds: AptKind[]): Promise<string | null> {
   const { categories } = await getQuizIndex(kinds);
   for (const c of categories) {
-    if (c.topics[0]) return c.topics[0].id;
+    if (c.topics[0]) return c.topics[0].slug;
   }
   return null;
 }
@@ -151,7 +158,10 @@ export type AptPaperQuestion = {
 };
 
 export type AptPaper = {
+  /** Primary key — what `/api/screening/submit` grades against, NOT the URL. */
   topicId: string;
+  /** URL segment for this topic; used to canonicalise a legacy /<id> link. */
+  topicSlug: string;
   topicName: string;
   categoryName: string;
   /** Which route owns this topic — lets a page redirect a foreign topic id. */
@@ -164,18 +174,24 @@ export type AptPaper = {
 /**
  * Per-topic loader — only this topic's questions ship, and NO answer key. It
  * reads no cookies (the user's status dots come from the client provider), so
- * the `[topicId]` segment is statically prefetchable: hovering a nav item fully
+ * the `[slug]` segment is statically prefetchable: hovering a nav item fully
  * generates and caches the paper, making the click feel instant.
+ *
+ * Keyed by `slug`, which is globally unique across every category — so the two
+ * routes that share this table (/screening, /puzzles) can each resolve a topic
+ * from its URL segment alone, and a slug that belongs to the sibling route still
+ * resolves here (the page then redirects it — see routes.ts).
  */
-export async function getQuizTopic(topicId: string): Promise<AptPaper | null> {
+export async function getQuizTopicBySlug(slug: string): Promise<AptPaper | null> {
   "use cache";
   cacheLife("hours");
   cacheTag(CACHE_TAGS.quizCatalog);
 
   const topic = await prisma.quizTopic.findUnique({
-    where: { id: topicId },
+    where: { slug },
     select: {
       id: true,
+      slug: true,
       name: true,
       theory: true,
       formula: true,
@@ -190,6 +206,7 @@ export async function getQuizTopic(topicId: string): Promise<AptPaper | null> {
 
   return {
     topicId: topic.id,
+    topicSlug: topic.slug,
     topicName: topic.name,
     categoryName: topic.category.name,
     kind: topic.category.kind as AptKind,
@@ -203,4 +220,20 @@ export async function getQuizTopic(topicId: string): Promise<AptPaper | null> {
       hint: q.hint,
     })),
   };
+}
+
+/**
+ * Resolve a legacy `/screening/<cuid>` or `/puzzles/<cuid>` link to its slug.
+ *
+ * Topic URLs carried the primary key before slugs; bookmarks and shared links
+ * from that era still arrive. The paper pages fall back to this when a segment
+ * matches no slug, and redirect to the canonical URL rather than 404ing.
+ */
+export async function getTopicSlugById(id: string): Promise<string | null> {
+  "use cache";
+  cacheLife("hours");
+  cacheTag(CACHE_TAGS.quizCatalog);
+
+  const t = await prisma.quizTopic.findUnique({ where: { id }, select: { slug: true } });
+  return t?.slug ?? null;
 }

@@ -57,7 +57,7 @@ export function InterviewFeed({
   experiences: FeedExperience[];
   signedIn: boolean;
   /** The author's write-up already waiting on review, if they have one. */
-  pendingSubmission: { id: string; title: string } | null;
+  pendingSubmission: { slug: string; title: string } | null;
   datasetEmpty: boolean;
   filters: FeedParams;
   page: number;
@@ -146,7 +146,7 @@ export function InterviewFeed({
           A moderator reads every write-up before it reaches the feed, and one at a time keeps
           that queue moving. You can keep editing{" "}
           <Link
-            href={`/interview/${pendingSubmission.id}`}
+            href={`/interview/${pendingSubmission.slug}`}
             className="font-medium text-accent hover:underline"
           >
             {pendingSubmission.title}
@@ -367,7 +367,7 @@ function ExperienceCard({ exp, signedIn }: { exp: FeedExperience; signedIn: bool
 
   return (
     <Link
-      href={`/interview/${exp.id}`}
+      href={`/interview/${exp.slug}`}
       data-exp-id={exp.id}
       className="group glass glass-hover animate-in flex h-full flex-col rounded-3xl p-5 transition-transform duration-300 hover:-translate-y-1"
     >

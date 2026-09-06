@@ -3,6 +3,7 @@ import { prisma, PublishStatus } from "@/lib/db";
 import { getCurrentUser } from "@/lib/auth/current-user";
 import { checkWriteLimit } from "@/lib/auth/rate-limit";
 import { parseExperiencePayload } from "./_payload";
+import { interviewSlug } from "@risingbrain/core/utils";
 
 /**
  * POST /api/interview
@@ -62,12 +63,36 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: parsed.error }, { status: parsed.status });
   }
 
-  // `status` is set explicitly rather than left to the schema default so the
-  // review gate is visible at the one place content enters the system.
-  const created = await prisma.interviewExperience.create({
-    data: { authorId: user.id, ...parsed.data, status: PublishStatus.PENDING_REVIEW },
-    select: { id: true, status: true },
-  });
+  // The slug is derived from the title, so two posts sharing a title collide on
+  // the unique index. That is the only way this can fail, and salting the token
+  // resolves it — so retry a bounded number of times rather than rejecting a
+  // perfectly valid write-up for having an unoriginal heading.
+  let created: { id: string; slug: string; status: PublishStatus } | null = null;
+  for (let attempt = 0; attempt < 5 && !created; attempt++) {
+    const slug = interviewSlug(parsed.data.title, attempt === 0 ? "" : String(attempt));
+    try {
+      created = await prisma.interviewExperience.create({
+        // `status` is set explicitly rather than left to the schema default so
+        // the review gate is visible at the one place content enters the system.
+        data: {
+          authorId: user.id,
+          ...parsed.data,
+          slug,
+          status: PublishStatus.PENDING_REVIEW,
+        },
+        select: { id: true, slug: true, status: true },
+      });
+    } catch (e) {
+      // P2002 = unique violation. Anything else is a real failure, not a clash.
+      if ((e as { code?: string }).code !== "P2002") throw e;
+    }
+  }
+  if (!created) {
+    return NextResponse.json(
+      { error: "Could not generate a unique link for that title. Try a small edit to it." },
+      { status: 409 },
+    );
+  }
 
-  return NextResponse.json({ id: created.id, status: created.status });
+  return NextResponse.json({ id: created.id, slug: created.slug, status: created.status });
 }

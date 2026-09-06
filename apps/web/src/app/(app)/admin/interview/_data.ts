@@ -46,6 +46,7 @@ export function parseQueueParams(sp: RawParams): QueueParams {
 
 const QUEUE_SELECT = {
   id: true,
+  slug: true,
   company: true,
   role: true,
   verdict: true,

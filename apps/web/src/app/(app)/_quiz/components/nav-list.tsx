@@ -30,7 +30,7 @@ function NavTrailing({ label, done }: { label: string; done: boolean }) {
 /**
  * The left index (`@nav` parallel slot). The category is chosen by the top
  * `<CategoryTabs>`; this list shows ONLY the selected category's topics, each a
- * prefetch-on-hover <Link> (`<basePath>/<topicId>`) so the click is instant
+ * prefetch-on-hover <Link> (`<basePath>/<slug>`) so the click is instant
  * (lazy load). The active topic is derived from the URL, keeping the nav and the
  * paper always in sync.
  */
@@ -47,7 +47,9 @@ export function NavList({
   const progress = useProgress();
   const ctx = useSelectedCategory();
   const signedIn = progress?.signedIn ?? false;
-  const activeId = pathname.split("/")[2] ?? "";
+  // The URL carries the topic SLUG; scores are still keyed by primary key, so
+  // rows match on slug and look up progress on id.
+  const activeSlug = pathname.split("/")[2] ?? "";
 
   const selectedId = ctx?.selectedId ?? categories[0]?.id ?? "";
   const active = categories.find((c) => c.id === selectedId) ?? categories[0];
@@ -56,7 +58,7 @@ export function NavList({
   const activeRef = useRef<HTMLAnchorElement>(null);
   useEffect(() => {
     activeRef.current?.scrollIntoView({ block: "nearest" });
-  }, [activeId, selectedId]);
+  }, [activeSlug, selectedId]);
 
   // The index column is narrow, so long topic names are truncated; this reveals
   // the rest on hover/focus.
@@ -84,9 +86,9 @@ export function NavList({
       <ul className="space-y-0.5">
         {active.topics.map((t) => {
           const sc = progress?.getTopicScore(t.id);
-          const isActive = t.id === activeId;
+          const isActive = t.slug === activeSlug;
           const done = signedIn && Boolean(sc);
-          const href = `${basePath}/${t.id}`;
+          const href = `${basePath}/${t.slug}`;
           return (
             <li key={t.id}>
               <Link

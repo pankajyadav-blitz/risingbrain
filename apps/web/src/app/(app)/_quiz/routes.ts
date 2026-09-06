@@ -36,7 +36,7 @@ export const PUZZLES_ROUTE: QuizRouteConfig = {
 
 /**
  * The route that owns a given kind. Puzzles used to live under /screening, so
- * bookmarked `/screening/<puzzleTopicId>` links still arrive here — the paper
+ * bookmarked `/screening/<puzzleSlug>` links still arrive here — the paper
  * pages use this to redirect them to the right route instead of rendering a
  * puzzle inside a nav that no longer lists it.
  */

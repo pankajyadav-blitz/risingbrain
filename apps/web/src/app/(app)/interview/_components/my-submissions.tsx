@@ -31,7 +31,7 @@ export function MySubmissions({ submissions }: { submissions: MySubmission[] }) 
           return (
             <li key={s.id}>
               <Link
-                href={`/interview/${s.id}`}
+                href={`/interview/${s.slug}`}
                 className="group flex flex-wrap items-center gap-x-3 gap-y-2 rounded-2xl border border-border bg-surface/40 px-4 py-3 transition-colors hover:border-rb-green-500/30"
               >
                 <span

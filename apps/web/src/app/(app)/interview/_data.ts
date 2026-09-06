@@ -113,6 +113,7 @@ export async function getInterviewFeed(
 
   const experiences: FeedExperience[] = rows.map((r) => ({
     id: r.id,
+    slug: r.slug,
     company: r.company,
     role: r.role,
     verdict: r.verdict,
@@ -142,6 +143,7 @@ export async function getInterviewFeed(
 /** One of the signed-in author's own posts that the public feed cannot show. */
 export interface MySubmission {
   id: string;
+  slug: string;
   title: string;
   company: string;
   role: string;
@@ -169,6 +171,7 @@ export async function getMySubmissions(userId: string): Promise<MySubmission[]> 
     take: 5,
     select: {
       id: true,
+      slug: true,
       title: true,
       company: true,
       role: true,
@@ -180,6 +183,7 @@ export async function getMySubmissions(userId: string): Promise<MySubmission[]> 
 
   return rows.map((r) => ({
     id: r.id,
+    slug: r.slug,
     title: r.title,
     company: r.company,
     role: r.role,

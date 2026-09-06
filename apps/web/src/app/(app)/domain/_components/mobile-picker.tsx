@@ -3,6 +3,7 @@
 import { usePathname, useRouter } from "next/navigation";
 import { useSelectedSubject } from "./selected-subject";
 import type { DomainSubjectIndex } from "../_data";
+import { domainTopicHref } from "../_categories";
 
 /**
  * Mobile-only topic picker. The subject is chosen by the top `<CategoryTabs>`, so
@@ -13,13 +14,13 @@ export function MobilePicker({ subjects }: { subjects: DomainSubjectIndex[] }) {
   const router = useRouter();
   const pathname = usePathname();
   const ctx = useSelectedSubject();
-  const activeId = pathname.split("/")[2] ?? "";
+  const activeSlug = pathname.split("/")[3] ?? "";
 
   const selected = ctx?.selected || subjects[0]?.subject || "";
   const active = subjects.find((s) => s.subject === selected) ?? subjects[0];
   if (!active) return null;
 
-  const hasActive = active.groups.some((g) => g.topics.some((t) => t.id === activeId));
+  const hasActive = active.groups.some((g) => g.topics.some((t) => t.slug === activeSlug));
 
   return (
     <div className="mb-4 lg:hidden">
@@ -27,8 +28,8 @@ export function MobilePicker({ subjects }: { subjects: DomainSubjectIndex[] }) {
         {active.label} · choose a topic
       </label>
       <select
-        value={hasActive ? activeId : ""}
-        onChange={(e) => router.push(`/domain/${e.target.value}`)}
+        value={hasActive ? activeSlug : ""}
+        onChange={(e) => router.push(domainTopicHref(active.subject, e.target.value))}
         className="glass-pill w-full rounded-xl px-4 py-3 text-sm font-medium text-foreground"
       >
         {hasActive ? null : (
@@ -39,7 +40,7 @@ export function MobilePicker({ subjects }: { subjects: DomainSubjectIndex[] }) {
         {active.groups.map((g) => (
           <optgroup key={g.label} label={g.label}>
             {g.topics.map((t) => (
-              <option key={t.id} value={t.id}>
+              <option key={t.id} value={t.slug}>
                 {t.title}
               </option>
             ))}

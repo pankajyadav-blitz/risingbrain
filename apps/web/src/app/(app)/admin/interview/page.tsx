@@ -289,7 +289,7 @@ function SubmissionCard({ item }: { item: QueueItem }) {
 
       {item.status === PublishStatus.PUBLISHED && (
         <Link
-          href={`/interview/${item.id}`}
+          href={`/interview/${item.slug}`}
           target="_blank"
           className="mt-3 inline-flex items-center gap-1.5 text-xs font-medium text-muted transition-colors hover:text-accent"
         >

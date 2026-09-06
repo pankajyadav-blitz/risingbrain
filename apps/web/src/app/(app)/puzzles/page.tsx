@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
-import { getFirstTopicId } from "../_quiz/data";
+import { getFirstTopicSlug } from "../_quiz/data";
 import { PUZZLES_ROUTE } from "../_quiz/routes";
 
 /**
@@ -8,8 +8,8 @@ import { PUZZLES_ROUTE } from "../_quiz/routes";
  * (navbar, header, `@nav` index) lives in `layout.tsx` and is shared.
  */
 export default async function PuzzlesIndexPage() {
-  const firstTopicId = await getFirstTopicId(PUZZLES_ROUTE.kinds);
-  if (firstTopicId) redirect(`/puzzles/${firstTopicId}`);
+  const firstTopicSlug = await getFirstTopicSlug(PUZZLES_ROUTE.kinds);
+  if (firstTopicSlug) redirect(`/puzzles/${firstTopicSlug}`);
 
   return (
     <p className="py-12 text-center text-sm text-muted">

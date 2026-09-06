@@ -115,6 +115,7 @@
       "devDependencies": {
         "@risingbrain/config-eslint": "*",
         "@risingbrain/config-typescript": "*",
+        "@risingbrain/core": "*",
         "@types/node": "^26.0.1",
         "@types/pg": "^8.20.0",
         "eslint": "^9.39.1",

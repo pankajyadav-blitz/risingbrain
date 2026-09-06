@@ -128,8 +128,36 @@ function hasExample(t: DomainTopicJson): boolean {
   return Boolean(t.example ?? exampleFor(t.slug));
 }
 
+/**
+ * Fail the seed on a duplicate (subject, slug).
+ *
+ * That pair is the topic's PUBLIC URL (`/domain/<subject>/<slug>`) and the table's
+ * unique key, so a collision is an authoring mistake in the seed JSON. Reported
+ * here, by name, rather than left to surface as a Prisma unique-violation — and
+ * never auto-numbered, which would silently hand a topic a URL nobody chose.
+ *
+ * Reuse ACROSS subjects is fine and expected: "views" is both a SQL and a DBMS
+ * topic, and the subject segment keeps them apart.
+ */
+function assertUniqueSlugs(data: ReturnType<typeof toRow>[]) {
+  const seen = new Set<string>();
+  const dupes: string[] = [];
+  for (const t of data) {
+    const key = `${t.subject}/${t.slug}`;
+    if (seen.has(key)) dupes.push(key);
+    seen.add(key);
+  }
+  if (dupes.length) {
+    throw new Error(
+      `Duplicate topic slug(s) in the seed JSON: ${[...new Set(dupes)].join(", ")}. ` +
+        `Slugs are URLs — rename one in seed/domain-<subject>.json.`
+    );
+  }
+}
+
 /** Insert in small batches so a single dropped connection retries cheaply. */
 async function insertRows(prisma: PrismaClient, data: ReturnType<typeof toRow>[]) {
+  assertUniqueSlugs(data);
   for (let i = 0; i < data.length; i += 10) {
     const batch = data.slice(i, i + 10);
     await withRetry(() => prisma.domainTopic.createMany({ data: batch }), `insert batch @${i}`);

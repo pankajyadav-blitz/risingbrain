@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 import { ArrowLeft, Layers, MessageCircle } from "lucide-react";
 import { getCurrentUser } from "@/lib/auth/current-user";
 import { prisma, PublishStatus } from "@/lib/db";
@@ -26,9 +26,9 @@ import type { CommentItem } from "../_lib/types";
  * A post sitting in the review queue still needs a page: its author has to be
  * able to read back what they submitted, and act on a moderator's note.
  */
-async function getExperience(id: string) {
+async function getExperience(slug: string) {
   return prisma.interviewExperience.findUnique({
-    where: { id },
+    where: { slug },
     include: {
       // `authorId` rides along on the row already; it is what decides whether the
       // edit/delete controls render.
@@ -49,11 +49,11 @@ async function getExperience(id: string) {
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ id: string }>;
+  params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
-  const { id } = await params;
+  const { slug } = await params;
   const exp = await prisma.interviewExperience.findUnique({
-    where: { id },
+    where: { slug },
     select: { title: true, company: true, role: true, excerpt: true, tags: true, status: true, createdAt: true, updatedAt: true },
   });
   // Unreviewed, rejected and removed posts get a bare, `noindex` head: the page
@@ -63,7 +63,7 @@ export async function generateMetadata({
     return { title: "Interview experience", robots: { index: false, follow: false } };
   }
   const description = exp.excerpt ?? `${exp.company} · ${exp.role} interview experience.`;
-  const url = `/interview/${id}`;
+  const url = `/interview/${slug}`;
   return {
     title: exp.title, // template appends "— RisingBrain"
     description,
@@ -85,15 +85,25 @@ export async function generateMetadata({
 export default async function InterviewDetailPage({
   params,
 }: {
-  params: Promise<{ id: string }>;
+  params: Promise<{ slug: string }>;
 }) {
-  const { id } = await params;
+  const { slug } = await params;
   const [current, exp] = await Promise.all([
     getCurrentUser(),
-    getExperience(id),
+    getExperience(slug),
   ]);
 
-  if (!exp) notFound();
+  if (!exp) {
+    // Posts were addressed by primary key before slugs, and those links are in
+    // the wild (they were the ones in sitemap.xml). Send a still-valid id to the
+    // canonical URL permanently, so search engines move their equity across.
+    const legacy = await prisma.interviewExperience.findUnique({
+      where: { id: slug },
+      select: { slug: true },
+    });
+    if (legacy) permanentRedirect(`/interview/${legacy.slug}`);
+    notFound();
+  }
 
   const isAuthor = current?.id === exp.authorId;
   const isAdmin = current?.role === "ADMIN";
@@ -140,7 +150,7 @@ export default async function InterviewDetailPage({
     author: { "@type": "Person", name: authorName },
     keywords: [exp.company, exp.role, ...exp.tags].join(", "),
     publisher: { "@type": "Organization", name: SITE_NAME },
-    mainEntityOfPage: absoluteUrl(`/interview/${exp.id}`),
+    mainEntityOfPage: absoluteUrl(`/interview/${exp.slug}`),
   };
 
   return (

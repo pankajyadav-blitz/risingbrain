@@ -20,7 +20,7 @@ export function MobilePicker({
   const router = useRouter();
   const pathname = usePathname();
   const ctx = useSelectedCategory();
-  const activeId = pathname.split("/")[2] ?? "";
+  const activeSlug = pathname.split("/")[2] ?? "";
 
   const selectedId = ctx?.selectedId ?? categories[0]?.id ?? "";
   const active = categories.find((c) => c.id === selectedId) ?? categories[0];
@@ -32,18 +32,18 @@ export function MobilePicker({
         {active.name} · choose a topic
       </label>
       <select
-        value={active.topics.some((t) => t.id === activeId) ? activeId : ""}
+        value={active.topics.some((t) => t.slug === activeSlug) ? activeSlug : ""}
         onChange={(e) => router.push(`${basePath}/${e.target.value}`)}
         className="glass-pill w-full rounded-xl px-4 py-3 text-sm font-medium text-foreground"
       >
         {/* Placeholder shown when the open topic isn't in this category yet. */}
-        {active.topics.some((t) => t.id === activeId) ? null : (
+        {active.topics.some((t) => t.slug === activeSlug) ? null : (
           <option value="" disabled>
             Select a topic…
           </option>
         )}
         {active.topics.map((t) => (
-          <option key={t.id} value={t.id}>
+          <option key={t.id} value={t.slug}>
             {t.name}
           </option>
         ))}

@@ -3,9 +3,13 @@
 import { useEffect, useId, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Loader2, Search, X } from "lucide-react";
+import type { DomainSubject } from "@risingbrain/database/enums";
+import { domainTopicHref } from "../_categories";
 
 type Suggestion = {
   id: string;
+  slug: string;
+  subject: DomainSubject;
   title: string;
   subjectLabel: string;
   groupLabel: string;
@@ -19,7 +23,7 @@ type Suggestion = {
  * `/api/domain/search` route — ALL matching/ranking happens on the SERVER against
  * the DB, so topic bodies never ship to the browser just to be searched. An
  * in-flight request is aborted when a newer one starts (no out-of-order results),
- * and picking a suggestion navigates to `/domain/<id>` (prefetched on hover).
+ * and picking a suggestion navigates to `/domain/<subject>/<slug>` (prefetched on hover).
  */
 export function DomainSearch() {
   const router = useRouter();
@@ -76,7 +80,7 @@ export function DomainSearch() {
   function go(s: Suggestion) {
     setOpen(false);
     setQuery("");
-    router.push(`/domain/${s.id}`);
+    router.push(domainTopicHref(s.subject, s.slug));
   }
 
   function onKeyDown(e: React.KeyboardEvent) {
@@ -147,7 +151,7 @@ export function DomainSearch() {
                   type="button"
                   onMouseEnter={() => {
                     setActive(i);
-                    router.prefetch(`/domain/${s.id}`);
+                    router.prefetch(domainTopicHref(s.subject, s.slug));
                   }}
                   onClick={() => go(s)}
                   className={`flex w-full flex-col gap-0.5 rounded-xl px-3 py-2 text-left transition-colors ${

@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
-import { getFirstTopicId } from "../_quiz/data";
+import { getFirstTopicSlug } from "../_quiz/data";
 import { SCREENING_ROUTE } from "../_quiz/routes";
 
 /**
@@ -8,8 +8,8 @@ import { SCREENING_ROUTE } from "../_quiz/routes";
  * (navbar, header, `@nav` index) lives in `layout.tsx` and is shared.
  */
 export default async function ScreeningIndexPage() {
-  const firstTopicId = await getFirstTopicId(SCREENING_ROUTE.kinds);
-  if (firstTopicId) redirect(`/screening/${firstTopicId}`);
+  const firstTopicSlug = await getFirstTopicSlug(SCREENING_ROUTE.kinds);
+  if (firstTopicSlug) redirect(`/screening/${firstTopicSlug}`);
 
   return (
     <p className="py-12 text-center text-sm text-muted">

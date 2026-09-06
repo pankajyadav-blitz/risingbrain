@@ -8,6 +8,7 @@ import { useTruncationTooltip } from "@/components/shell/truncation-tooltip";
 import { useDomainProgress } from "./progress-provider";
 import { useSelectedSubject } from "./selected-subject";
 import type { DomainSubjectIndex } from "../_data";
+import { domainTopicHref } from "../_categories";
 
 /**
  * Trailing slot of a topic link: the practice mark once the topic's set has been
@@ -38,7 +39,7 @@ function NavTrailing({ label }: { label: string | null }) {
  * The left index (`@nav` parallel slot). The subject is chosen by the top
  * `<CategoryTabs>`; this list shows ONLY the selected subject's topics, bucketed
  * into its groups (e.g. phases). Each topic is a prefetch-on-hover <Link>
- * (`/domain/<topicId>`) so the click is instant (lazy load). The active topic is
+ * (`/domain/<subject>/<slug>`) so the click is instant (lazy load). The active topic is
  * derived from the URL, keeping the nav and the content always in sync.
  */
 export function NavList({ subjects }: { subjects: DomainSubjectIndex[] }) {
@@ -47,7 +48,9 @@ export function NavList({ subjects }: { subjects: DomainSubjectIndex[] }) {
   const ctx = useSelectedSubject();
   const progress = useDomainProgress();
   const signedIn = progress?.signedIn ?? false;
-  const activeId = pathname.split("/")[2] ?? "";
+  // `/domain/<subject>/<slug>` — the topic slug is the THIRD segment. Scores are
+  // still keyed by primary key, so rows match on slug and look up progress on id.
+  const activeSlug = pathname.split("/")[3] ?? "";
 
   const selected = ctx?.selected || subjects[0]?.subject || "";
   const active = subjects.find((s) => s.subject === selected) ?? subjects[0];
@@ -56,7 +59,7 @@ export function NavList({ subjects }: { subjects: DomainSubjectIndex[] }) {
   const activeRef = useRef<HTMLAnchorElement>(null);
   useEffect(() => {
     activeRef.current?.scrollIntoView({ block: "nearest" });
-  }, [activeId, selected]);
+  }, [activeSlug, selected]);
 
   // The index column is narrow, so long topic titles are truncated; this reveals
   // the rest on hover/focus.
@@ -85,11 +88,11 @@ export function NavList({ subjects }: { subjects: DomainSubjectIndex[] }) {
           </div>
           <ul className="space-y-0.5">
             {group.topics.map((t) => {
-              const isActive = t.id === activeId;
+              const isActive = t.slug === activeSlug;
               const score = signedIn
                 ? progress?.getTopicScore(t.id)
                 : undefined;
-              const href = `/domain/${t.id}`;
+              const href = domainTopicHref(active.subject, t.slug);
               return (
                 <li key={t.id}>
                   <Link

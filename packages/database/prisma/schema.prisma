@@ -492,7 +492,10 @@ model QuizTopic {
   id         String               @id @default(cuid())
   categoryId String
   name       String
-  slug       String
+  // Globally unique, not just per-category: this slug IS the URL segment for
+  // /screening/<slug> and /puzzles/<slug>, and those two routes share one topic
+  // table, so a slug has to identify a topic on its own.
+  slug       String               @unique
   theory     String? // optional topic theory / notes
   formula    String? // optional key formulae
   order      Int                  @default(0)
@@ -500,7 +503,6 @@ model QuizTopic {
   questions  QuizQuestion[]
   scores     UserQuizTopicScore[]
 
-  @@unique([categoryId, slug])
   @@index([categoryId])
   @@map("quiz_topics")
 }
@@ -691,6 +693,11 @@ model InterviewExperience {
   difficulty  Difficulty       @default(MEDIUM)
   roundsCount Int              @default(1)
   title       String
+  // URL segment for /interview/<slug>. Readable title + a short opaque token,
+  // e.g. "google-l4-strong-start-fell-short-on-the-dp-round-k3f9x2". The token is
+  // what makes it unique, so two posts may share a title and an edited title can
+  // regenerate the readable half while the row keeps a stable identity.
+  slug        String           @unique
   excerpt     String?
   body        String // markdown
   tags        String[]

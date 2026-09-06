@@ -29,7 +29,7 @@ export async function GET(req: Request) {
       ],
     },
     orderBy: [{ subject: "asc" }, { groupOrder: "asc" }, { order: "asc" }],
-    select: { id: true, title: true, subject: true, groupLabel: true, summary: true },
+    select: { id: true, slug: true, title: true, subject: true, groupLabel: true, summary: true },
     take: 24,
   });
 
@@ -46,6 +46,9 @@ export async function GET(req: Request) {
     .slice(0, 8)
     .map((r) => ({
       id: r.id,
+      // Both halves of the topic's address — the subject disambiguates a slug
+      // that exists under more than one subject (e.g. "views").
+      slug: r.slug,
       title: r.title,
       subject: r.subject,
       subjectLabel: SUBJECT_META[r.subject].label,

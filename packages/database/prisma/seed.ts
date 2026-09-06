@@ -9,21 +9,28 @@
  *
  * Data sources live in packages/database/seed/*.json.
  */
-import {
-  PrismaClient,
-  Difficulty,
-  QuizKind,
-  InterviewVerdict,
-  PublishStatus,
-  Role,
-} from "../generated/prisma/client";
+import { PrismaClient, Difficulty, Role } from "../generated/prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { randomUUID } from "node:crypto";
 
 import dsaData from "../seed/dsa.json";
-import quizData from "../seed/quiz.json";
-import interviewData from "../seed/interview.json";
 import { seedDomain } from "../scripts/domain-loader";
+import { seedQuizContent, seedInterviewContent } from "../scripts/route-content-loader";
+
+/**
+ * Whether this seed owns the DSA sheet.
+ *
+ * OFF. The sheet has its own updater (`db:update-dsa`) that upserts by slug, and
+ * the content here is stale by comparison — letting the full seed clear and
+ * rewrite dsa_sheets/companies would throw away whatever that updater last put
+ * in, along with every learner's problem progress, notes and bookmarks (they
+ * cascade from DsaProblem).
+ *
+ * So `db:seed` now reloads only the slug-routed sections — Domain, the quiz bank
+ * behind Screening + Puzzles, and Interview — and leaves DSA alone. Flip this to
+ * `true` to seed a genuinely empty database from scratch.
+ */
+const SEED_DSA = false;
 
 const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL });
 const prisma = new PrismaClient({ adapter });
@@ -100,8 +107,10 @@ async function clearContent() {
   await prisma.interviewComment.deleteMany();
   await prisma.interviewLike.deleteMany();
   await prisma.interviewExperience.deleteMany();
-  await prisma.dsaSheet.deleteMany();
-  await prisma.company.deleteMany();
+  if (SEED_DSA) {
+    await prisma.dsaSheet.deleteMany();
+    await prisma.company.deleteMany();
+  }
   await prisma.quizCategory.deleteMany();
   await prisma.domainTopic.deleteMany();
   await prisma.course.deleteMany();
@@ -303,95 +312,8 @@ async function seedDsa(companyIds: Map<string, string>) {
   return problemRows.length;
 }
 
-async function seedQuiz() {
-  const categories = quizData as Array<{
-    kind: string;
-    slug: string;
-    name: string;
-    order: number;
-    topics: Array<{
-      name: string;
-      slug: string;
-      order: number;
-      theory?: string;
-      formula?: string;
-      questions: Array<{
-        prompt: string;
-        options: { key: string; label: string }[];
-        answerKey: string;
-        explanation?: string;
-        hint?: string;
-        difficulty?: string | null;
-        order: number;
-      }>;
-    }>;
-  }>;
-
-  const catRows: { id: string; kind: QuizKind; slug: string; name: string; order: number }[] = [];
-  const topicRows: {
-    id: string;
-    categoryId: string;
-    name: string;
-    slug: string;
-    theory: string | null;
-    formula: string | null;
-    order: number;
-  }[] = [];
-  const questionRows: {
-    id: string;
-    topicId: string;
-    prompt: string;
-    options: { key: string; label: string }[];
-    answerKey: string;
-    explanation: string | null;
-    hint: string | null;
-    // Only the puzzle bank carries a per-question difficulty today; the quant and
-    // reasoning sets leave it unset, hence null rather than a default.
-    difficulty: Difficulty | null;
-    order: number;
-  }[] = [];
-
-  for (const cat of categories) {
-    const categoryId = newId();
-    catRows.push({
-      id: categoryId,
-      kind: cat.kind as QuizKind,
-      slug: cat.slug,
-      name: cat.name,
-      order: cat.order,
-    });
-    for (const topic of cat.topics) {
-      const topicId = newId();
-      topicRows.push({
-        id: topicId,
-        categoryId,
-        name: topic.name,
-        slug: topic.slug,
-        theory: topic.theory ?? null,
-        formula: topic.formula ?? null,
-        order: topic.order,
-      });
-      for (const q of topic.questions) {
-        questionRows.push({
-          id: newId(),
-          topicId,
-          prompt: q.prompt,
-          options: q.options,
-          answerKey: q.answerKey,
-          explanation: q.explanation ?? null,
-          hint: q.hint ?? null,
-          difficulty: q.difficulty ? toDifficulty(q.difficulty) : null,
-          order: q.order,
-        });
-      }
-    }
-  }
-
-  await insertMany((r) => prisma.quizCategory.createMany({ data: r }), catRows);
-  await insertMany((r) => prisma.quizTopic.createMany({ data: r }), topicRows);
-  await insertMany((r) => prisma.quizQuestion.createMany({ data: r }), questionRows);
-  return questionRows.length;
-}
+/** Delegates to the shared loader so `db:seed` and `db:reseed-routes` agree. */
+const seedQuiz = () => seedQuizContent(prisma);
 
 async function seedUsers() {
   // Demo accounts for local testing. passwordHash stays null until the auth
@@ -404,62 +326,8 @@ async function seedUsers() {
   return admin;
 }
 
-async function seedInterviews() {
-  const posts = interviewData as Array<{
-    company: string;
-    role: string;
-    authorName: string;
-    verdict: string;
-    difficulty: string;
-    roundsCount: number;
-    title: string;
-    excerpt: string;
-    body: string;
-    tags: string[];
-    likeCount: number;
-  }>;
-
-  const emailFor = (name: string) => `${slugify(name)}@example.com`;
-
-  // Bulk-create the unique authors first (skipDuplicates keeps existing users),
-  // then resolve their ids in one query and bulk-insert the experiences.
-  const authorRows = new Map<string, { email: string; name: string; role: Role }>();
-  for (const post of posts) {
-    const email = emailFor(post.authorName);
-    if (!authorRows.has(email))
-      authorRows.set(email, { email, name: post.authorName, role: Role.NORMAL });
-  }
-  await insertMany(
-    (r) => prisma.user.createMany({ data: r, skipDuplicates: true }),
-    [...authorRows.values()],
-  );
-
-  const authors = await prisma.user.findMany({
-    where: { email: { in: [...authorRows.keys()] } },
-    select: { id: true, email: true },
-  });
-  const authorId = new Map(authors.map((a) => [a.email, a.id]));
-
-  const experienceRows = posts.map((post) => ({
-    id: newId(),
-    authorId: authorId.get(emailFor(post.authorName))!,
-    company: post.company,
-    role: post.role,
-    verdict: post.verdict as InterviewVerdict,
-    difficulty: toDifficulty(post.difficulty),
-    roundsCount: post.roundsCount,
-    title: post.title,
-    excerpt: post.excerpt,
-    body: post.body,
-    tags: post.tags,
-    likeCount: post.likeCount,
-    // Editorial seed content, so it is published outright — the column defaults
-    // to PENDING_REVIEW because *user* submissions must be approved first.
-    status: PublishStatus.PUBLISHED,
-  }));
-  await insertMany((r) => prisma.interviewExperience.createMany({ data: r }), experienceRows);
-  return posts.length;
-}
+/** Delegates to the shared loader so `db:seed` and `db:reseed-routes` agree. */
+const seedInterviews = () => seedInterviewContent(prisma);
 
 async function main() {
   console.log("🌱 Seeding RisingBrain…");
@@ -468,18 +336,18 @@ async function main() {
 
   // DSA needs the company ids; everything else is independent, so run the
   // content groups concurrently instead of one-after-another.
-  const companyIds = await seedCompanies();
-  console.log(`   companies: ${companyIds.size}`);
+  const companyIds = SEED_DSA ? await seedCompanies() : new Map<string, string>();
+  if (SEED_DSA) console.log(`   companies: ${companyIds.size}`);
 
   const [problems, domain, questions, , interviews] = await Promise.all([
-    seedDsa(companyIds),
+    SEED_DSA ? seedDsa(companyIds) : Promise.resolve(0),
     seedDomain(prisma),
     seedQuiz(),
     seedUsers(),
     seedInterviews(),
   ]);
 
-  console.log(`   dsa problems: ${problems}`);
+  console.log(SEED_DSA ? `   dsa problems: ${problems}` : "   dsa: skipped (SEED_DSA=false)");
   console.log(
     `   domain topics: ${domain.topics} (${domain.withExample} with an example), ` +
       `${domain.questions} domain practice questions`

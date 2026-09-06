@@ -20,13 +20,17 @@
     "db:seed-domain-sql": "bun run scripts/seed-domain-sql.ts",
     "db:seed-domain-dbms": "bun run scripts/seed-domain-dbms.ts",
     "db:seed-domain-cn": "bun run scripts/seed-domain-cn.ts",
+    "db:seed-domain-oops": "bun run scripts/seed-domain-oops.ts",
     "db:seed-domain-os": "bun run scripts/seed-domain-os.ts",
     "db:seed-interviews": "bun run scripts/seed-interviews.ts",
     "db:backfill-activity": "bun run scripts/backfill-activity.ts",
     "lint": "eslint . --max-warnings 0",
     "check-types": "tsc --noEmit",
     "db:migrate-legacy": "bun run scripts/migrate-legacy.ts",
-    "db:repair-domain": "bun run scripts/repair-domain-notes.ts"
+    "db:repair-domain": "bun run scripts/repair-domain-notes.ts",
+    "db:backfill-interview-slugs": "bun run scripts/backfill-interview-slugs.ts",
+    "db:migrate-deploy": "prisma migrate deploy",
+    "db:migrate-status": "prisma migrate status"
   },
   "dependencies": {
     "@prisma/adapter-pg": "^7.8.0",
@@ -36,6 +40,7 @@
   "devDependencies": {
     "@risingbrain/config-eslint": "*",
     "@risingbrain/config-typescript": "*",
+    "@risingbrain/core": "*",
     "@types/node": "^26.0.1",
     "@types/pg": "^8.20.0",
     "eslint": "^9.39.1",
