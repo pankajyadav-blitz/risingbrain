@@ -16,7 +16,6 @@ import {
   TriangleAlert,
   X,
 } from "lucide-react";
-import { Avatar } from "@/components/marketing/primitives";
 import { InterviewVerdict, Difficulty } from "@risingbrain/database/enums";
 import type { FeedExperience } from "../_lib/types";
 import type { FeedParams, FeedSort } from "../_data";
@@ -363,7 +362,6 @@ function ExperienceCard({ exp, signedIn }: { exp: FeedExperience; signedIn: bool
   const verdict = VERDICT_META[exp.verdict];
   const difficulty = DIFFICULTY_META[exp.difficulty];
   const VerdictIcon = verdict.icon;
-  const authorName = exp.author.name ?? "Anonymous";
 
   return (
     <Link
@@ -425,16 +423,10 @@ function ExperienceCard({ exp, signedIn }: { exp: FeedExperience; signedIn: bool
 
       {/* Footer */}
       <div className="mt-auto flex items-center justify-between gap-2 border-t border-border pt-4">
+        {/* No author here. Posting an interview experience should not put your
+            name on a public listing, so the feed shows only when it was posted. */}
         <div className="flex min-w-0 items-center gap-2">
-          <Avatar
-            name={authorName}
-            src={exp.author.image ?? undefined}
-            className="h-7 w-7 text-[10px]"
-          />
-          <div className="min-w-0 leading-tight">
-            <p className="truncate text-xs font-medium text-foreground">{authorName}</p>
-            <p className="text-[11px] text-muted">{exp.createdAtLabel}</p>
-          </div>
+          <p className="truncate text-[11px] text-muted">{exp.createdAtLabel}</p>
         </div>
         <div className="flex items-center gap-3">
           <span className="inline-flex items-center gap-1 text-sm text-muted">

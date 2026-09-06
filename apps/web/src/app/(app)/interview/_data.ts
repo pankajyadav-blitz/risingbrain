@@ -96,7 +96,9 @@ export async function getInterviewFeed(
     skip: (page - 1) * PAGE_SIZE,
     take: PAGE_SIZE,
     include: {
-      author: { select: { name: true, image: true } },
+      // The author is deliberately NOT selected. Write-ups are attributed only to
+      // their author on their own submissions view — the public feed names nobody,
+      // so the name is not fetched rather than fetched and hidden.
       _count: { select: { comments: true } },
     },
   });
@@ -126,7 +128,6 @@ export async function getInterviewFeed(
     commentCount: r._count.comments,
     createdAt: r.createdAt.toISOString(),
     createdAtLabel: timeAgo(r.createdAt),
-    author: { name: r.author.name, image: r.author.image },
     liked: likedIds.has(r.id),
   }));
 

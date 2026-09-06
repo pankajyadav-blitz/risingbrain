@@ -18,7 +18,6 @@ export interface FeedExperience {
   createdAt: string;
   /** Relative time computed on the server (avoids a client-side Date.now() hydration mismatch). */
   createdAtLabel: string;
-  author: { name: string | null; image: string | null };
   liked: boolean;
 }
 
