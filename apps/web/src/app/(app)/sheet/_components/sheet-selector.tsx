@@ -2,7 +2,14 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Bookmark, CircleCheckBig, Search, X } from "lucide-react";
+import { Difficulty } from "@risingbrain/database/enums";
 import { TopicSection } from "./topic-section";
+import { difficultyLabel } from "./difficulty-badge";
+import {
+  DifficultyFilter,
+  type DifficultyFilterValue,
+  type DifficultyOption,
+} from "./difficulty-filter";
 import { CelebrationProvider, useCelebrate } from "./celebration";
 import { SheetBookmarkContext, SheetGuestContext, SheetSolvedContext, useSheetSignedIn } from "./sheet-progress";
 import { type DifficultyStat } from "./progress-panel";
@@ -64,6 +71,7 @@ function SheetSelectorInner({
   const [activeId, setActiveId] = useState(sheets[0]?.id ?? "");
   const [searchQuery, setSearchQuery] = useState("");
   const [bookmarkOnly, setBookmarkOnly] = useState(false);
+  const [difficultyFilter, setDifficultyFilter] = useState<DifficultyFilterValue>("ALL");
   const celebrate = useCelebrate();
   const signedIn = useSheetSignedIn();
 
@@ -224,11 +232,43 @@ function SheetSelectorInner({
 
   const active = sheets.find((s) => s.id === activeId) ?? sheets[0];
 
+  // Difficulty options are derived from the DB-loaded tree, never hardcoded: we
+  // count the problems in the active sheet per difficulty and offer only the
+  // ones that actually occur. Ordering follows the schema's own `Difficulty`
+  // enum (easiest → hardest), with any value the frontend doesn't know about
+  // appended rather than dropped.
+  const difficultyOptions = useMemo<DifficultyOption[]>(() => {
+    if (!active) return [];
+    const counts = new Map<DifficultyValue, number>();
+    for (const topic of active.topics)
+      for (const pattern of topic.patterns)
+        for (const p of pattern.problems)
+          counts.set(p.difficulty, (counts.get(p.difficulty) ?? 0) + 1);
+
+    const order = Object.values(Difficulty) as string[];
+    const rank = (d: string) => {
+      const i = order.indexOf(d);
+      return i === -1 ? order.length : i;
+    };
+    return [...counts.entries()]
+      .sort(([a], [b]) => rank(a) - rank(b))
+      .map(([value, count]) => ({ value, count }));
+  }, [active]);
+
+  // A sheet may not contain every difficulty — fall back to "All" rather than
+  // showing an empty list after a sheet switch.
+  useEffect(() => {
+    if (difficultyFilter !== "ALL" && !difficultyOptions.some((o) => o.value === difficultyFilter)) {
+      setDifficultyFilter("ALL");
+    }
+  }, [difficultyOptions, difficultyFilter]);
+
   const trimmedQuery = searchQuery.trim().toLowerCase();
-  const filterActive = !!trimmedQuery || bookmarkOnly;
+  const filterActive = !!trimmedQuery || bookmarkOnly || difficultyFilter !== "ALL";
 
   // The set of problem ids in the active sheet matching the active filters
-  // (search title/reference AND bookmark compose with AND). `null` means no
+  // (search title/reference AND bookmark AND difficulty compose with AND).
+  // `null` means no
   // filter — render everything. We compute *visibility* rather than rebuilding
   // the data tree so progress denominators always reflect the full set, never
   // the filtered subset (a filtered tree would corrupt the pattern/topic bars
@@ -244,12 +284,14 @@ function SheetSelectorInner({
             p.title.toLowerCase().includes(trimmedQuery) ||
             (p.reference?.toLowerCase().includes(trimmedQuery) ?? false);
           const matchesBookmark = !bookmarkOnly || bookmarkedIds.has(p.id);
-          if (matchesQuery && matchesBookmark) ids.add(p.id);
+          const matchesDifficulty =
+            difficultyFilter === "ALL" || p.difficulty === difficultyFilter;
+          if (matchesQuery && matchesBookmark && matchesDifficulty) ids.add(p.id);
         }
       }
     }
     return ids;
-  }, [active, filterActive, trimmedQuery, bookmarkOnly, bookmarkedIds]);
+  }, [active, filterActive, trimmedQuery, bookmarkOnly, bookmarkedIds, difficultyFilter]);
 
   // Number of problems matching the active filters (used for the result count).
   const matchCount = visibleProblemIds?.size ?? 0;
@@ -369,7 +411,7 @@ function SheetSelectorInner({
         </div>
       </div>
 
-      {/* Search bar + bookmark filter */}
+      {/* Search bar + difficulty filter + bookmark filter */}
       <div className="mt-5 flex items-center gap-2">
         <div className="relative flex-1">
           <Search className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted" />
@@ -391,6 +433,18 @@ function SheetSelectorInner({
             </button>
           )}
         </div>
+
+        {/* Difficulty filter — sits between the search box and the bookmark
+            toggle. Only worth showing when the sheet spans more than one
+            difficulty. */}
+        {difficultyOptions.length > 1 && (
+          <DifficultyFilter
+            options={difficultyOptions}
+            value={difficultyFilter}
+            total={activeStat.total}
+            onChange={setDifficultyFilter}
+          />
+        )}
 
         {/* Bookmarked-only toggle (signed-in users only — guests have no bookmarks) */}
         {signedIn && (
@@ -424,7 +478,9 @@ function SheetSelectorInner({
           case is handled by the single empty-state block below. */}
       {filterActive && matchCount > 0 && (
         <p className="mt-2.5 px-1 text-xs text-muted">
-          {`${matchCount} problem${matchCount === 1 ? "" : "s"}${bookmarkOnly ? " bookmarked" : " found"}`}
+          {`${matchCount} problem${matchCount === 1 ? "" : "s"} found`}
+          {difficultyFilter !== "ALL" && ` · ${difficultyLabel(difficultyFilter)}`}
+          {bookmarkOnly && " · bookmarked"}
         </p>
       )}
 
@@ -447,12 +503,17 @@ function SheetSelectorInner({
         ))}
         {filterActive && matchCount === 0 && (
           <div className="py-16 text-center text-sm text-muted">
-            {bookmarkOnly && !trimmedQuery ? (
+            {bookmarkOnly && !trimmedQuery && difficultyFilter === "ALL" ? (
               <>
                 No bookmarked problems in this sheet yet.
                 <br />
                 Tap the <Bookmark className="inline h-3.5 w-3.5 align-text-bottom" /> on any
                 problem to save it for later.
+              </>
+            ) : !trimmedQuery && difficultyFilter !== "ALL" ? (
+              <>
+                No {difficultyLabel(difficultyFilter).toLowerCase()}
+                {bookmarkOnly ? " bookmarked" : ""} problems in this sheet.
               </>
             ) : (
               <>No problems match &ldquo;{searchQuery}&rdquo;</>
